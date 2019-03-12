@@ -27,7 +27,6 @@
 				</view>
 			</view>
 			<view id="demo2" class="scroll-view-item uni-bg-green">B</view>
-			<view id="demo3" class="scroll-view-item uni-bg-blue">C</view>
 		</scroll-view>
 	</view>
 </template>
