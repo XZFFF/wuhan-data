@@ -1,33 +1,43 @@
 <template>
 	<view>
-		<!-- 纵向滚动 -->
-		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
-		 @scroll="scroll">
-			<!-- 轮播图 -->
-			<view class="scroll-view-item  uni-padding-wrap">
-				<view class="page-section swiper">
-					<view class="page-section-spacing">
-						<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-							<view v-for="(item,index) in slideshow" :key="index">
-								<swiper-item>
-									<image :src="item.image_url" class="slide-image" mode="center"></image>
-								</swiper-item>
-							</view>
-						</swiper>
-					</view>
+		<!-- 轮播图 -->
+		<view>
+			<view class="page-section swiper">
+				<view class="page-section-spacing">
+					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+						<view v-for="(item,index) in slideshow" :key="index">
+							<swiper-item>
+								<image :src="item.image_url" class="slide-image" mode="center"></image>
+							</swiper-item>
+						</view>
+					</swiper>
 				</view>
 			</view>
-			<!-- 搜索框 -->
-			<view class="scroll-view-item">
-				<view class="header">
-					<view class="input-view">
-						<uni-icon type="search" size="22" color="#666666"></uni-icon>
-						<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
-					</view>
+		</view>
+		<!-- 搜索框 -->
+		<view style="margin-top: 20upx; padding: 5upx; background-color: #FFFFFF;">
+			<view class="header">
+				<view class="input-view">
+					<uni-icon type="search" size="22" color="#666666"></uni-icon>
+					<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
 				</view>
 			</view>
-			<view id="demo2" class="scroll-view-item uni-bg-green">C</view>
-		</scroll-view>
+		</view>
+		<view style="margin-top: 20upx; padding: 5upx; background-color: #FFFFFF;display: flex;flex-direction: row;flex-wrap: wrap;">
+			<view class="" style="width: 25%; height: 50%;display: flex; align-items: center;justify-content: center;padding: 20upx;">
+				<cover-image style="width: 50upx;" src="../../../static/icon/home-active.png"></cover-image>
+			</view>
+			<view class="" style="width: 25%; height: 50%;display: flex; align-items: center;justify-content: center;">
+				<cover-image style="width: 50upx;" src="../../../static/icon/home-active.png"></cover-image>
+			</view>
+			<view class=""></view>
+			<view class=""></view>
+			<view class=""></view>
+		</view>
+		<view style="height: 100upx; width: 100%;background-color: #00B26A;position: fixed;bottom: 20upx;">
+			
+		</view>
+			
 	</view>
 </template>
 
