@@ -17,7 +17,15 @@
 					</view>
 				</view>
 			</view>
-			<view id="demo1" class="scroll-view-item uni-bg-red">A</view>
+			<!-- 搜索框 -->
+			<view class="scroll-view-item">
+				<view class="header">
+					<view class="input-view">
+						<uni-icon type="search" size="22" color="#666666"></uni-icon>
+						<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
+					</view>
+				</view>
+			</view>
 			<view id="demo2" class="scroll-view-item uni-bg-green">B</view>
 			<view id="demo3" class="scroll-view-item uni-bg-blue">C</view>
 		</scroll-view>
@@ -25,7 +33,11 @@
 </template>
 
 <script>
+	import uniIcon from '../../../components/uni-icon/uni-icon.vue';
 	export default {
+		components: {
+			uniIcon
+		},
 		data() {
 			// TODO 这里应该改成动态获取接口
 			const slideshow = [{
@@ -58,5 +70,36 @@
 </script>
 
 <style>
+	.header {
+		display: flex;
+		flex-direction: row;
+		padding: 10px 15px;
+		align-items: center;
+	}
 
+	.input-view {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		background-color: #e7e7e7;
+		height: 30px;
+		border-radius: 15px;
+		padding: 0 10px;
+		flex: 1;
+	}
+
+	.input {
+		flex: 1;
+		padding: 0 5px;
+		height: 24px;
+		line-height: 24px;
+		font-size: 16px;
+	}
+
+	.icon {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		margin-left: 10px;
+	}
 </style>
