@@ -26,7 +26,7 @@
 					</view>
 				</view>
 			</view>
-			<view id="demo2" class="scroll-view-item uni-bg-green">B</view>
+			<view id="demo2" class="scroll-view-item uni-bg-green">C</view>
 		</scroll-view>
 	</view>
 </template>
