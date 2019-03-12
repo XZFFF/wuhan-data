@@ -118,6 +118,10 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+
+
+
+
 {
   data: function data() {
     // TODO 这里应该改成动态获取接口
@@ -165,50 +169,96 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("view", [
-    _c("view", { staticClass: "uni-padding-wrap" }, [
-      _c("view", { staticClass: "page-section swiper" }, [
-        _c(
-          "view",
-          { staticClass: "page-section-spacing" },
-          [
-            _c(
-              "swiper",
-              {
-                staticClass: "swiper",
-                attrs: {
-                  "indicator-dots": _vm.indicatorDots,
-                  autoplay: _vm.autoplay,
-                  interval: _vm.interval,
-                  duration: _vm.duration
-                }
-              },
-              _vm._l(_vm.slideshow, function(item, index) {
-                return _c(
-                  "view",
-                  { key: index },
-                  [
-                    _c(
-                      "swiper-item",
-                      { attrs: { mpcomid: "491e38e0-0-" + index } },
-                      [
-                        _c("image", {
-                          staticClass: "slide-image",
-                          attrs: { src: item.image_url, mode: "center" }
-                        })
-                      ]
-                    )
-                  ],
-                  1
-                )
-              })
-            )
-          ],
-          1
-        )
-      ])
-    ])
-  ])
+  return _c(
+    "view",
+    [
+      _c(
+        "scroll-view",
+        {
+          staticClass: "scroll-Y",
+          attrs: {
+            "scroll-top": _vm.scrollTop,
+            "scroll-y": "true",
+            eventid: "491e38e0-0"
+          },
+          on: {
+            scrolltoupper: _vm.upper,
+            scrolltolower: _vm.lower,
+            scroll: _vm.scroll
+          }
+        },
+        [
+          _c("view", { staticClass: "scroll-view-item  uni-padding-wrap" }, [
+            _c("view", { staticClass: "page-section swiper" }, [
+              _c(
+                "view",
+                { staticClass: "page-section-spacing" },
+                [
+                  _c(
+                    "swiper",
+                    {
+                      staticClass: "swiper",
+                      attrs: {
+                        "indicator-dots": _vm.indicatorDots,
+                        autoplay: _vm.autoplay,
+                        interval: _vm.interval,
+                        duration: _vm.duration
+                      }
+                    },
+                    _vm._l(_vm.slideshow, function(item, index) {
+                      return _c(
+                        "view",
+                        { key: index },
+                        [
+                          _c(
+                            "swiper-item",
+                            { attrs: { mpcomid: "491e38e0-0-" + index } },
+                            [
+                              _c("image", {
+                                staticClass: "slide-image",
+                                attrs: { src: item.image_url, mode: "center" }
+                              })
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    })
+                  )
+                ],
+                1
+              )
+            ])
+          ]),
+          _c(
+            "view",
+            {
+              staticClass: "scroll-view-item uni-bg-red",
+              attrs: { id: "demo1" }
+            },
+            [_vm._v("A")]
+          ),
+          _c(
+            "view",
+            {
+              staticClass: "scroll-view-item uni-bg-green",
+              attrs: { id: "demo2" }
+            },
+            [_vm._v("B")]
+          ),
+          _c(
+            "view",
+            {
+              staticClass: "scroll-view-item uni-bg-blue",
+              attrs: { id: "demo3" }
+            },
+            [_vm._v("C")]
+          )
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

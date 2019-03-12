@@ -1,22 +1,26 @@
 <template>
 	<view>
-		<!-- 轮播图 -->
-		<view class="uni-padding-wrap">
-			<view class="page-section swiper">
-				<view class="page-section-spacing">
-					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-						<!-- 动态循环展示轮播图 -->
-						<view v-for="(item,index) in slideshow" :key="index">
-							<swiper-item>
-								<image :src="item.image_url" class="slide-image" mode="center"></image>
-							</swiper-item>
-						</view>
-					</swiper>
+		<!-- 纵向滚动 -->
+		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
+		 @scroll="scroll">
+			<!-- 轮播图 -->
+			<view class="scroll-view-item  uni-padding-wrap">
+				<view class="page-section swiper">
+					<view class="page-section-spacing">
+						<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+							<view v-for="(item,index) in slideshow" :key="index">
+								<swiper-item>
+									<image :src="item.image_url" class="slide-image" mode="center"></image>
+								</swiper-item>
+							</view>
+						</swiper>
+					</view>
 				</view>
 			</view>
-		</view>
-
-
+			<view id="demo1" class="scroll-view-item uni-bg-red">A</view>
+			<view id="demo2" class="scroll-view-item uni-bg-green">B</view>
+			<view id="demo3" class="scroll-view-item uni-bg-blue">C</view>
+		</scroll-view>
 	</view>
 </template>
 
