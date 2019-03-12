@@ -1,0 +1,51 @@
+{
+    "pages" : [
+        //pages数组中第一项表示应用启动页
+        {
+            "path" : "pages/tabbar/home/home",
+            "style" : {}
+        },
+        {
+            "path" : "pages/tabbar/search/search",
+            "style" : {}
+        },
+        {
+            "path" : "pages/tabbar/mine/mine",
+            "style" : {}
+        }
+    ],
+	// 设置应用的状态栏、导航条、标题、窗口背景色
+    "globalStyle" : {
+        "navigationBarTextStyle" : "black",
+        "navigationBarTitleText" : "数说武汉",
+        "navigationBarBackgroundColor" : "#FFFFFF",
+        "backgroundColor" : "#FFFFFF"
+    },
+	// 设置tab栏的各项属性
+    "tabBar" : {
+        "color" : "#7A7E83",// 文字默认颜色
+        "selectedColor" : "#1A82D2",// tab上的文字选中时的颜色
+        "borderStyle" : "black",// tabbar上边框的颜色，仅支持 black/white
+        "backgroundColor" : "#FFFFFF",// tab的背景色
+        "list" : [
+            {
+                "pagePath" : "pages/tabbar/home/home",
+                "iconPath" : "static/icon/home-orgin.png",
+                "selectedIconPath" : "static/icon/home-active.png",
+                "text" : "首页"
+            },
+            {
+                "pagePath" : "pages/tabbar/search/search",
+                "iconPath" : "static/icon/search-orgin.png",
+                "selectedIconPath" : "static/icon/search-active.png",
+                "text" : "搜索"
+            },
+            {
+                "pagePath" : "pages/tabbar/mine/mine",
+                "iconPath" : "static/icon/mine-orgin.png",
+                "selectedIconPath" : "static/icon/mine-active.png",
+                "text" : "我的"
+            }
+        ]
+    }
+}

@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/tabbar/home/home",
+    "pages/tabbar/search/search",
+    "pages/tabbar/mine/mine"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "数说武汉",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF"
+  },
+  "usingComponents": {},
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#1A82D2",
+    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/tabbar/home/home",
+        "iconPath": "static/icon/home-orgin.png",
+        "selectedIconPath": "static/icon/home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/tabbar/search/search",
+        "iconPath": "static/icon/search-orgin.png",
+        "selectedIconPath": "static/icon/search-active.png",
+        "text": "搜索"
+      },
+      {
+        "pagePath": "pages/tabbar/mine/mine",
+        "iconPath": "static/icon/mine-orgin.png",
+        "selectedIconPath": "static/icon/mine-active.png",
+        "text": "我的"
+      }
+    ]
+  }
+}
