@@ -14,4 +14,11 @@
 
 <style>
 	/*每个页面公共css */
+	@import './common/uni.css';
+	page {
+		background-color: #F8F8F8;
+		height: 100%;
+		font-size: 28upx;
+		line-height: 1.8;
+	}
 </style>
