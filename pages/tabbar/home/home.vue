@@ -15,29 +15,21 @@
 			</view>
 		</view>
 		<!-- 搜索框 -->
-		<view style="margin-top: 20upx; padding: 5upx; background-color: #FFFFFF;">
-			<view class="header">
-				<view class="input-view">
-					<uni-icon type="search" size="22" color="#666666"></uni-icon>
-					<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
-				</view>
+		<view class="search">
+			<view class="input-view">
+				<uni-icon type="search" size="18" color="#8E8E93"></uni-icon>
+				<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
 			</view>
 		</view>
-		<view style="margin-top: 20upx; padding: 5upx; background-color: #FFFFFF;display: flex;flex-direction: row;flex-wrap: wrap;">
-			<view class="" style="width: 25%; height: 50%;display: flex; align-items: center;justify-content: center;padding: 20upx;">
-				<cover-image style="width: 50upx;" src="../../../static/icon/home-active.png"></cover-image>
+		<!-- 经济分析icon -->
+		<view class="icon-layout">
+			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
+				<cover-image style="width: 50upx;" :src="item"></cover-image>
 			</view>
-			<view class="" style="width: 25%; height: 50%;display: flex; align-items: center;justify-content: center;">
-				<cover-image style="width: 50upx;" src="../../../static/icon/home-active.png"></cover-image>
-			</view>
-			<view class=""></view>
-			<view class=""></view>
-			<view class=""></view>
 		</view>
+		<!-- 底部布局 -->
 		<view style="height: 100upx; width: 100%;background-color: #00B26A;position: fixed;bottom: 20upx;">
-			
 		</view>
-			
 	</view>
 </template>
 
@@ -49,7 +41,7 @@
 		},
 		data() {
 			// TODO 这里应该改成动态获取接口
-			const slideshow = [{
+			let slideshow = [{
 					id: '1',
 					name: '全国经济进入新常态',
 					image_url: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552393018721&di=f9f33a37f5caa9a75af34c3ddfcfeef8&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01b5555a0d934ca80121985ce63b3b.jpg%401280w_1l_2o_100sh.jpg"
@@ -65,8 +57,21 @@
 					image_url: "https://img.zcool.cn/community/0170555a0d9350a80121985ca70245.jpg@1280w_1l_2o_100sh.jpg"
 				}
 			];
+			let analysis_icon = [
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png",
+				"../../../static/icon/home-active.png"
+			];
 			return {
 				slideshow: slideshow,
+				analysis_icon: analysis_icon,
 				indicatorDots: true, // 是否显示面板指示点
 				autoplay: true, // 是否自动切换
 				interval: 2000, // 自动切换时长
@@ -79,36 +84,46 @@
 </script>
 
 <style>
-	.header {
+	.search {
 		display: flex;
 		flex-direction: row;
-		padding: 10px 15px;
+		margin-top: 20upx;
+		background-color: #F8F8F8;
 		align-items: center;
 	}
 
 	.input-view {
 		display: flex;
-		align-items: center;
 		flex-direction: row;
-		background-color: #e7e7e7;
-		height: 30px;
-		border-radius: 15px;
-		padding: 0 10px;
+		align-items: center;
 		flex: 1;
+		background-color: #FFFFFF;
+		height: 50upx;
+		border-radius: 20upx;
+		margin-left: 20upx;
+		margin-right: 20upx;
+		padding: 10upx;
 	}
 
 	.input {
-		flex: 1;
 		padding: 0 5px;
-		height: 24px;
-		line-height: 24px;
-		font-size: 16px;
 	}
 
-	.icon {
+	.icon-layout {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin-top: 20upx;
+		padding: 5upx;
+		background-color: #FFFFFF;
+	}
+
+	.icon-single-layout {
+		display: flex;
+		align-items: center;
 		justify-content: center;
-		margin-left: 10px;
+		width: 20%;
+		padding-top: 20upx;
+		padding-bottom: 20upx;
 	}
 </style>
