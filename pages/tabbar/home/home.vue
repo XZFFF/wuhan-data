@@ -7,7 +7,7 @@
 					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 						<view v-for="(item,index) in slideshow" :key="index">
 							<swiper-item>
-								<image :src="item.image_url" class="slide-image" mode="center"></image>
+								<cover-image :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image" mode="center"></cover-image>
 							</swiper-item>
 						</view>
 					</swiper>
@@ -21,53 +21,97 @@
 				<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
 			</view>
 		</view>
-		<!-- 经济分析icon -->
+		<!-- 经济分析 -->
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
-				<cover-image style="width: 50upx;" :src="item"></cover-image>
+				<view class="icon-single-background" :style="'background: '+item.background">
+					<cover-image class="icon-single-backicon" :src="'../../../static/home/analysis_icon/'+item.icon_name+'.png'"></cover-image>
+				</view>
+				<text class="icon-single-text">{{item.icon_name}}</text>
 			</view>
 		</view>
-		<!-- 底部布局 -->
-		<view style="height: 100upx; width: 100%;background-color: #00B26A;position: fixed;bottom: 20upx;">
+		<!-- 专题 -->
+		<view class="special-topic">
+			<view class="">
+				<!-- TODO 图片资源要重新给一下 -->
+				<cover-image src="../../../static/home/title/专题标题图.png"></cover-image>
+			</view>
+			<card-item image="../../../static/topic/湖北高质量发展.png" title="湖北高质量发展"></card-item>
+			<card-item image="../../../static/topic/宏观形势分析.png" title="宏观形势分析"></card-item>
 		</view>
+
+
+		<!--相对屏幕布局 -->
+		<!-- <view style="height: 100upx; width: 100%;background-color: #00B26A;position: fixed;bottom: 20upx;"></view> -->
 	</view>
 </template>
 
 <script>
 	import uniIcon from '../../../components/uni-icon/uni-icon.vue';
+	import cardItem from '../../../components/card-item/card-item.vue';
 	export default {
 		components: {
-			uniIcon
+			uniIcon,
+			cardItem
 		},
 		data() {
 			// TODO 这里应该改成动态获取接口
 			let slideshow = [{
 					id: '1',
 					name: '全国经济进入新常态',
-					image_url: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552393018721&di=f9f33a37f5caa9a75af34c3ddfcfeef8&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01b5555a0d934ca80121985ce63b3b.jpg%401280w_1l_2o_100sh.jpg"
+					image_name: "image1.jpg"
 				},
 				{
 					id: '2',
 					name: '大数据专题分析报告',
-					image_url: "https://img.zcool.cn/community/01f1b05a0d9354a80121985cbef4da.jpg@1280w_1l_2o_100sh.jpg"
+					image_name: "image2.jpg"
 				},
 				{
 					id: '3',
 					name: '新时代下的互联网经济形势',
-					image_url: "https://img.zcool.cn/community/0170555a0d9350a80121985ca70245.jpg@1280w_1l_2o_100sh.jpg"
+					image_name: "image3.jpg"
 				}
 			];
-			let analysis_icon = [
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png",
-				"../../../static/icon/home-active.png"
+			let analysis_icon = [{
+					background: "#72ACF6",
+					icon_name: "综合",
+				},
+				{
+					background: "#61C4E6",
+					icon_name: "工业",
+				},
+				{
+					background: "#76C1A1",
+					icon_name: "农业",
+				},
+				{
+					background: "#F3B861",
+					icon_name: "服务业",
+				},
+				{
+					background: "#EB8873",
+					icon_name: "消费",
+				},
+				{
+					background: "#C869A5",
+					icon_name: "投资",
+				},
+				{
+					background: "#8F8BE1",
+					icon_name: "对外开放",
+				},
+				{
+					background: "#757EDA",
+					icon_name: "新经济",
+				},
+				{
+					background: "#6C8DCF",
+					icon_name: "绿色发展",
+				},
+				{
+					background: "#8AA4D8",
+					icon_name: "民生",
+				}
 			];
 			return {
 				slideshow: slideshow,
@@ -113,17 +157,50 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		margin-top: 20upx;
+		margin-top: 30upx;
 		padding: 5upx;
 		background-color: #FFFFFF;
 	}
 
 	.icon-single-layout {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		width: 20%;
 		padding-top: 20upx;
 		padding-bottom: 20upx;
+	}
+
+	.icon-single-background {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 90upx;
+		width: 90upx;
+		background: #007AFF;
+		border-radius: 50%;
+	}
+
+	.icon-single-backicon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 50upx;
+		height: 50upx;
+	}
+
+	.icon-single-text {
+		margin-top: 5upx;
+		color: #2B2B2C;
+	}
+
+	.special-topic {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin-top: 30upx;
+		padding: 5upx;
+		background-color: #FFFFFF;
 	}
 </style>
