@@ -16,6 +16,7 @@
     ],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
     "globalStyle" : {
+		"navigationStyle" : "custom",
         "navigationBarTextStyle" : "black",
         "navigationBarTitleText" : "数说武汉",
         "navigationBarBackgroundColor" : "#FFFFFF",
