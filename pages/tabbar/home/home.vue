@@ -44,6 +44,7 @@
 </template>
 
 <script>
+	// 引入公共样式
 	import uniIcon from '../../../components/uni-icon/uni-icon.vue';
 	import cardItem from '../../../components/card-item/card-item.vue';
 	export default {
