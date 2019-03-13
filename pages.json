@@ -12,10 +12,6 @@
 		{
 			"path": "pages/tabbar/mine/mine",
 			"style": {}
-		},
-		{
-			"path": "pages/card-item/card-item",
-			"style": {}
 		}
 	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
