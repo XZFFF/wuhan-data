@@ -36,13 +36,10 @@
 				<!-- TODO 图片资源要重新给一下 -->
 				<cover-image src="../../../static/home/title/专题标题图.png"></cover-image>
 			</view>
-			<card-item image="../../../static/topic/湖北高质量发展.png" title="湖北高质量发展"></card-item>
-			<card-item image="../../../static/topic/宏观形势分析.png" title="宏观形势分析"></card-item>
+			<view v-for="(item,index) in topic" :key="index">
+				<card-item :image="item.image" :title="item.title"></card-item>
+			</view>
 		</view>
-
-
-		<!--相对屏幕布局 -->
-		<!-- <view style="height: 100upx; width: 100%;background-color: #00B26A;position: fixed;bottom: 20upx;"></view> -->
 	</view>
 </template>
 
@@ -113,16 +110,41 @@
 					icon_name: "民生",
 				}
 			];
+			let topic = [
+				{
+					title:"湖北高质量发展",
+					image:"../../../static/topic/湖北高质量发展.png"
+				},
+				{
+					title:"宏观形势分析",
+					image:"../../../static/topic/宏观形势分析.png"
+				},
+				{
+					title:"武汉供给测结构",
+					image:"../../../static/topic/武汉供给测结构.png"
+				},
+				{
+					title:"武汉工业经济发展",
+					image:"../../../static/topic/武汉工业经济发展.png"
+				}
+			]
 			return {
 				slideshow: slideshow,
 				analysis_icon: analysis_icon,
+				topic: topic,
 				indicatorDots: true, // 是否显示面板指示点
 				autoplay: true, // 是否自动切换
 				interval: 2000, // 自动切换时长
 				duration: 500 // 切换时长
 			};
 		},
-		onLoad: function() {},
+		onLoad: function() {
+			let topic = this.topic;
+			let t = [];
+			t.push(topic[Math.floor(Math.random()*4)]);
+			t.push(topic[Math.floor(Math.random()*4)]);
+			this.topic = t;
+		},
 		methods: {}
 	}
 </script>
