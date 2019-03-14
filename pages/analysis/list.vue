@@ -9,8 +9,7 @@
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'" scroll-with-animation>
 				<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index">
-					<!-- <image :src="item.LOGO" /> -->
-					<view>{{item.name}} {{item.total}} {{item.increase}}</view>
+					<view>名称:{{item.name}} 增量:{{item.total}} 累积量:{{item.increase}}</view>
 				</view>
 				<page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot>
 			</scroll-view>
@@ -24,13 +23,13 @@
 			let categoryList = [
 				{name:"综合",subCategoryList:[{name:"GDP",increase:"7.0%",total:"110亿元"}]},
 				{name:"工业",subCategoryList:[]},
-				{name:"农业"},
-				{name:"服务业"},
-				{name:"消费"},
-				{name:"投资"},
-				{name:"对外开放"},
-				{name:"新经济"},
-				{name:"绿色发展"}
+				{name:"农业",subCategoryList:[]},
+				{name:"服务业",subCategoryList:[]},
+				{name:"消费",subCategoryList:[]},
+				{name:"投资",subCategoryList:[]},
+				{name:"对外开放",subCategoryList:[]},
+				{name:"新经济",subCategoryList:[]},
+				{name:"绿色发展",subCategoryList:[]}
 			];
 			
 			return {
@@ -48,12 +47,14 @@
 			},
 			categoryClickMain(categroy, index) {
 				this.categoryActive = index;
+				// 右侧栏数据根据左侧栏变更做出变化
 				this.subCategoryList = categroy.subCategoryList;
 				this.scrollTop = -this.scrollHeight * index;
 			}
 		},
 		onLoad: function () {
 			this.height = uni.getSystemInfoSync().windowHeight;
+			// 设置初始化的右侧子栏数据(默认为第一个)
 			this.subCategoryList = this.categoryList[0].subCategoryList;
 		}
 	}
