@@ -24,7 +24,8 @@
 		<!-- 经济分析 -->
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
-				<view class="icon-single-background" :style="'background: '+item.background" @click="openlist" :data-analysisname=item.icon_name>
+				<view class="icon-single-background" :style="'background: '+item.background" @click="open_analysis_list"
+				 :data-analysisname=item.icon_name>
 					<image class="icon-single-backicon" :src="'../../../static/home/analysis_icon/'+item.icon_name+'.png'"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
@@ -34,7 +35,7 @@
 		<view class="topic">
 			<view class="topic-image">
 				<!-- TODO 图片资源要重新给一下 -->
-				<image class="topic-image-src" src="../../../static/home/title/专题标题图.png"></image>
+				<image class="topic-image-src" src="../../../static/home/title/专题标题图.png" @click="open_topic_list"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index">
 				<card-item :image="item.image" :title="item.title"></card-item>
@@ -152,12 +153,17 @@
 			this.topic = t;
 		},
 		methods: {
-			openlist(e) {
+			open_analysis_list(e) {
 				var analysisname = e.currentTarget.dataset.analysisname;
 				uni.navigateTo({
 					url: '../../analysis/list?analysisname=' + analysisname
 				});
-			}
+			},
+			open_topic_list(e) {
+				uni.navigateTo({
+					url: '../../topic/list'
+				});
+			},
 		}
 	}
 </script>
@@ -166,6 +172,7 @@
 	.slide-image {
 		width: 100%;
 	}
+
 	.search {
 		display: flex;
 		flex-direction: row;
@@ -241,14 +248,15 @@
 		padding: 5upx;
 		background-color: #FFFFFF;
 	}
-	
+
 	.topic-image {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		width: 100%;
-		height: 120upx;
+		height: 100upx;
 	}
+
 	.topic-image-src {
 		display: flex;
 		flex-direction: row;
