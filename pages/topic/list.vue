@@ -19,19 +19,19 @@
 		data() {
 			let topic = [{
 					title: "湖北高质量发展",
-					image: "../../static/topic/湖北高质量发展.png"
+					image: "../../static/topic/topic1.png"
 				},
 				{
 					title: "宏观形势分析",
-					image: "../../static/topic/宏观形势分析.png"
+					image: "../../static/topic/topic2.png"
 				},
 				{
 					title: "武汉供给测结构",
-					image: "../../static/topic/武汉供给测结构.png"
+					image: "../../static/topic/topic3.png"
 				},
 				{
 					title: "武汉工业经济发展",
-					image: "../../static/topic/武汉工业经济发展.png"
+					image: "../../static/topic/topic4.png"
 				}
 			]
 			return {

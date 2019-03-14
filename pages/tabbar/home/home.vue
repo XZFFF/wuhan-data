@@ -26,7 +26,7 @@
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="open_analysis_list"
 				 :data-analysisname=item.icon_name>
-					<image class="icon-single-backicon" :src="'../../../static/home/analysis_icon/'+item.icon_name+'.png'"></image>
+					<image class="icon-single-backicon" :src="'../../../static/home/analysis_icon/'+item.icon_url+'.png'"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
 			</view>
@@ -35,7 +35,7 @@
 		<view class="topic">
 			<view class="topic-image">
 				<!-- TODO 图片资源要重新给一下 -->
-				<image class="topic-image-src" src="../../../static/home/title/专题标题图.png" @click="open_topic_list"></image>
+				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="open_topic_list"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index">
 				<card-item :image="item.image" :title="item.title"></card-item>
@@ -74,59 +74,69 @@
 			let analysis_icon = [{
 					background: "#72ACF6",
 					icon_name: "综合",
+					icon_url: "an1",
 				},
 				{
 					background: "#61C4E6",
 					icon_name: "工业",
+					icon_url: "an2",
 				},
 				{
 					background: "#76C1A1",
 					icon_name: "农业",
+					icon_url: "an3",
 				},
 				{
 					background: "#F3B861",
 					icon_name: "服务业",
+					icon_url: "an4",
 				},
 				{
 					background: "#EB8873",
 					icon_name: "消费",
+					icon_url: "an5",
 				},
 				{
 					background: "#C869A5",
 					icon_name: "投资",
+					icon_url: "an6",
 				},
 				{
 					background: "#8F8BE1",
 					icon_name: "对外开放",
+					icon_url: "an7",
 				},
 				{
 					background: "#757EDA",
 					icon_name: "新经济",
+					icon_url: "an8",
 				},
 				{
 					background: "#6C8DCF",
 					icon_name: "绿色发展",
+					icon_url: "an9",
 				},
 				{
 					background: "#8AA4D8",
 					icon_name: "民生",
+					icon_url: "an10",
 				}
 			];
 			let topic = [{
 					title: "湖北高质量发展",
-					image: "../../../static/topic/湖北高质量发展.png"
+					image: "../../../static/topic/topic1.png"
 				},
 				{
 					title: "宏观形势分析",
-					image: "../../../static/topic/宏观形势分析.png"
+					image: "../../../static/topic/topic2.png"
 				},
 				{
 					title: "武汉供给测结构",
-					image: "../../../static/topic/武汉供给测结构.png"
+					image: "../../../static/topic/topic3.png"
 				},
 				{
 					title: "武汉工业经济发展",
-					image: "../../../static/topic/武汉工业经济发展.png"
+					image: "../../../static/topic/topic4.png"
 				}
 			]
 			return {
