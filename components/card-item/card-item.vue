@@ -1,7 +1,7 @@
 <template>
 	<view class="uni-card">
 		<view class="uni-card-content image-view">
-			<cover-image :src="image" class="image"></cover-image>
+			<image :src="image" class="image"></image>
 		</view>
 		<view class="uni-card-footer">
 			<view class="uni-card-media-text-bottom" style="color: #2B2B2C;">{{title}}</view>

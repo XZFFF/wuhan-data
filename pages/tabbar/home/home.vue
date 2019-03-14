@@ -7,7 +7,7 @@
 					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 						<view v-for="(item,index) in slideshow" :key="index">
 							<swiper-item>
-								<cover-image :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image" mode="center"></cover-image>
+								<image :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image" mode="center"></image>
 							</swiper-item>
 						</view>
 					</swiper>
@@ -25,16 +25,16 @@
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background">
-					<cover-image class="icon-single-backicon" :src="'../../../static/home/analysis_icon/'+item.icon_name+'.png'"></cover-image>
+					<image class="icon-single-backicon" :src="'../../../static/home/analysis_icon/'+item.icon_name+'.png'"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
 			</view>
 		</view>
 		<!-- 专题 -->
-		<view class="special-topic">
-			<view class="">
+		<view class="topic">
+			<view class="topic-image">
 				<!-- TODO 图片资源要重新给一下 -->
-				<cover-image src="../../../static/home/title/专题标题图.png"></cover-image>
+				<image class="topic-image-src" src="../../../static/home/title/专题标题图.png"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index">
 				<card-item :image="item.image" :title="item.title"></card-item>
@@ -111,22 +111,21 @@
 					icon_name: "民生",
 				}
 			];
-			let topic = [
-				{
-					title:"湖北高质量发展",
-					image:"../../../static/topic/湖北高质量发展.png"
+			let topic = [{
+					title: "湖北高质量发展",
+					image: "../../../static/topic/湖北高质量发展.png"
 				},
 				{
-					title:"宏观形势分析",
-					image:"../../../static/topic/宏观形势分析.png"
+					title: "宏观形势分析",
+					image: "../../../static/topic/宏观形势分析.png"
 				},
 				{
-					title:"武汉供给测结构",
-					image:"../../../static/topic/武汉供给测结构.png"
+					title: "武汉供给测结构",
+					image: "../../../static/topic/武汉供给测结构.png"
 				},
 				{
-					title:"武汉工业经济发展",
-					image:"../../../static/topic/武汉工业经济发展.png"
+					title: "武汉工业经济发展",
+					image: "../../../static/topic/武汉工业经济发展.png"
 				}
 			]
 			return {
@@ -142,8 +141,14 @@
 		onLoad: function() {
 			let topic = this.topic;
 			let t = [];
-			t.push(topic[Math.floor(Math.random()*4)]);
-			t.push(topic[Math.floor(Math.random()*4)]);
+			let topic_id1 = Math.floor(Math.random() * 4);
+			t.push(topic[topic_id1]);
+			let topic_id2 = Math.floor(Math.random() * 4);
+			// 防止出现重复的
+			while (topic_id2 == topic_id1) {
+				topic_id2 = Math.floor(Math.random() * 4);
+			}
+			t.push(topic[topic_id2]);
 			this.topic = t;
 		},
 		methods: {}
@@ -151,6 +156,9 @@
 </script>
 
 <style>
+	.slide-image {
+		width: 100%;
+	}
 	.search {
 		display: flex;
 		flex-direction: row;
@@ -218,12 +226,29 @@
 		color: #2B2B2C;
 	}
 
-	.special-topic {
+	.topic {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		margin-top: 30upx;
 		padding: 5upx;
 		background-color: #FFFFFF;
+	}
+	
+	.topic-image {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
+		height: 120upx;
+	}
+	.topic-image-src {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		margin-left: 30upx;
+		margin-right: 30upx;
+		width: 690upx;
+		height: 100%;
 	}
 </style>

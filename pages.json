@@ -3,11 +3,17 @@
         //pages数组中第一项表示应用启动页
         {
             "path" : "pages/tabbar/home/home",
-            "style" : {}
+            "style" : {
+				"navigationBarBackgroundColor":"#1A82D2",
+				"navigationBarTitleText":"数说武汉"
+			}
         },
         {
             "path" : "pages/tabbar/search/search",
-            "style" : {}
+            "style" : {
+				"navigationBarBackgroundColor":"#1A82D2",
+				"navigationBarTitleText":"指标搜索"
+			}
         },
         {
             "path" : "pages/tabbar/mine/mine",
@@ -15,7 +21,10 @@
         },
         {
             "path" : "pages/analysis/list",
-            "style" : {}
+            "style" : {
+				"navigationBarBackgroundColor":"#1A82D2",
+				"navigationBarTitleText":"经济分析"
+			}
         },
         {
             "path" : "pages/analysis/detail",
@@ -24,8 +33,8 @@
     ],
     // 设置应用的状态栏、导航条、标题、窗口背景色
     "globalStyle" : {
-        "navigationStyle" : "custom",
-        "navigationBarTextStyle" : "black",
+        "navigationStyle" : "default",
+        "navigationBarTextStyle" : "white",
         "navigationBarTitleText" : "数说武汉",
         "navigationBarBackgroundColor" : "#FFFFFF",
         "backgroundColor" : "#FFFFFF"
@@ -61,8 +70,8 @@
 		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [
 			{
-				"name": "analysis-list", //模式名称
-				"path": "pages/analysis/list", //启动页面，必选
+				"name": "home", //模式名称
+				"path": "pages/tabbar/home/home", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
