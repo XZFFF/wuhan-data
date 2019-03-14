@@ -24,7 +24,7 @@
 		<!-- 经济分析 -->
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
-				<view class="icon-single-background" :style="'background: '+item.background">
+				<view class="icon-single-background" :style="'background: '+item.background" @click="openlist" :data-analysisname=item.icon_name>
 					<image class="icon-single-backicon" :src="'../../../static/home/analysis_icon/'+item.icon_name+'.png'"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
@@ -151,7 +151,14 @@
 			t.push(topic[topic_id2]);
 			this.topic = t;
 		},
-		methods: {}
+		methods: {
+			openlist(e) {
+				var analysisname = e.currentTarget.dataset.analysisname;
+				uni.navigateTo({
+					url: '../../analysis/list?analysisname=' + analysisname
+				});
+			}
+		}
 	}
 </script>
 
