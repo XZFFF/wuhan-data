@@ -4,11 +4,13 @@
 			<scroll-view class="nav-left" scroll-y :style="'height:'+height+'px'">
 				<view class="nav-left-item" @click="categoryClickMain(item,index)" :key="index" :class="index==categoryActive?'active':''"
 				    v-for="(item,index) in categoryList">
+					<!-- TODO 左侧加一个可变化颜色的active块 -->
 					{{item.name}}
 				</view>
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'" scroll-with-animation>
 				<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index">
+					<!-- TODO 完善指标卡片样式 -->
 					<view>名称:{{item.name}} 增量:{{item.total}} 累积量:{{item.increase}}</view>
 				</view>
 				<page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot>
@@ -104,6 +106,6 @@
 	}
 
 	.active {
-		color: #007AFF;
+		color: #1A82D2;
 	}
 </style>
