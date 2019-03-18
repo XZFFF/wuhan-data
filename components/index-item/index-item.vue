@@ -2,11 +2,11 @@
 	<view class="index-item">
 		<!-- 指标起始竖条 -->
 		<view class="index-item-start-bar"></view>
-		<view class="index-item-name">
+		<view class="index-item-name" @tap="opendetail(indexId)">
 			<text>{{tranIndexName}}</text>
 		</view>
 		<!-- 指标描述 -->
-		<view class="index-item-desc">
+		<view class="index-item-desc" @tap="opendetail(indexId)">
 			<view class="index-item-desc-item" v-for="(item, i) in desc" :key="i">
 				<text>{{item.descName}}:</text>
 				<!-- 蓝#4F90F8 红#CE7670 #C45C56 -->
@@ -24,6 +24,10 @@
 <script>
 	export default {
 		props: {
+			indexId: {
+				type: String,
+				default: "1000"
+			},
 			//指标名称
 			indexName: {
 				type: String,
@@ -49,13 +53,13 @@
 		computed: {
 			tranIndexName() {
 				if (this.indexName.length > 10) {
-					let newstr = this.indexName.substring(0,9)+'...';
+					let newstr = this.indexName.substring(0, 9) + '...';
 					return newstr;
 				} else {
 					return this.indexName
 				}
 			},
-			
+
 			favIcon() {
 				if (this.isFavorite) {
 					return 'favorite-active.png';
@@ -68,6 +72,15 @@
 			return {
 
 			};
+		},
+		methods: {
+			// 跳转到指标详情页
+			opendetail(indexId) {
+				console.log(indexId)
+				uni.navigateTo({
+					url: '../analysis/detail?indexId=' + indexId
+				});
+			}
 		}
 	}
 </script>

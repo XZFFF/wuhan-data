@@ -16,26 +16,6 @@
 				<view v-for="(item,index) in subCategoryList" :key="index">
 					<index-item :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"></index-item>
 				</view>
-				<!--
-				<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index">
-					<view style="background: #007AFF; width: 20upx; height: 100%;"></view>
-					<view style="position: relative; margin: 20upx 10upx; width: 30%; max-width: 30%;">
-						<text style="font-size: 12px; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 100%; line-height: 1; word-wrap: break-word; overflow:auto;">{{item.name}}</text>
-					</view>
-					<view style="display: flex; flex-direction: column; margin: 20upx 10upx; max-width: 40%;">
-						<view style="display: flex; flex: 1;align-items: center;">
-							<text>{{item.desc.itemName}}:{{item.desc.itemNum}} {{item.desc.itemUnit}}</text>
-						</view>
-						<view style="display: flex; flex: 1;align-items: center;">
-							<text>{{item.itemName}}:{{item.itemNum}} {{item.itemUnit}}</text>
-						</view>
-					</view>
-					<view style="margin: auto 0; width: 5upx; height: 80%; background: #00B26A;"></view>
-					<view style="margin: auto;">
-						<image style="width: 50upx; height: 50upx;" src="../../static/icon/favorite-orgin.png"></image>
-					</view>
-				</view>
-				-->
 				<page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot>
 			</scroll-view>
 		</view>
@@ -53,21 +33,22 @@
 			let categoryList = [{
 					name: "综合",
 					subCategoryList: [{
+							indexId: "1001",
 							indexName: "GDP",
 							desc: [{
 									'descName': '当期',
 									'descNum': '110',
-									'descUnit': '亿元',
+									'descUnit': '亿元'
 								},
 								{
 									'descName': '增速',
 									'descNum': '7.12%',
-									'descUnit': '',
+									'descUnit': ''
 								}
 							],
 							isFavorite: true
 						}, {
-							// 这里要用js截断
+							indexId: "1002",
 							indexName: "社会消费品总产值",
 							desc: [{
 								'descName': '当期',
@@ -77,7 +58,7 @@
 							isFavorite: false
 						},
 						{
-							// 这里要用js截断
+							indexId: "1003",
 							indexName: "很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字",
 							desc: [{
 								'descName': '当期',
