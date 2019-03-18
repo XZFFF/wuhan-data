@@ -54,27 +54,27 @@
 <style>
 	.index-item {
 		display: flex;
-		width: 80%;
-		height: 120upx;
-		margin: 40upx auto;
+		width: 90%;
+		height: 110upx;
+		margin: 30upx auto;
 		background: #FFFFFF;
 	}
 
 	.index-item-start-bar {
-		background: #007AFF;
-		width: 20upx;
+		background: #7DACF0;
+		width: 5upx;
 		height: 100%;
 	}
 
 	.index-item-name {
 		position: relative;
-		margin: 20upx 10upx;
+		margin: 20upx 10upx 20upx 20upx;
 		width: 30%;
 		max-width: 30%;
 	}
 
 	.index-item-name text {
-		font-size: 12px;
+		font-size: 10px;
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -97,12 +97,16 @@
 		flex: 1;
 		align-items: center;
 	}
+	
+	.index-item-desc-item text {
+		font-size: 10px;
+	}
 
 	.index-item-end-bar {
-		margin: auto 0;
+		margin: auto 0 auto auto;
 		width: 5upx;
 		height: 80%;
-		background: #00B26A;
+		background: #F0F0F0;
 	}
 
 	.index-item-fav {
@@ -110,7 +114,7 @@
 	}
 
 	.index-item-fav image {
-		width: 50upx;
-		height: 50upx;
+		width: 40upx;
+		height: 40upx;
 	}
 </style>
