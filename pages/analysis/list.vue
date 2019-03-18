@@ -3,15 +3,38 @@
 		<view class="page-body">
 			<scroll-view class="nav-left" scroll-y :style="'height:'+height+'px'">
 				<view class="nav-left-item" @click="categoryClickMain(item,index)" :key="index" :class="index==categoryActive?'active':''"
-				    v-for="(item,index) in categoryList">
+				 v-for="(item,index) in categoryList">
 					<!-- TODO 左侧加一个可变化颜色的active块 -->
-					{{item.name}}
+					<view :class="index==categoryActive?'active-block':''" class="'orgin-block'"></view>
+					<view style="flex: 1; text-align: center;">
+						{{item.name}}
+					</view>
+
 				</view>
 			</scroll-view>
-			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'" scroll-with-animation>
+			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
+			 scroll-with-animation>
 				<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index">
 					<!-- TODO 完善指标卡片样式 -->
-					<view>名称:{{item.name}} 增量:{{item.total}} 累积量:{{item.increase}}</view>
+					<view style="background: #007AFF; width: 20upx; height: 100%;"></view>
+					<view style="position: relative; margin: 20upx 10upx; width: 30%; max-width: 30%;">
+						<text style="font-size: 12px; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 100%; line-height: 1; word-wrap: break-word; overflow:auto;">{{item.name}}</text>
+					</view>
+					<view style="display: flex; flex-direction: column; margin: 20upx 10upx; max-width: 40%;">
+						<view style="display: flex; flex: 1;align-items: center;">
+							<text>{{item.item.name}}:{{item.item.num}} {{item.item.unit}}</text>
+						</view>
+						<view style="display: flex; flex: 1;align-items: center;">
+							<text>{{item.item.name}}:{{item.item.num}} {{item.item.unit}}</text>
+						</view>
+					</view>
+					
+					<view style="margin: auto 0; width: 5upx; height: 80%; background: #00B26A;"></view>
+					
+					<view style="margin: auto;">
+						<image style="width: 50upx; height: 50upx;" src="../../static/icon/favorite-orgin.png"></image>
+					</view>
+
 				</view>
 				<page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot>
 			</scroll-view>
@@ -22,18 +45,61 @@
 <script>
 	export default {
 		data() {
-			let categoryList = [
-				{name:"综合",subCategoryList:[{name:"GDP",increase:"7.0%",total:"110亿元"}]},
-				{name:"工业",subCategoryList:[]},
-				{name:"农业",subCategoryList:[]},
-				{name:"服务业",subCategoryList:[]},
-				{name:"消费",subCategoryList:[]},
-				{name:"投资",subCategoryList:[]},
-				{name:"对外开放",subCategoryList:[]},
-				{name:"新经济",subCategoryList:[]},
-				{name:"绿色发展",subCategoryList:[]}
+			let categoryList = [{
+					name: "综合",
+					subCategoryList: [{
+							// 这里要用js截断
+							name: "社会消费品总产值",
+							item: {
+								name: '当期',
+								num: '110',
+								unit: '亿元'
+							}
+						},
+						{
+							name: "GDP",
+							item: {
+								name: '当期',
+								num: '110',
+								unit: '亿元'
+							}
+						}
+					]
+				},
+				{
+					name: "工业",
+					subCategoryList: []
+				},
+				{
+					name: "农业",
+					subCategoryList: []
+				},
+				{
+					name: "服务业",
+					subCategoryList: []
+				},
+				{
+					name: "消费",
+					subCategoryList: []
+				},
+				{
+					name: "投资",
+					subCategoryList: []
+				},
+				{
+					name: "对外开放",
+					subCategoryList: []
+				},
+				{
+					name: "新经济",
+					subCategoryList: []
+				},
+				{
+					name: "绿色发展",
+					subCategoryList: []
+				}
 			];
-			
+
 			return {
 				categoryList: categoryList,
 				subCategoryList: [],
@@ -54,7 +120,7 @@
 				this.scrollTop = -this.scrollHeight * index;
 			}
 		},
-		onLoad: function () {
+		onLoad: function() {
 			this.height = uni.getSystemInfoSync().windowHeight;
 			// 设置初始化的右侧子栏数据(默认为第一个)
 			this.subCategoryList = this.categoryList[0].subCategoryList;
@@ -63,7 +129,7 @@
 </script>
 
 <style>
-.page-body {
+	.page-body {
 		display: flex;
 	}
 
@@ -83,8 +149,20 @@
 		font-size: 30upx;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		/* justify-content: space-between; */
+
 	}
+
+	.orgin-block {
+		width: 20upx;
+		background-color: #FFFFFF;
+		height: 100%;
+	}
+
+	.active-block {
+		background-color: #007AFF;
+	}
+
 
 	.nav-right {
 		width: 70%;
@@ -92,12 +170,15 @@
 
 	/* 侧边分类右侧样式 */
 	.nav-right-item {
+		display: flex;
 		width: 80%;
-		height: 140upx;
-		float: left;
-		text-align: center;
-		padding: 10upx;
-		font-size: 28upx;
+		height: 120upx;
+		margin: 40upx auto;
+		background: #F0AD4E;
+		/* float: left; */
+		/* text-align: center; */
+		/* padding: 10upx; */
+		/* font-size: 28upx; */
 	}
 
 	.nav-right-item image {
