@@ -13,28 +13,29 @@
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
 			 scroll-with-animation>
+			 <view v-for="(item,index) in subCategoryList" :key="index">
+				 <index-item></index-item>
+			 </view>
+			 <!--
 				<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index">
-					<!-- TODO 完善指标卡片样式 -->
 					<view style="background: #007AFF; width: 20upx; height: 100%;"></view>
 					<view style="position: relative; margin: 20upx 10upx; width: 30%; max-width: 30%;">
 						<text style="font-size: 12px; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 100%; line-height: 1; word-wrap: break-word; overflow:auto;">{{item.name}}</text>
 					</view>
 					<view style="display: flex; flex-direction: column; margin: 20upx 10upx; max-width: 40%;">
 						<view style="display: flex; flex: 1;align-items: center;">
-							<text>{{item.item.name}}:{{item.item.num}} {{item.item.unit}}</text>
+							<text>{{item.desc.itemName}}:{{item.desc.itemNum}} {{item.desc.itemUnit}}</text>
 						</view>
 						<view style="display: flex; flex: 1;align-items: center;">
-							<text>{{item.item.name}}:{{item.item.num}} {{item.item.unit}}</text>
+							<text>{{item.itemName}}:{{item.itemNum}} {{item.itemUnit}}</text>
 						</view>
 					</view>
-
 					<view style="margin: auto 0; width: 5upx; height: 80%; background: #00B26A;"></view>
-
 					<view style="margin: auto;">
 						<image style="width: 50upx; height: 50upx;" src="../../static/icon/favorite-orgin.png"></image>
 					</view>
-
 				</view>
+				-->
 				<page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot>
 			</scroll-view>
 		</view>
@@ -42,26 +43,25 @@
 </template>
 
 <script>
+	// 引入公共样式
+	import indexItem from '../../components/index-item/index-item.vue';
 	export default {
+		components: {
+			indexItem
+		},
 		data() {
 			let categoryList = [{
 					name: "综合",
 					subCategoryList: [{
 							// 这里要用js截断
-							name: "社会消费品总产值",
-							item: {
-								name: '当期',
-								num: '110',
-								unit: '亿元'
-							}
-						},
-						{
-							name: "GDP",
-							item: {
-								name: '当期',
-								num: '110',
-								unit: '亿元'
-							}
+							indexName: "社会消费品总产值",
+							desc: [{
+								'descName': '当期',
+								'descNum': '110',
+								'descUnit': '亿元',
+							}],
+							isFavorite: true
+
 						}
 					]
 				},
@@ -142,7 +142,7 @@
 	}
 
 	.nav-left-item {
-		height: 100upx;
+		height: 110upx;
 		border-right: solid 1px #E0E0E0;
 		border-bottom: solid 1px #E0E0E0;
 		font-size: 30upx;
@@ -168,13 +168,13 @@
 		width: 75%;
 	}
 
-	/* 侧边分类右侧样式 */
+	/* 侧边分类右侧样式#F0AD4E */
 	.nav-right-item {
 		display: flex;
 		width: 80%;
 		height: 120upx;
 		margin: 40upx auto;
-		background: #F0AD4E;
+		background: #FFFFFF;
 		/* float: left; */
 		/* text-align: center; */
 		/* padding: 10upx; */
