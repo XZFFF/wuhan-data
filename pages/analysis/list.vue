@@ -75,7 +75,7 @@
 								'descUnit': '亿元',
 							}
 						],
-						isFavorite: true
+						isFavorite: false
 					}]
 				},
 				{

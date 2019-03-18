@@ -10,13 +10,13 @@
 			<view class="index-item-desc-item" v-for="(item, i) in desc" :key="i">
 				<text>{{item.descName}}:</text>
 				<!-- 蓝#4F90F8 红#CE7670 #C45C56 -->
-				<text style="color: #C45C56;">{{item.descNum}}</text>
-				<text>{{item.descUnit}}</text>
+				<text style="margin-left: 5upx; color: #C45C56;">{{item.descNum}}</text>
+				<text style="margin-left: 10upx;">{{item.descUnit}}</text>
 			</view>
 		</view>
 		<view class="index-item-end-bar"></view>
 		<view class="index-item-fav">
-			<image class="" src="../../static/icon/favorite-orgin.png"></image>
+			<image class="" :src="'../../static/icon/'+favIcon"></image>
 		</view>
 	</view>
 </template>
@@ -44,6 +44,15 @@
 			isFavorite: {
 				type: Boolean,
 				default: false
+			}
+		},
+		computed: {
+			favIcon() {
+				if (this.isFavorite) {
+					return 'favorite-active.png';
+				} else {
+					return 'favorite-orgin.png';
+				}
 			}
 		},
 		data() {
