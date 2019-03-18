@@ -53,30 +53,40 @@
 			let categoryList = [{
 					name: "综合",
 					subCategoryList: [{
-						indexName: "GDP",
-						desc: [{
+							indexName: "GDP",
+							desc: [{
+									'descName': '当期',
+									'descNum': '110',
+									'descUnit': '亿元',
+								},
+								{
+									'descName': '增速',
+									'descNum': '7.12%',
+									'descUnit': '',
+								}
+							],
+							isFavorite: true
+						}, {
+							// 这里要用js截断
+							indexName: "社会消费品总产值",
+							desc: [{
 								'descName': '当期',
 								'descNum': '110',
 								'descUnit': '亿元',
-							},
-							{
-								'descName': '增速',
-								'descNum': '7.12%',
-								'descUnit': '',
-							}
-						],
-						isFavorite: true
-					}, {
-						// 这里要用js截断
-						indexName: "社会消费品总产值",
-						desc: [{
+							}],
+							isFavorite: false
+						},
+						{
+							// 这里要用js截断
+							indexName: "很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字",
+							desc: [{
 								'descName': '当期',
-								'descNum': '110',
+								'descNum': '111210',
 								'descUnit': '亿元',
-							}
-						],
-						isFavorite: false
-					}]
+							}],
+							isFavorite: false
+						}
+					]
 				},
 				{
 					name: "工业",
@@ -164,7 +174,7 @@
 	}
 
 	.active {
-		color: #7DACF0;
+		color: #1A82D2;
 	}
 
 	.orgin-block {
@@ -188,14 +198,5 @@
 		height: 120upx;
 		margin: 40upx auto;
 		background: #FFFFFF;
-		/* float: left; */
-		/* text-align: center; */
-		/* padding: 10upx; */
-		/* font-size: 28upx; */
-	}
-
-	.nav-right-item image {
-		width: 100upx;
-		height: 100upx;
 	}
 </style>

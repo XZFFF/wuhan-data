@@ -3,7 +3,7 @@
 		<!-- 指标起始竖条 -->
 		<view class="index-item-start-bar"></view>
 		<view class="index-item-name">
-			<text>{{indexName}}</text>
+			<text>{{tranIndexName}}</text>
 		</view>
 		<!-- 指标描述 -->
 		<view class="index-item-desc">
@@ -47,6 +47,15 @@
 			}
 		},
 		computed: {
+			tranIndexName() {
+				if (this.indexName.length > 10) {
+					let newstr = this.indexName.substring(0,9)+'...';
+					return newstr;
+				} else {
+					return this.indexName
+				}
+			},
+			
 			favIcon() {
 				if (this.isFavorite) {
 					return 'favorite-active.png';
@@ -92,7 +101,7 @@
 		top: 50%;
 		transform: translate(-50%, -50%);
 		width: 100%;
-		line-height: 1;
+		line-height: 1.5;
 		word-wrap: break-word;
 		overflow: auto;
 	}
