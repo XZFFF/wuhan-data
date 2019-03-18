@@ -4,7 +4,6 @@
 			<scroll-view class="nav-left" scroll-y :style="'height:'+height+'px'">
 				<view class="nav-left-item" @click="categoryClickMain(item,index)" :key="index" :class="index==categoryActive?'active':''"
 				 v-for="(item,index) in categoryList">
-					<!-- TODO 左侧加一个可变化颜色的active块 -->
 					<view :class="index==categoryActive?'active-block':''" class="'orgin-block'"></view>
 					<view style="flex: 1; text-align: center;">
 						{{item.name}}
@@ -28,9 +27,9 @@
 							<text>{{item.item.name}}:{{item.item.num}} {{item.item.unit}}</text>
 						</view>
 					</view>
-					
+
 					<view style="margin: auto 0; width: 5upx; height: 80%; background: #00B26A;"></view>
-					
+
 					<view style="margin: auto;">
 						<image style="width: 50upx; height: 50upx;" src="../../static/icon/favorite-orgin.png"></image>
 					</view>
@@ -149,18 +148,20 @@
 		font-size: 30upx;
 		display: flex;
 		align-items: center;
-		/* justify-content: space-between; */
+	}
 
+	.active {
+		color: #7DACF0;
 	}
 
 	.orgin-block {
-		width: 20upx;
-		background-color: #FFFFFF;
+		width: 5upx;
+		background-color: #F8F8F8;
 		height: 100%;
 	}
 
 	.active-block {
-		background-color: #007AFF;
+		background-color: #7DACF0;
 	}
 
 
@@ -184,9 +185,5 @@
 	.nav-right-item image {
 		width: 100upx;
 		height: 100upx;
-	}
-
-	.active {
-		color: #1A82D2;
 	}
 </style>
