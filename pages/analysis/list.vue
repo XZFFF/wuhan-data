@@ -138,7 +138,7 @@
 	}
 
 	.nav-left {
-		width: 30%;
+		width: 25%;
 	}
 
 	.nav-left-item {
@@ -164,9 +164,8 @@
 		background-color: #7DACF0;
 	}
 
-
 	.nav-right {
-		width: 70%;
+		width: 75%;
 	}
 
 	/* 侧边分类右侧样式 */
