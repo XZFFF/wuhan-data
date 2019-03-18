@@ -13,10 +13,10 @@
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
 			 scroll-with-animation>
-			 <view v-for="(item,index) in subCategoryList" :key="index">
-				 <index-item></index-item>
-			 </view>
-			 <!--
+				<view v-for="(item,index) in subCategoryList" :key="index">
+					<index-item :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"></index-item>
+				</view>
+				<!--
 				<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index">
 					<view style="background: #007AFF; width: 20upx; height: 100%;"></view>
 					<view style="position: relative; margin: 20upx 10upx; width: 30%; max-width: 30%;">
@@ -53,17 +53,30 @@
 			let categoryList = [{
 					name: "综合",
 					subCategoryList: [{
-							// 这里要用js截断
-							indexName: "社会消费品总产值",
-							desc: [{
+						indexName: "GDP",
+						desc: [{
 								'descName': '当期',
 								'descNum': '110',
 								'descUnit': '亿元',
-							}],
-							isFavorite: true
-
-						}
-					]
+							},
+							{
+								'descName': '增速',
+								'descNum': '7.12%',
+								'descUnit': '',
+							}
+						],
+						isFavorite: true
+					}, {
+						// 这里要用js截断
+						indexName: "社会消费品总产值",
+						desc: [{
+								'descName': '当期',
+								'descNum': '110',
+								'descUnit': '亿元',
+							}
+						],
+						isFavorite: true
+					}]
 				},
 				{
 					name: "工业",

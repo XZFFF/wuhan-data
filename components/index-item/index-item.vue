@@ -8,7 +8,10 @@
 		<!-- 指标描述 -->
 		<view class="index-item-desc">
 			<view class="index-item-desc-item" v-for="(item, i) in desc" :key="i">
-				<text>{{item.descName}}:{{item.descNum}} {{item.descUnit}}</text>
+				<text>{{item.descName}}:</text>
+				<!-- 蓝#4F90F8 红#CE7670 #C45C56 -->
+				<text style="color: #C45C56;">{{item.descNum}}</text>
+				<text>{{item.descUnit}}</text>
 			</view>
 		</view>
 		<view class="index-item-end-bar"></view>
@@ -74,7 +77,7 @@
 	}
 
 	.index-item-name text {
-		font-size: 10px;
+		font-size: 11px;
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -88,8 +91,8 @@
 	.index-item-desc {
 		display: flex;
 		flex-direction: column;
-		margin: 20upx 10upx;
-		max-width: 40%;
+		margin: 18upx 10upx;
+		max-width: 50%;
 	}
 
 	.index-item-desc-item {
@@ -97,24 +100,24 @@
 		flex: 1;
 		align-items: center;
 	}
-	
+
 	.index-item-desc-item text {
-		font-size: 10px;
+		font-size: 11px;
 	}
 
 	.index-item-end-bar {
 		margin: auto 0 auto auto;
-		width: 5upx;
+		width: 3upx;
 		height: 80%;
 		background: #F0F0F0;
 	}
 
 	.index-item-fav {
-		margin: auto;
+		margin: auto 25upx auto 25upx;
 	}
 
 	.index-item-fav image {
-		width: 40upx;
-		height: 40upx;
+		width: 50upx;
+		height: 50upx;
 	}
 </style>
