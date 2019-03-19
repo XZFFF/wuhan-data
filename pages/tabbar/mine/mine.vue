@@ -1,22 +1,37 @@
 <template>
 	<view>
-		<view style="height: 23%; width: 100%;background-color: #1E90FF;position: fixed;top: 0upx;">
-			<!-- …Ë÷√ -->
-			<view class="setting" style="padding-top: 10upx;" >
-				…Ë÷√
+		<view class="top" style="height: 300upx; width: 100%; background-color: #1E90FF; margin-top: 0upx; display: flex;">
+			<!-- ËÆæÁΩÆ -->
+			<view class="setting" v-for="(value,key) in setting_button" :key="key" @click="goDetailPage(value)">
+				<view class="text" style="color: #FFFFFF; font-size: 35upx;">{{value.title}}</view>
 			</view>
-			<!-- ∏ˆ»À–≈œ¢ -->
+			<!-- ‰∏™‰∫∫‰ø°ÊÅØ -->
 			<view class="persional-information">
 			</view>
 		</view>
-		<!-- ∏ˆ»À‰Ø¿¿ -->
+		<!-- ‰∏™‰∫∫ÊµèËßà -->
 		<view class="persional-browse">
-			<view class="icon-single-layout" v-for="(item,index) in browse_icon" :key="index">
-				<cover-image style="width: 50upx;" :src="item"></cover-image>
+			<view class="icon-single-layout" v-for="(value,key) in browse_icon" :key="key" @click="goDetailPage(value)">
+				<view style="display: table">
+					<cover-image style="width: 50upx; display:flex" :src="value.img"></cover-image>
+					<view class="text" style="font-size:30upx; color:#1E90FF">{{value.title}}</view>
+				</view>
 			</view>
 		</view>
-		<!-- ≤Àµ• -->
+		<!-- ËèúÂçï -->
 		<view class="menu">
+			<view class="uni-list">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" :key="key" @click="goDetailPage(value)">
+					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
+						<view class="uni-media-list-logo">
+							<image style="height: 60upx; width: 60upx; margin-top: 10upx" v-if="showImg" :src="value.img"></image>
+						</view>
+						<view class="uni-media-list-body" style="justify-content: center">
+							<view class="uni-media-list-text" style="font-size: 35upx">{{value.title}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -24,56 +39,85 @@
 <script>
 	export default {
 		data() {
-			let browse_icon = [
-				"../../../static/icon/favorite.png",
-				"../../../static/icon/clock.png",
-				"../../../static/icon/mail.png"
-			];
-			let menu_list = [{
-				name: ' ÷ ∆√‹¬Î',
-				//url: 'gesture-password'
-			}, {
-				name: 'ºÏ≤È∏¸–¬',
-				//url: 'update'
-			}, {
-				name: 'πÿ”⁄Œ“√«',
-				//url: 'about'
-			}, {
-				name: '«Â≥˝ª∫¥Ê',
-				//url: 'clear-cache'
-			}];
 			return {
-				browse_icon: browse_icon
-
+					setting_button: [{
+						title: "ËÆæÁΩÆ",
+						url: "setting"
+					}], 
+					browse_icon: [{
+					title: "Êî∂Ëóè",
+					url: "collection",
+					img: "../../../static/icon/favorite.png"
+				}, {
+					title: "Ë∂≥Ëøπ",
+					url: "footprint",
+					img: "../../../static/icon/clock.png"
+				}, {
+					title: "Ê∂àÊÅØ",
+					url: "news",
+					img: "../../../static/icon/mail.png"
+				},
+				],
+					
+				title: 'list',
+				showImg: false,
+				menu_list: [
+					{
+					title: "ÊâãÂäøÂØÜÁ†Å",
+					url: "gesture-password",
+					img: "../../../static/icon/key.png"
+				}, {
+					title: "Ê£ÄÊü•Êõ¥Êñ∞",
+					url: "update",
+					img: "../../../static/icon/update.png"
+				}, {
+					title: "ÂÖ≥‰∫éÊàë‰ª¨",
+					url: "about-us",
+					img: "../../../static/icon/about.png"
+				}, {
+					title: "Ê∏ÖÈô§ÁºìÂ≠ò",
+					url: "clear-cache",
+					img: "../../../static/icon/clear.png"
+				},
+				]
 			};
+		},
+		onLoad() {
+			setTimeout(() => {
+				this.showImg = true;
+			}, 400)
+		},
+		
+		methods: {
+			goDetailPage(e) {
+				let path = e.url ? e.url : e;
+				let url = ~path.indexOf('platform') ? path : '/pages/mine/' + path + '/' + path;
+				uni.navigateTo({
+					url: url
+				});
+				return false;
+			}
 		}
 	}
 </script>
 
-<style>
-	.title {
-		display: flex;
-		padding-top: 8%;
-		margin-left: auto;
-		color: #FFFFFF;
-		font-size: 40upx;
-	}
+<style>	
 
 	.setting {
-		padding-top: 5%;
-		margin-left: 80%;
-		color: #FFFFFF;
-		font-size: 30upx;
+		margin-top: 7%;
+		margin-left: 85%;
+		
 	}
-
+	
 	.persional-browse {
 		display: flex;
 		flex-direction: row;
-		margin-top: 25%;
+		flex-wrap: wrap;
+		margin-top: 5upx;
 		padding: 5upx;
 		background-color: #FFFFFF;
 	}
-
+	
 	.icon-single-layout {
 		display: flex;
 		align-items: center;
@@ -82,4 +126,13 @@
 		padding-top: 20upx;
 		padding-bottom: 20upx;
 	}
+	
+	.menu{
+		margin-top: 50upx;
+	}
+	
+	.uni-list{
+		height: 400upx;
+	}
+	
 </style>
