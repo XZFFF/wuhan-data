@@ -4,14 +4,14 @@
 		{
 			"path": "pages/tabbar/home/home",
 			"style": {
-				"navigationBarBackgroundColor": "#1A82D2",
+				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "数说武汉"
 			}
 		},
 		{
 			"path": "pages/tabbar/search/search",
 			"style": {
-				"navigationBarBackgroundColor": "#1A82D2",
+				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "指标搜索"
 			}
 		},
@@ -22,14 +22,14 @@
 		{
 			"path": "pages/analysis/list",
 			"style": {
-				"navigationBarBackgroundColor": "#1A82D2",
+				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "经济分析"
 			}
 		},
 		{
 			"path": "pages/analysis/detail",
 			"style": {
-				"navigationBarBackgroundColor": "#1A82D2",
+				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "具体指标页",
 				"app-plus" : {
 				    "titleNView" : {
@@ -48,7 +48,7 @@
 		{
 			"path": "pages/topic/list",
 			"style": {
-				"navigationBarBackgroundColor": "#1A82D2",
+				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "专题列表"
 			}
 		}
