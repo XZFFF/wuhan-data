@@ -8,12 +8,16 @@
 	export default {
 		data() {
 			return {
-				indexId: 1000
+				indexId: "1000"
 			};
 		},
 		onLoad: function(e) {
-			console.log(e)
-			this.indexId = e.indexId
+			console.log(e);
+			// typeof(e.indexId) != "undefined"
+			if (JSON.stringify(e) != '{}') {
+				console.log(e);
+				this.indexId = e.indexId;
+			}
 		}
 	}
 </script>
