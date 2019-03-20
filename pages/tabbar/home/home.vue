@@ -7,7 +7,7 @@
 					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 						<view v-for="(item,index) in slideshow" :key="index">
 							<swiper-item>
-								<image mode="scaleToFill" :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image"></image>
+								<image mode="widthFix" :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image"></image>
 							</swiper-item>
 						</view>
 					</swiper>
@@ -185,7 +185,8 @@
 
 <style>
 	.slide-image {
-		height: 350upx;
+		/* height: 350upx; */
+		width: 750upx;
 	}
 	
 	.search {
