@@ -8,7 +8,8 @@
 	export default {
 		data() {
 			return {
-				indexId: "1000"
+				indexId: "1000",
+				indexName: "指标详情页"
 			};
 		},
 		onLoad: function(e) {
@@ -17,6 +18,9 @@
 			if (JSON.stringify(e) != '{}') {
 				console.log(e);
 				this.indexId = e.indexId;
+				uni.setNavigationBarTitle({
+					title: e.indexName
+				})
 			}
 		}
 	}

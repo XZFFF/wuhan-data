@@ -28,7 +28,10 @@
 		},
 		{
 			"path": "pages/analysis/detail",
-			"style": {}
+			"style": {
+				"navigationBarBackgroundColor": "#1A82D2",
+				"navigationBarTitleText": "具体指标页"
+			}
 		},
 		{
 			"path": "pages/topic/list",
@@ -78,7 +81,7 @@
 		"list": [{
 			"name": "detail", //模式名称
 			"path": "pages/analysis/detail", //启动页面，必选
-			"query": "indexId=1001" //启动参数，在页面的onLoad函数里面得到
+			"query": "indexId=1001&indexName=GDP" //启动参数，在页面的onLoad函数里面得到
 		}]
 	}
 }
