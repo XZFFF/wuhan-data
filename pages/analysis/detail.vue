@@ -1,17 +1,27 @@
 <template>
 	<!-- <view> -->
 	<view class="container">
+		<view style="width: 750upx;">
+			<view style="width: 750upx; height: 100upx; border-bottom-color: #007AFF; border-bottom-style:solid; border-bottom-width: 10upx;">
+				<image style="margin:20upx 0upx 20upx 20upx; width: 50upx; height: 50upx;" src="../../static/icon/favorite-orgin.png"></image>
+				<text style="margin:20upx 20upx 20upx 20upx; font-size: 12px;">维度选择</text>
+			</view>
+			<!-- <view style="background-color: #007AFF; height: 10upx; width: 690upx;"></view> -->
+			
+		</view>
+		<!--
 		<view class="canvasView">
 			<view class="canvas-bar">
 				<view class="title">饼图示例</view>
 			</view>
 			<mpvue-echarts :echarts="echarts" :onInit="pieInit" canvasId="pie" ref="pieChart" />
 		</view>
-
+		
 		<view class="canvasView">
 			<view class="title">折线图示例</view>
 			<mpvue-echarts :echarts="echarts" :onInit="lineInit" canvasId="line" ref="lineChart" />
 		</view>
+		 -->
 	</view>
 	<!-- </view> -->
 </template>
