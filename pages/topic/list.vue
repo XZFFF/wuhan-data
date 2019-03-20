@@ -46,8 +46,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		margin-top: 30upx;
-		padding: 5upx;
+		padding: 20upx 0upx 5upx 0upx;
 		background-color: #FFFFFF;
 	}
 
