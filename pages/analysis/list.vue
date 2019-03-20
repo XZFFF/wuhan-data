@@ -14,7 +14,7 @@
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
 			 scroll-with-animation>
 				<view v-for="(item,index) in subCategoryList" :key="index">
-					<index-item :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"></index-item>
+					<index-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite" :item="item"></index-item>
 				</view>
 				<page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot>
 			</scroll-view>

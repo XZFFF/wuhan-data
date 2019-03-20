@@ -24,6 +24,9 @@
 <script>
 	export default {
 		props: {
+			item: {
+				type: Object
+			},
 			indexId: {
 				type: String,
 				default: "1000"
@@ -81,6 +84,9 @@
 					url: '../analysis/detail?indexId=' + indexId
 				});
 			}
+		},
+		onLoad() {
+			console.log(this.item);
 		}
 	}
 </script>
