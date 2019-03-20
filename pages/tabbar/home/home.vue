@@ -7,7 +7,7 @@
 					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 						<view v-for="(item,index) in slideshow" :key="index">
 							<swiper-item>
-								<image :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image" mode="center"></image>
+								<image mode="scaleToFill" :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image"></image>
 							</swiper-item>
 						</view>
 					</swiper>
@@ -58,17 +58,22 @@
 			let slideshow = [{
 					id: '1',
 					name: '全国经济进入新常态',
-					image_name: "image1.jpg"
+					image_name: "image1.png"
 				},
 				{
 					id: '2',
 					name: '大数据专题分析报告',
-					image_name: "image2.jpg"
+					image_name: "image2.png"
 				},
 				{
 					id: '3',
 					name: '新时代下的互联网经济形势',
-					image_name: "image3.jpg"
+					image_name: "image3.png"
+				},
+				{
+					id: '4',
+					name: '湖北省区域经济发展新格局',
+					image_name: "image4.png"
 				}
 			];
 			let analysis_icon = [{
@@ -180,9 +185,9 @@
 
 <style>
 	.slide-image {
-		width: 100%;
+		height: 350upx;
 	}
-
+	
 	.search {
 		display: flex;
 		flex-direction: row;
