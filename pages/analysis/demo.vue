@@ -1,89 +1,63 @@
 <template>
-	<!-- class="mpvue-picker" -->
-	<view style="">
-		<!-- class="uni-padding-wrap uni-common-mt" -->
-		<view style="">
-			<input :value="pickerText" disabled placeholder="请选择"></input>
-			<!-- class="uni-btn-v" -->
-			<view style="">
-				<button type="default" @click="showSinglePicker">单列选择</button>
-			</view>
-		</view>
-		<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
-		 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
-	</view>
+	<div class="echarts-wrap">
+		<mpvue-echarts :echarts="echarts" :onInit="onInit" canvasId="demo-canvas" />
+	</div>
 </template>
 
 <script>
-	import mpvuePicker from '../../components/mpvue-picker/mpvuePicker.vue';
-	import cityData from '../../common/city.data.js';
+	import * as echarts from '../../components/echarts/echarts.min.js';
+	import mpvueEcharts from '../../components/mpvue-echarts/src/echarts.vue';
 
-	let pickerSingleArray = [{
-			label: '中国',
-			value: 1
-		},
-		{
-			label: '俄罗斯',
-			value: 2
-		},
-		{
-			label: '美国',
-			value: 3
-		},
-		{
-			label: '日本',
-			value: 4
-		}
-	];
+
+	let chart = null;
+
+	function initChart(canvas, width, height) {
+		chart = echarts.init(canvas, null, {
+			width: width,
+			height: height
+		});
+		canvas.setChart(chart);
+
+		var option = {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            detail: {formatter:'12%'},
+            data: [{value: 50, name: '完成率'}]
+        }
+    ]
+};
+		chart.setOption(option);
+
+		return chart; // 返回 chart 后可以自动绑定触摸操作
+	}
+
 	export default {
-
 		components: {
-			mpvuePicker
+			mpvueEcharts
 		},
 		data() {
 			return {
-				title: "mpvue-picker 使用示例",
-				pickerSingleArray: pickerSingleArray,
-				// mulLinkageTwoPicker: cityData,
-				// cityPickerValueDefault: [0, 0, 1],
-				themeColor: '#007AFF',
-				pickerText: '',
-				mode: '',
-				deepLength: 1,
-				pickerValueDefault: [0],
-				pickerValueArray: []
-			};
-		},
-		methods: {
-			onCancel(e) {
-				console.log(e)
-			},
-			// 单列
-			showSinglePicker() {
-				this.pickerValueArray = this.pickerSingleArray
-				this.mode = 'selector'
-				this.deepLength = 1
-				this.pickerValueDefault = [0]
-				this.$refs.mpvuePicker.show()
-			},
-			onConfirm(e) {
-				this.pickerText = JSON.stringify(e)
-			}
-		},
-		onBackPress() {
-			if (this.$refs.mpvuePicker.showPicker) {
-				this.$refs.mpvuePicker.pickerCancel();
-				return true;
-			}
-		},
-		onUnload() {
-			if (this.$refs.mpvuePicker.showPicker) {
-				this.$refs.mpvuePicker.pickerCancel()
+				echarts,
+				onInit: initChart
 			}
 		}
-	};
+	}
 </script>
 
-<style>
-
+<style scoped>
+	.echarts-wrap {
+		width: 100%;
+		height: 300px;
+	}
 </style>

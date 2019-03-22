@@ -23,9 +23,9 @@
 			 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
 		</view> -->
 		<view style="">
-		<picker @change="bindPickerChange" :value="index" :range="array">
-			<view class="uni-input">{{array[index]}}</view>
-		</picker>
+			<picker @change="bindPickerChange" :value="index" :range="array">
+				<view class="uni-input">{{array[index]}}</view>
+			</picker>
 		</view>
 
 		<!--
@@ -48,8 +48,6 @@
 <script>
 	import * as echarts from '../../components/echarts/echarts.simple.min.js';
 	import mpvueEcharts from '../../components/mpvue-echarts/src/echarts.vue';
-	import mpvuePicker from '../../components/mpvue-picker/mpvuePicker.vue';
-	import cityData from '../../common/city.data.js';
 
 	let cityList = [{
 		value: 55,
@@ -136,8 +134,7 @@
 	];
 	export default {
 		components: {
-			mpvueEcharts,
-			mpvuePicker
+			mpvueEcharts
 		},
 		data() {
 			return {
@@ -228,7 +225,7 @@
 </script>
 
 <style>
-		page,
+	page,
 	view {
 		display: flex;
 	}
