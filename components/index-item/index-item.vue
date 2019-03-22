@@ -16,7 +16,7 @@
 		</view>
 		<view class="index-item-end-bar"></view>
 		<view class="index-item-fav">
-			<image class="" :src="'../../static/icon/'+favIcon"></image>
+			<image class="" :src="'../../static/icon/fav/'+favIcon"></image>
 		</view>
 	</view>
 </template>

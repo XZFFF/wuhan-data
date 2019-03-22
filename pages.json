@@ -69,20 +69,20 @@
 		"backgroundColor": "#FFFFFF", // tab的背景色
 		"list": [{
 				"pagePath": "pages/tabbar/home/home",
-				"iconPath": "static/icon/home-orgin.png",
-				"selectedIconPath": "static/icon/home-active.png",
+				"iconPath": "static/icon/tabbar/home-orgin.png",
+				"selectedIconPath": "static/icon/tabbar/home-active.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/tabbar/search/search",
-				"iconPath": "static/icon/search-orgin.png",
-				"selectedIconPath": "static/icon/search-active.png",
+				"iconPath": "static/icon/tabbar/search-orgin.png",
+				"selectedIconPath": "static/icon/tabbar/search-active.png",
 				"text": "搜索"
 			},
 			{
 				"pagePath": "pages/tabbar/mine/mine",
-				"iconPath": "static/icon/mine-orgin.png",
-				"selectedIconPath": "static/icon/mine-active.png",
+				"iconPath": "static/icon/tabbar/mine-orgin.png",
+				"selectedIconPath": "static/icon/tabbar/mine-active.png",
 				"text": "我的"
 			}
 		]

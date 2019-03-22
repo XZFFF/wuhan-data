@@ -4,7 +4,7 @@
 		<!-- 标题栏 -->
 		<view style="width: 750upx; background-color: #FFFFFF;">
 			<view style="width: 750upx; height: 90upx; border-bottom-color: #E7E7E7; border-bottom-style:solid; border-bottom-width: 3upx;">
-				<image style="margin:20upx 0upx 20upx 20upx; width: 50upx; height: 50upx;" src="../../static/icon/favorite-orgin.png"></image>
+				<image style="margin:20upx 0upx 20upx 20upx; width: 50upx; height: 50upx;" src="../../static/icon/echarts/bar-upward.png"></image>
 				<text style="margin:20upx 20upx 20upx 20upx; font-size: 12px;">维度选择</text>
 			</view>
 		</view>
@@ -13,7 +13,7 @@
 				<textarea :value="pickerText" disabled placeholder="请点击下面的按钮进行选择"></textarea>
 			</view>
 			<view class="uni-btn-v">
-				<button type="default" @click="showSinglePicker">时间选择</button>
+				<button type="default" @click="showSinglePicker">起始时间</button>
 			</view>
 			<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
 			 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>

@@ -26,7 +26,7 @@
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="open_analysis_list"
 				 :data-analysisname=item.icon_name>
-					<image class="icon-single-backicon" :src="'../../../static/home/analysis_icon/'+item.icon_url+'.png'"></image>
+					<image class="icon-single-backicon" :src="'../../../static/icon/analysis/'+item.icon_url+'.png'"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
 			</view>
