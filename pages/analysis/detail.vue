@@ -8,15 +8,24 @@
 				<text style="margin:20upx 20upx 20upx 20upx; font-size: 12px;">维度选择</text>
 			</view>
 		</view>
-		<view class="mpvue-picker">
-			<view class="uni-textarea uni-common-mt">
-				<textarea :value="pickerText" disabled placeholder="请点击下面的按钮进行选择"></textarea>
+		<!-- 时间选择器 -->
+		<!-- <view style="">
+			<view style="">
+				<view style="">起始时间</view>
+				<input :value="pickerText" disabled placeholder="请选择"></input>
 			</view>
 			<view class="uni-btn-v">
+				<image style="margin:10upx 0upx 10upx 10upx; width: 50upx; height: 50upx;" src="../../static/icon/time/calender.png"
+				 @click="showSinglePicker"></image>
 				<button type="default" @click="showSinglePicker">起始时间</button>
 			</view>
 			<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
 			 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
+		</view> -->
+		<view style="">
+		<picker @change="bindPickerChange" :value="index" :range="array">
+			<view class="uni-input">{{array[index]}}</view>
+		</picker>
 		</view>
 
 		<!--
@@ -32,14 +41,15 @@
 			<mpvue-echarts :echarts="echarts" :onInit="lineInit" canvasId="line" ref="lineChart" />
 		</view>
 		 -->
+		<!-- </view> -->
 	</view>
-	<!-- </view> -->
 </template>
 
 <script>
 	import * as echarts from '../../components/echarts/echarts.simple.min.js';
 	import mpvueEcharts from '../../components/mpvue-echarts/src/echarts.vue';
 	import mpvuePicker from '../../components/mpvue-picker/mpvuePicker.vue';
+	import cityData from '../../common/city.data.js';
 
 	let cityList = [{
 		value: 55,
@@ -134,12 +144,14 @@
 				echarts: echarts,
 				indexId: "1000",
 				indexName: "指标详情页",
+				pickerSingleArray: pickerSingleArray,
 				themeColor: '#007AFF',
 				pickerText: '',
 				mode: '',
 				deepLength: 1,
-				pickerSingleArray: pickerSingleArray,
-				pickerValueArray: []
+				pickerValueDefault: [0],
+				pickerValueArray: [],
+				array: ['中国', '美国', '巴西', '日本'],
 			};
 		},
 		onLoad: function(e) {
@@ -162,7 +174,10 @@
 			})
 		},
 		methods: {
-
+			bindPickerChange: function(e) {
+				console.log('picker发送选择改变，携带值为：' + e.target.value)
+				this.index = e.target.value
+			},
 			onCancel(e) {
 				console.log(e)
 			},
@@ -213,7 +228,7 @@
 </script>
 
 <style>
-	page,
+		page,
 	view {
 		display: flex;
 	}
