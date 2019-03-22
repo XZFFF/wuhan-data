@@ -1,16 +1,22 @@
 <template>
 	<view>
-		<view class="top" style="height: 300upx; width: 100%; background-color: #1E90FF; margin-top: 0upx; display: flex;">
+		<view class="top" style="height: 180upx; width: 100%; background-color: #1E90FF; margin-top: 0upx; display: table;">
 			<!-- 设置 -->
 			<view class="setting" v-for="(value,key) in setting_button" :key="key" @click="goDetailPage(value)">
 				<view class="text" style="color: #FFFFFF; font-size: 35upx;">{{value.title}}</view>
 			</view>
-			<!-- 个人信息 -->
-			<view class="persional-information">
+			<!-- 个人信息栏 -->
+			<view class="personal" style="color: #FFFFFF;">
+				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 60rpx 60rpx;"> 
+					<image class="head" src="../../../static/icon/head.png"></image>
+					<view class="information" v-for="(value,key) in personal_information" :key="key" @click="goDetailPage(value)">
+						{{value.title}}
+					</view>
+				</view>
 			</view>
 		</view>
 		<!-- 个人浏览 -->
-		<view class="persional-browse">
+		<view class="personal-browse">
 			<view class="icon-single-layout" v-for="(value,key) in browse_icon" :key="key" @click="goDetailPage(value)">
 				<view style="display: table">
 					<cover-image style="width: 50upx; display:flex" :src="value.img"></cover-image>
@@ -24,7 +30,7 @@
 				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" :key="key" @click="goDetailPage(value)">
 					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
 						<view class="uni-media-list-logo">
-							<image style="height: 60upx; width: 60upx; margin-top: 10upx" v-if="showImg" :src="value.img"></image>
+							<image style="height: 50upx; width: 50upx; margin-top: 20upx" v-if="showImg" :src="value.img"></image>
 						</view>
 						<view class="uni-media-list-body" style="justify-content: center">
 							<view class="uni-media-list-text" style="font-size: 35upx">{{value.title}}</view>
@@ -40,9 +46,16 @@
 	export default {
 		data() {
 			return {
+				title: 'list',
+				showImg: false,
 					setting_button: [{
 						title: "设置",
 						url: "setting"
+					}], 
+					
+					personal_information: [{
+						title: "个人信息",
+						url: "personal_information"
 					}], 
 					browse_icon: [{
 					title: "收藏",
@@ -59,8 +72,6 @@
 				},
 				],
 					
-				title: 'list',
-				showImg: false,
 				menu_list: [
 					{
 					title: "手势密码",
@@ -102,14 +113,32 @@
 </script>
 
 <style>	
-
+	
 	.setting {
 		margin-top: 7%;
+		height: 80upx;
 		margin-left: 85%;
+	}
+	
+	.personal{
+		height: 200upx;
+
+	}
+	
+	.head{
+		width: 110upx;
+		height: 110upx;
+		float: left;
+	}
+	
+	.information{
+		font-size:35upx;
+		width: 500upx;
+		float: left;
 		
 	}
 	
-	.persional-browse {
+	.personal-browse {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
