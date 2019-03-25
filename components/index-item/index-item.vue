@@ -2,11 +2,11 @@
 	<view class="index-item">
 		<!-- 指标起始竖条 -->
 		<view class="index-item-start-bar"></view>
-		<view class="index-item-name" @tap="opendetail(indexId, indexName)">
+		<view class="index-item-name" @tap="openDetail(indexId, indexName)">
 			<text>{{tranIndexName}}</text>
 		</view>
 		<!-- 指标描述 -->
-		<view class="index-item-desc" @tap="opendetail(indexId, indexName)">
+		<view class="index-item-desc" @tap="openDetail(indexId, indexName)">
 			<view class="index-item-desc-item" v-for="(item, i) in desc" :key="i">
 				<text>{{item.descName}}:</text>
 				<!-- 蓝#4F90F8 红#CE7670 #C45C56 -->
@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="index-item-end-bar"></view>
-		<view class="index-item-fav">
+		<view class="index-item-fav" @tap="changeFav">
 			<image class="" :src="'../../static/icon/fav/'+favIcon"></image>
 		</view>
 	</view>
@@ -78,11 +78,14 @@
 		},
 		methods: {
 			// 跳转到指标详情页
-			opendetail(indexId, indexName) {
+			openDetail(indexId, indexName) {
 				console.log(indexId)
 				uni.navigateTo({
 					url: '../analysis/detail?indexId=' + indexId + '&indexName=' + indexName
 				});
+			},
+			changeFav() {
+				this.isFavorite = !this.isFavorite;
 			}
 		},
 		onLoad() {
