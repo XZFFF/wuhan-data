@@ -80,7 +80,7 @@
 			// 跳转到指标详情页
 			openDetail(indexId, indexName) {
 				uni.showToast({
-					title: "无权查看该栏目",
+					title: "该栏目正在开发...",
 					icon: "none",
 					duration: 1000,
 				})
