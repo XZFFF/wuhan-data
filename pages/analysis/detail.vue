@@ -156,6 +156,7 @@
 			// typeof(e.indexId) != "undefined"
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
+				this.indexName = e.indexName;
 				uni.setNavigationBarTitle({
 					title: e.indexName
 				})
