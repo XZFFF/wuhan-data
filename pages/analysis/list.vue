@@ -31,77 +31,8 @@
 			indexItem
 		},
 		data() {
-			let categoryList = [{
-					name: "综合",
-					subCategoryList: [{
-							indexId: "1001",
-							indexName: "GDP",
-							desc: [{
-									'descName': '当期',
-									'descNum': '110',
-									'descUnit': '亿元'
-								},
-								{
-									'descName': '增速',
-									'descNum': '7.12%',
-									'descUnit': ''
-								}
-							],
-							isFavorite: true
-						}, {
-							indexId: "1002",
-							indexName: "社会消费品总产值",
-							desc: [{
-								'descName': '当期',
-								'descNum': '110',
-								'descUnit': '亿元',
-							}],
-							isFavorite: false
-						},
-						{
-							indexId: "1003",
-							indexName: "很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字",
-							desc: [],
-							isFavorite: false
-						}
-					]
-				},
-				{
-					name: "工业",
-					subCategoryList: []
-				},
-				{
-					name: "农业",
-					subCategoryList: []
-				},
-				{
-					name: "服务业",
-					subCategoryList: []
-				},
-				{
-					name: "消费",
-					subCategoryList: []
-				},
-				{
-					name: "投资",
-					subCategoryList: []
-				},
-				{
-					name: "对外开放",
-					subCategoryList: []
-				},
-				{
-					name: "新经济",
-					subCategoryList: []
-				},
-				{
-					name: "绿色发展",
-					subCategoryList: []
-				}
-			];
-
 			return {
-				categoryList: categoryList,
+				categoryList: [],
 				subCategoryList: [],
 				height: 0,
 				categoryActive: 0,
