@@ -36,7 +36,7 @@
 			<view class="topic-image">
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="open_topic_list"></image>
 			</view>
-			<view v-for="(item,index) in topic" :key="index">
+			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail">
 				<card-item :image="item.image" :title="item.title"></card-item>
 			</view>
 		</view>
@@ -186,6 +186,13 @@
 				uni.navigateTo({
 					url: '../../topic/list'
 				});
+			},
+			open_topic_detail(e) {
+				uni.showToast({
+					title:"该专题暂未开放",
+					icon: "none",
+					duration: 1000,
+				})
 			}
 		}
 	}
