@@ -14,9 +14,10 @@
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
 			 scroll-with-animation>
 				<view v-for="(item,index) in subCategoryList" :key="index">
-					<index-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite" :item="item"></index-item>
+					<index-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"
+					 :item="item"></index-item>
 				</view>
-				<page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot>
+				<!-- <page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot> -->
 			</scroll-view>
 		</view>
 	</view>
@@ -60,11 +61,7 @@
 						{
 							indexId: "1003",
 							indexName: "很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字很多字",
-							desc: [{
-								'descName': '当期',
-								'descNum': '111210',
-								'descUnit': '亿元',
-							}],
+							desc: [],
 							isFavorite: false
 						}
 					]
@@ -117,16 +114,27 @@
 				this.scrollHeight = e.detail.scrollHeight;
 			},
 			categoryClickMain(categroy, index) {
+				console.log(categroy);
 				this.categoryActive = index;
 				// 右侧栏数据根据左侧栏变更做出变化
-				this.subCategoryList = categroy.subCategoryList;
+				this.subCategoryList = categroy.subList;
 				this.scrollTop = -this.scrollHeight * index;
 			}
 		},
 		onLoad: function() {
+			uni.request({
+				url: "http://wuhandata.applinzi.com/analysisList.php",
+				method: 'GET',
+				data: {},
+				success: res => {
+					this.categoryList = res.data;
+					// 设置初始化的右侧子栏数据(默认为第一个)
+					this.subCategoryList = this.categoryList[0].subList;
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
 			this.height = uni.getSystemInfoSync().windowHeight;
-			// 设置初始化的右侧子栏数据(默认为第一个)
-			this.subCategoryList = this.categoryList[0].subCategoryList;
 		}
 	}
 </script>

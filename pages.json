@@ -101,6 +101,11 @@
 				"path" : "pages/tabbar/home/home",
 				"query" : ""
 			},
+			{
+				"name" : "list",
+				"path" : "pages/analysis/list",
+				"query" : ""
+			},
             {
                 "name" : "detail", //模式名称
                 "path" : "pages/analysis/detail", //启动页面，必选
