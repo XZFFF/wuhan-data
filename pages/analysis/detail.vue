@@ -148,7 +148,7 @@
 				deepLength: 1,
 				pickerValueDefault: [0],
 				pickerValueArray: [],
-				array: ['中国', '美国', '巴西', '日本'],
+				array: ['2017Q1', '2017Q2', '2017Q3', '2017Q4', '2018Q1'],
 			};
 		},
 		onLoad: function(e) {

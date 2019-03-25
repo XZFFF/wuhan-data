@@ -6,7 +6,6 @@
             "style" : {
                 "navigationBarBackgroundColor" : "#3A82CC",
                 "navigationBarTitleText" : "数说武汉",
-				"enablePullDownRefresh" : true
             }
         },
         {
@@ -32,7 +31,6 @@
             "style" : {
                 "navigationBarBackgroundColor" : "#3A82CC",
                 "navigationBarTitleText" : "具体指标页",
-				"enablePullDownRefresh" : true,
                 "app-plus" : {
                     "titleNView" : {
                         "buttons" : [
