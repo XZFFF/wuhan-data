@@ -79,10 +79,14 @@
 		methods: {
 			// 跳转到指标详情页
 			openDetail(indexId, indexName) {
-				console.log(indexId)
-				uni.navigateTo({
-					url: '../analysis/detail?indexId=' + indexId + '&indexName=' + indexName
-				});
+				uni.showToast({
+					title: "无权查看该栏目",
+					icon: "none",
+					duration: 1000,
+				})
+// 				uni.navigateTo({
+// 					url: '../analysis/detail?indexId=' + indexId + '&indexName=' + indexName
+// 				});
 			},
 			changeFav() {
 				this.isFavorite = !this.isFavorite;
