@@ -7,7 +7,7 @@
 					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 						<view v-for="(item,index) in slideshow" :key="index">
 							<swiper-item>
-								<image mode="widthFix" :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image"></image>
+								<image mode="widthFix" :src="item.image" class="slide-image"></image>
 							</swiper-item>
 						</view>
 					</swiper>
@@ -34,7 +34,6 @@
 		<!-- 专题 -->
 		<view class="topic">
 			<view class="topic-image">
-				<!-- TODO 图片资源要重新给一下 -->
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="open_topic_list"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index">
@@ -54,28 +53,19 @@
 			cardItem
 		},
 		data() {
-			// TODO 这里应该改成动态获取接口
+			// 轮播图默认值
 			let slideshow = [{
-					id: '1',
-					name: '全国经济进入新常态',
-					image_name: "image1.png"
-				},
-				{
-					id: '2',
-					name: '大数据专题分析报告',
-					image_name: "image2.png"
-				},
-				{
-					id: '3',
-					name: '新时代下的互联网经济形势',
-					image_name: "image3.png"
-				},
-				{
-					id: '4',
-					name: '湖北省区域经济发展新格局',
-					image_name: "image4.png"
-				}
-			];
+				id: '2',
+				title: '大数据专题分析报告',
+				image: "../../../static/home/slideshow/image2.png"
+			}];
+			// 专题默认值
+			let topic = [{
+				id: "1",
+				title: "湖北高质量发展",
+				image: "../../../static/topic/topic1.png",
+				link: ""
+			}];
 			let analysis_icon = [{
 					background: "#72ACF6",
 					icon_name: "综合",
@@ -127,23 +117,7 @@
 					icon_url: "an10",
 				}
 			];
-			let topic = [{
-					title: "湖北高质量发展",
-					image: "../../../static/topic/topic1.png"
-				},
-				{
-					title: "宏观形势分析",
-					image: "../../../static/topic/topic2.png"
-				},
-				{
-					title: "武汉供给测结构",
-					image: "../../../static/topic/topic3.png"
-				},
-				{
-					title: "武汉工业经济发展",
-					image: "../../../static/topic/topic4.png"
-				}
-			]
+
 			return {
 				slideshow: slideshow,
 				analysis_icon: analysis_icon,
@@ -155,17 +129,45 @@
 			};
 		},
 		onLoad: function() {
-			let topic = this.topic;
-			let t = [];
-			let topic_id1 = Math.floor(Math.random() * 4);
-			t.push(topic[topic_id1]);
-			let topic_id2 = Math.floor(Math.random() * 4);
-			// 防止出现重复的
-			while (topic_id2 == topic_id1) {
-				topic_id2 = Math.floor(Math.random() * 4);
-			}
-			t.push(topic[topic_id2]);
-			this.topic = t;
+			// TODO 此处似乎有生命周期的bug
+
+			// 通过请求接口获取启动图
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/slideshow.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					this.slideshow = res.data;
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
+			// 通过请求接口获取专题数据
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/topicList.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					let res_topic = res.data;
+					let t = [];
+					let len = res_topic.length;
+					let topic_id1 = Math.floor(Math.random() * len);
+					t.push(res_topic[topic_id1]);
+					// 防止出现重复的
+					let topic_id2 = Math.floor(Math.random() * len);
+					while (1) {
+						topic_id2 = Math.floor(Math.random() * len);
+						if (topic_id2 != topic_id1) {
+							t.push(res_topic[topic_id2]);
+							break;
+						}
+					}
+					this.topic = t;
+					console.log(t);
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			open_analysis_list(e) {
@@ -178,7 +180,7 @@
 				uni.navigateTo({
 					url: '../../topic/list'
 				});
-			},
+			}
 		}
 	}
 </script>
@@ -188,7 +190,7 @@
 		/* height: 350upx; */
 		width: 750upx;
 	}
-	
+
 	.search {
 		display: flex;
 		flex-direction: row;
