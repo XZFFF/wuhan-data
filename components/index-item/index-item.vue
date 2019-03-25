@@ -86,6 +86,19 @@
 			},
 			changeFav() {
 				this.isFavorite = !this.isFavorite;
+				if (this.isFavorite == false) {
+					uni.showToast({
+						title: "已取消收藏",
+						icon: "none",
+						duration: 1000,
+					})
+				} else {
+					uni.showToast({
+						title: "收藏成功",
+						icon: "none",
+						duration: 1000,
+					})
+				}
 			}
 		},
 		onLoad() {
