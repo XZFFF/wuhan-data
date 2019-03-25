@@ -26,7 +26,7 @@
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="open_analysis_list"
 				 :data-analysisid=item.id>
-					<image class="icon-single-backicon" :src="'../../../static/icon/analysis/'+item.icon_url+'.png'"></image>
+					<image class="icon-single-backicon" :src="item.icon_url"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
 			</view>
@@ -53,85 +53,11 @@
 			cardItem
 		},
 		data() {
-			// 轮播图默认值
-			let slideshow = [{
-				id: '2',
-				title: '大数据专题分析报告',
-				image: "../../../static/home/slideshow/image2.png"
-			}];
-			// 专题默认值
-			let topic = [{
-				id: "1",
-				title: "湖北高质量发展",
-				image: "../../../static/topic/topic1.png",
-				link: ""
-			}];
-			let analysis_icon = [{
-					id: "0",
-					background: "#72ACF6",
-					icon_name: "综合",
-					icon_url: "an1",
-				},
-				{
-					id: "1",
-					background: "#61C4E6",
-					icon_name: "工业",
-					icon_url: "an2",
-				},
-				{
-					id: "2",
-					background: "#76C1A1",
-					icon_name: "农业",
-					icon_url: "an3",
-				},
-				{
-					id: "3",
-					background: "#F3B861",
-					icon_name: "服务业",
-					icon_url: "an4",
-				},
-				{
-					id: "4",
-					background: "#EB8873",
-					icon_name: "消费",
-					icon_url: "an5",
-				},
-				{
-					id: "5",
-					background: "#C869A5",
-					icon_name: "投资",
-					icon_url: "an6",
-				},
-				{
-					id: "6",
-					background: "#8F8BE1",
-					icon_name: "对外开放",
-					icon_url: "an7",
-				},
-				{
-					id: "7",
-					background: "#757EDA",
-					icon_name: "新经济",
-					icon_url: "an8",
-				},
-				{
-					id: "8",
-					background: "#6C8DCF",
-					icon_name: "绿色发展",
-					icon_url: "an9",
-				},
-				{
-					id: "9",
-					background: "#8AA4D8",
-					icon_name: "民生",
-					icon_url: "an10",
-				}
-			];
 
 			return {
-				slideshow: slideshow,
-				analysis_icon: analysis_icon,
-				topic: topic,
+				slideshow: [],
+				analysis_icon: [],
+				topic: [],
 				indicatorDots: true, // 是否显示面板指示点
 				autoplay: true, // 是否自动切换
 				interval: 2000, // 自动切换时长
@@ -152,8 +78,18 @@
 				method: 'GET',
 				data: {},
 				success: res => {
-					uni.hideLoading();
 					this.slideshow = res.data;
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
+			// 
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/analysisIcon.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					this.analysis_icon = res.data;
 				},
 				fail: (e) => {},
 				complete: () => {}
@@ -164,6 +100,7 @@
 				method: 'GET',
 				data: {},
 				success: res => {
+					uni.hideLoading();
 					let res_topic = res.data;
 					let t = [];
 					let len = res_topic.length;
