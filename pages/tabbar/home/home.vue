@@ -130,13 +130,19 @@
 		},
 		onLoad: function() {
 			// TODO 此处似乎有生命周期的bug
-
+			uni.showLoading({
+				title: "Loading..."
+			})
+			setTimeout(function() {
+				uni.hideLoading();
+			}, 2000);
 			// 通过请求接口获取启动图
 			uni.request({
 				url: 'http://wuhandata.applinzi.com/slideshow.php',
 				method: 'GET',
 				data: {},
 				success: res => {
+					uni.hideLoading();
 					this.slideshow = res.data;
 				},
 				fail: (e) => {},

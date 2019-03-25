@@ -53,11 +53,18 @@
 			}
 		},
 		onLoad: function() {
+			uni.showLoading({
+				title: "Loading..."
+			})
+			setTimeout(function() {
+				uni.hideLoading();
+			}, 2000);
 			uni.request({
 				url: "http://wuhandata.applinzi.com/analysisList.php",
 				method: 'GET',
 				data: {},
 				success: res => {
+					uni.hideLoading();
 					this.categoryList = res.data;
 					// 设置初始化的右侧子栏数据(默认为第一个)
 					this.subCategoryList = this.categoryList[0].subList;
