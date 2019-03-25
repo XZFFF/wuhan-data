@@ -5,7 +5,7 @@
 		<view style="width: 750upx; background-color: #FFFFFF;">
 			<view style="width: 750upx; height: 90upx; border-bottom-color: #E7E7E7; border-bottom-style:solid; border-bottom-width: 3upx;">
 				<image style="margin:20upx 0upx 20upx 20upx; width: 50upx; height: 50upx;" src="../../static/icon/echarts/bar-upward.png"></image>
-				<text style="margin:20upx 20upx 20upx 20upx; font-size: 12px;">维度选择</text>
+				<text style="margin:20upx 20upx 20upx 20upx; font-size: 12px;">维度选择1</text>
 			</view>
 		</view>
 		<!-- 时间选择器 -->
@@ -22,10 +22,26 @@
 			<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
 			 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
 		</view> -->
-		<view style="">
-			<picker @change="bindPickerChange" :value="index" :range="array">
-				<view class="uni-input">{{array[index]}}</view>
+		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx;">
+			<!-- 时间选择 -->
+			<text style="display: flex; align-items: center; margin:0upx 30upx 0upx 100upx; font-size: 12px;">起始时间:</text>
+			<view style="display: flex; align-items: center; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;" class="uni-list-cell-db">
+				<picker style="" @change="bindPickerChange1" :value="index1" :range="array1">
+					<view style="color: #595959;">{{array1[index1]}}</view>
+				</picker>
+			</view>
+			
+			
+			<!-- <image src="../../static/icon/clear.png" style="display: flex; align-items: center; width: 50upx; height: 50upx; margin: 20upx 50upx 20upx 0upx;"></image> -->
+		</view>
+		
+		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx; padding-bottom: 20upx;">
+		<text style="display: flex; align-items: center; margin:0upx 30upx 0upx 100upx; font-size: 12px;">结束时间:</text>
+		<view style="display: flex; align-items: center; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;" class="uni-list-cell-db">
+			<picker style="" @change="bindPickerChange2" :value="index2" :range="array2">
+				<view style="color: #595959;">{{array2[index2]}}</view>
 			</picker>
+		</view>
 		</view>
 
 		<!--
@@ -148,7 +164,10 @@
 				deepLength: 1,
 				pickerValueDefault: [0],
 				pickerValueArray: [],
-				array: ['2017Q1', '2017Q2', '2017Q3', '2017Q4', '2018Q1'],
+				index1: 0,
+				index2: 0,
+				array1: ['2017Q1', '2017Q2', '2017Q3', '2017Q4'],
+				array2: ['2018Q1', '2018Q2', '2018Q3', '2018Q4'],
 			};
 		},
 		onLoad: function(e) {
@@ -172,12 +191,20 @@
 			})
 		},
 		methods: {
-			bindPickerChange: function(e) {
+			bindPickerChange1: function(e) {
 				console.log('picker发送选择改变，携带值为：' + e.target.value)
-				this.index = e.target.value
+				this.index1 = e.target.value
+			},
+			bindPickerChange2: function(e) {
+				console.log('picker发送选择改变，携带值为：' + e.target.value)
+				this.index2 = e.target.value
 			},
 			onCancel(e) {
 				console.log(e)
+			},
+			showPicker() {
+				this.array = ['2018Q1', '2018Q2', '2018Q3', '2018Q4'],
+				this.$refs.picker.show()
 			},
 			// 单列
 			showSinglePicker() {
