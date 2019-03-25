@@ -89,6 +89,7 @@
 				method: 'GET',
 				data: {},
 				success: res => {
+					uni.hideLoading();
 					this.analysis_icon = res.data;
 				},
 				fail: (e) => {},
@@ -100,7 +101,6 @@
 				method: 'GET',
 				data: {},
 				success: res => {
-					uni.hideLoading();
 					let res_topic = res.data;
 					let t = [];
 					let len = res_topic.length;
