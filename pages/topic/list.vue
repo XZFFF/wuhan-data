@@ -2,7 +2,7 @@
 	<view class="container">
 		<!-- 专题 -->
 		<view class="topic">
-			<view v-for="(item,index) in topic" :key="index">
+			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail">
 				<card-item :image="item.image" :title="item.title"></card-item>
 			</view>
 		</view>
@@ -17,26 +17,39 @@
 			cardItem
 		},
 		data() {
-			let topic = [{
-					title: "湖北高质量发展",
-					image: "../../static/topic/topic1.png"
-				},
-				{
-					title: "宏观形势分析",
-					image: "../../static/topic/topic2.png"
-				},
-				{
-					title: "武汉供给测结构",
-					image: "../../static/topic/topic3.png"
-				},
-				{
-					title: "武汉工业经济发展",
-					image: "../../static/topic/topic4.png"
-				}
-			]
 			return {
-				topic: topic
+				topic: []
 			};
+		},
+		onLoad: function() {
+			// TODO 此处似乎有生命周期的bug
+			uni.showLoading({
+				title: "Loading..."
+			})
+			setTimeout(function() {
+				uni.hideLoading();
+			}, 2000);
+			// 通过请求接口获取专题数据
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/topicList.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					uni.hideLoading();
+					this.topic = res.data;
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
+		},
+		methods: {
+			open_topic_detail(e) {
+				uni.showToast({
+					title: "该专题暂未开放",
+					icon: "none",
+					duration: 1000,
+				})
+			}
 		}
 	}
 </script>
