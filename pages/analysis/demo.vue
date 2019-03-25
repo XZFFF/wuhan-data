@@ -4,6 +4,16 @@
 		<div class="wrap">
 			<mpvue-echarts lazyLoad :echarts="echarts" :onInit="handleInit" ref="echarts" />
 		</div>
+		<view>
+			<div class="nui-flex nui-row">
+				<div class="mui-col-xs-4 mui-col-sm-3">
+					.mui-col-sm-3
+				</div>
+				<div class="mui-col-xs-8 mui-col-sm-9">
+					.mui-col-sm-9
+				</div>
+			</div>
+		</view>
 	</div>
 </template>
 
