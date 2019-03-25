@@ -25,7 +25,7 @@
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="open_analysis_list"
-				 :data-analysisname=item.icon_name>
+				 :data-analysisid=item.id>
 					<image class="icon-single-backicon" :src="'../../../static/icon/analysis/'+item.icon_url+'.png'"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
@@ -67,51 +67,61 @@
 				link: ""
 			}];
 			let analysis_icon = [{
+					id: "0",
 					background: "#72ACF6",
 					icon_name: "综合",
 					icon_url: "an1",
 				},
 				{
+					id: "1",
 					background: "#61C4E6",
 					icon_name: "工业",
 					icon_url: "an2",
 				},
 				{
+					id: "2",
 					background: "#76C1A1",
 					icon_name: "农业",
 					icon_url: "an3",
 				},
 				{
+					id: "3",
 					background: "#F3B861",
 					icon_name: "服务业",
 					icon_url: "an4",
 				},
 				{
+					id: "4",
 					background: "#EB8873",
 					icon_name: "消费",
 					icon_url: "an5",
 				},
 				{
+					id: "5",
 					background: "#C869A5",
 					icon_name: "投资",
 					icon_url: "an6",
 				},
 				{
+					id: "6",
 					background: "#8F8BE1",
 					icon_name: "对外开放",
 					icon_url: "an7",
 				},
 				{
+					id: "7",
 					background: "#757EDA",
 					icon_name: "新经济",
 					icon_url: "an8",
 				},
 				{
+					id: "8",
 					background: "#6C8DCF",
 					icon_name: "绿色发展",
 					icon_url: "an9",
 				},
 				{
+					id: "9",
 					background: "#8AA4D8",
 					icon_name: "民生",
 					icon_url: "an10",
@@ -177,9 +187,9 @@
 		},
 		methods: {
 			open_analysis_list(e) {
-				var analysisname = e.currentTarget.dataset.analysisname;
+				var analysis_id = e.currentTarget.dataset.analysisid;
 				uni.navigateTo({
-					url: '../../analysis/list?analysisname=' + analysisname
+					url: '../../analysis/list?analysis_id=' + analysis_id
 				});
 			},
 			open_topic_list(e) {
@@ -189,7 +199,7 @@
 			},
 			open_topic_detail(e) {
 				uni.showToast({
-					title:"该专题暂未开放",
+					title: "该专题暂未开放",
 					icon: "none",
 					duration: 1000,
 				})

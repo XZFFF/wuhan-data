@@ -32,6 +32,7 @@
 		},
 		data() {
 			return {
+				analysisId: 0,
 				categoryList: [],
 				subCategoryList: [],
 				height: 0,
@@ -52,7 +53,8 @@
 				this.scrollTop = -this.scrollHeight * index;
 			}
 		},
-		onLoad: function() {
+		onLoad: function(e) {
+
 			uni.showLoading({
 				title: "Loading..."
 			})
@@ -66,11 +68,17 @@
 				success: res => {
 					uni.hideLoading();
 					this.categoryList = res.data;
-					// 设置初始化的右侧子栏数据(默认为第一个)
-					this.subCategoryList = this.categoryList[0].subList;
 				},
 				fail: (e) => {},
-				complete: () => {}
+				complete: () => {
+					if (JSON.stringify(e) != '{}') {
+						this.analysisId = e.analysis_id;
+						console.log(this.analysisId);
+						// 设置初始化的左右侧子栏数据(默认为第一个)
+						this.categoryActive = this.analysisId;
+						this.subCategoryList = this.categoryList[this.analysisId].subList;
+					}
+				}
 			});
 			this.height = uni.getSystemInfoSync().windowHeight;
 		}
