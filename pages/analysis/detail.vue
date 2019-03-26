@@ -24,24 +24,42 @@
 		</view> -->
 		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx;">
 			<!-- 时间选择 -->
-			<text style="display: flex; align-items: center; margin:0upx 30upx 0upx 100upx; font-size: 12px;">起始时间:</text>
-			<view style="display: flex; align-items: center; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;" class="uni-list-cell-db">
+			<view style="flex: 2;">
+				<text style="margin:0upx 0upx 0upx 100upx; font-size: 12px;">起始时间:</text>
+			</view>
+			<view style="flex: 3; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;"
+			 class="uni-list-cell-db">
 				<picker style="" @change="bindPickerChange1" :value="index1" :range="array1">
 					<view style="color: #595959;">{{array1[index1]}}</view>
 				</picker>
 			</view>
-			
-			
+
+
 			<!-- <image src="../../static/icon/clear.png" style="display: flex; align-items: center; width: 50upx; height: 50upx; margin: 20upx 50upx 20upx 0upx;"></image> -->
 		</view>
-		
-		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx; padding-bottom: 20upx;">
-		<text style="display: flex; align-items: center; margin:0upx 30upx 0upx 100upx; font-size: 12px;">结束时间:</text>
-		<view style="display: flex; align-items: center; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;" class="uni-list-cell-db">
-			<picker style="" @change="bindPickerChange2" :value="index2" :range="array2">
-				<view style="color: #595959;">{{array2[index2]}}</view>
-			</picker>
+
+		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx;">
+			<view style="flex: 2;">
+				<text style="margin:0upx 0upx 0upx 100upx; font-size: 12px;">结束时间:</text>
+			</view>
+			<view style="flex: 3; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;"
+			 class="uni-list-cell-db">
+				<picker style="" @change="bindPickerChange2" :value="index2" :range="array2">
+					<view style="color: #595959;">{{array2[index2]}}</view>
+				</picker>
+			</view>
 		</view>
+
+		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx; padding-bottom: 20upx;">
+			<view style="flex: 2;">
+				<text style="margin:0upx 0upx 0upx 100upx; font-size: 12px;">季/年度:</text>
+			</view>
+			<view style="flex: 3; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;"
+			 class="uni-list-cell-db">
+				<picker style="" @change="bindPickerChange2" :value="index2" :range="array2">
+					<view style="color: #595959;">{{array2[index2]}}</view>
+				</picker>
+			</view>
 		</view>
 
 		<!--
@@ -204,7 +222,7 @@
 			},
 			showPicker() {
 				this.array = ['2018Q1', '2018Q2', '2018Q3', '2018Q4'],
-				this.$refs.picker.show()
+					this.$refs.picker.show()
 			},
 			// 单列
 			showSinglePicker() {
