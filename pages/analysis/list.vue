@@ -8,7 +8,6 @@
 					<view style="flex: 1; text-align: center;">
 						{{item.name}}
 					</view>
-
 				</view>
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
@@ -97,11 +96,12 @@
 
 	.nav-left {
 		width: 25%;
+		background-color: #F6F7F7;
 	}
 
 	.nav-left-item {
 		height: 110upx;
-		border-right: solid 1px #E0E0E0;
+		/* border-right: solid 1px #E0E0E0; */
 		border-bottom: solid 1px #E0E0E0;
 		font-size: 30upx;
 		display: flex;
@@ -110,6 +110,7 @@
 
 	.active {
 		color: #1A82D2;
+		background-color: #FFFFFF;
 	}
 
 	.orgin-block {
@@ -124,6 +125,7 @@
 
 	.nav-right {
 		width: 75%;
+		background-color: #FFFFFF;
 	}
 
 	/* 侧边分类右侧样式#F0AD4E */
