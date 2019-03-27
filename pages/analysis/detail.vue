@@ -2,66 +2,7 @@
 	<!-- <view> -->
 	<view class="container">
 		<!-- 标题栏 -->
-		<view style="width: 750upx; background-color: #FFFFFF;">
-			<view style="width: 750upx; height: 90upx; border-bottom-color: #E7E7E7; border-bottom-style:solid; border-bottom-width: 3upx;">
-				<image style="margin:20upx 0upx 20upx 20upx; width: 50upx; height: 50upx;" src="../../static/icon/echarts/bar-upward.png"></image>
-				<text style="margin:20upx 20upx 20upx 20upx; font-size: 12px;">维度选择1</text>
-			</view>
-		</view>
-		<!-- 时间选择器 -->
-		<!-- <view style="">
-			<view style="">
-				<view style="">起始时间</view>
-				<input :value="pickerText" disabled placeholder="请选择"></input>
-			</view>
-			<view class="uni-btn-v">
-				<image style="margin:10upx 0upx 10upx 10upx; width: 50upx; height: 50upx;" src="../../static/icon/time/calender.png"
-				 @click="showSinglePicker"></image>
-				<button type="default" @click="showSinglePicker">起始时间</button>
-			</view>
-			<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
-			 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
-		</view> -->
-		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx;">
-			<!-- 时间选择 -->
-			<view style="flex: 2;">
-				<text style="margin:0upx 0upx 0upx 100upx; font-size: 12px;">起始时间:</text>
-			</view>
-			<view style="flex: 3; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;"
-			 class="uni-list-cell-db">
-				<picker style="" @change="bindPickerChange1" :value="index1" :range="array1">
-					<view style="color: #595959;">{{array1[index1]}}</view>
-				</picker>
-			</view>
-
-
-			<!-- <image src="../../static/icon/clear.png" style="display: flex; align-items: center; width: 50upx; height: 50upx; margin: 20upx 50upx 20upx 0upx;"></image> -->
-		</view>
-
-		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx;">
-			<view style="flex: 2;">
-				<text style="margin:0upx 0upx 0upx 100upx; font-size: 12px;">结束时间:</text>
-			</view>
-			<view style="flex: 3; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;"
-			 class="uni-list-cell-db">
-				<picker style="" @change="bindPickerChange2" :value="index2" :range="array2">
-					<view style="color: #595959;">{{array2[index2]}}</view>
-				</picker>
-			</view>
-		</view>
-
-		<view style="display: flex; width: 750upx; background-color: #FFFFFF; padding-top: 20upx; padding-bottom: 20upx;">
-			<view style="flex: 2;">
-				<text style="margin:0upx 0upx 0upx 100upx; font-size: 12px;">季/年度:</text>
-			</view>
-			<view style="flex: 3; border-style: solid; border-color: #EEEEEE; border-radius: 10upx; border-width: 3upx; height: 50upx; margin: 0upx 100upx 0upx 0upx; padding-left: 20upx;"
-			 class="uni-list-cell-db">
-				<picker style="" @change="bindPickerChange2" :value="index2" :range="array2">
-					<view style="color: #595959;">{{array2[index2]}}</view>
-				</picker>
-			</view>
-		</view>
-
+		<time-condition></time-condition>
 		<!--
 		<view class="canvasView">
 			<view class="canvas-bar">
@@ -76,12 +17,14 @@
 		</view>
 		 -->
 		<!-- </view> -->
+
 	</view>
 </template>
 
 <script>
 	import * as echarts from '../../components/echarts/echarts.simple.min.js';
 	import mpvueEcharts from '../../components/mpvue-echarts/src/echarts.vue';
+	import timeCondition from '../../components/condition-picker/time-condition.vue';
 
 	let cityList = [{
 		value: 55,
@@ -168,7 +111,8 @@
 	];
 	export default {
 		components: {
-			mpvueEcharts
+			mpvueEcharts,
+			timeCondition
 		},
 		data() {
 			return {
