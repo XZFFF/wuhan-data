@@ -115,10 +115,10 @@
 	.index-item {
 		display: flex;
 		width: 90%;
-		height: 110upx;
-		margin: 30upx auto;
+		height: 120upx;
+		margin: 40upx auto;
 		background: #FFFFFF;
-		box-shadow:2px 2px 3px #aaaaaa;
+		box-shadow:2px 2px 1px #aaaaaa;
 	}
 
 	.index-item-start-bar {

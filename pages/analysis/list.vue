@@ -100,7 +100,7 @@
 	}
 
 	.nav-left-item {
-		height: 110upx;
+		height: 120upx;
 		/* border-right: solid 1px #E0E0E0; */
 		border-bottom: solid 1px #E0E0E0;
 		font-size: 30upx;
@@ -114,7 +114,7 @@
 	}
 
 	.orgin-block {
-		width: 5upx;
+		width: 8upx;
 		background-color: #F8F8F8;
 		height: 100%;
 	}
