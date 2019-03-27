@@ -44,24 +44,24 @@
 	.columnItem {
 		display: inline-block;
 		text-align: center;
-		border-right: 2rpx solid #888888;
+		border-right: 2rpx solid #EBEEF4;
 		box-sizing: border-box
 	}
 
 	.columnFirst {
-		border-left: 2rpx solid #888888;
+		border-left: 2rpx solid #EBEEF4;
 	}
 
 	.rowItem {
-		border-bottom: 2rpx solid #888888;
+		border-bottom: 2rpx solid #EBEEF4;
 		padding: 15upx;
 	}
 
 	/* 表头样式 */
 	.rowFirst {
-		border-top: 2rpx solid #888888;
+		border-top: 2rpx solid #EBEEF4;
 		padding-top: 25upx;
 		padding-bottom: 25upx;
-		background-color: #FFFAE8;
+		background-color: #F5F7FA;
 	}
 </style>
