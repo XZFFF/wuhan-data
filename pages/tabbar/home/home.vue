@@ -2,17 +2,13 @@
 	<view>
 		<!-- 轮播图 -->
 		<view>
-			<view class="page-section swiper">
-				<view class="page-section-spacing">
-					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-						<view v-for="(item,index) in slideshow" :key="index">
-							<swiper-item>
-								<image mode="widthFix" :src="item.image" class="slide-image"></image>
-							</swiper-item>
-						</view>
-					</swiper>
+			<swiper style="width: 750upx; height: 300upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+				<view v-for="(item,index) in slideshow" :key="index">
+					<swiper-item>
+						<image mode="widthFix" :src="item.image" class="slide-image"></image>
+					</swiper-item>
 				</view>
-			</view>
+			</swiper>
 		</view>
 		<!-- 搜索框 -->
 		<view class="search">

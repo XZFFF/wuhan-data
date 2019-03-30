@@ -4,15 +4,19 @@
 		{
 			"path": "pages/tabbar/home/home",
 			"style": {
-				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "数说武汉"
+				"app-plus": {
+                    "titleNView": {
+                        "type": "transparent"//透明渐变导航栏
+                    }
+                }
 			}
 		},
 		{
 			"path": "pages/tabbar/search/search",
 			"style": {
-				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "指标搜索"
+				"app-plus": {
+					"titleNView": false
+				}
 			}
 		},
 		{
