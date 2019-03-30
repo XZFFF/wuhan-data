@@ -18,7 +18,7 @@
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
-						"type": "transparent",
+						//"type": "transparent",
 						"titleColor": "#FFFFFF",
 						"backgroundColor": "#007AFF",
 						"buttons": [{
@@ -35,8 +35,8 @@
 						"searchInput": {
 							"backgroundColor": "#FFFFFF",
 							"borderRadius": "6px",
-							"placeholder": "请输入地址 如：大钟寺",
-							"disabled": true
+							"placeholder": "请输入指标关键词",
+							"autoFocus": true
 						}
 					}
 				}
