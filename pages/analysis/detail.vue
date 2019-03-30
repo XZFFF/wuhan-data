@@ -3,6 +3,8 @@
 	<view class="container">
 		<!-- 标题栏 -->
 		<time-condition></time-condition>
+		<line-echarts :lineOption="lineOption"></line-echarts>
+		<!-- <line-echarts :lineOption="lineOption"></line-echarts> -->
 		<!--
 		<view class="canvasView">
 			<view class="canvas-bar">
@@ -22,8 +24,9 @@
 </template>
 
 <script>
-	import * as echarts from '../../components/echarts/echarts.simple.min.js';
-	import mpvueEcharts from '../../components/mpvue-echarts/src/echarts.vue';
+	// import * as echarts from '../../components/echarts/echarts.simple.min.js';
+	// import mpvueEcharts from '../../components/mpvue-echarts/src/echarts.vue';
+	import LineEcharts from '../../components/xzf-echarts/line-echarts.vue';
 	import timeCondition from '../../components/condition-picker/time-condition.vue';
 
 	let cityList = [{
@@ -92,44 +95,18 @@
 		}]
 	};
 
-	let pickerSingleArray = [{
-			label: '中国',
-			value: 1
-		},
-		{
-			label: '俄罗斯',
-			value: 2
-		},
-		{
-			label: '美国',
-			value: 3
-		},
-		{
-			label: '日本',
-			value: 4
-		}
-	];
 	export default {
 		components: {
-			mpvueEcharts,
-			timeCondition
+			// mpvueEcharts,
+			timeCondition,
+			LineEcharts
 		},
 		data() {
 			return {
-				echarts: echarts,
+				// echarts: echarts,
+				lineOption: lineOption,
 				indexId: "1000",
 				indexName: "指标详情页",
-				pickerSingleArray: pickerSingleArray,
-				themeColor: '#007AFF',
-				pickerText: '',
-				mode: '',
-				deepLength: 1,
-				pickerValueDefault: [0],
-				pickerValueArray: [],
-				index1: 0,
-				index2: 0,
-				array1: ['2017Q1', '2017Q2', '2017Q3', '2017Q4'],
-				array2: ['2018Q1', '2018Q2', '2018Q3', '2018Q4'],
 			};
 		},
 		onLoad: function(e) {
@@ -142,7 +119,7 @@
 					title: e.indexName
 				})
 			}
-			pieOption.series[0].data = cityList.slice(0);
+			// pieOption.series[0].data = cityList.slice(0);
 			console.log("indexId:" + this.indexId);
 		},
 		// 导航栏自定义按钮
@@ -153,63 +130,26 @@
 			})
 		},
 		methods: {
-			bindPickerChange1: function(e) {
-				console.log('picker发送选择改变，携带值为：' + e.target.value)
-				this.index1 = e.target.value
-			},
-			bindPickerChange2: function(e) {
-				console.log('picker发送选择改变，携带值为：' + e.target.value)
-				this.index2 = e.target.value
-			},
-			onCancel(e) {
-				console.log(e)
-			},
-			showPicker() {
-				this.array = ['2018Q1', '2018Q2', '2018Q3', '2018Q4'],
-					this.$refs.picker.show()
-			},
-			// 单列
-			showSinglePicker() {
-				this.pickerValueArray = this.pickerSingleArray
-				this.mode = 'selector'
-				this.deepLength = 1
-				this.pickerValueDefault = [0]
-				this.$refs.mpvuePicker.show()
-			},
-			onConfirm(e) {
-				this.pickerText = JSON.stringify(e)
-			},
-			pieInit(canvas, width, height) {
-				let pieChart = echarts.init(canvas, null, {
-					width: width,
-					height: height
-				})
-				canvas.setChart(pieChart)
-
-				pieChart.setOption(pieOption)
-				return pieChart
-			},
-			lineInit(canvas, width, height) {
-				let lineChart = echarts.init(canvas, null, {
-					width: width,
-					height: height
-				})
-				canvas.setChart(lineChart)
-
-				lineChart.setOption(lineOption)
-				return lineChart
-			}
-		},
-		onBackPress() {
-			if (this.$refs.mpvuePicker.showPicker) {
-				this.$refs.mpvuePicker.pickerCancel();
-				return true;
-			}
-		},
-		onUnload() {
-			if (this.$refs.mpvuePicker.showPicker) {
-				this.$refs.mpvuePicker.pickerCancel()
-			}
+// 			pieInit(canvas, width, height) {
+// 				let pieChart = echarts.init(canvas, null, {
+// 					width: width,
+// 					height: height
+// 				})
+// 				canvas.setChart(pieChart)
+// 
+// 				pieChart.setOption(pieOption)
+// 				return pieChart
+// 			},
+// 			lineInit(canvas, width, height) {
+// 				let lineChart = echarts.init(canvas, null, {
+// 					width: width,
+// 					height: height
+// 				})
+// 				canvas.setChart(lineChart)
+// 
+// 				lineChart.setOption(lineOption)
+// 				return lineChart
+// 			}
 		}
 	}
 </script>
@@ -245,4 +185,5 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
+	
 </style>
