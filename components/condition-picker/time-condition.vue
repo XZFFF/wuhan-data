@@ -22,7 +22,7 @@
 			</view>
 			<view class="ti-condition-choose uni-list-cell-db">
 				<picker @change="bindPickerChange2" :value="index2" :range="array2">
-					<text>{{array1[index2]}}</text>
+					<text>{{array2[index2]}}</text>
 				</picker>
 			</view>
 		</view>
