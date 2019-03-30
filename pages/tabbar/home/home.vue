@@ -12,7 +12,7 @@
 		</view>
 		<!-- 搜索框 -->
 		<view class="search">
-			<view class="input-view">
+			<view class="input-view" @tap="openSearch()">
 				<uni-icon type="search" size="18" color="#8E8E93"></uni-icon>
 				<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
 			</view>
@@ -136,6 +136,11 @@
 					icon: "none",
 					duration: 1000,
 				})
+			},
+			openSearch() {
+				uni.navigateTo({
+					url: '../search/search'
+				});
 			}
 		}
 	}
