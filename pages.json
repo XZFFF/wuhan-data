@@ -5,17 +5,40 @@
 			"path": "pages/tabbar/home/home",
 			"style": {
 				"app-plus": {
-                    "titleNView": {
-                        "type": "transparent"//透明渐变导航栏
-                    }
-                }
+					"titleNView": {
+						"type": "transparent" //透明渐变导航栏
+					}
+				}
 			}
 		},
 		{
 			"path": "pages/tabbar/search/search",
 			"style": {
+				"navigationBarTitleText": "导航栏带搜索框",
 				"app-plus": {
-					"titleNView": false
+					"bounce": "none",
+					"titleNView": {
+						"type": "transparent",
+						"titleColor": "#FFFFFF",
+						"backgroundColor": "#007AFF",
+						"buttons": [{
+							"text": "全部",
+							"type": "none",
+							"float": "left",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "14px",
+							"width": "auto",
+							"select": true,
+							"color": "#FFFFFF",
+							"background": "rgba(0,0,0,0)"
+						}],
+						"searchInput": {
+							"backgroundColor": "#FFFFFF",
+							"borderRadius": "6px",
+							"placeholder": "请输入地址 如：大钟寺",
+							"disabled": true
+						}
+					}
 				}
 			}
 		},
@@ -37,8 +60,7 @@
 				"navigationBarTitleText": "具体指标页",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [
-							{
+						"buttons": [{
 								"type": "share"
 							},
 							{
@@ -100,10 +122,15 @@
 	},
 	"condition": {
 		//模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
+		"current": 1, //当前激活的模式(list 的索引项)
 		"list": [{
 				"name": "home",
 				"path": "pages/tabbar/home/home",
+				"query": ""
+			},
+			{
+				"name": "search",
+				"path": "pages/tabbar/search/search",
 				"query": ""
 			},
 			{
