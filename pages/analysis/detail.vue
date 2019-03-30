@@ -31,18 +31,6 @@
 	};
 
 
-
-	let cityList = [{
-		value: 55,
-		name: '北京'
-	}, {
-		value: 38,
-		name: '上海'
-	}, {
-		value: 20,
-		name: '广州'
-	}];
-
 	let pieOption = {
 		animation: false,
 		backgroundColor: '#F8F8F8',
@@ -56,7 +44,16 @@
 			type: 'pie',
 			center: ['50%', '50%'],
 			radius: [0, '60%'],
-			data: [],
+			data: [{
+				value: 55,
+				name: '北京'
+			}, {
+				value: 38,
+				name: '上海'
+			}, {
+				value: 20,
+				name: '广州'
+			}],
 			itemStyle: {
 				emphasis: {
 					shadowBlur: 10,
@@ -186,7 +183,6 @@
 		},
 		data() {
 			return {
-				// echarts: echarts,
 				demoOption: demoOption,
 				lineOption: lineOption,
 				pieOption: pieOption,
@@ -197,7 +193,6 @@
 		},
 		onLoad: function(e) {
 			console.log(e);
-			// typeof(e.indexId) != "undefined"
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
@@ -205,7 +200,6 @@
 					title: e.indexName
 				})
 			}
-			pieOption.series[0].data = cityList.slice(0);
 			console.log("indexId:" + this.indexId);
 		},
 		// 导航栏自定义按钮
@@ -230,9 +224,9 @@
 	}
 
 	.container {
-		padding-bottom: 30upx;
-		box-sizing: border-box;
 		flex: 1;
 		flex-direction: column;
+		padding-bottom: 30upx;
+		box-sizing: border-box;
 	}
 </style>
