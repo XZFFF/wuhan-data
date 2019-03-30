@@ -1,33 +1,14 @@
 <template>
-	<view>
-		<uni-nav-bar color="#333333" background-color="#FFFFFF" fixed="false" right-icon="scan" @click-left="showCity"
-		 @click-right="scan">
-			<block slot="left">
-				<view class="city">
-					<text>{{city}}</text>
-					<uni-icon type="arrowdown" color="#333333" size="22"></uni-icon>
-				</view>
-			</block>
-			<view class="input-view">
-				<uni-icon type="search" size="22" color="#666666"></uni-icon>
-				<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
-			</view>
-		</uni-nav-bar>
+	<view style="height: 2000upx; background-color: #00B26A;">
 	</view>
 </template>
 
 <script>
-	import uniNavBar from '../../../components/uni-nav-bar/uni-nav-bar.vue'
-	import uniIcon from '../../../components/uni-icon/uni-icon.vue'
-	
 	export default {
-		components: {
-			uniNavBar,
-			uniIcon
-		},
+		components: {},
 		data() {
 			return {
-				city: '北京'
+				type: '全部'
 			};
 		},
 		onLoad() {
@@ -37,52 +18,37 @@
 				duration: 1000,
 			})
 		},
-		methods: {
-			search() {
-				uni.showToast({
-					title: '搜索'
-				})
-			},
-			showCity() {
-				uni.showToast({
-					title: '选择城市'
-				})
-			},
-			scan() {
-				uni.showToast({
-					title: '扫码'
-				})
-			},
-			confirm() {
-				uni.showToast({
-					title: '搜索'
-				})
-			}
-		}
+		onNavigationBarButtonTap(e) {
+			uni.showActionSheet({
+				itemList: ['全部', '国统', '湖统', '大数据'],
+				success: function(res) {
+					var itemList = ['全部', '国统', '湖统', '大数据'];
+					// 这里无法直接调用前面的itemList，所以重新声明一次
+					console.log('选择了' + itemList[res.tapIndex]);
+					this.type = itemList[res.tapIndex];
+					// 通过控制该页面的webview对象来重置导航栏的button中text数值
+					let pages = getCurrentPages();
+					let page = pages[pages.length - 1];
+					// #ifdef APP-PLUS  
+					let currentWebview = page.$getAppWebview();
+					let titleObj = currentWebview.getStyle().titleNView;
+					if (!titleObj.buttons) {
+						return;
+					}
+					titleObj.buttons[0].text = this.type;
+					currentWebview.setStyle({
+						titleNView: titleObj
+					});
+					// #endif
+				},
+				fail: function(res) {
+					console.log(res.errMsg);
+				}
+			});
+		},
+		methods: {}
 	}
 </script>
 
 <style>
-	.input-view {
-		width: 92%;
-		display: flex;
-		background-color: #e7e7e7;
-		height: 30px;
-		border-radius: 15px;
-		padding: 0 4%;
-		flex-wrap: nowrap;
-		margin: 7px 0;
-		line-height: 30px;
-	}
-
-	.input-view .uni-icon {
-		line-height: 30px !important;
-	}
-
-	.input-view .input {
-		height: 30px;
-		line-height: 30px;
-		width: 94%;
-		padding: 0 3%;
-	}
 </style>
