@@ -1,10 +1,10 @@
 <template>
 	<view class="canvasView">
 		<view class="ti-nav">
-			<image src="../../static/icon/echarts/profit-upward.png"></image>
-			<text>折线图展示</text>
+			<image src="../../static/icon/echarts/pie.png"></image>
+			<text>饼图展示</text>
 		</view>
-		<mpvue-echarts :echarts="echarts" :onInit="lineInit" canvasId="line" ref="lineChart" />
+		<mpvue-echarts :echarts="echarts" :onInit="pieInit" canvasId="pie" ref="pieChart" />
 	</view>
 </template>
 
@@ -14,7 +14,7 @@
 
 	export default {
 		props: {
-			lineOption: {
+			pieOption: {
 				type: Object
 			}
 		},
@@ -27,27 +27,21 @@
 			};
 		},
 		methods: {
-			lineInit(canvas, width, height) {
-				let lineChart = echarts.init(canvas, null, {
+			pieInit(canvas, width, height) {
+				let pieChart = echarts.init(canvas, null, {
 					width: width,
 					height: height
 				})
-				canvas.setChart(lineChart)
+				canvas.setChart(pieChart)
 
-				lineChart.setOption(this.lineOption)
-				return lineChart
+				pieChart.setOption(this.pieOption)
+				return pieChart
 			}
 		}
 	}
 </script>
 
 <style>
-	.ti-main {
-		display: flex;
-		width: 100%;
-		flex-direction: column;
-	}
-
 	.ti-nav {
 		width: 100%;
 		height: 90upx;

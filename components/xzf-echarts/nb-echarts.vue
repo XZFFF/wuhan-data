@@ -1,10 +1,10 @@
 <template>
 	<view class="canvasView">
 		<view class="ti-nav">
-			<image src="../../static/icon/echarts/profit-upward.png"></image>
-			<text>折线图展示</text>
+			<image src="../../static/icon/echarts/trend-upward.png"></image>
+			<text>ECharts展示</text>
 		</view>
-		<mpvue-echarts :echarts="echarts" :onInit="lineInit" canvasId="line" ref="lineChart" />
+		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" />
 	</view>
 </template>
 
@@ -14,9 +14,13 @@
 
 	export default {
 		props: {
-			lineOption: {
+			nbOption: {
 				type: Object
-			}
+			},
+			canvasId: {
+			  type: String,
+			  default: 'ec-canvas',
+			},
 		},
 		components: {
 			mpvueEcharts
@@ -27,24 +31,23 @@
 			};
 		},
 		methods: {
-			lineInit(canvas, width, height) {
-				let lineChart = echarts.init(canvas, null, {
+			onInit(canvas, width, height) {
+				let nbChart = echarts.init(canvas, null, {
 					width: width,
 					height: height
 				})
-				canvas.setChart(lineChart)
+				canvas.setChart(nbChart)
 
-				lineChart.setOption(this.lineOption)
-				return lineChart
+				nbChart.setOption(this.nbOption)
+				return nbChart
 			}
 		}
 	}
 </script>
 
 <style>
-	.ti-main {
-		display: flex;
-		width: 100%;
+	.canvasView {
+		flex: 1;
 		flex-direction: column;
 	}
 
@@ -66,10 +69,5 @@
 	.ti-nav text {
 		margin: 20upx 20upx 20upx 20upx;
 		font-size: 12px;
-	}
-
-	.canvasView {
-		/* flex: 1; */
-		flex-direction: column;
 	}
 </style>
