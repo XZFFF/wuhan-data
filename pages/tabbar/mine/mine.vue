@@ -2,10 +2,10 @@
 	<view>
 		<view class="tops" style=" background-color: #1E90FF;height: 220upx; ">
 			<!-- 个人信息栏 -->
-			<view class="personal" style="color: #FFFFFF;">
+			<view class="personal" style="color: #FFFFFF;"  v-for="(value,key) in personal_information" :key="key" @click="goDetailPage(value)">
 				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 60rpx 60rpx;"> 
 					<image class="head" src="../../../static/icon/mine/head.png"></image>
-					<view class="information" v-for="(value,key) in personal_information" :key="key" @click="goDetailPage(value)">
+					<view class="information">
 						<view class="name-rank" style="display: inline-block; widows: ;">
 							<view class="name" style="font-size: 35upx;float: left;margin-top: 15upx;">
 								李晓华
@@ -65,13 +65,8 @@
 			return {
 				title: 'list',
 				showImg: false,
-					setting_button: [{
-						title: "设置",
-						url: "setting"
-					}], 
-					
 					personal_information: [{
-						url: "personal_information"
+						url: "edit_information"
 					}], 
 					browse_icon: [{
 					title: "收藏",
@@ -122,7 +117,7 @@
 		methods: {
 			goDetailPage(e) {
 				let path = e.url ? e.url : e;
-				let url = ~path.indexOf('platform') ? path : '/pages/mine/' + path + '/' + path;
+				let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
 				uni.navigateTo({
 					url: url
 				});
@@ -195,19 +190,20 @@
 	}
 	
 	.exit{
-		width: 45%;
+		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
-		color: #E78D7E;
-		border-color: #E78D7E;
+		color: #E51C23;
+		border-color: #E51C23;
 		border-radius: 5px; 
-		border: 1px  #E78D7E solid;
+		border: 1px  #E51C23 solid;
 		border-width: 1px; 
 		margin-top: 40upx;
 	}
 	
 	.bottom-text{
-		margin-top: 20upx;
+		margin-top: 30upx;
+		font-size: 25upx;
 		text-align: center;
 		color: #CDCDCD;
 	}

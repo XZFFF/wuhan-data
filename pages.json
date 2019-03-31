@@ -55,7 +55,11 @@
         {
             "path" : "pages/analysis/demo",
             "style" : {}
-        }
+        },
+		{
+		    "path" : "pages/mine/edit_information/edit_information",
+		    "style" : {}
+		}
     ],
     // 设置应用的状态栏、导航条、标题、窗口背景色
     "globalStyle" : {
