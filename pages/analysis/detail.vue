@@ -1,20 +1,31 @@
 <template>
 	<!-- <view> -->
-	<view class="container">
+	<scroll-view scroll-y="true" class="container">
 		<!-- 标题栏 -->
 		<time-condition></time-condition>
+		<!-- <view style=""> -->
+			<table-item :tableBody="tableBody"></table-item>
+		<!-- </view> -->
+		<!-- <view style="height: 800upx; width: 750upx;"> -->
 		<nb-echarts :nbOption="demoOption" :canvasId="'demo'"></nb-echarts>
+		<!-- </view> -->
+		<!-- <view style="height: 800upx; width: 750upx;"> -->
 		<nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts>
-		<nb-echarts :nbOption="lineOption" :canvasId="'line'"></nb-echarts>
-		<nb-echarts :nbOption="nbOption" :canvasId="'nb'"></nb-echarts>
-	</view>
+		<!-- </view> -->
+
+		<!-- <nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts> -->
+		<!-- <nb-echarts :nbOption="lineOption" :canvasId="'line'"></nb-echarts> -->
+		<!-- <nb-echarts :nbOption="nbOption" :canvasId="'nb'"></nb-echarts> -->
+
+	</scroll-view>
 </template>
 
 <script>
-	import LineEcharts from '../../components/xzf-echarts/line-echarts.vue';
-	import PieEcharts from '../../components/xzf-echarts/pie-echarts.vue';
-	import NbEcharts from '../../components/xzf-echarts/nb-echarts.vue';
+	// import LineEcharts from '../../components/xzf-echarts/line-echarts.vue';
+	// import PieEcharts from '../../components/xzf-echarts/pie-echarts.vue';
+	import nbEcharts from '../../components/xzf-echarts/nb-echarts.vue';
 	import timeCondition from '../../components/condition-picker/time-condition.vue';
+	import tableItem from '../../components/table-item/table-item.vue';
 
 	let demoOption = {
 		xAxis: {
@@ -33,7 +44,7 @@
 
 	let pieOption = {
 		animation: false,
-		backgroundColor: '#F8F8F8',
+		backgroundColor: '#FFFFFF',
 		color: ['#37A2DA', '#32C5E9', '#67E0E3', '#91F2DE', '#FFDB5C', '#FF9F7F'],
 		series: [{
 			label: {
@@ -177,16 +188,26 @@
 	export default {
 		components: {
 			timeCondition,
-			LineEcharts,
-			PieEcharts,
-			NbEcharts
+			tableItem,
+			// LineEcharts,
+			// PieEcharts,
+			nbEcharts
 		},
 		data() {
+			let tableBody = [
+				['表头1表头1表头头1表头1', 'item1', 'item2', 'item3', 'item4', '233'],
+				['表头2表头1表头1表', 'xiaoming', 'xiaohong', 'lining', '233', '233'],
+				['表头3', '9000000000', '80', '70', '233', '233'],
+				['表头3', '900', '80', '70', '233', '233'],
+				['表头3', '900', '80', '70', '233', '233'],
+				['表头3', '900', '80', '70', '233', '233']
+			];
 			return {
 				demoOption: demoOption,
 				lineOption: lineOption,
 				pieOption: pieOption,
 				nbOption: nbOption,
+				tableBody: tableBody,
 				indexId: "1000",
 				indexName: "指标详情页",
 			};
