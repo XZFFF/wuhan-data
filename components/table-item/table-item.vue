@@ -7,7 +7,7 @@
 		</view>
 
 		<view class="page">
-			<scroll-view scroll-x="true" scroll-y="true" class="table"  style="height: 200upx;">
+			<scroll-view scroll-x="true" scroll-y="true" class="table">
 				<view v-for="(cloumnItem,cloumnIndex) in tableBody" :key="cloumnIndex" class="columnItem" :class="cloumnIndex == 0 ? 'columnFirst' : ''">
 					<view v-for="(rowItem,rowIndex) in cloumnItem" :key="rowIndex" class="rowItem" :class="rowIndex == 0 ? 'rowFirst' : ''">{{rowItem}}</view>
 				</view>
