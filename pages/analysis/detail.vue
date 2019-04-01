@@ -4,7 +4,7 @@
 		<!-- 标题栏 -->
 		<time-condition></time-condition>
 		<table-item :tableBody="tableBody"></table-item>
-		<nb-echarts :nbOption="demoOption" :canvasId="'demo'"></nb-echarts>
+		<nb-echarts :nbOption="demoOption" :canvasId="'demo'" nbHeight="300"></nb-echarts>
 		<nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts>
 		<nb-echarts :nbOption="lineOption" :canvasId="'line'"></nb-echarts>
 		<nb-echarts :nbOption="nbOption" :canvasId="'nb'"></nb-echarts>
