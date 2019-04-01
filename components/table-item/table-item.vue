@@ -1,10 +1,18 @@
 <template>
-	<view class="page">
-		<scroll-view scroll-x="true" scroll-y="true" class="table">
-			<view v-for="(cloumnItem,cloumnIndex) in tableBody" :key="cloumnIndex" class="columnItem" :class="cloumnIndex == 0 ? 'columnFirst' : ''">
-				<view v-for="(rowItem,rowIndex) in cloumnItem" :key="rowIndex" class="rowItem" :class="rowIndex == 0 ? 'rowFirst' : ''">{{rowItem}}</view>
-			</view>
-		</scroll-view>
+
+	<view class="ti-main">
+		<view class="ti-nav">
+			<image src="../../static/icon/echarts/table.png"></image>
+			<text>表格展示</text>
+		</view>
+
+		<view class="page">
+			<scroll-view scroll-x="true" scroll-y="true" class="table"  style="height: 200upx;">
+				<view v-for="(cloumnItem,cloumnIndex) in tableBody" :key="cloumnIndex" class="columnItem" :class="cloumnIndex == 0 ? 'columnFirst' : ''">
+					<view v-for="(rowItem,rowIndex) in cloumnItem" :key="rowIndex" class="rowItem" :class="rowIndex == 0 ? 'rowFirst' : ''">{{rowItem}}</view>
+				</view>
+			</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -28,6 +36,32 @@
 </script>
 
 <style>
+	.ti-main {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+	}
+
+	.ti-nav {
+		width: 100%;
+		height: 90upx;
+		background-color: #FFFFFF;
+		border-bottom-color: #E7E7E7;
+		border-bottom-style: solid;
+		border-bottom-width: 3upx;
+	}
+
+	.ti-nav image {
+		margin: 20upx 0upx 20upx 20upx;
+		width: 50upx;
+		height: 50upx;
+	}
+
+	.ti-nav text {
+		margin: 20upx 20upx 20upx 20upx;
+		font-size: 12px;
+	}
+
 	.page {
 		width: 100%;
 		overflow: hidden;
