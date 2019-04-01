@@ -5,8 +5,8 @@
 		<time-condition></time-condition>
 		<table-item :tableBody="tableBody"></table-item>
 		<nb-echarts :nbOption="demoOption" :canvasId="'demo'" nbHeight="300"></nb-echarts>
-		<nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts>
-		<nb-echarts :nbOption="lineOption" :canvasId="'line'"></nb-echarts>
+		<!-- <nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts> -->
+		<!-- <nb-echarts :nbOption="lineOption" :canvasId="'line'"></nb-echarts> -->
 		<nb-echarts :nbOption="nbOption" :canvasId="'nb'"></nb-echarts>
 
 	</scroll-view>
@@ -20,6 +20,11 @@
 	import tableItem from '../../components/table-item/table-item.vue';
 
 	let demoOption = {
+		grid: {
+			left: "16%",
+			right: "10%",
+			top: 30
+		},
 		xAxis: {
 			type: 'category',
 			data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -125,6 +130,11 @@
 					show: true
 				}
 			}
+		},
+		grid: {
+			left: "18%",
+			right: "16%",
+			
 		},
 		legend: {
 			data: ['蒸发量', '降水量', '平均温度']
