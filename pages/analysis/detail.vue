@@ -3,19 +3,11 @@
 	<scroll-view scroll-y="true" class="container">
 		<!-- 标题栏 -->
 		<time-condition></time-condition>
-		<!-- <view style=""> -->
-			<table-item :tableBody="tableBody"></table-item>
-		<!-- </view> -->
-		<!-- <view style="height: 800upx; width: 750upx;"> -->
+		<table-item :tableBody="tableBody"></table-item>
 		<nb-echarts :nbOption="demoOption" :canvasId="'demo'"></nb-echarts>
-		<!-- </view> -->
-		<!-- <view style="height: 800upx; width: 750upx;"> -->
 		<nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts>
-		<!-- </view> -->
-
-		<!-- <nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts> -->
-		<!-- <nb-echarts :nbOption="lineOption" :canvasId="'line'"></nb-echarts> -->
-		<!-- <nb-echarts :nbOption="nbOption" :canvasId="'nb'"></nb-echarts> -->
+		<nb-echarts :nbOption="lineOption" :canvasId="'line'"></nb-echarts>
+		<nb-echarts :nbOption="nbOption" :canvasId="'nb'"></nb-echarts>
 
 	</scroll-view>
 </template>

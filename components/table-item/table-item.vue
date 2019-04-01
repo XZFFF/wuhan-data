@@ -1,7 +1,7 @@
 <template>
 
-	<view class="ti-main">
-		<view class="ti-nav">
+	<view class="table-main">
+		<view class="table-nav">
 			<image src="../../static/icon/echarts/table.png"></image>
 			<text>表格展示</text>
 		</view>
@@ -36,13 +36,16 @@
 </script>
 
 <style>
-	.ti-main {
+	.table-main {
+		margin-top: 30upx;
 		display: flex;
+		flex-direction: column;
 		width: 100%;
+		background-color: #FFFFFF;
 		flex-direction: column;
 	}
 
-	.ti-nav {
+	.table-nav {
 		width: 100%;
 		height: 90upx;
 		background-color: #FFFFFF;
@@ -51,13 +54,13 @@
 		border-bottom-width: 3upx;
 	}
 
-	.ti-nav image {
+	.table-nav image {
 		margin: 20upx 0upx 20upx 20upx;
 		width: 50upx;
 		height: 50upx;
 	}
 
-	.ti-nav text {
+	.table-nav text {
 		margin: 20upx 20upx 20upx 20upx;
 		font-size: 12px;
 	}

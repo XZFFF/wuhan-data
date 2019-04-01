@@ -27,7 +27,7 @@
 			</view>
 		</view>
 
-		<view class="ti-condition" style="padding-bottom: 20upx;">
+		<view class="ti-condition" style="padding-bottom: 30upx;">
 			<view class="ti-condition-name">
 				<text>季/年度:</text>
 			</view>
