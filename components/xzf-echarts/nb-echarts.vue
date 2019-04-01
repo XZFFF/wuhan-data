@@ -18,8 +18,8 @@
 				type: Object
 			},
 			canvasId: {
-			  type: String,
-			  default: 'ec-canvas',
+				type: String,
+				default: 'ec-canvas',
 			},
 		},
 		components: {
@@ -47,6 +47,10 @@
 
 <style>
 	.canvasView {
+		margin-top: 40upx;
+		height: 800upx;
+		width: 750upx;
+		background-color: #FFFFFF;
 		flex: 1;
 		flex-direction: column;
 	}
