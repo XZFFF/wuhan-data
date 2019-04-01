@@ -7,7 +7,7 @@
 		<nb-echarts :nbOption="demoOption" :canvasId="'demo'" nbHeight="300"></nb-echarts>
 		<!-- <nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts> -->
 		<!-- <nb-echarts :nbOption="lineOption" :canvasId="'line'"></nb-echarts> -->
-		<nb-echarts :nbOption="nbOption" :canvasId="'nb'"></nb-echarts>
+		<nb-echarts :nbOption="nbOption" :canvasId="'nb'" nbHeight="400"></nb-echarts>
 
 	</scroll-view>
 </template>
@@ -114,29 +114,15 @@
 			}
 		},
 		toolbox: {
-			feature: {
-				dataView: {
-					show: true,
-					readOnly: false
-				},
-				magicType: {
-					show: true,
-					type: ['line', 'bar']
-				},
-				restore: {
-					show: true
-				},
-				saveAsImage: {
-					show: true
-				}
-			}
+			show: false
 		},
 		grid: {
 			left: "18%",
-			right: "16%",
-			
+			right: "22%",
+			// top: "20%"
 		},
 		legend: {
+			top: "bottom",
 			data: ['蒸发量', '降水量', '平均温度']
 		},
 		xAxis: [{

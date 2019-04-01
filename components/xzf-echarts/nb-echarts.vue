@@ -49,7 +49,7 @@
 <style>
 	.canvasView {
 		margin-top: 30upx;
-		height: 800upx;
+		height: 1000upx;
 		width: 750upx;
 		background-color: #FFFFFF;
 		flex: 1;
