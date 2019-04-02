@@ -64,9 +64,6 @@
 								"type": "share"
 							},
 							{
-								"type": "menu"
-							},
-							{
 								"type": "favorite"
 							}
 						]
