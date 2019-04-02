@@ -91,8 +91,8 @@
 	}
 
 	.ti-nav text {
-		margin: 20upx 20upx 20upx 20upx;
-		font-size: 12px;
+		margin: auto 20upx;
+		font-size: 14px;
 	}
 
 	.ti-condition {
