@@ -3,11 +3,17 @@
 	<scroll-view scroll-y="true" class="container">
 		<!-- 标题栏 -->
 		<time-condition></time-condition>
-		<table-item :tableBody="tableBody"></table-item>
+		<!-- <choose-item v-for="(requestItem, index) in requestData" :key="index" :requestItem="requestItem"></choose-item> -->
+		<!-- <table-item :tableBody="tableBody"></table-item> -->
 		<nb-echarts :nbOption="demoOption" :canvasId="'demo'" nbHeight="300"></nb-echarts>
 		<!-- <nb-echarts :nbOption="pieOption" :canvasId="'pie'"></nb-echarts> -->
-		<nb-echarts :nbOption="linesOption" :canvasId="'line'"></nb-echarts>
-		<nb-echarts :nbOption="nbOption" :canvasId="'nb'" nbHeight="400"></nb-echarts>
+
+		<view v-for="(requestItem, index) in requestData" :key="index">
+			<table-item v-if="requestItem.type === 'table'" :tableBody="requestItem.tableBody"></table-item>
+			<nb-echarts v-else :nbOption="demoOption" :canvasId="'demo'" nbHeight="300"></nb-echarts>
+		</view>
+		<!-- <nb-echarts :nbOption="linesOption" :canvasId="'line'"></nb-echarts> -->
+		<!-- <nb-echarts :nbOption="nbOption" :canvasId="'nb'" nbHeight="400"></nb-echarts> -->
 
 	</scroll-view>
 </template>
@@ -18,6 +24,7 @@
 	import nbEcharts from '../../components/xzf-echarts/nb-echarts.vue';
 	import timeCondition from '../../components/condition-picker/time-condition.vue';
 	import tableItem from '../../components/table-item/table-item.vue';
+	import chooseItem from '../../components/choose-item/choose-item.vue';
 
 	let demoOption = {
 		grid: {
@@ -227,7 +234,8 @@
 			tableItem,
 			// LineEcharts,
 			// PieEcharts,
-			nbEcharts
+			nbEcharts,
+			chooseItem
 		},
 		data() {
 			let tableBody = [
@@ -245,12 +253,13 @@
 				nbOption: nbOption,
 				linesOption: linesOption,
 				tableBody: tableBody,
+				requestData: {},
 				indexId: "1000",
 				indexName: "指标详情页",
 			};
 		},
 		onLoad: function(e) {
-			console.log(e);
+			// console.log(e);
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
@@ -258,7 +267,19 @@
 					title: e.indexName
 				})
 			}
-			console.log("indexId:" + this.indexId);
+			// console.log("indexId:" + this.indexId);
+
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/analysisDetail.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					this.requestData = res.data;
+				},
+				fail: (e) => {console.log(e.errMsg);},
+				complete: () => {}
+			});
+
 		},
 		// 导航栏自定义按钮
 		onNavigationBarButtonTap(e) {
