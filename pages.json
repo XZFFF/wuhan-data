@@ -81,6 +81,10 @@
 		{
 			"path": "pages/analysis/demo",
 			"style": {}
+		},
+		{
+			"path": "pages/topic/detail",
+			"style": {}
 		}
 	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
@@ -136,13 +140,18 @@
 				"query": ""
 			},
 			{
-				"name": "detail", //模式名称
+				"name": "analysis-detail", //模式名称
 				"path": "pages/analysis/detail", //启动页面，必选
 				"query": "indexId=1001&indexName=GDP" //启动参数，在页面的onLoad函数里面得到
 			},
 			{
 				"name": "demo", //模式名称
 				"path": "pages/analysis/demo", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			},
+			{
+				"name": "topic-detail", //模式名称
+				"path": "pages/topic/detail", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
