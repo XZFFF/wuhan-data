@@ -1,5 +1,4 @@
 <template>
-	<!-- <view> -->
 	<scroll-view scroll-y="true" class="container">
 		<!-- 标题栏 -->
 		<time-condition></time-condition>
@@ -9,8 +8,6 @@
 
 <script>
 	import timeCondition from '../../components/condition-picker/time-condition.vue';
-	// import nbEcharts from '../../components/xzf-echarts/nb-echarts.vue';
-	// import tableItem from '../../components/table-item/table-item.vue';
 	import chooseItem from '../../components/choose-item/choose-item.vue';
 
 	let requestTestData = [{
