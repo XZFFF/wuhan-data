@@ -84,7 +84,10 @@
 		},
 		{
 			"path": "pages/topic/detail",
-			"style": {}
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "具体专题页"
+			}
 		}
 	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
@@ -152,7 +155,7 @@
 			{
 				"name": "topic-detail", //模式名称
 				"path": "pages/topic/detail", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
+				"query": "topicId=1001&topicName=固定资产投资" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
 	}
