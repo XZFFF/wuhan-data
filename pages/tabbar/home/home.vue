@@ -2,21 +2,17 @@
 	<view>
 		<!-- 轮播图 -->
 		<view>
-			<view class="page-section swiper">
-				<view class="page-section-spacing">
-					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-						<view v-for="(item,index) in slideshow" :key="index">
-							<swiper-item>
-								<image mode="widthFix" :src="'../../../static/home/slideshow/'+item.image_name" class="slide-image"></image>
-							</swiper-item>
-						</view>
-					</swiper>
+			<swiper style="width: 750upx; height: 300upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+				<view v-for="(item,index) in slideshow" :key="index">
+					<swiper-item>
+						<image mode="widthFix" :src="item.image" class="slide-image"></image>
+					</swiper-item>
 				</view>
-			</view>
+			</swiper>
 		</view>
 		<!-- 搜索框 -->
 		<view class="search">
-			<view class="input-view">
+			<view class="input-view" @tap="openSearch()">
 				<uni-icon type="search" size="18" color="#8E8E93"></uni-icon>
 				<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
 			</view>
@@ -25,8 +21,8 @@
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="open_analysis_list"
-				 :data-analysisname=item.icon_name>
-					<image class="icon-single-backicon" :src="'../../../static/icon/analysis/'+item.icon_url+'.png'"></image>
+				 :data-analysisid=item.id>
+					<image class="icon-single-backicon" :src="item.icon_url"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
 			</view>
@@ -34,10 +30,9 @@
 		<!-- 专题 -->
 		<view class="topic">
 			<view class="topic-image">
-				<!-- TODO 图片资源要重新给一下 -->
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="open_topic_list"></image>
 			</view>
-			<view v-for="(item,index) in topic" :key="index">
+			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail">
 				<card-item :image="item.image" :title="item.title"></card-item>
 			</view>
 		</view>
@@ -54,100 +49,11 @@
 			cardItem
 		},
 		data() {
-			// TODO 这里应该改成动态获取接口
-			let slideshow = [{
-					id: '1',
-					name: '全国经济进入新常态',
-					image_name: "image1.png"
-				},
-				{
-					id: '2',
-					name: '大数据专题分析报告',
-					image_name: "image2.png"
-				},
-				{
-					id: '3',
-					name: '新时代下的互联网经济形势',
-					image_name: "image3.png"
-				},
-				{
-					id: '4',
-					name: '湖北省区域经济发展新格局',
-					image_name: "image4.png"
-				}
-			];
-			let analysis_icon = [{
-					background: "#72ACF6",
-					icon_name: "综合",
-					icon_url: "an1",
-				},
-				{
-					background: "#61C4E6",
-					icon_name: "工业",
-					icon_url: "an2",
-				},
-				{
-					background: "#76C1A1",
-					icon_name: "农业",
-					icon_url: "an3",
-				},
-				{
-					background: "#F3B861",
-					icon_name: "服务业",
-					icon_url: "an4",
-				},
-				{
-					background: "#EB8873",
-					icon_name: "消费",
-					icon_url: "an5",
-				},
-				{
-					background: "#C869A5",
-					icon_name: "投资",
-					icon_url: "an6",
-				},
-				{
-					background: "#8F8BE1",
-					icon_name: "对外开放",
-					icon_url: "an7",
-				},
-				{
-					background: "#757EDA",
-					icon_name: "新经济",
-					icon_url: "an8",
-				},
-				{
-					background: "#6C8DCF",
-					icon_name: "绿色发展",
-					icon_url: "an9",
-				},
-				{
-					background: "#8AA4D8",
-					icon_name: "民生",
-					icon_url: "an10",
-				}
-			];
-			let topic = [{
-					title: "湖北高质量发展",
-					image: "../../../static/topic/topic1.png"
-				},
-				{
-					title: "宏观形势分析",
-					image: "../../../static/topic/topic2.png"
-				},
-				{
-					title: "武汉供给测结构",
-					image: "../../../static/topic/topic3.png"
-				},
-				{
-					title: "武汉工业经济发展",
-					image: "../../../static/topic/topic4.png"
-				}
-			]
+
 			return {
-				slideshow: slideshow,
-				analysis_icon: analysis_icon,
-				topic: topic,
+				slideshow: [],
+				analysis_icon: [],
+				topic: [],
 				indicatorDots: true, // 是否显示面板指示点
 				autoplay: true, // 是否自动切换
 				interval: 2000, // 自动切换时长
@@ -155,23 +61,68 @@
 			};
 		},
 		onLoad: function() {
-			let topic = this.topic;
-			let t = [];
-			let topic_id1 = Math.floor(Math.random() * 4);
-			t.push(topic[topic_id1]);
-			let topic_id2 = Math.floor(Math.random() * 4);
-			// 防止出现重复的
-			while (topic_id2 == topic_id1) {
-				topic_id2 = Math.floor(Math.random() * 4);
-			}
-			t.push(topic[topic_id2]);
-			this.topic = t;
+			// TODO 此处似乎有生命周期的bug
+			uni.showLoading({
+				title: "Loading..."
+			})
+			setTimeout(function() {
+				uni.hideLoading();
+			}, 2000);
+			// 通过请求接口获取启动图
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/slideshow.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					this.slideshow = res.data;
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
+			// 
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/analysisIcon.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					uni.hideLoading();
+					this.analysis_icon = res.data;
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
+			// 通过请求接口获取专题数据
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/topicList.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					let res_topic = res.data;
+					let t = [];
+					let len = res_topic.length;
+					let topic_id1 = Math.floor(Math.random() * len);
+					t.push(res_topic[topic_id1]);
+					// 防止出现重复的
+					let topic_id2 = Math.floor(Math.random() * len);
+					while (1) {
+						topic_id2 = Math.floor(Math.random() * len);
+						if (topic_id2 != topic_id1) {
+							t.push(res_topic[topic_id2]);
+							break;
+						}
+					}
+					this.topic = t;
+					console.log(t);
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			open_analysis_list(e) {
-				var analysisname = e.currentTarget.dataset.analysisname;
+				var analysis_id = e.currentTarget.dataset.analysisid;
 				uni.navigateTo({
-					url: '../../analysis/list?analysisname=' + analysisname
+					url: '../../analysis/list?analysis_id=' + analysis_id
 				});
 			},
 			open_topic_list(e) {
@@ -179,6 +130,18 @@
 					url: '../../topic/list'
 				});
 			},
+			open_topic_detail(e) {
+				uni.showToast({
+					title: "该专题暂未开放",
+					icon: "none",
+					duration: 1000,
+				})
+			},
+			openSearch() {
+				uni.navigateTo({
+					url: '../search/search'
+				});
+			}
 		}
 	}
 </script>
@@ -188,7 +151,7 @@
 		/* height: 350upx; */
 		width: 750upx;
 	}
-	
+
 	.search {
 		display: flex;
 		flex-direction: row;

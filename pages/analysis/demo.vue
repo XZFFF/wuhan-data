@@ -1,153 +1,40 @@
 <template>
-	<div class="container">
-		<button @click="initChart">初始化</button>
-		<div class="wrap">
-			<mpvue-echarts lazyLoad :echarts="echarts" :onInit="handleInit" ref="echarts" />
-		</div>
-		<view>
-			<div class="nui-flex nui-row">
-				<div class="mui-col-xs-4 mui-col-sm-3">
-					.mui-col-sm-3
-				</div>
-				<div class="mui-col-xs-8 mui-col-sm-9">
-					.mui-col-sm-9
-				</div>
-			</div>
-		</view>
-	</div>
+	<!-- <view class="page">
+		<scroll-view scroll-x="true" scroll-y="true" class="table">
+			<view v-for="(cloumnItem,cloumnIndex) in tableBody" :key="cloumnIndex" class="columnItem" :class="cloumnIndex == 0 ? 'columnFirst' : ''">
+				<view v-for="(rowItem,rowIndex) in cloumnItem" :key="rowIndex" class="rowItem" :class="rowIndex == 0 ? 'rowFirst' : ''">{{rowItem}}</view>
+			</view>
+		</scroll-view>
+	</view> -->
+	<view style="width: 500upx;">
+		<table-item :tableBody="tableBody"></table-item>
+	</view>
 </template>
 
 <script>
-	import * as echarts from '../../components/echarts/echarts.simple.min.js';
-	import mpvueEcharts from '../../components/mpvue-echarts/src/echarts.vue';
-
-	let chart = null
+	import tableItem from '../../components/table-item/table-item.vue';
 	export default {
-		data() {
-			return {
-				option: null,
-				echarts
-			}
-		},
 		components: {
-			mpvueEcharts
+			tableItem
 		},
-		methods: {
-			initChart() {
-				this.option = {
-					color: ['#37a2da', '#32c5e9', '#67e0e3'],
-					tooltip: {
-						trigger: 'axis',
-						axisPointer: { // 坐标轴指示器，坐标轴触发有效
-							type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-						}
-					},
-					legend: {
-						data: ['热度', '正面', '负面']
-					},
-					grid: {
-						left: 20,
-						right: 20,
-						bottom: 15,
-						top: 40,
-						containLabel: true
-					},
-					xAxis: [{
-						type: 'value',
-						axisLine: {
-							lineStyle: {
-								color: '#999'
-							}
-						},
-						axisLabel: {
-							color: '#666'
-						}
-					}],
-					yAxis: [{
-						type: 'category',
-						axisTick: {
-							show: false
-						},
-						data: ['汽车之家', '今日头条', '百度贴吧', '一点资讯', '微信', '微博', '知乎'],
-						axisLine: {
-							lineStyle: {
-								color: '#999'
-							}
-						},
-						axisLabel: {
-							color: '#666'
-						}
-					}],
-					series: [{
-							name: '热度',
-							type: 'bar',
-							label: {
-								normal: {
-									show: true,
-									position: 'inside'
-								}
-							},
-							data: [300, 270, 340, 344, 300, 320, 310],
-							itemStyle: {
-								emphasis: {
-									color: '#37a2da'
-								}
-							}
-						},
-						{
-							name: '正面',
-							type: 'bar',
-							stack: '总量',
-							label: {
-								normal: {
-									show: true
-								}
-							},
-							data: [120, 102, 141, 174, 190, 250, 220],
-							itemStyle: {
-								emphasis: {
-									color: '#32c5e9'
-								}
-							}
-						},
-						{
-							name: '负面',
-							type: 'bar',
-							stack: '总量',
-							label: {
-								normal: {
-									show: true,
-									position: 'left'
-								}
-							},
-							data: [-20, -32, -21, -34, -90, -130, -110],
-							itemStyle: {
-								emphasis: {
-									color: '#67e0e3'
-								}
-							}
-						}
-					]
-				}
-				this.$refs.echarts.init()
-			},
-			handleInit(canvas, width, height) {
-				chart = echarts.init(canvas, null, {
-					width: width,
-					height: height
-				})
-				canvas.setChart(chart)
-				chart.setOption(this.option)
-				return chart
+		data() {
+			let tableBody = [
+				['表头1表头1表头头1表头1', 'item1', 'item2', 'item3', 'item4', '233'],
+				['表头2表头1表头1表', 'xiaoming', 'xiaohong', 'lining', '233', '233'],
+				['表头3', '9000000000', '80', '70', '233', '233'],
+				['表头3', '900', '80', '70', '233', '233'],
+				['表头3', '900', '80', '70', '233', '233'],
+				['表头3', '900', '80', '70', '233', '233']
+			];
+			return {
+				maxHeight: "300upx",
+				tableBody: tableBody,
 			}
 		},
-		onShareAppMessage() {}
+
+
 	}
 </script>
 
-<style scoped>
-	.wrap {
-		width: 100%;
-		height: 300px;
-	}
+<style>
 </style>

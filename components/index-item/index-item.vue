@@ -2,11 +2,11 @@
 	<view class="index-item">
 		<!-- 指标起始竖条 -->
 		<view class="index-item-start-bar"></view>
-		<view class="index-item-name" @tap="opendetail(indexId)">
+		<view class="index-item-name" @tap="openDetail(indexId, indexName)">
 			<text>{{tranIndexName}}</text>
 		</view>
 		<!-- 指标描述 -->
-		<view class="index-item-desc" @tap="opendetail(indexId)">
+		<view class="index-item-desc" @tap="openDetail(indexId, indexName)">
 			<view class="index-item-desc-item" v-for="(item, i) in desc" :key="i">
 				<text>{{item.descName}}:</text>
 				<!-- 蓝#4F90F8 红#CE7670 #C45C56 -->
@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="index-item-end-bar"></view>
-		<view class="index-item-fav">
+		<view class="index-item-fav" @tap="changeFav">
 			<image class="" :src="'../../static/icon/fav/'+favIcon"></image>
 		</view>
 	</view>
@@ -78,11 +78,31 @@
 		},
 		methods: {
 			// 跳转到指标详情页
-			opendetail(indexId) {
-				console.log(indexId)
+			openDetail(indexId, indexName) {
+// 				uni.showToast({
+// 					title: "该栏目正在开发...",
+// 					icon: "none",
+// 					duration: 1000,
+// 				})
 				uni.navigateTo({
-					url: '../analysis/detail?indexId=' + indexId
+					url: '../analysis/detail?indexId=' + indexId + '&indexName=' + indexName
 				});
+			},
+			changeFav() {
+				this.isFavorite = !this.isFavorite;
+				if (this.isFavorite == false) {
+					uni.showToast({
+						title: "已取消收藏",
+						icon: "none",
+						duration: 1000,
+					})
+				} else {
+					uni.showToast({
+						title: "收藏成功",
+						icon: "none",
+						duration: 1000,
+					})
+				}
 			}
 		},
 		onLoad() {
@@ -95,9 +115,10 @@
 	.index-item {
 		display: flex;
 		width: 90%;
-		height: 110upx;
-		margin: 30upx auto;
+		height: 120upx;
+		margin: 40upx auto;
 		background: #FFFFFF;
+		box-shadow:2px 2px 1px #aaaaaa;
 	}
 
 	.index-item-start-bar {

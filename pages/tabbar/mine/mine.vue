@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<view class="tops" style=" background-color: #1E90FF;height: 220upx; ">
+		<view class="tops" style=" background-color: #3A82CC;height: 220upx; ">
 			<!-- 个人信息栏 -->
 			<view class="personal" style="color: #FFFFFF;"  v-for="(value,key) in personal_information" :key="key" @click="goDetailPage(value)">
-				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 60rpx 60rpx;"> 
+				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 40rpx 60rpx;"> 
 					<image class="head" src="../../../static/icon/mine/head.png"></image>
 					<view class="information">
-						<view class="name-rank" style="display: inline-block; widows: ;">
+						<view class="name-rank" style="display: inline-block;">
 							<view class="name" style="font-size: 35upx;float: left;margin-top: 15upx;">
 								李晓华
 							</view>
@@ -34,9 +34,9 @@
 		</view>
 		<!-- 菜单 -->
 		<view class="menu">
-			<view class="uni-list">
+			<view class="uni-list" style="padding: 0 0 20upx 0;">
 				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" :key="key" @click="goDetailPage(value)">
-					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
+					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 0 30upx;">
 						<view class="uni-media-list-logo">
 							<image style="height: 50upx; width: 50upx; margin-top: 20upx" v-if="showImg" :src="value.img"></image>
 						</view>
@@ -48,7 +48,7 @@
 			</view>
 		</view>
 		<!-- 退出 -->
-		<button class="exit">
+		<button class="exitButton" v-for="(value,key) in exit" @click="goDetailPage(value)">
 			退出当前账号
 		</button>
 		<!-- 底部 -->
@@ -90,21 +90,26 @@
 					img: "../../../static/icon/mine/update.png"
 				},{
 					title: "清除缓存",
-					url: "clear-cache",
+					url: "clear_cache",
 					img: "../../../static/icon/mine/clear.png"
 				},{
 					title: "分享应用",
-					url: "share-app",
+					url: "share_app",
 					img: "../../../static/icon/mine/share.png"
 				},{
 					title: "关于我们",
-					url: "about-us",
+					url: "about_us",
 					img: "../../../static/icon/mine/about.png"
 				},{
 					title: "问题反馈",
-					url: "gesture-password",
-					img: "../../../static/icon/mine/feed-back.png"
-				}, 
+					url: "help_feedback",
+					img: "../../../static/icon/mine/feedback.png"
+				},
+				],
+				
+				exit: [{
+					url: "login",
+				}
 				]
 			};
 		},
@@ -145,7 +150,6 @@
 		font-size:35upx;
 		width: 500upx;
 		display: inline-block;
-		
 	}
 	
 	.rank{
@@ -154,7 +158,6 @@
 		margin-left: 15upx;
 		margin-top: 25upx;
 		background-color: rgba(255, 255, 255, 0.11); 
-		opacity: ;
 		border-color: rgba(255, 255, 255, 0.2); 
 		border-radius: 10px; 
 		border-width: 1px; 
@@ -189,15 +192,13 @@
 		height: 400upx;
 	}
 	
-	.exit{
+	.exitButton{
 		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
 		color: #E51C23;
-		border-color: #E51C23;
 		border-radius: 5px; 
-		border: 1px  #E51C23 solid;
-		border-width: 1px; 
+		border: 1px solid #E51C23;
 		margin-top: 40upx;
 	}
 	
