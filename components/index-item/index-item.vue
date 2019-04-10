@@ -135,7 +135,7 @@
 	}
 
 	.index-item-name text {
-		font-size: 11px;
+		font-size: 13px;
 		position: absolute;
 		left: 50%;
 		top: 50%;
