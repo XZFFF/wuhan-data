@@ -2,7 +2,7 @@
 	<view>
 		<!-- 轮播图 -->
 		<view>
-			<swiper style="width: 750upx; height: 300upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+			<swiper style="width: 750upx; height: 300upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration" :circular="true">
 				<view v-for="(item,index) in slideshow" :key="index">
 					<swiper-item>
 						<image mode="widthFix" :src="item.image" class="slide-image"></image>
@@ -12,9 +12,9 @@
 		</view>
 		<!-- 搜索框 -->
 		<view class="search">
-			<view class="input-view" @tap="openSearch()">
+			<view class="input-view" @click="openSearch">
 				<uni-icon type="search" size="18" color="#8E8E93"></uni-icon>
-				<input confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
+				<input disabled="true" confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
 			</view>
 		</view>
 		<!-- 经济分析 -->
@@ -137,10 +137,10 @@
 					duration: 1000,
 				})
 			},
-			openSearch() {
-				uni.navigateTo({
-					url: '../search/search'
-				});
+			openSearch(e) {
+				uni.switchTab({
+					url:"../search/search"
+				})
 			}
 		}
 	}
