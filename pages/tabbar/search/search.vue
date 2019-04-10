@@ -1,19 +1,31 @@
 <template>
 	<view class="wrapper">
-		<!-- 历史搜索列表 -->
-		<view v-if="isHistory" class="history-box">
-			<view v-if="historyList.length > 0">
+		<!--  -->
+		<view v-if="isHistory" class="orgin-box">
+			<!-- 历史搜索列表 -->
+			<view class="history-box">
 				<view class="history-title">
 					<text>搜索历史</text>
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
-				<view class="history-content">
+				<view v-if="historyList.length > 0" class="history-content">
 					<view class="history-item" v-for="(item, index) in historyList" :key="index">
 						{{ item.name }}
 					</view>
 				</view>
+				<view v-else class="no-data">您还没有历史记录</view>
 			</view>
-			<view v-else class="no-data">您还没有历史记录</view>
+			<!-- 搜索趋势列表 -->
+			<view class="trend-box">
+				<view class="history-title">
+					<text>搜索趋势</text>
+					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
+				</view>
+				<uni-list style="background-color: #FFFFFF;">
+					<uni-list-item title="标题文字" thumb="http://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png"></uni-list-item>
+					<uni-list-item title="禁用状态" disabled="false" show-badge="false" badge-text="12"></uni-list-item>
+				</uni-list>
+			</view>
 		</view>
 		<!-- 搜索结果列表 -->
 		<view v-else class="history-box">
@@ -29,13 +41,24 @@
 
 <script>
 	import util from '@/components/amap-wx/js/util.js';
+	import uniList from '@/components/uni-list/uni-list.vue'
+	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
 
 	export default {
-		components: {},
+		components: {
+			uniList,
+			uniListItem
+		},
 		data() {
 			return {
 				type: '全部',
-				historyList: [],
+				historyList: [{
+						name: 'GDP'
+					},
+					{
+						name: '指标'
+					},
+				],
 				isHistory: true,
 				list: [],
 				flng: true,
@@ -45,7 +68,7 @@
 		onLoad() {
 			// 本示例用的是高德 sdk ，请根据具体需求换成自己的服务器接口。
 			this.amapPlugin = util.mapInit();
-			this.historyList = uni.getStorageSync('search:history');
+			//this.historyList = uni.getStorageSync('search:history');
 		},
 		methods: {
 			/**
@@ -185,6 +208,19 @@
 </script>
 
 <style>
+	.history-box {
+		margin-bottom: 300upx;
+	}
+
+	.trend-box {
+		margin-bottom: 50upx;
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+		font-size: 28upx;
+		line-height: inherit;
+	}
+
 	.history-title {
 		display: flex;
 		justify-content: space-between;
