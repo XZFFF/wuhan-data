@@ -44,10 +44,8 @@
 		},
 		methods: {
 			open_topic_detail(e) {
-				uni.showToast({
-					title: "该专题暂未开放",
-					icon: "none",
-					duration: 1000,
+				uni.navigateTo({
+					url:'./detail'
 				})
 			}
 		}
