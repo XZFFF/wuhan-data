@@ -5,7 +5,11 @@
 			<!-- 历史搜索列表 -->
 			<view class="history-box">
 				<view class="history-title">
-					<text>搜索历史</text>
+					<view style="display: flex; align-items: center;">
+						<image src="../../../static/icon/search/history.png" style="height: 50upx; width: 50upx;"></image>
+						<text style="font-size: 36upx; margin-left: 8upx;">搜索历史</text>
+					</view>
+
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
 				<view v-if="historyList.length > 0" class="history-content">
@@ -17,18 +21,24 @@
 			</view>
 			<!-- 搜索趋势列表 -->
 			<view class="trend-box">
-				<view class="history-title">
-					<text>搜索趋势</text>
-					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
+				<view class="trend-title">
+					<view style="display: flex; align-items: center;">
+						<image src="../../../static/icon/search/trend.png" style="height: 50upx; width: 50upx;"></image>
+						<text style="font-size: 36upx; margin-left: 8upx;">搜索趋势</text>
+					</view>
+					<!-- <text class="uni-icon uni-icon-trash" @click="clearSearch"></text> -->
 				</view>
 				<uni-list style="background-color: #FFFFFF;">
-					<uni-list-item title="标题文字" thumb="http://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png"></uni-list-item>
-					<uni-list-item title="禁用状态" disabled="false" show-badge="false" badge-text="12"></uni-list-item>
+					<wd-list-item title="标题" trendId="1" trendArrow="up" trendRate="7.12%"></wd-list-item>
+					<wd-list-item title="标题" trendId="2" trendArrow="down" trendRate="2.12%"></wd-list-item>
+					<wd-list-item title="标题" trendId="3" trendArrow="up" trendRate="3.12%"></wd-list-item>
+					<wd-list-item title="标题" trendId="4" trendArrow="down" trendRate="3.12%"></wd-list-item>
+					<wd-list-item title="标题标题标题标题" trendId="5" trendArrow="up" trendRate="3.12%"></wd-list-item>
 				</uni-list>
 			</view>
 		</view>
 		<!-- 搜索结果列表 -->
-		<view v-else class="history-box">
+		<view v-else class="">
 			<view v-if="historyList.length > 0" class="history-list-box">
 				<view class="history-list-item" v-for="(item, index) in historyList" :key="index" @click="listTap(item)">
 					<rich-text :nodes="item.nameNodes"></rich-text>
@@ -43,20 +53,43 @@
 	import util from '@/components/amap-wx/js/util.js';
 	import uniList from '@/components/uni-list/uni-list.vue'
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
+	import wdListItem from '@/components/wd-list-item/wd-list-item.vue'
 
 	export default {
 		components: {
 			uniList,
-			uniListItem
+			uniListItem,
+			wdListItem
 		},
 		data() {
 			return {
 				type: '全部',
 				historyList: [{
-						name: 'GDP'
+						name: 'GDP是个...'
 					},
 					{
-						name: '指标'
+						name: '指标是个...'
+					},
+					{
+						name: 'GDP是个...'
+					},
+					{
+						name: '指标是个...'
+					},
+					{
+						name: 'GDP是个...'
+					},
+					{
+						name: 'GDP是个...'
+					},
+					{
+						name: '指标是个...'
+					},
+					{
+						name: 'GDP是个...'
+					},
+					{
+						name: '指标是个...'
 					},
 				],
 				isHistory: true,
@@ -208,11 +241,20 @@
 </script>
 
 <style>
+	.orgin-box {
+		display: flex;
+		flex-direction: column;
+	}
+
 	.history-box {
-		margin-bottom: 300upx;
+		background-color: #FFFFFF;
+		height: 355upx;
+		margin-bottom: 30upx;
 	}
 
 	.trend-box {
+		background-color: #FFFFFF;
+		felx: 1;
 		margin-bottom: 50upx;
 		display: flex;
 		flex-direction: column;
@@ -230,10 +272,6 @@
 		color: #333;
 	}
 
-	.history-title .uni-icon {
-		font-size: 40upx;
-	}
-
 	.history-content {
 		display: flex;
 		flex-wrap: wrap;
@@ -243,7 +281,7 @@
 	.history-item {
 		padding: 4upx 35upx;
 		border: 1px #f1f1f1 solid;
-		background: #fff;
+		background: #f0f2f5;
 		border-radius: 50upx;
 		margin: 12upx 10upx;
 		color: #999;
@@ -258,6 +296,16 @@
 		margin-left: 30upx;
 		border-bottom: 1px #EEEEEE solid;
 		font-size: 28upx;
+	}
+
+	.trend-title {
+		display: flex;
+		justify-content: space-between;
+		padding: 20upx 30upx;
+		padding-bottom: 0;
+		font-size: 34upx;
+		color: #333;
+		margin-bottom: 15upx;
 	}
 
 	.no-data {
