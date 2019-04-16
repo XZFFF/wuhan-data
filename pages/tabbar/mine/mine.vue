@@ -38,7 +38,7 @@
 				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" :key="key" @click="goDetailPage(value)">
 					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 0 30upx;">
 						<view class="uni-media-list-logo">
-							<image style="height: 50upx; width: 50upx; margin-top: 20upx" v-if="showImg" :src="value.img"></image>
+							<image style="height: 50upx; width: 50upx; margin-top: 20upx;" v-if="showImg" :src="value.img"></image>
 						</view>
 						<view class="uni-media-list-body" style="justify-content: center">
 							<view class="uni-media-list-text" style="font-size: 35upx">{{value.title}}</view>
@@ -47,10 +47,6 @@
 				</view>
 			</view>
 		</view>
-		<!-- 退出 -->
-		<button class="exitButton" v-for="(value,key) in exit" @click="goDetailPage(value)">
-			退出当前账号
-		</button>
 		<!-- 底部 -->
 		<view class="bottom-text">
 			武汉市发展与改革委员会<br/>
@@ -66,7 +62,7 @@
 				title: 'list',
 				showImg: false,
 					personal_information: [{
-						url: "edit_information"
+						url: "information"
 					}], 
 					browse_icon: [{
 					title: "收藏",
@@ -192,18 +188,8 @@
 		height: 400upx;
 	}
 	
-	.exitButton{
-		width: 90%;
-		height: 80upx;
-		font-size: 35upx;
-		color: #E51C23;
-		border-radius: 5px; 
-		border: 1px solid #E51C23;
-		margin-top: 40upx;
-	}
-	
 	.bottom-text{
-		margin-top: 30upx;
+		margin-top: 150upx;
 		font-size: 25upx;
 		text-align: center;
 		color: #CDCDCD;

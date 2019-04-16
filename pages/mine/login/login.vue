@@ -1,6 +1,6 @@
 <template>
-	<view style="height:100%; background-image: url(../../../static/icon/mine/loginBackground.png);background-size: cover;">
-		<view style="padding-top: 120upx;">
+	<view style="height: 100%;background-image: url(../../../static/icon/mine/loginBackground.png);background-size: cover;">
+		<view style="padding-top: 250upx;">
 			<view class="login-box">
 				<view>
 					<view class="tab-bar">
@@ -56,19 +56,19 @@
 							<view class="login-list">
 								<text class="title">账户</text>
 								<view class="list">
-										<input class="input"  placeholder="默认为手机号" />
+										<input class="input" type="text" value="user" v-model="uname" placeholder="默认为手机号" />
 								</view>
 							</view>
 							<view class="login-list">
 								<text class="title">密码</text>
 								<view class="list">
-									<input class="input"  placeholder="请输入密码" />
+									<input class="input" password="true" type="text" value="pass" v-model="passw" placeholder="请输入密码" />
 								</view>
 							</view>
 							<view class="forget-password" v-for="(value,key) in forget_password" @click="goDetailPage(value)">
 								忘记密码？
 							</view>
-							<button class="login-button">
+							<button class="login-button" @tap="lands">
 								登录
 							</button>
 						</swiper-item>
@@ -80,8 +80,11 @@
 </template>
 
 <script>
+	var self;
+	var webapiaddress = null;
 	export default {
 		data() {
+			lists: [], (self = this);
 			return {
 				isClickChange: false,
 				tabIndex: 1,
@@ -96,6 +99,25 @@
 				}],
 			}
 		},
+		//页面初始加载
+    mounted() {
+        let that = this;
+
+        //缓存的账号
+        const HCuname = uni.getStorageSync('HCuname');
+        //缓存的密码
+        const HCpassw = uni.getStorageSync('HCpassw');
+        //         console.log(HCpassw+"缓存的密码")
+        //         console.log(HCuname)
+        //有缓存就赋值给文本没有就清空
+        if (HCuname && HCpassw) {
+            that.uname = HCuname;
+            that.passw = HCpassw;
+        } else {
+            that.uname = '';
+            that.passw = '';
+        }
+    },
 		methods: {
 			async tapTab(e) { //点击tab-bar
 				var that = this;
@@ -107,7 +129,7 @@
 			},
 			goDetailPage(e) {
 				let path = e.url ? e.url : e;
-				let url = ~path.indexOf('platform') ? path : '../../mine/login/' + path + '/' + path;
+				let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
 				uni.navigateTo({
 					url: url
 				});
@@ -119,7 +141,92 @@
 					url: url
 				});
 				return false;
-			}
+			},
+			//             //用户名：
+        //         nameChange:function(e){
+        //             this.uname=e.traget.value
+        //         },
+        //         //密码：
+        //         passChange:function(e){
+        //             this.passw=e.traget.value
+        //         },
+
+        //登陆
+        lands() {
+            if (this.uname.length <= 0 || this.passw.length <= 0) {
+                uni.showToast({
+                    title: '账号或密码不能为空',
+                    icon: 'none'
+                });
+                return;
+            } else {
+                let TFTwoName = this.uname.substring(0, 2);
+                let TFLastName = this.uname.substring(2);
+                let Passwd = this.passw;
+          
+
+                var that = this;
+                //链接登录  （我这是两次，第一次获取链接地址，第二次才为登录 ）
+                uni.request({
+                    url: 'http链接地址',
+                    success: res => {
+                        var sabb = [];
+                    
+                        // console.log(webapiaddress+"链接地址")
+                        //打印链接地址
+                       
+
+                       //这里是登录（你可以直接在这里进行操作你的登录链接上面的你要删除包含对应的括号）
+                        var that = this;
+                        uni.request({
+                            url: '' + webapiaddress + '/api/User', //链接地址
+                            data: {
+                                strUser: TFLastName,
+                                strPwd: Passwd
+                            },
+                            dataType: 'json',
+                            success: res => {
+                                //成功
+                                if (res.data.IsSuccess == true) {
+                                    
+                                    //缓存账号和密码
+                                    if (that.rememberPsw) {
+                                        uni.setStorageSync('HCuname', that.uname);
+                                        uni.setStorageSync('HCpassw', that.passw);
+                                    } else {
+                                        uni.removeStorageSync('HCuname');
+                                        uni.removeStorageSync('HCpassw');
+//                                         that.uname = '';
+//                                         that.passw = '';
+                                    }
+                                    uni.navigateTo({
+                                        url: '../index/index'
+                                    });
+                                } else {
+                                    uni.showToast({
+                                        title: '用户名或密码错误',
+                                        icon: 'none'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        },
+        //复选框
+			checkboxChange: function(e) {
+				console.log(e.detail.value.length);
+				if (e.detail.value.length == 1) {
+					//获取缓存的账号
+					uni.getStorageSync('HCuname',this.uname);
+					uni.getStorageSync('HCpassw',this.passw);
+				}
+				else {
+						uni.removeStorageSync('HCuname');
+						uni.removeStorageSync('HCpassw');              
+				}
+        	}
 		}
 	}
 </script>

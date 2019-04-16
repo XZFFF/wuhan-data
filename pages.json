@@ -90,10 +90,17 @@
 			"style": {}
 		},
 		{
+		    "path" : "pages/mine/information/information",
+		    "style" : {
+				"navigationBarBackgroundColor" : "#3A82CC",
+				"navigationBarTitleText" : "个人资料"
+			}
+		},
+		{
 		    "path" : "pages/mine/edit_information/edit_information",
 		    "style" : {
 				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "编辑个人资料"
+				"navigationBarTitleText" : "修改个人信息"
 			}
 		},
 		{
@@ -134,6 +141,10 @@
 		{
 		    "path" : "pages/mine/login/login",
 		    "style" : {
+				"navigationStyle":"custom",
+				"titleNView": {
+					"type": "transparent" //透明渐变导航栏
+				}
 			}
 		},
 		{
@@ -144,14 +155,14 @@
 			}
 		},
 		{
-		    "path" : "pages/mine/login/forget_password/forget_password",
+		    "path" : "pages/mine/forget_password/forget_password",
 		    "style" : {
 				"navigationBarBackgroundColor" : "#3A82CC",
 				"navigationBarTitleText" : "忘记密码"
 			}
 		},
 		{
-		    "path" : "pages/mine/login/change_password/change_password",
+		    "path" : "pages/mine/change_password/change_password",
 		    "style" : {
 				"navigationBarBackgroundColor" : "#3A82CC",
 				"navigationBarTitleText" : "修改密码"
