@@ -1,16 +1,24 @@
 <template>
 	<view>
-		<view class="top" style="height: 180upx; width: 100%; background-color: #1E90FF; margin-top: 0upx; display: table;">
-			<!-- 设置 -->
-			<view class="setting" v-for="(value,key) in setting_button" :key="key" @click="goDetailPage(value)">
-				<view class="text" style="color: #FFFFFF; font-size: 35upx;">{{value.title}}</view>
-			</view>
+		<view class="tops" style=" background-color: #3A82CC;height: 220upx; ">
 			<!-- 个人信息栏 -->
-			<view class="personal" style="color: #FFFFFF;">
-				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 60rpx 60rpx;"> 
-					<image class="head" src="../../../static/icon/head.png"></image>
-					<view class="information" v-for="(value,key) in personal_information" :key="key" @click="goDetailPage(value)">
-						{{value.title}}
+			<view class="personal" style="color: #FFFFFF;"  v-for="(value,key) in personal_information" :key="key" @click="goDetailPage(value)">
+				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 40rpx 60rpx;"> 
+					<image class="head" src="../../../static/icon/mine/head.png"></image>
+					<view class="information">
+						<view class="name-rank" style="display: inline-block;">
+							<view class="name" style="font-size: 35upx;float: left;margin-top: 15upx;">
+								李晓华
+							</view>
+							<view class="rank">
+								<text style="font-size: 28upx;">
+									处长
+								</text>
+							</view>
+						</view>
+						<view class="tel" style="font-size: 30upx;">
+							181 **** 0000
+						</view>
 					</view>
 				</view>
 			</view>
@@ -19,18 +27,18 @@
 		<view class="personal-browse">
 			<view class="icon-single-layout" v-for="(value,key) in browse_icon" :key="key" @click="goDetailPage(value)">
 				<view style="display: table">
-					<cover-image style="width: 50upx; display:flex" :src="value.img"></cover-image>
+					<image style="width: 50upx; height: 50upx; display:flex" :src="value.img"></image>
 					<view class="text" style="font-size:30upx; color:#1E90FF">{{value.title}}</view>
 				</view>
 			</view>
 		</view>
 		<!-- 菜单 -->
 		<view class="menu">
-			<view class="uni-list">
+			<view class="uni-list" style="padding: 0 0 20upx 0;">
 				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" :key="key" @click="goDetailPage(value)">
-					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
+					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 0 30upx;">
 						<view class="uni-media-list-logo">
-							<image style="height: 50upx; width: 50upx; margin-top: 20upx" v-if="showImg" :src="value.img"></image>
+							<image style="height: 50upx; width: 50upx; margin-top: 20upx;" v-if="showImg" :src="value.img"></image>
 						</view>
 						<view class="uni-media-list-body" style="justify-content: center">
 							<view class="uni-media-list-text" style="font-size: 35upx">{{value.title}}</view>
@@ -38,6 +46,11 @@
 					</view>
 				</view>
 			</view>
+		</view>
+		<!-- 底部 -->
+		<view class="bottom-text">
+			武汉市发展与改革委员会<br/>
+			All rights reserved ©2019
 		</view>
 	</view>
 </template>
@@ -48,48 +61,51 @@
 			return {
 				title: 'list',
 				showImg: false,
-					setting_button: [{
-						title: "设置",
-						url: "setting"
-					}], 
-					
 					personal_information: [{
-						title: "个人信息",
-						url: "personal_information"
+						url: "information"
 					}], 
 					browse_icon: [{
 					title: "收藏",
 					url: "collection",
-					img: "../../../static/icon/favorite.png"
+					img: "../../../static/icon/mine/favorite.png"
 				}, {
 					title: "足迹",
 					url: "footprint",
-					img: "../../../static/icon/clock.png"
+					img: "../../../static/icon/mine/clock.png"
 				}, {
 					title: "消息",
 					url: "news",
-					img: "../../../static/icon/mail.png"
+					img: "../../../static/icon/mine/mail.png"
 				},
 				],
 					
 				menu_list: [
-					{
-					title: "手势密码",
-					url: "gesture-password",
-					img: "../../../static/icon/key.png"
-				}, {
+					 {
 					title: "检查更新",
 					url: "update",
-					img: "../../../static/icon/update.png"
-				}, {
-					title: "关于我们",
-					url: "about-us",
-					img: "../../../static/icon/about.png"
-				}, {
+					img: "../../../static/icon/mine/update.png"
+				},{
 					title: "清除缓存",
-					url: "clear-cache",
-					img: "../../../static/icon/clear.png"
+					url: "clear_cache",
+					img: "../../../static/icon/mine/clear.png"
+				},{
+					title: "分享应用",
+					url: "share_app",
+					img: "../../../static/icon/mine/share.png"
+				},{
+					title: "关于我们",
+					url: "about_us",
+					img: "../../../static/icon/mine/about.png"
+				},{
+					title: "问题反馈",
+					url: "help_feedback",
+					img: "../../../static/icon/mine/feedback.png"
 				},
+				],
+				
+				exit: [{
+					url: "login",
+				}
 				]
 			};
 		},
@@ -102,7 +118,7 @@
 		methods: {
 			goDetailPage(e) {
 				let path = e.url ? e.url : e;
-				let url = ~path.indexOf('platform') ? path : '/pages/mine/' + path + '/' + path;
+				let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
 				uni.navigateTo({
 					url: url
 				});
@@ -114,28 +130,37 @@
 
 <style>	
 	
-	.setting {
-		margin-top: 7%;
-		height: 80upx;
-		margin-left: 85%;
-	}
-	
 	.personal{
 		height: 200upx;
-
 	}
 	
 	.head{
 		width: 110upx;
 		height: 110upx;
 		float: left;
+		border-radius:100%; 
+		overflow:hidden;
 	}
 	
 	.information{
 		font-size:35upx;
 		width: 500upx;
+		display: inline-block;
+	}
+	
+	.rank{
+		width: 80upx; 
+		height: 40upx;
+		margin-left: 15upx;
+		margin-top: 25upx;
+		background-color: rgba(255, 255, 255, 0.11); 
+		border-color: rgba(255, 255, 255, 0.2); 
+		border-radius: 10px; 
+		border-width: 1px; 
 		float: left;
-		
+		border-style: solid; 
+		text-align: center; 
+		line-height: 20px; 
 	}
 	
 	.personal-browse {
@@ -149,7 +174,6 @@
 	
 	.icon-single-layout {
 		display: flex;
-		align-items: center;
 		justify-content: center;
 		width: 33%;
 		padding-top: 20upx;
@@ -162,6 +186,13 @@
 	
 	.uni-list{
 		height: 400upx;
+	}
+	
+	.bottom-text{
+		margin-top: 150upx;
+		font-size: 25upx;
+		text-align: center;
+		color: #CDCDCD;
 	}
 	
 </style>
