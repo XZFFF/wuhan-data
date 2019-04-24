@@ -14,7 +14,6 @@
 				</view>
 				<view v-if="searchHistoryList.length > 0" class="history-content">
 					<view class="history-item" v-for="(item, index) in tranName" :key="index" @click="historyItemTap(item.name)">
-						<!-- TODO需要对name长度进行转换 -->
 						{{item.name}}
 					</view>
 				</view>
@@ -116,7 +115,7 @@
 				this.getInputtips(val);
 			},
 			/**
-			 * 搜索趋势点击
+			 * 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			 */
 			searchTrendTap(val) {
 				console.log('click trend:' + val);
@@ -137,8 +136,11 @@
 					// 点击列表存储搜索数据
 					util.setHistory(item);
 					this.searchHistoryList = uni.getStorageSync('search_history');
-					// TODO 跳转到对应的界面,这里先做的是返回上一个界面
-					uni.navigateBack();
+					// 跳转到对应的界面,这里先做的是返回上一个界面
+					console.log(item.id + item.name);
+					uni.navigateTo({
+						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name
+					})
 				}
 			},
 			/**

@@ -18,11 +18,12 @@
 			return {
 				requestData: {},
 				indexId: "1000",
-				indiName: "指标详情页",
+				indexName: "指标详情页",
 			};
 		},
 		onLoad: function(e) {
 			if (JSON.stringify(e) != '{}') {
+				console.log(e);
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
 				uni.setNavigationBarTitle({
