@@ -45,8 +45,8 @@
 		{
 			"path": "pages/tabbar/mine/mine",
 			"style": {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "个人中心"
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "个人中心"
 			}
 		},
 		{
@@ -83,95 +83,98 @@
 		},
 		{
 			"path": "pages/topic/detail/detail",
-			"style": {}
-		},
-		{
-		    "path" : "pages/mine/information/information",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "个人资料"
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "具体专题页"
 			}
 		},
 		{
-		    "path" : "pages/mine/edit_information/edit_information",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "修改个人信息"
+			"path": "pages/search/detail/detail",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "具体指标页"
 			}
 		},
 		{
-		    "path" : "pages/mine/collection/collection",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "收藏列表"
+			"path": "pages/mine/information/information",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "个人资料"
 			}
 		},
 		{
-		    "path" : "pages/mine/footprint/footprint",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "足迹"
+			"path": "pages/mine/edit_information/edit_information",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "修改个人信息"
 			}
 		},
 		{
-		    "path" : "pages/mine/news/news",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "消息"
+			"path": "pages/mine/collection/collection",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "收藏列表"
 			}
 		},
 		{
-		    "path" : "pages/mine/help_feedback/help_feedback",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "帮助与反馈"
+			"path": "pages/mine/footprint/footprint",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "足迹"
 			}
 		},
 		{
-		    "path" : "pages/mine/feedback/feedback",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "意见反馈"
+			"path": "pages/mine/news/news",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "消息"
 			}
 		},
 		{
-		    "path" : "pages/mine/login/login",
-		    "style" : {
-				"navigationStyle":"custom",
+			"path": "pages/mine/help_feedback/help_feedback",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "帮助与反馈"
+			}
+		},
+		{
+			"path": "pages/mine/feedback/feedback",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "意见反馈"
+			}
+		},
+		{
+			"path": "pages/mine/login/login",
+			"style": {
+				"navigationStyle": "custom",
 				"titleNView": {
 					"type": "transparent" //透明渐变导航栏
 				}
 			}
 		},
 		{
-		    "path" : "pages/mine/login/telIndex/telIndex",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "选择手机号归属地"
+			"path": "pages/mine/login/telIndex/telIndex",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "选择手机号归属地"
 			}
 		},
 		{
-		    "path" : "pages/mine/forget_password/forget_password",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "忘记密码"
+			"path": "pages/mine/forget_password/forget_password",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "忘记密码"
 			}
 		},
 		{
-		    "path" : "pages/mine/change_password/change_password",
-		    "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "修改密码"
+			"path": "pages/mine/change_password/change_password",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "修改密码"
 			}
 		}
-	    ,{
-            "path" : "pages/search/detail/detail",
-            "style" : {
-				"navigationBarBackgroundColor" : "#3A82CC",
-				"navigationBarTitleText" : "指标详情页"
-			}
-        }
-    ],
+	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
 	"globalStyle": {
 		"navigationStyle": "default",
@@ -233,6 +236,11 @@
 				"name": "topic-detail", //模式名称
 				"path": "pages/topic/detail/detail", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
+			},
+			{
+				"name": "search-detail",
+				"path": "pages/search/detail/detail",
+				"query": "indexId=1001&indexName=GDP"
 			}
 		]
 	}

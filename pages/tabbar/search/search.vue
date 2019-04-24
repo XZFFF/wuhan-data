@@ -88,7 +88,7 @@
 			uni.showLoading({
 				title: "Loading..."
 			})
-			this.isHistory = false;
+			this.isHistory = true;
 			this.searchHistoryList = uni.getStorageSync('search_history');
 			this.getInputtips('GDP');
 			// 获取搜索趋势的接口
@@ -98,7 +98,7 @@
 				data: {},
 				success: res => {
 					this.searchTrendList = res.data;
-					console.log(this.searchTrendList);
+					// console.log(this.searchTrendList);
 				},
 				fail: (e) => {},
 				complete: () => {
@@ -150,7 +150,6 @@
 					content: '是否清理全部搜索历史？该操作不可逆。',
 					success: res => {
 						if (res.confirm) {
-							// TODO 调用接口删除所有搜索历史
 							this.searchHistoryList = util.removeHistory();
 						}
 					}
@@ -167,11 +166,9 @@
 						keyword: val,
 					},
 					success: res => {
-						//成功回调
 						let dataObj = res.data;
 						dataObj = util.dataHandle(dataObj, val);
 						this.searchResultList = dataObj;
-						// console.log(dataObj);
 					},
 					fail: (e) => {},
 					complete: () => {}
