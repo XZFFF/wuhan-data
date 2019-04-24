@@ -104,7 +104,7 @@
 		onLoad() {
 			// 本示例用的是高德 sdk ，请根据具体需求换成自己的服务器接口。
 			this.historyList = uni.getStorageSync('search_history');
-			this.getInputtips('');
+			this.getInputtips('GDP');
 		},
 		methods: {
 			/**
@@ -120,6 +120,7 @@
 					// 去做一些相关搜索功能 ，这里直接返回到上一个页面
 					// 点击列表存储搜索数据
 					util.setHistory(item);
+					this.historyList = uni.getStorageSync('search_history');
 					uni.navigateBack();
 				}
 			},
@@ -150,7 +151,6 @@
 					},
 					success: res => {
 						//成功回调
-						let val = 'GDP';
 						let dataObj = res.data;
 						dataObj = util.dataHandle(dataObj, val);
 						this.searchResultList = dataObj;
