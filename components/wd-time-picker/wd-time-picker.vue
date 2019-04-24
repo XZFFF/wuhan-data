@@ -34,10 +34,10 @@
 			<view class="ti-condition-radio uni-list-cell-db">
 				<radio-group name="radio">
 					<label>
-						<radio value="radio1" />选项一
+						<radio value="radio1" checked="true">选项一</radio>
 					</label>
 					<label>
-						<radio value="radio2" />选项二
+						<radio value="radio2">选项二</radio>
 					</label>
 				</radio-group>
 			</view>
