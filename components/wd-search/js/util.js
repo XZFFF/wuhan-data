@@ -32,7 +32,7 @@ const util = {
 	},
 	
 	dataHandle(dataObj, val) {
-		console.log(dataObj);
+		//console.log(dataObj);
 		for (var i = 0; i < dataObj.length; i++) {
 			let item = dataObj[i];
 			dataObj[i] = util.dataHandleItem(item, val);

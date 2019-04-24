@@ -13,7 +13,7 @@
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
 				<view v-if="historyList.length > 0" class="history-content">
-					<view class="history-item" v-for="(item, index) in historyList" :key="index">
+					<view class="history-item" v-for="(item, index) in historyList" :key="index" @click="historyItemTap(item.name)">
 						{{ item.name }}
 					</view>
 				</view>
@@ -92,7 +92,7 @@
 						name: '指标是个...'
 					},
 				],
-				isHistory: false,
+				isHistory: true,
 				list: [],
 				flng: true,
 				timer: null,
@@ -102,25 +102,31 @@
 			};
 		},
 		onLoad() {
-			// 本示例用的是高德 sdk ，请根据具体需求换成自己的服务器接口。
+			this.isHistory = true;
 			this.historyList = uni.getStorageSync('search_history');
 			this.getInputtips('GDP');
 		},
 		methods: {
+			historyItemTap(val) {
+				this.isHistory = false;
+				console.log('isHistroy' + this.isHistory);
+				this.getInputtips(val);
+			},
 			/**
 			 * 列表点击
 			 */
 			listTap(item) {
 				item = JSON.parse(JSON.stringify(item));
+				console.log(item);
 				// 如果当前是历史搜索页面 ，那么点击不储存,直接 跳转
 				if (this.isHistory) {
 					return;
 				} else {
 					this.isHistory = true;
-					// 去做一些相关搜索功能 ，这里直接返回到上一个页面
 					// 点击列表存储搜索数据
 					util.setHistory(item);
 					this.historyList = uni.getStorageSync('search_history');
+					// TODO 跳转到对应的界面,这里先做的是返回上一个界面
 					uni.navigateBack();
 				}
 			},
@@ -154,12 +160,9 @@
 						let dataObj = res.data;
 						dataObj = util.dataHandle(dataObj, val);
 						this.searchResultList = dataObj;
-						//console.log();
+						console.log();
 					},
-					fail: (e) => {
-						//失败回调
-						console.log(info);
-					},
+					fail: (e) => {},
 					complete: () => {}
 				});
 
