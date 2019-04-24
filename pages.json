@@ -168,7 +168,14 @@
 				"navigationBarTitleText" : "修改密码"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/search/detail",
+            "style" : {
+				"navigationBarBackgroundColor" : "#3A82CC",
+				"navigationBarTitleText" : "指标详情页"
+			}
+        }
+    ],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
 	"globalStyle": {
 		"navigationStyle": "default",

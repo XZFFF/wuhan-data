@@ -13,7 +13,7 @@
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
 				<view v-if="searchHistoryList.length > 0" class="history-content">
-					<view class="history-item" v-for="(item, index) in searchHistoryList" :key="index" @click="historyItemTap(item.name)">
+					<view class="history-item" v-for="(item, index) in tranName" :key="index" @click="historyItemTap(item.name)">
 						<!-- TODO需要对name长度进行转换 -->
 						{{item.name}}
 					</view>
@@ -28,19 +28,10 @@
 						<text style="font-size: 36upx; margin-left: 8upx;">搜索趋势</text>
 					</view>
 				</view>
-				<uni-list style="background-color: #FFFFFF;" >
+				<uni-list style="background-color: #FFFFFF;">
 					<view v-for="(item, index) in searchTrendList" :key="index" @click="searchTrendTap(item.title)">
 						<wd-list-item :trendId="item.id" :title="item.title" :trendArrow="item.arrow" :trendRate="item.rate"></wd-list-item>
-						<!-- <wd-list-item title="标题" trendId="1" trendArrow="up" trendRate="7.12%"></wd-list-item>
-						<wd-list-item title="标题" trendId="2" trendArrow="down" trendRate="2.12%"></wd-list-item>
-						<wd-list-item title="标题" trendId="3" trendArrow="up" trendRate="3.12%"></wd-list-item>
-						<wd-list-item title="标题" trendId="4" trendArrow="down" trendRate="3.12%"></wd-list-item>
-						<wd-list-item title="标题标题标题标题" trendId="5" trendArrow="up" trendRate="3.12%"></wd-list-item> -->
 					</view>
-					<!-- TODO 无法显示数据，但数据成功从网络获取 -->
-					
-					
-
 				</uni-list>
 			</view>
 		</view>
@@ -68,6 +59,17 @@
 			uniListItem,
 			wdListItem
 		},
+		computed: {
+			tranName: function() {
+				let result = this.searchHistoryList;
+				for (var i = 0; i < result.length; i++) {
+					if (result[i].name.length > 6) {
+						result[i].name = result[i].name.substring(0, 4) + '..';
+					}
+				}
+				return result;
+			},
+		},
 		data() {
 			return {
 				type: '全部',
@@ -86,20 +88,21 @@
 			uni.showLoading({
 				title: "Loading..."
 			})
-			this.isHistory = true;
+			this.isHistory = false;
 			this.searchHistoryList = uni.getStorageSync('search_history');
-			// this.getInputtips('GDP');
+			this.getInputtips('GDP');
 			uni.request({
 				url: 'http://wuhandata.applinzi.com/searchTrend.php',
 				method: 'GET',
 				data: {},
 				success: res => {
 					this.searchTrendList = res.data;
-					uni.hideLoading();
 					console.log(this.searchTrendList);
 				},
 				fail: (e) => {},
-				complete: () => {}
+				complete: () => {
+					uni.hideLoading();
+				}
 			});
 
 		},
@@ -111,18 +114,11 @@
 				this.isHistory = false;
 				this.getInputtips(val);
 			},
-			// TODO 待修复
-			tranItemName() {
-				if (item.name.length > 6) {
-					item.name = item.name.substring(0, 4) + '..';
-				}
-				return item.name;
-			},
 			/**
 			 * 搜索趋势点击
 			 */
 			searchTrendTap(val) {
-				console.log('click trend:'+val);
+				console.log('click trend:' + val);
 				util.setHistory(val);
 				this.isHistory = false;
 				this.getInputtips(val);
