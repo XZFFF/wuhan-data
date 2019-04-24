@@ -1,6 +1,6 @@
 <template>
 	<view class="wrapper">
-		<!--  -->
+		<!-- 搜索主界面-包含搜索历史和搜索趋势 -->
 		<view v-if="isHistory" class="orgin-box">
 			<!-- 历史搜索列表 -->
 			<view class="history-box">
@@ -12,9 +12,10 @@
 
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
-				<view v-if="historyList.length > 0" class="history-content">
-					<view class="history-item" v-for="(item, index) in historyList" :key="index" @click="historyItemTap(item.name)">
-						{{ item.name }}
+				<view v-if="searchHistoryList.length > 0" class="history-content">
+					<view class="history-item" v-for="(item, index) in searchHistoryList" :key="index" @click="historyItemTap(item.name)">
+						<!-- TODO需要对name长度进行转换 -->
+						{{item.name}}
 					</view>
 				</view>
 				<view v-else class="no-data">您还没有历史记录</view>
@@ -26,21 +27,27 @@
 						<image src="../../../static/icon/search/trend.png" style="height: 50upx; width: 50upx;"></image>
 						<text style="font-size: 36upx; margin-left: 8upx;">搜索趋势</text>
 					</view>
-					<!-- <text class="uni-icon uni-icon-trash" @click="clearSearch"></text> -->
 				</view>
-				<uni-list style="background-color: #FFFFFF;">
-					<wd-list-item title="标题" trendId="1" trendArrow="up" trendRate="7.12%"></wd-list-item>
-					<wd-list-item title="标题" trendId="2" trendArrow="down" trendRate="2.12%"></wd-list-item>
-					<wd-list-item title="标题" trendId="3" trendArrow="up" trendRate="3.12%"></wd-list-item>
-					<wd-list-item title="标题" trendId="4" trendArrow="down" trendRate="3.12%"></wd-list-item>
-					<wd-list-item title="标题标题标题标题" trendId="5" trendArrow="up" trendRate="3.12%"></wd-list-item>
+				<uni-list style="background-color: #FFFFFF;" >
+					<view v-for="(item, index) in searchTrendList" :key="index" @click="searchTrendTap(item.title)">
+						<wd-list-item :trendId="item.id" :title="item.title" :trendArrow="item.arrow" :trendRate="item.rate"></wd-list-item>
+						<!-- <wd-list-item title="标题" trendId="1" trendArrow="up" trendRate="7.12%"></wd-list-item>
+						<wd-list-item title="标题" trendId="2" trendArrow="down" trendRate="2.12%"></wd-list-item>
+						<wd-list-item title="标题" trendId="3" trendArrow="up" trendRate="3.12%"></wd-list-item>
+						<wd-list-item title="标题" trendId="4" trendArrow="down" trendRate="3.12%"></wd-list-item>
+						<wd-list-item title="标题标题标题标题" trendId="5" trendArrow="up" trendRate="3.12%"></wd-list-item> -->
+					</view>
+					<!-- TODO 无法显示数据，但数据成功从网络获取 -->
+					
+					
+
 				</uni-list>
 			</view>
 		</view>
 		<!-- 搜索结果列表 -->
 		<view v-else class="">
 			<view v-if="searchResultList.length > 0" class="history-list-box">
-				<view class="history-list-item" v-for="(item, index) in searchResultList" :key="index" @click="listTap(item)">
+				<view class="history-list-item" v-for="(item, index) in searchResultList" :key="index" @click="searchResultTap(item)">
 					<rich-text :nodes="item.nameNodes"></rich-text>
 				</view>
 			</view>
@@ -64,60 +71,67 @@
 		data() {
 			return {
 				type: '全部',
-				historyList: [{
-						name: 'GDP是个...'
-					},
-					{
-						name: '指标是个...'
-					},
-					{
-						name: 'GDP是个...'
-					},
-					{
-						name: '指标是个...'
-					},
-					{
-						name: 'GDP是个...'
-					},
-					{
-						name: 'GDP是个...'
-					},
-					{
-						name: '指标是个...'
-					},
-					{
-						name: 'GDP是个...'
-					},
-					{
-						name: '指标是个...'
-					},
-				],
-				isHistory: true,
-				list: [],
 				flng: true,
 				timer: null,
-				searchResultList: [{
-					name: "demo",
-				}]
+				isHistory: true,
+				list: [],
+				searchHistoryList: [],
+				searchTrendList: [{
+					title: '233'
+				}],
+				searchResultList: []
 			};
 		},
 		onLoad() {
+			uni.showLoading({
+				title: "Loading..."
+			})
 			this.isHistory = true;
-			this.historyList = uni.getStorageSync('search_history');
-			this.getInputtips('GDP');
+			this.searchHistoryList = uni.getStorageSync('search_history');
+			// this.getInputtips('GDP');
+			uni.request({
+				url: 'http://wuhandata.applinzi.com/searchTrend.php',
+				method: 'GET',
+				data: {},
+				success: res => {
+					this.searchTrendList = res.data;
+					uni.hideLoading();
+					console.log(this.searchTrendList);
+				},
+				fail: (e) => {},
+				complete: () => {}
+			});
+
 		},
 		methods: {
+			/**
+			 * 点击历史搜索的tag
+			 */
 			historyItemTap(val) {
 				this.isHistory = false;
-				console.log('isHistroy' + this.isHistory);
+				this.getInputtips(val);
+			},
+			// TODO 待修复
+			tranItemName() {
+				if (item.name.length > 6) {
+					item.name = item.name.substring(0, 4) + '..';
+				}
+				return item.name;
+			},
+			/**
+			 * 搜索趋势点击
+			 */
+			searchTrendTap(val) {
+				console.log('click trend:'+val);
+				util.setHistory(val);
+				this.isHistory = false;
 				this.getInputtips(val);
 			},
 			/**
-			 * 列表点击
+			 * 搜索结果列表点击
 			 */
-			listTap(item) {
+			searchResultTap(item) {
 				item = JSON.parse(JSON.stringify(item));
-				console.log(item);
 				// 如果当前是历史搜索页面 ，那么点击不储存,直接 跳转
 				if (this.isHistory) {
 					return;
@@ -125,7 +139,7 @@
 					this.isHistory = true;
 					// 点击列表存储搜索数据
 					util.setHistory(item);
-					this.historyList = uni.getStorageSync('search_history');
+					this.searchHistoryList = uni.getStorageSync('search_history');
 					// TODO 跳转到对应的界面,这里先做的是返回上一个界面
 					uni.navigateBack();
 				}
@@ -140,7 +154,7 @@
 					success: res => {
 						if (res.confirm) {
 							// TODO 调用接口删除所有搜索历史
-							this.historyList = util.removeHistory();
+							this.searchHistoryList = util.removeHistory();
 						}
 					}
 				});
@@ -160,7 +174,7 @@
 						let dataObj = res.data;
 						dataObj = util.dataHandle(dataObj, val);
 						this.searchResultList = dataObj;
-						console.log();
+						// console.log(dataObj);
 					},
 					fail: (e) => {},
 					complete: () => {}
@@ -175,8 +189,8 @@
 			let text = e.text;
 			if (!text) {
 				this.isHistory = true;
-				this.historyList = [];
-				this.historyList = uni.getStorageSync('search_history');
+				this.searchHistoryList = [];
+				this.searchHistoryList = uni.getStorageSync('search_history');
 
 				return;
 			} else {
@@ -191,8 +205,8 @@
 			let text = e.text;
 			if (!text) {
 				this.isHistory = true;
-				this.historyList = [];
-				this.historyList = uni.getStorageSync('search_history');
+				this.searchHistoryList = [];
+				this.searchHistoryList = uni.getStorageSync('search_history');
 				uni.showModal({
 					title: '提示',
 					content: '请输入内容。',
