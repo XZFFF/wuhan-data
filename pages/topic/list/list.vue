@@ -3,7 +3,7 @@
 		<!-- 专题 -->
 		<view class="topic">
 			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail">
-				<card-item :image="item.image" :title="item.title"></card-item>
+				<wd-card-item :image="item.image" :title="item.title"></wd-card-item>
 			</view>
 		</view>
 	</view>
@@ -11,10 +11,10 @@
 
 <script>
 	// 引入公共样式
-	import cardItem from '../../components/card-item/card-item.vue';
+	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
 	export default {
 		components: {
-			cardItem
+			wdCardItem
 		},
 		data() {
 			return {
@@ -22,7 +22,6 @@
 			};
 		},
 		onLoad: function() {
-			// TODO 此处似乎有生命周期的bug
 			uni.showLoading({
 				title: "Loading..."
 			})
@@ -45,7 +44,7 @@
 		methods: {
 			open_topic_detail(e) {
 				uni.navigateTo({
-					url:'./detail'
+					url:'../detail/detail'
 				})
 			}
 		}

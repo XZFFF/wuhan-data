@@ -3,13 +3,13 @@
 		<uni-card title="专题描述">
 			{{desc}}
 		</uni-card>
-		<choose-item v-for="(requestItem, index) in requestTestData" :key="index" :requestItem="requestItem"></choose-item>
+		<wd-choose-item v-for="(requestItem, index) in requestTestData" :key="index" :requestItem="requestItem"></wd-choose-item>
 	</scroll-view>
 </template>
 
 <script>
 	import uniCard from '@/components/uni-card/uni-card.vue';
-	import chooseItem from '../../components/choose-item/choose-item.vue';
+	import wdChooseItem from '../../../components/wd-choose-item/wd-choose-item.vue';
 
 	let requestTestData = [{
 		"id": "1",
@@ -94,7 +94,7 @@
 	export default {
 		components: {
 			uniCard,
-			chooseItem
+			wdChooseItem
 		},
 		data() {
 			let desc =

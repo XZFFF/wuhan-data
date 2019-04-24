@@ -50,14 +50,14 @@
 			}
 		},
 		{
-			"path": "pages/analysis/list",
+			"path": "pages/analysis/list/list",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "经济分析"
 			}
 		},
 		{
-			"path": "pages/analysis/detail",
+			"path": "pages/analysis/detail/detail",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "具体指标页",
@@ -75,18 +75,14 @@
 			}
 		},
 		{
-			"path": "pages/topic/list",
+			"path": "pages/topic/list/list",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "专题列表"
 			}
 		},
 		{
-			"path": "pages/analysis/demo",
-			"style": {}
-		},
-		{
-			"path": "pages/topic/detail",
+			"path": "pages/topic/detail/detail",
 			"style": {}
 		},
 		{
@@ -169,7 +165,7 @@
 			}
 		}
 	    ,{
-            "path" : "pages/search/detail",
+            "path" : "pages/search/detail/detail",
             "style" : {
 				"navigationBarBackgroundColor" : "#3A82CC",
 				"navigationBarTitleText" : "指标详情页"

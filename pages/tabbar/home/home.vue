@@ -2,7 +2,8 @@
 	<view>
 		<!-- 轮播图 -->
 		<view>
-			<swiper style="width: 750upx; height: 300upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration" :circular="true">
+			<swiper style="width: 750upx; height: 300upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+			 :duration="duration" :circular="true">
 				<view v-for="(item,index) in slideshow" :key="index">
 					<swiper-item>
 						<image mode="widthFix" :src="item.image" class="slide-image"></image>
@@ -33,7 +34,7 @@
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="open_topic_list"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail">
-				<card-item :image="item.image" :title="item.title"></card-item>
+				<wd-card-item :image="item.image" :title="item.title"></wd-card-item>
 			</view>
 		</view>
 	</view>
@@ -41,27 +42,25 @@
 
 <script>
 	// 引入公共样式
-	import uniIcon from '../../../components/uni-icon/uni-icon.vue';
-	import cardItem from '../../../components/card-item/card-item.vue';
+	import uniIcon from '@/components/uni-icon/uni-icon.vue';
+	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
 	export default {
 		components: {
 			uniIcon,
-			cardItem
+			wdCardItem
 		},
 		data() {
-
 			return {
-				slideshow: [],
-				analysis_icon: [],
-				topic: [],
 				indicatorDots: true, // 是否显示面板指示点
 				autoplay: true, // 是否自动切换
 				interval: 2000, // 自动切换时长
-				duration: 500 // 切换时长
+				duration: 500, // 切换时长
+				slideshow: [],
+				analysis_icon: [],
+				topic: [],
 			};
 		},
 		onLoad: function() {
-			// TODO 此处似乎有生命周期的bug
 			uni.showLoading({
 				title: "Loading..."
 			})
@@ -79,17 +78,18 @@
 				fail: (e) => {},
 				complete: () => {}
 			});
-			// 
+			// 获取经济分析所有icon数据
 			uni.request({
 				url: 'http://wuhandata.applinzi.com/analysisIcon.php',
 				method: 'GET',
 				data: {},
 				success: res => {
-					uni.hideLoading();
 					this.analysis_icon = res.data;
 				},
 				fail: (e) => {},
-				complete: () => {}
+				complete: () => {
+					uni.hideLoading();
+				}
 			});
 			// 通过请求接口获取专题数据
 			uni.request({
@@ -122,12 +122,12 @@
 			open_analysis_list(e) {
 				var analysis_id = e.currentTarget.dataset.analysisid;
 				uni.navigateTo({
-					url: '../../analysis/list?analysis_id=' + analysis_id
+					url: '../../analysis/list/list?analysis_id=' + analysis_id
 				});
 			},
 			open_topic_list(e) {
 				uni.navigateTo({
-					url: '../../topic/list'
+					url: '../../topic/list/list'
 				});
 			},
 			open_topic_detail(e) {
@@ -139,7 +139,7 @@
 			},
 			openSearch(e) {
 				uni.switchTab({
-					url:"../search/search"
+					url: "../search/search"
 				})
 			}
 		}

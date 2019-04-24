@@ -13,10 +13,9 @@
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
 			 scroll-with-animation>
 				<view v-for="(item,index) in subCategoryList" :key="index">
-					<index-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"
-					 :item="item"></index-item>
+					<wd-indi-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"
+					 :item="item"></wd-indi-item>
 				</view>
-				<!-- <page-foot :name="name" v-if="subCategoryList.length > 1"></page-foot> -->
 			</scroll-view>
 		</view>
 	</view>
@@ -24,20 +23,20 @@
 
 <script>
 	// 引入公共样式
-	import indexItem from '../../components/index-item/index-item.vue';
+	import wdIndiItem from '@/components/wd-indi-item/wd-indi-item.vue';
 	export default {
 		components: {
-			indexItem
+			wdIndiItem
 		},
 		data() {
 			return {
 				analysisId: 0,
-				categoryList: [],
-				subCategoryList: [],
 				height: 0,
 				categoryActive: 0,
 				scrollTop: 0,
-				scrollHeight: 0
+				scrollHeight: 0,
+				categoryList: [],
+				subCategoryList: []
 			};
 		},
 		methods: {
@@ -53,7 +52,6 @@
 			}
 		},
 		onLoad: function(e) {
-
 			uni.showLoading({
 				title: "Loading..."
 			})

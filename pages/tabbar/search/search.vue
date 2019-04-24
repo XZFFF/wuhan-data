@@ -91,6 +91,7 @@
 			this.isHistory = false;
 			this.searchHistoryList = uni.getStorageSync('search_history');
 			this.getInputtips('GDP');
+			// 获取搜索趋势的接口
 			uni.request({
 				url: 'http://wuhandata.applinzi.com/searchTrend.php',
 				method: 'GET',

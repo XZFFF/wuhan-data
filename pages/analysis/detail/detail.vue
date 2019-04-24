@@ -1,14 +1,14 @@
 <template>
 	<scroll-view scroll-y="true" class="container">
 		<!-- 标题栏 -->
-		<time-condition></time-condition>
-		<choose-item v-for="(requestItem, index) in requestTestData" :key="index" :requestItem="requestItem"></choose-item>
+		<wd-time-picker></wd-time-picker>
+		<wd-choose-item v-for="(requestItem, index) in requestData" :key="index" :requestItem="requestItem"></wd-choose-item>
 	</scroll-view>
 </template>
 
 <script>
-	import timeCondition from '../../components/condition-picker/time-condition.vue';
-	import chooseItem from '../../components/choose-item/choose-item.vue';
+	import wdTimePicker from '@/components/wd-time-picker/wd-time-picker.vue';
+	import wdChooseItem from '@/components/wd-choose-item/wd-choose-item.vue';
 
 	let requestTestData = [{
 		"id": "1",
@@ -91,8 +91,8 @@
 
 	export default {
 		components: {
-			timeCondition,
-			chooseItem
+			wdTimePicker,
+			wdChooseItem
 		},
 		data() {
 			return {
