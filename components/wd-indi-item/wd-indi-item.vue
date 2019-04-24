@@ -16,7 +16,7 @@
 		</view>
 		<view class="index-item-end-bar"></view>
 		<view class="index-item-fav" @tap="changeFav">
-			<image class="" :src="'../../static/icon/fav/'+favIcon"></image>
+			<image class="" :src="'../../../static/icon/fav/'+favIcon"></image>
 		</view>
 	</view>
 </template>
@@ -56,7 +56,7 @@
 		computed: {
 			tranIndexName() {
 				if (this.indexName.length > 10) {
-					let newstr = this.indexName.substring(0, 9) + '...';
+					let newstr = this.indexName.substring(0, 9) + '..';
 					return newstr;
 				} else {
 					return this.indexName
@@ -85,7 +85,7 @@
 // 					duration: 1000,
 // 				})
 				uni.navigateTo({
-					url: '../analysis/detail?indexId=' + indexId + '&indexName=' + indexName
+					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName
 				});
 			},
 			changeFav() {

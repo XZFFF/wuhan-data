@@ -1,7 +1,7 @@
 <template>
 	<view class="canvasView" :style="{height:nbHeight + 'px'}">
 		<view class="echart-nav">
-			<image src="../../static/icon/echarts/trend-upward.png"></image>
+			<image src="../../../static/icon/echarts/trend-upward.png"></image>
 			<text>ECharts展示</text>
 		</view>
 		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="chart" />
@@ -9,8 +9,8 @@
 </template>
 
 <script>
-	import * as echarts from '../echarts/echarts.min.js';
-	import mpvueEcharts from '../mpvue-echarts/src/echarts.vue';
+	import * as echarts from '@/components/echarts/echarts.min.js';
+	import mpvueEcharts from '@/components/mpvue-echarts/src/echarts.vue';
 
 	export default {
 		props: {

@@ -2,7 +2,7 @@
 
 	<view class="table-main">
 		<view class="table-nav">
-			<image src="../../static/icon/echarts/table.png"></image>
+			<image src="../../../static/icon/echarts/table.png"></image>
 			<text>表格展示</text>
 		</view>
 
