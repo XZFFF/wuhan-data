@@ -39,8 +39,8 @@
 		</view>
 		<!-- 搜索结果列表 -->
 		<view v-else class="">
-			<view v-if="historyList.length > 0" class="history-list-box">
-				<view class="history-list-item" v-for="(item, index) in historyList" :key="index" @click="listTap(item)">
+			<view v-if="searchResultList.length > 0" class="history-list-box">
+				<view class="history-list-item" v-for="(item, index) in searchResultList" :key="index" @click="listTap(item)">
 					<rich-text :nodes="item.nameNodes"></rich-text>
 				</view>
 			</view>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-	import util from '@/components/amap-wx/js/util.js';
+	import util from '@/components/wd-search/js/util.js';
 	import uniList from '@/components/uni-list/uni-list.vue'
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
 	import wdListItem from '@/components/wd-list-item/wd-list-item.vue'
@@ -92,16 +92,19 @@
 						name: '指标是个...'
 					},
 				],
-				isHistory: true,
+				isHistory: false,
 				list: [],
 				flng: true,
-				timer: null
+				timer: null,
+				searchResultList: [{
+					name: "demo",
+				}]
 			};
 		},
 		onLoad() {
 			// 本示例用的是高德 sdk ，请根据具体需求换成自己的服务器接口。
-			this.amapPlugin = util.mapInit();
-			//this.historyList = uni.getStorageSync('search:history');
+			this.historyList = uni.getStorageSync('search_history');
+			this.getInputtips('');
 		},
 		methods: {
 			/**
@@ -110,11 +113,10 @@
 			listTap(item) {
 				item = JSON.parse(JSON.stringify(item));
 				// 如果当前是历史搜索页面 ，那么点击不储存,直接 跳转
-				if (this.history) {
+				if (this.isHistory) {
 					return;
 				} else {
 					this.isHistory = true;
-
 					// 去做一些相关搜索功能 ，这里直接返回到上一个页面
 					// 点击列表存储搜索数据
 					util.setHistory(item);
@@ -130,6 +132,7 @@
 					content: '是否清理全部搜索历史？该操作不可逆。',
 					success: res => {
 						if (res.confirm) {
+							// TODO 调用接口删除所有搜索历史
 							this.historyList = util.removeHistory();
 						}
 					}
@@ -137,27 +140,29 @@
 			},
 			/**
 			 * 关键字搜索
-			 * 调用高德地图关键字搜索api
 			 */
 			getInputtips(val) {
-				let _this = this;
-				this.amapPlugin.getInputtips({
-					keywords: val,
-					city: '北京',
-					success: data => {
-						let dataObj = data.tips;
-						// 处理返回数据文字高亮
-						dataObj.map(item => {
-							return util.dataHandle(item, val);
-						});
-						//成功回调
-						_this.historyList = dataObj;
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/searchResult.php',
+					method: 'GET',
+					data: {
+						keyword: val,
 					},
-					fail: info => {
+					success: res => {
+						//成功回调
+						let val = 'GDP';
+						let dataObj = res.data;
+						dataObj = util.dataHandle(dataObj, val);
+						this.searchResultList = dataObj;
+						//console.log();
+					},
+					fail: (e) => {
 						//失败回调
 						console.log(info);
-					}
+					},
+					complete: () => {}
 				});
+
 			}
 		},
 		/**
@@ -168,7 +173,7 @@
 			if (!text) {
 				this.isHistory = true;
 				this.historyList = [];
-				this.historyList = uni.getStorageSync('search:history');
+				this.historyList = uni.getStorageSync('search_history');
 
 				return;
 			} else {
@@ -184,7 +189,7 @@
 			if (!text) {
 				this.isHistory = true;
 				this.historyList = [];
-				this.historyList = uni.getStorageSync('search:history');
+				this.historyList = uni.getStorageSync('search_history');
 				uni.showModal({
 					title: '提示',
 					content: '请输入内容。',
