@@ -2,7 +2,7 @@
 	<view>
 		<!-- 轮播图 -->
 		<view>
-			<swiper style="width: 750upx; height: 300upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+			<swiper style="width: 750upx; height: 350upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
 			 :duration="duration" :circular="true">
 				<view v-for="(item,index) in slideshow" :key="index">
 					<swiper-item>

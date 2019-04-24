@@ -13,7 +13,7 @@
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
 				<view v-if="searchHistoryList.length > 0" class="history-content">
-					<view class="history-item" v-for="(item, index) in tranName" :key="index" @click="historyItemTap(item.name)">
+					<view class="history-item" v-for="(item, index) in tranName" :key="index"">
 						{{item.name}}
 					</view>
 				</view>
@@ -108,20 +108,13 @@
 		},
 		methods: {
 			/**
-			 * 点击历史搜索的tag
-			 */
-			historyItemTap(val) {
-				this.isHistory = false;
-				this.getInputtips(val);
-			},
-			/**
 			 * 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			 */
 			searchTrendTap(val) {
-				console.log('click trend:' + val);
 				util.setHistory(val);
-				this.isHistory = false;
-				this.getInputtips(val);
+				uni.navigateTo({
+					url: "../../search/detail/detail?indexId=1000&indexName=GDPSS"
+				})
 			},
 			/**
 			 * 搜索结果列表点击
@@ -187,7 +180,6 @@
 				this.isHistory = true;
 				this.searchHistoryList = [];
 				this.searchHistoryList = uni.getStorageSync('search_history');
-
 				return;
 			} else {
 				this.isHistory = false;
@@ -197,6 +189,7 @@
 		/**
 		 * 点击软键盘搜索按键触发
 		 */
+		/*
 		onNavigationBarSearchInputConfirmed(e) {
 			let text = e.text;
 			if (!text) {
@@ -224,6 +217,7 @@
 				});
 			}
 		},
+		*/
 		/**
 		 *  点击导航栏 buttons 时触发
 		 */
