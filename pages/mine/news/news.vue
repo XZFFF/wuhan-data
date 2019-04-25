@@ -76,11 +76,11 @@
 		width: 400upx;
 	}
 	.list-cell-badge{
-		width: 120upx;
-		height: 40upx;
+		width: 130upx;
+		height: 45upx;
 		border-radius: 20px; 
 		background-color: #1A82D2;
-		font-size: 25upx;
+		font-size: 23upx;
 		color: #FFFFFF;
 		text-align: center;
 	}

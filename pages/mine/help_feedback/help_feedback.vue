@@ -9,9 +9,7 @@
 				</view>
 			</view>
 		</view>
-		<button type="default" class="feedback-submit" v-for="(value,key) in feedback" @click="goDetailPage(value)">
-			反馈我的问题
-		</button>
+		<input type="button" class="feedback-submit" style="line-height:80upx" value="反馈我的问题" v-for="(value,key) in feedback" @click="goDetailPage(value)" />
 	</view>
 </template>
 
@@ -58,6 +56,13 @@
 	}
 	.feedback-submit{
 		margin-top: 600upx;
+		margin-left: 5%;
+		width: 90%;
+		height: 80upx;
+		font-size: 35upx;
+		color: black;
+		background-color: #FFFFFF;
+		border-radius: 5px; 
 	}
 	
 </style>
