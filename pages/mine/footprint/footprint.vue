@@ -87,12 +87,12 @@
 	.swiper-tab-list{
 		margin-top: 25upx;
 		width: 50%;
-		height: 66upx;
+		height: 70upx;
 		font-size: 32upx;
 		color: #FFFFFF;
 	}
 	.active{
-		border-bottom: 4px solid #FFFFFF;
+		border-bottom: 2px solid #FFFFFF;
 	}
 	.list-cell{
 		border-bottom: 2upx solid rgb(229,229,229);	
@@ -107,9 +107,9 @@
 	}
 	.list-label{
 		margin-left: 40upx;
-		margin-top: 25upx;
-		width: 120upx;
-		height: 40upx;
+		margin-top: 20upx;
+		width: 100upx;
+		height: 45upx;
 		border-radius: 20px; 
 		background-color: #1A82D2;
 		font-size: 25upx;

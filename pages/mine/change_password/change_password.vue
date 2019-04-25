@@ -29,6 +29,10 @@
 	export default {
 		methods: {
 			goLogin(e){
+				uni.showToast({
+					title: '修改密码需要重新登录',
+					icon: 'none'
+				});
 				let url = '../login/login';
 				uni.navigateTo({
 					url: url

@@ -33,9 +33,7 @@
 			<information-list v-for="(value,key) in list3" :title="value.title" :content="value.content">
 			</information-list>
 		</view>
-		<button class="exitButton" v-for="(value,key) in exit" @click="goDetailPage(value)">
-			退出登录
-		</button>
+		<input type="button" class="exitButton" style="line-height:80upx" value="退出登录" v-for="(value,key) in exit" @click="goDetailPage(value)" />
 	</view>
 </template>
 

@@ -42,9 +42,7 @@
 									<input class="input"  placeholder="请输入密码" />
 								</view>
 							</view>
-							<button class="login-button">
-								注册
-							</button>
+							<input type="button" class="login-button" style="line-height:80upx" value="注册" />
 						</swiper-item>
 						<swiper-item>
 							<view style="font-size: 50upx; margin-left: 50upx; margin-top: 70upx; ">
@@ -68,9 +66,7 @@
 							<view class="forget-password" v-for="(value,key) in forget_password" @click="goDetailPage(value)">
 								忘记密码？
 							</view>
-							<button class="login-button" @tap="lands">
-								登录
-							</button>
+							<input type="button" class="login-button" style="line-height:80upx" value="登录" @tap="lands" />
 						</swiper-item>
 					</swiper>
 				</view>
