@@ -2,7 +2,7 @@
 	<scroll-view scroll-y="true" class="container">
 		<!-- 标题栏 -->
 		<wd-time-picker></wd-time-picker>
-		<wd-choose-item v-for="(requestItem, index) in requestData" :key="index" :requestItem="requestItem"></wd-choose-item>
+		<wd-choose-item v-for="(requestItem, index) in requestTestData" :key="index" :requestItem="requestItem"></wd-choose-item>
 	</scroll-view>
 </template>
 

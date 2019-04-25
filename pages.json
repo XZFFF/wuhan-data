@@ -73,6 +73,9 @@
 								"type": "favorite"
 							}
 						]
+					},
+					"pullToRefresh": {
+						"support": true
 					}
 				}
 			}
@@ -88,14 +91,24 @@
 			"path": "pages/topic/detail/detail",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "具体专题页"
+				"navigationBarTitleText": "具体专题页",
+				"app-plus": {
+					"pullToRefresh": {
+						"support": true
+					}
+				}
 			}
 		},
 		{
 			"path": "pages/search/detail/detail",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "具体指标页"
+				"navigationBarTitleText": "具体指标页",
+				"app-plus": {
+					"pullToRefresh": {
+						"support": true
+					}
+				}
 			}
 		},
 		{

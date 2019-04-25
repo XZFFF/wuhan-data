@@ -13,7 +13,7 @@
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
 				<view v-if="searchHistoryList.length > 0" class="history-content">
-					<view class="history-item" v-for="(item, index) in tranName" :key="index"">
+					<view class="history-item" v-for="(item, index) in tranName" :key="index">
 						{{item.name}}
 					</view>
 				</view>
