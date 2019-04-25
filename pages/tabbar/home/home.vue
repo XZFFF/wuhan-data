@@ -21,7 +21,7 @@
 		<!-- 经济分析 -->
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
-				<view class="icon-single-background" :style="'background: '+item.background" @click="open_analysis_list"
+				<view class="icon-single-background" :style="'background: '+item.background" @click="openAnalysisList"
 				 :data-analysisid=item.id>
 					<image class="icon-single-backicon" :src="item.icon_url"></image>
 				</view>
@@ -31,9 +31,9 @@
 		<!-- 专题 -->
 		<view class="topic">
 			<view class="topic-image">
-				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="open_topic_list"></image>
+				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="openTopicList"></image>
 			</view>
-			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail">
+			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail">
 				<wd-card-item :image="item.image" :title="item.title"></wd-card-item>
 			</view>
 		</view>
@@ -119,22 +119,20 @@
 			});
 		},
 		methods: {
-			open_analysis_list(e) {
+			openAnalysisList(e) {
 				var analysis_id = e.currentTarget.dataset.analysisid;
 				uni.navigateTo({
 					url: '../../analysis/list/list?analysis_id=' + analysis_id
 				});
 			},
-			open_topic_list(e) {
+			openTopicList(e) {
 				uni.navigateTo({
 					url: '../../topic/list/list'
 				});
 			},
-			open_topic_detail(e) {
-				uni.showToast({
-					title: "该专题暂未开放",
-					icon: "none",
-					duration: 1000,
+			openTopicDetail(e) {
+				uni.navigateTo({
+					url:'../../topic/detail/detail'
 				})
 			},
 			openSearch(e) {
