@@ -20,7 +20,7 @@
 		</view>
 		<!-- 经济分析 -->
 		<view class="icon-layout">
-			<view class="icon-single-layout" v-for="(item,index) in analysis_icon" :key="index">
+			<view class="icon-single-layout" v-for="(item,index) in analysisIcon" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="openAnalysisList"
 				 :data-analysisid=item.id>
 					<image class="icon-single-backicon" :src="item.icon_url"></image>
@@ -56,73 +56,143 @@
 				interval: 2000, // 自动切换时长
 				duration: 500, // 切换时长
 				slideshow: [],
-				analysis_icon: [],
+				analysisIcon: [],
 				topic: [],
 			};
 		},
-		onLoad: function() {
-			uni.showLoading({
-				title: "Loading..."
-			})
-			setTimeout(function() {
-				uni.hideLoading();
-			}, 2000);
-			// 通过请求接口获取启动图
-			uni.request({
-				url: 'http://wuhandata.applinzi.com/slideshow.php',
-				method: 'GET',
-				data: {},
-				success: res => {
-					this.slideshow = res.data;
-				},
-				fail: (e) => {},
-				complete: () => {}
-			});
-			// 获取经济分析所有icon数据
-			uni.request({
-				url: 'http://wuhandata.applinzi.com/analysisIcon.php',
-				method: 'GET',
-				data: {},
-				success: res => {
-					this.analysis_icon = res.data;
-				},
-				fail: (e) => {},
-				complete: () => {
-					uni.hideLoading();
+		onShow: function() {
+			// 优先取缓存数据, 若缓存数据没有从服务器拉数据并更新缓存
+			try {
+				const homeSlideshow = uni.getStorageSync('home_slideshow');
+				if (homeSlideshow) {
+					this.slideshow = homeSlideshow
+				} else {
+					this.initSlideShow();
 				}
-			});
-			// 通过请求接口获取专题数据
-			uni.request({
-				url: 'http://wuhandata.applinzi.com/topicList.php',
-				method: 'GET',
-				data: {},
-				success: res => {
-					let res_topic = res.data;
-					let t = [];
-					let len = res_topic.length;
-					let topic_id1 = Math.floor(Math.random() * len);
-					t.push(res_topic[topic_id1]);
-					// 防止出现重复的
-					let topic_id2 = Math.floor(Math.random() * len);
-					while (1) {
-						topic_id2 = Math.floor(Math.random() * len);
-						if (topic_id2 != topic_id1) {
-							t.push(res_topic[topic_id2]);
-							break;
-						}
-					}
-					this.topic = t;
-					console.log(t);
-				},
-				fail: (e) => {},
-				complete: () => {}
-			});
+				const homeAnalysisIcon = uni.getStorageSync('home_analysis_icon');
+				if (homeAnalysisIcon) {
+					this.analysisIcon = homeAnalysisIcon
+				} else {
+					this.initAnalysisIcon();
+				}
+				const homeTopic = uni.getStorageSync('home_topic');
+				if (homeTopic) {
+					this.topic = homeTopic
+				} else {
+					this.initTopic();
+				}
+			} catch (e) {
+				console.log('无法从本地缓存获取相应数据');
+			}
+			uni.getStorageSync('home_slideshow');
+			uni.getStorageSync('home_analysis_icon');
+			uni.getStorageSync('home_topic');
+			// 即使本地缓存中有数据，也需要同步服务器的数据，以服务器数据为准
+			this.initHomePage();
+		},
+		onPullDownRefresh: function() {
+			this.initHomePage();
+			uni.stopPullDownRefresh();
 		},
 		methods: {
+			initHomePage() {
+				this.checkNetwork();
+				this.initSlideShow();
+				this.initAnalysisIcon();
+				this.initTopic();
+			},
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						console.log(res.networkType);
+						if (res.networkType == 'none') {
+							console.log('network:' + res.networkType);
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
+			initSlideShow() {
+				// 通过请求接口获取轮播图
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/slideshow.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.slideshow = res.data;
+						uni.setStorage({
+							key: 'home_slideshow',
+							data: this.slideshow,
+							success: function() {
+								console.log('成功请求轮播图数据并存入本地缓存');
+							}
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
+			initAnalysisIcon() {
+				// 获取经济分析所有icon数据
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/analysisIcon.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.analysisIcon = res.data;
+						uni.setStorage({
+							key: 'home_analysis_icon',
+							data: this.analysisIcon
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
+			initTopic() {
+				// 通过请求接口获取专题数据
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/topicList.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						let resTopic = res.data;
+						let t = [];
+						let len = resTopic.length;
+						let tid1 = Math.floor(Math.random() * len);
+						t.push(resTopic[tid1]);
+						if (len > 1) {
+							// 防止出现重复的
+							let tid2 = Math.floor(Math.random() * len);
+							while (1) {
+								tid2 = Math.floor(Math.random() * len);
+								if (tid2 != tid1) {
+									t.push(resTopic[tid2]);
+									break;
+								}
+							}
+							this.topic = t;
+						} else {
+							this.topic = t;
+						}
+
+						uni.setStorage({
+							key: 'home_topic',
+							data: this.topic
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
 			openAnalysisList(e) {
-				var analysis_id = e.currentTarget.dataset.analysisid;
+				var analysisId = e.currentTarget.dataset.analysisid;
 				uni.navigateTo({
-					url: '../../analysis/list/list?analysis_id=' + analysis_id
+					url: '../../analysis/list/list?analysis_id=' + analysisId
 				});
 			},
 			openTopicList(e) {
@@ -132,7 +202,7 @@
 			},
 			openTopicDetail(e) {
 				uni.navigateTo({
-					url:'../../topic/detail/detail'
+					url: '../../topic/detail/detail'
 				})
 			},
 			openSearch(e) {
