@@ -28,7 +28,7 @@
 					</view>
 				</view>
 				<uni-list style="background-color: #FFFFFF;">
-					<view v-for="(item, index) in searchTrendList" :key="index" @click="searchTrendTap(item.title)">
+					<view v-for="(item, index) in searchTrendList" :key="index" @click="searchTrendTap(item)">
 						<wd-list-item :trendId="item.id" :title="item.title" :trendArrow="item.arrow" :trendRate="item.rate"></wd-list-item>
 					</view>
 				</uni-list>
@@ -71,49 +71,58 @@
 		},
 		data() {
 			return {
-				type: '全部',
+				type: '全部（默认）',
 				flng: true,
 				timer: null,
 				isHistory: true,
 				list: [],
 				searchHistoryList: [],
-				searchTrendList: [{
-					title: '233'
-				}],
+				searchTrendList: [],
 				searchResultList: []
 			};
 		},
-		onLoad() {
-			uni.showLoading({
-				title: "Loading..."
-			})
+		onShow() {
+			console.log('search page onShow');
 			this.isHistory = true;
+
 			this.searchHistoryList = uni.getStorageSync('search_history');
 			this.getInputtips('GDP');
-			// 获取搜索趋势的接口
-			uni.request({
-				url: 'http://wuhandata.applinzi.com/searchTrend.php',
-				method: 'GET',
-				data: {},
-				success: res => {
-					this.searchTrendList = res.data;
-					// console.log(this.searchTrendList);
-				},
-				fail: (e) => {},
-				complete: () => {
-					uni.hideLoading();
-				}
-			});
 
+			const searchTrend = uni.getStorageSync('search_trend');
+			if (searchTrend) {
+				this.searchTrendList = searchTrend
+			} else {
+				this.initSearchTrend();
+			}
 		},
 		methods: {
+			initSearchTrend() {
+				// 获取搜索趋势的接口
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/searchTrend.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.searchTrendList = res.data;
+						uni.setStorage({
+							key: 'search_trend',
+							data: this.searchTrendList,
+							success: function() {
+								console.log('成功请求搜索趋势数据并存入本地缓存');
+							}
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
 			/**
 			 * 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			 */
-			searchTrendTap(val) {
-				util.setHistory(val);
+			searchTrendTap(item) {
+				util.setHistory(item.title);
 				uni.navigateTo({
-					url: "../../search/detail/detail?indexId=1000&indexName=GDPSS"
+					url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.title
 				})
 			},
 			/**
@@ -140,9 +149,10 @@
 			 * 清理历史搜索数据
 			 */
 			clearSearch() {
+				console.log('触发的类型:'+this.type);
 				uni.showModal({
 					title: '提示',
-					content: '是否清理全部搜索历史？该操作不可逆。',
+					content: '是否清理全部搜索历史？',
 					success: res => {
 						if (res.confirm) {
 							this.searchHistoryList = util.removeHistory();
@@ -154,11 +164,13 @@
 			 * 关键字搜索
 			 */
 			getInputtips(val) {
+				console.log('当前类型是:' + this.type);
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/searchResult.php',
-					method: 'GET',
+					method: 'POST',
 					data: {
 						keyword: val,
+						type: this.type,
 					},
 					success: res => {
 						let dataObj = res.data;
@@ -242,6 +254,7 @@
 					currentWebview.setStyle({
 						titleNView: titleObj
 					});
+					console.log('搜索类型更改为:' + this.type);
 					// #endif
 				},
 				fail: function(res) {
