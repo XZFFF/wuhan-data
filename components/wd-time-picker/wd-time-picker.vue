@@ -47,11 +47,18 @@
 
 <script>
 	export default {
+		props: {
+			array1: {
+				type: Array,
+				default: function() {
+					return ['2017Q1', '2017Q2'];
+				}
+			},
+		},
 		data() {
 			return {
 				index1: 0,
 				index2: 0,
-				array1: ['2017Q1', '2017Q2', '2017Q3', '2017Q4'],
 				array2: ['2018Q1', '2018Q2', '2018Q3', '2018Q4'],
 			};
 		},
