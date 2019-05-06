@@ -40,11 +40,25 @@
 			};
 		},
 		methods: {
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						console.log(res.networkType);
+						if (res.networkType == 'none') {
+							console.log('network:' + res.networkType);
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
 			scroll(e) {
 				this.scrollHeight = e.detail.scrollHeight;
 			},
 			categoryClickMain(categroy, index) {
-				console.log(categroy);
 				this.categoryActive = index;
 				// 右侧栏数据根据左侧栏变更做出变化
 				this.subCategoryList = categroy.subList;
@@ -66,11 +80,12 @@
 					uni.hideLoading();
 					this.categoryList = res.data;
 				},
-				fail: (e) => {},
+				fail: (e) => {
+					this.checkNetwork();
+				},
 				complete: () => {
 					if (JSON.stringify(e) != '{}') {
 						this.analysisId = e.analysis_id;
-						console.log(this.analysisId);
 						// 设置初始化的左右侧子栏数据(默认为第一个)
 						this.categoryActive = this.analysisId;
 						this.subCategoryList = this.categoryList[this.analysisId].subList;
