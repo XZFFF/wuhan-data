@@ -193,11 +193,7 @@
 				"navigationBarTitleText": "修改密码"
 			}
 		}
-	    ,{
-            "path" : "pages/demo/demo",
-            "style" : {}
-        }
-    ],
+	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
 	"globalStyle": {
 		"navigationStyle": "default",
@@ -235,13 +231,7 @@
 	"condition": {
 		//模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
-				"name": "demo",
-				"path": "pages/demo/demo",
-				"query": ""
-			},
-			{
+		"list": [{
 				"name": "home",
 				"path": "pages/tabbar/home/home",
 				"query": ""

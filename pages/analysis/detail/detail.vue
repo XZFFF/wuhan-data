@@ -10,39 +10,6 @@
 	import wdTimePicker from '@/components/wd-time-picker/wd-time-picker.vue';
 	import wdChooseItem from '@/components/wd-choose-item/wd-choose-item.vue';
 
-	let requestTestData = [{
-		"id": "1",
-		"type": "echarts",
-		"height": "300",
-		"option": {
-			"grid": {
-				"containLabel": true
-			},
-			"xAxis": {
-				"type": "category",
-				"data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-			},
-			"yAxis": {
-				"type": "value"
-			},
-			"series": [{
-				"type": "line",
-				"data": [820, 932, 901, 934, 1290, 1330, 1320]
-			}]
-		}
-	}, {
-		"id": "2",
-		"type": "table",
-		"tableBody": [
-			["表头1表头1表头头1表头1", "item1", "item2", "item3", "item4", "233"],
-			["表头2表头1表头1表", "xiaoming", "xiaohong", "lining", "233", "233"],
-			["表头3", "9000000000", "80", "70", "233", "233"],
-			["表头3", "900", "80", "70", "233", "233"],
-			["表头3", "900", "80", "70", "233", "233"],
-			["表头3", "900", "80", "70", "233", "233"]
-		]
-	}];
-
 	export default {
 		components: {
 			wdTimePicker,
@@ -51,7 +18,6 @@
 		data() {
 			return {
 				indexDetail: {},
-				requestTestData: requestTestData,
 				indexId: "1000",
 				indexName: "指标详情页",
 			};
