@@ -45,6 +45,9 @@ export default {
       default: false,
     },
   },
+	onLoad() {
+		this.init();
+	},
 	// #ifdef H5
   mounted() {
     if (!this.echarts) {

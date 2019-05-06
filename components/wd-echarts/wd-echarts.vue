@@ -4,7 +4,7 @@
 			<image src="../../../static/icon/echarts/trend-upward.png"></image>
 			<text>ECharts展示</text>
 		</view>
-		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="chart" />
+		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="echarts" />
 	</view>
 </template>
 
@@ -33,12 +33,16 @@
 		},
 		onLoad() {
 			// console.log(this.nbOption);
-			// this.$refs.chart.init();
+			// this.lazyInit();
 		},
 		updated() {
 			// console.log(this.nbOption);
 		},
 		methods: {
+			// lazyInit() {
+			// 	console.log('lazyInit:' + this.nbOption);
+			// 	this.$refs.echarts.init()
+			// },
 			onInit(canvas, width, height) {
 				console.log(Boolean(this.nbOption));
 				let nbChart = echarts.init(canvas, null, {
