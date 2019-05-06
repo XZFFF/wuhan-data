@@ -48,6 +48,9 @@ export default {
 	onLoad() {
 		this.init();
 	},
+	onPullDownRefresh() {
+		this.init();
+	},
 	// #ifdef H5
   mounted() {
     if (!this.echarts) {
