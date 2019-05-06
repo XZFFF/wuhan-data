@@ -1,23 +1,29 @@
 <template>
 	<scroll-view scroll-y="true" class="container">
 		<!-- 标题栏 -->
-		<wd-time-picker></wd-time-picker>
-		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
+		<!-- <wd-time-picker></wd-time-picker> -->
+		<!-- <wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item> -->
+		<wd-related-list></wd-related-list>
 	</scroll-view>
 </template>
 
 <script>
 	import wdTimePicker from '@/components/wd-time-picker/wd-time-picker.vue';
 	import wdChooseItem from '@/components/wd-choose-item/wd-choose-item.vue';
+	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
+
+	let relatedData = [{},{}];
 
 	export default {
 		components: {
 			wdTimePicker,
-			wdChooseItem
+			wdChooseItem,
+			wdRelatedList
 		},
 		data() {
 			return {
 				indexDetail: {},
+				relatedData: relatedData,
 				indexId: "1000",
 				indexName: "指标详情页",
 			};
@@ -83,7 +89,7 @@
 	.container {
 		flex: 1;
 		flex-direction: column;
-		padding-bottom: 30upx;
+		/* padding-bottom: 30upx; */
 		box-sizing: border-box;
 	}
 </style>
