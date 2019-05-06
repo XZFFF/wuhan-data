@@ -29,7 +29,7 @@
 				</view>
 				<uni-list style="background-color: #FFFFFF;">
 					<view v-for="(item, index) in searchTrendList" :key="index" @click="searchTrendTap(item)">
-						<wd-list-item :trendId="item.id" :title="item.title" :trendArrow="item.arrow" :trendRate="item.rate"></wd-list-item>
+						<wd-trend-list-item :trendId="item.id" :title="item.title" :trendArrow="item.arrow" :trendRate="item.rate"></wd-trend-list-item>
 					</view>
 				</uni-list>
 			</view>
@@ -50,13 +50,13 @@
 	import util from '@/components/wd-search/js/util.js';
 	import uniList from '@/components/uni-list/uni-list.vue'
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
-	import wdListItem from '@/components/wd-list-item/wd-list-item.vue'
+	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue'
 
 	export default {
 		components: {
 			uniList,
 			uniListItem,
-			wdListItem
+			wdTrendListItem
 		},
 		computed: {
 			tranName: function() {
@@ -149,7 +149,7 @@
 			 * 清理历史搜索数据
 			 */
 			clearSearch() {
-				console.log('触发的类型:'+this.type);
+				console.log('触发的类型:' + this.type);
 				uni.showModal({
 					title: '提示',
 					content: '是否清理全部搜索历史？',
