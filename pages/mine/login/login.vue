@@ -4,13 +4,12 @@
 			<view class="login-box">
 				<view>
 					<view class="tab-bar">
-						<view class="swiper-tab">
-							<view v-for="(tab,index) in tabBars" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :data-current="index" @click="tapTab">
-								{{tab.name}}
-							</view>
+						<view id="tab-bar" class="swiper-tab" scroll-x :scroll-left="scrollLeft">
+							<view v-for="(tab,index) in tabBars" :key="tab.id" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="tab.id"
+							 :data-current="index" @click="tapTab(index)">{{tab.name}}</view>
 						</view>
 					</view>
-					<swiper :current="tabIndex" class="swiper-box" duration="300" style="height: 800upx;">
+					<swiper :current="tabIndex" class="swiper-box" duration="300" style="height: 800upx;" @change="changeTab">
 						<swiper-item>
 							<view style="font-size: 50upx; margin-left: 50upx; margin-top: 70upx; ">
 								手机验证
@@ -19,7 +18,7 @@
 								请输入您的手机号码完成验证
 							</view>
 							<view class="login-list">
-								<view class="title" @click="goTelIndex" style="display: flex;">+86
+								<view class="title" @click="goTelIndex" style="display: flex;">{{countryTel}}
 								<view class="triangle">
 								</view>
 								</view>
@@ -32,9 +31,7 @@
 								<view class="list" style="width: 35%;">
 									<input class="input"  placeholder="请输入验证码" />
 								</view>
-								<button class="verification-code">
-									获取验证码
-								</button>
+								<input type="button" class="verification-code" style="line-height: 60upx;" value="获取验证码" />
 							</view>
 							<view class="login-list">
 								<text class="title">密码</text>
@@ -54,7 +51,7 @@
 							<view class="login-list">
 								<text class="title">账户</text>
 								<view class="list">
-										<input class="input" type="text" value="user" v-model="uname" placeholder="默认为手机号" />
+									<input class="input" type="text" value="user" v-model="tel" placeholder="默认为手机号" />
 								</view>
 							</view>
 							<view class="login-list">
@@ -63,7 +60,7 @@
 									<input class="input" password="true" type="text" value="pass" v-model="passw" placeholder="请输入密码" />
 								</view>
 							</view>
-							<view class="forget-password" v-for="(value,key) in forget_password" @click="goDetailPage(value)">
+							<view class="forget-password" v-for="(value,key) in forget_password" :key="key" @click="goDetailPage(value)">
 								忘记密码？
 							</view>
 							<input type="button" class="login-button" style="line-height:80upx" value="登录" @tap="lands" />
@@ -83,7 +80,10 @@
 			lists: [], (self = this);
 			return {
 				isClickChange: false,
-				tabIndex: 1,
+				tabIndex: 0,
+				tel: "",
+				passw: "",
+				countryTel: "+86",
 				tabBars: [{
 					name: '注册',
 				}, {
@@ -96,32 +96,46 @@
 			}
 		},
 		//页面初始加载
-    mounted() {
-        let that = this;
-
-        //缓存的账号
-        const HCuname = uni.getStorageSync('HCuname');
-        //缓存的密码
-        const HCpassw = uni.getStorageSync('HCpassw');
-        //         console.log(HCpassw+"缓存的密码")
-        //         console.log(HCuname)
-        //有缓存就赋值给文本没有就清空
-        if (HCuname && HCpassw) {
-            that.uname = HCuname;
-            that.passw = HCpassw;
-        } else {
-            that.uname = '';
-            that.passw = '';
-        }
-    },
+		onShow() {
+			const changeTel = uni.getStorageSync('changeTel');
+			if(changeTel.flag)
+				this.countryTel = changeTel.tel;
+			uni.removeStorageSync('changeTel');
+		},
 		methods: {
-			async tapTab(e) { //点击tab-bar
-				var that = this;
-			    if (this.tabIndex === e.target.dataset.current) {
-			        return false;
-			    } else {
-			        that.tabIndex = e.target.dataset.current   
-			    }
+			async changeTab(e) {
+				let index = e.detail.current;
+				if (this.isClickChange) {
+					this.tabIndex = index;
+					this.isClickChange = false;
+					return;
+				}
+				let tabBar = await this.getElSize("tab-bar"),
+					tabBarScrollLeft = tabBar.scrollLeft;
+				
+				this.isClickChange = false;
+				this.tabIndex = index; 
+			},
+			getElSize(id) { //得到元素的size
+				return new Promise((res, rej) => {
+					uni.createSelectorQuery().select('#' + id).fields({
+						size: true,
+						scrollOffset: true
+					}, (data) => {
+						res(data);
+					}).exec();
+				});
+			},
+			async tapTab(index) { //点击tab-bar
+				if (this.tabIndex === index) {
+					return false;
+				} else {
+					let tabBar = await this.getElSize("tab-bar"),
+						tabBarScrollLeft = tabBar.scrollLeft; //点击的时候记录并设置scrollLeft
+					this.scrollLeft = tabBarScrollLeft;
+					this.isClickChange = true;
+					this.tabIndex = index;
+				}
 			},
 			goDetailPage(e) {
 				let path = e.url ? e.url : e;
@@ -138,92 +152,51 @@
 				});
 				return false;
 			},
-			//             //用户名：
-        //         nameChange:function(e){
-        //             this.uname=e.traget.value
-        //         },
-        //         //密码：
-        //         passChange:function(e){
-        //             this.passw=e.traget.value
-        //         },
 
-        //登陆
-        lands() {
-            if (this.uname.length <= 0 || this.passw.length <= 0) {
-                uni.showToast({
-                    title: '账号或密码不能为空',
-                    icon: 'none'
-                });
-                return;
-            } else {
-                let TFTwoName = this.uname.substring(0, 2);
-                let TFLastName = this.uname.substring(2);
-                let Passwd = this.passw;
-          
-
-                var that = this;
-                //链接登录  （我这是两次，第一次获取链接地址，第二次才为登录 ）
-                uni.request({
-                    url: 'http链接地址',
-                    success: res => {
-                        var sabb = [];
-                    
-                        // console.log(webapiaddress+"链接地址")
-                        //打印链接地址
-                       
-
-                       //这里是登录（你可以直接在这里进行操作你的登录链接上面的你要删除包含对应的括号）
-                        var that = this;
-                        uni.request({
-                            url: '' + webapiaddress + '/api/User', //链接地址
-                            data: {
-                                strUser: TFLastName,
-                                strPwd: Passwd
-                            },
-                            dataType: 'json',
-                            success: res => {
-                                //成功
-                                if (res.data.IsSuccess == true) {
-                                    
-                                    //缓存账号和密码
-                                    if (that.rememberPsw) {
-                                        uni.setStorageSync('HCuname', that.uname);
-                                        uni.setStorageSync('HCpassw', that.passw);
-                                    } else {
-                                        uni.removeStorageSync('HCuname');
-                                        uni.removeStorageSync('HCpassw');
-//                                         that.uname = '';
-//                                         that.passw = '';
-                                    }
-                                    uni.navigateTo({
-                                        url: '../index/index'
-                                    });
-                                } else {
-                                    uni.showToast({
-                                        title: '用户名或密码错误',
-                                        icon: 'none'
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        },
-        //复选框
-			checkboxChange: function(e) {
-				console.log(e.detail.value.length);
-				if (e.detail.value.length == 1) {
-					//获取缓存的账号
-					uni.getStorageSync('HCuname',this.uname);
-					uni.getStorageSync('HCpassw',this.passw);
+			lands() {
+				if (this.tel.length <= 0 || this.passw.length <= 0) {
+					uni.showToast({
+						title: '账号或密码不能为空',
+						icon: 'none'
+					});
+					return;
+            	} else {
+					var req = {
+						"tel": this.tel,  
+						"password": this.passw
+					};
+					uni.request({
+						url: "http://192.168.126.1/login.php", //仅为示例，并非真实接口地址。
+						data: req,
+						success: (res) => {
+							let list=JSON.stringify(res.data);
+							console.log("返回数据状态:" + list);
+							if(res.data.status === 2){
+								uni.showToast({
+									icon: 'none',
+									title: '用户名或密码错误'
+								});
+								return;
+							}
+							else if(res.data.status === 1){
+								uni.showToast({
+									icon: 'none',
+									title: '登录成功'
+								});
+								uni.switchTab({
+									url: '../../tabbar/home/home',
+								})
+							}
+						},fail: () => {
+							uni.showToast({
+								icon: 'none',
+								title: '网络异常,请稍后重试'
+							});
+						},
+					})
 				}
-				else {
-						uni.removeStorageSync('HCuname');
-						uni.removeStorageSync('HCpassw');              
-				}
-        	}
-		}
+			}
+		},
 	}
 </script>
 

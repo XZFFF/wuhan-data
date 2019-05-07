@@ -2,13 +2,13 @@
 	<view class="page">
 		<scroll-view class="scrollList" scroll-y :scroll-into-view="scrollViewId" :style="{height:winHeight + 'px'}">
 			<view class="uni-list">
-				<block v-for="(list, key) in lists" :key="key">
+				<block v-for="(list, key) in lists" :key="key" :data-current="key">
 					<block v-if="list.data.length">
 						<view class="uni-list-cell-divider" :id="list.letter">
 							{{list.letter}}
 						</view>
-						<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(item,index) in list.data" :key="index"
-						 :class="list.data.length -1 == index ? 'uni-list-cell-last' : ''">
+						<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(item,index) in list.data" :key="index" :data-current="index"
+						 :class="list.data.length -1 == index ? 'uni-list-cell-last' : ''" @click="changeTel(key,index)">
 							<view class="uni-list-cell-navigate">
 								{{item.name}}
 							</view>
@@ -32,24 +32,27 @@
 </template>
 
 <script>
-	var airportDate = require("../../../../common/telIndex.js");
+	var telDate = require("../../../../common/telIndex.js");
 
 	export default {
 		data() {
 			return {
 				title: 'grid',
-				lists: airportDate.list,
+				lists: telDate.list,
 				touchmove: false,
-				touchmoveIndex: -1,
+				touchmoveIndex: 0,
 				itemHeight: 0,
 				winHeight: 0,
-				scrollViewId: "热门",
-				titleHeight: 0
+				scrollViewId: "hot",
+				titleHeight: 0,
+				countryTel: '+86',
+				listIndex: 0,
+				dataIndex: 0
 			}
 		},
 		onLoad() {
 			let winHeight = uni.getSystemInfoSync().windowHeight;
-			this.itemHeight = winHeight / 27;
+			this.itemHeight = winHeight / 23;
 			this.winHeight = winHeight;
 		},
 		methods: {
@@ -57,6 +60,7 @@
 				this.touchmove = true;
 				let pageY = e.touches[0].pageY;
 				let index = Math.floor((pageY - this.titleHeight) / this.itemHeight);
+				this.listIndex = index;
 				let item = this.lists[index];
 				if (item) {
 					this.scrollViewId = item.letter;
@@ -66,6 +70,7 @@
 			touchMove(e) {
 				let pageY = e.touches[0].pageY;
 				let index = Math.floor((pageY - this.titleHeight) / this.itemHeight);
+				this.listIndex = index;
 				let item = this.lists[index];
 				if (item) {
 					this.scrollViewId = item.letter;
@@ -79,6 +84,15 @@
 			touchCancel() {
 				this.touchmove = false;
 				this.touchmoveIndex = -1;
+			},
+			changeTel(key,index) {
+				let countryTel = this.lists[key].data[index].number;
+				console.log("返回index:" + countryTel);
+				uni.setStorageSync('changeTel',{
+						flag: 1,
+						tel: countryTel,
+						});
+				uni.navigateBack ()
 			}
 		}
 	}

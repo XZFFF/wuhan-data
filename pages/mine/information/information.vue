@@ -5,7 +5,7 @@
 			<text style="color: #868686; font-size: 32upx; ">账户信息</text>
 		</view>
 		<view class="uni-list">
-			<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in list0" @click="goDetailPage(value)">
+			<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in list0" :key="key" @click="goDetailPage(value)">
 				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="height: 130upx;display: flex;">
 					<view class="uni-media-list-body" style="justify-content: center">
 						<view class="uni-media-list-text" style="font-size: 30upx">{{value.title}}</view>
@@ -15,11 +15,11 @@
 					</view>
 				</view>
 			</view>
-			<information-list v-for="(value,key) in list1" :title="value.title" :content="value.content">
+			<information-list v-for="(value,key) in list1" :key="key" :title="value.title" :content="value.content">
 			</information-list>
 		</view>
 		<view class="uni-list" style="margin-top: 20upx;">
-			<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in list2" @click="goDetailPage(value)">
+			<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in list2" :key="key" @click="goDetailPage(value)">
 				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
 					<view class="uni-media-list-text" style="font-size: 30upx">{{value.title}}</view>
 				</view>
@@ -27,13 +27,13 @@
 		</view>
 		<view style="padding: 35upx 30upx 0;">
 			<text style="color: #868686; font-size: 32upx; ">个人信息</text>
-			<image v-for="(value,key) in edit" src="../../../static/icon/mine/tune.png" style="width:40upx;height: 40upx;float: right;" @click="goDetailPage(value)"></image>
+			<image v-for="(value,key) in edit" :key="key" src="../../../static/icon/mine/tune.png" style="width:40upx;height: 40upx;float: right;" @click="goDetailPage(value)"></image>
 		</view>
 		<view class="uni-list">
-			<information-list v-for="(value,key) in list3" :title="value.title" :content="value.content">
+			<information-list v-for="(value,key) in list3" :key="key" :title="value.title" :content="value.content">
 			</information-list>
 		</view>
-		<input type="button" class="exitButton" style="line-height:80upx" value="退出登录" v-for="(value,key) in exit" @click="goDetailPage(value)" />
+		<input type="button" class="exitButton" style="line-height:80upx" value="退出登录" v-for="(value,key) in exit" :key="key" @click="goDetailPage(value)" />
 	</view>
 </template>
 

@@ -2,7 +2,7 @@
 	<view>
 		<view class="tops" style=" background-color: #3A82CC;height: 180upx; ">
 			<!-- 个人信息栏 -->
-			<view class="personal" style="color: #FFFFFF;"  v-for="(value,key) in personal_information" :key="key" @click="goDetailPage(value)">
+			<view class="personal" style="color: #FFFFFF;"  v-for="(value,index) in personal_information" :key="index" @click="goDetailPage(value)">
 				<view class="uni-list-cell-navigate uni-media-list" style="; width: 100%;"> 
 					<image class="head" src="../../../static/icon/mine/head.png"></image>
 					<view class="information">
@@ -26,9 +26,9 @@
 		</view>
 		<!-- 个人浏览 -->
 		<view class="personal-browse">
-			<view class="icon-single-layout" v-for="(value,key) in browse_icon" :key="key" @click="goDetailPage(value)">
+			<view class="icon-single-layout" v-for="(value,index) in browse_icon" :key="index" @click="goDetailPage(value)">
 				<view style="display: table">
-					<span :class="['red-point',tabIndex==key ? 'active' : '']"></span>
+					<span :class="['red-point',tabIndex==index ? 'active' : '']"></span>
 					<image style="width: 50upx; height: 50upx; display:flex" :src="value.img"></image>
 					<view class="text" style="font-size:30upx; color:#1E90FF">{{value.title}}</view>
 				</view>
@@ -37,7 +37,7 @@
 		<!-- 菜单 -->
 		<view class="menu">
 			<view class="uni-list">
-				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" :key="key" @click="goDetailPage(value)">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" :key="key" @click="goDetailPage1(value)">
 					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="padding: 0 30upx;">
 						<view class="uni-media-list-logo">
 							<image style="height: 50upx; width: 50upx; margin-top: 20upx;" v-if="showImg" :src="value.img"></image>
@@ -63,11 +63,11 @@
 			return {
 				tabIndex: 2,
 				title: 'list',
-				showImg: false,
-					personal_information: [{
-						url: "information"
-					}], 
-					browse_icon: [{
+				showImg: true,
+				personal_information: [{
+					url: "information"
+				}], 
+				browse_icon: [{
 					title: "收藏",
 					url: "collection",
 					img: "../../../static/icon/mine/favorite.png"
@@ -83,23 +83,28 @@
 				],
 					
 				menu_list: [
-					 {
+					{
+					id: 0,
 					title: "检查更新",
 					url: "update",
 					img: "../../../static/icon/mine/update.png"
 				},{
+					id: 1,
 					title: "清除缓存",
 					url: "clear_cache",
 					img: "../../../static/icon/mine/clear.png"
 				},{
+					id: 2,
 					title: "分享应用",
 					url: "share_app",
 					img: "../../../static/icon/mine/share.png"
 				},{
+					id: 3,
 					title: "关于我们",
 					url: "about_us",
 					img: "../../../static/icon/mine/about.png"
 				},{
+					id: 4,
 					title: "问题反馈",
 					url: "help_feedback",
 					img: "../../../static/icon/mine/feedback.png"
@@ -115,33 +120,23 @@
 		onLoad() {
 			setTimeout(() => {
 				this.showImg = true;
-			}, 400)
-		//#ifdef APP-PLUS  
-		var server = "https://www.example.com/update"; //检查更新地址  
-		var req = { //升级检测数据  
-			"appid": plus.runtime.appid,  
-			"version": plus.runtime.version  
-		};
-		uni.request({  
-			url: server,  
-			data: req,  
-			success: (res) => {
-				if (res.statusCode == 200 && res.data.status === 1) {  
-					uni.showModal({ //提醒用户更新  
-						title: "更新提示",  
-						content: res.data.note,  
-						success: (res) => {
-							if (res.confirm) {  
-								plus.runtime.openURL(res.data.url);  
-							}  
-						}  
-					})  
-				}  
-			}  
-		})  
-		//#endif 
+			}, 400);
 		},
-		
+		onLoad:function(){
+			var that = this;
+			uni.request({
+				url: "http://192.168.62.1/personInfo.php",
+				data: {
+					tel: "1"
+				},
+				success: (res) => {
+					let list=JSON.stringify(res.data);
+					console.log("返回数据状态:" + list);
+				},
+				
+			})
+			
+		},
 		methods: {
 			goDetailPage(e) {
 				let path = e.url ? e.url : e;
@@ -150,6 +145,53 @@
 					url: url
 				});
 				return false;
+			},
+			goDetailPage1(e) {
+				if(e.id == 0){
+					var req = { //升级检测数据  
+						"appid": "__UNI__123456",  
+						"version": "1.0.1"
+					}; 
+					uni.request({  
+						url: "http://192.168.126.1/checkUpdate.php",  
+						data: req,
+						success: (res) => {
+							if (res.statusCode == 200 && res.data.status === 1) {
+								uni.showModal({ //提醒用户更新  
+									title: "更新提示",  
+									content: res.data.note+"",
+									success: (res) => {  
+										//if (res.confirm) {  
+											//plus.runtime.openURL(res.data.url);  
+										//} 
+									}  
+								})  
+							}
+							//else if(res.data.status === 0)
+							else
+							{
+								uni.showModal({
+									title: "已为最新版本，无需更新"
+								})
+							}
+						}  
+					}) 
+				}
+				else if(e.id == 1){
+					
+				}
+				else if(e.id == 2){
+					
+				}
+				else
+				{
+					let path = e.url ? e.url : e;
+					let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
+					uni.navigateTo({
+						url: url
+					});
+					return false;
+				}	
 			},
 		}
 	}
@@ -234,13 +276,13 @@
 	}
 	
 	.active{
-    position: absolute;
-	margin-left: 35upx;
-	margin-top: 5upx;
-    width: 15upx;
-    height: 15upx;
-    background: red;
-    border-radius: 50%;
+		position: absolute;
+		margin-left: 35upx;
+		margin-top: 5upx;
+		width: 15upx;
+		height: 15upx;
+		background: red;
+		border-radius: 50%;
 	}
 	
 </style>

@@ -1,6 +1,6 @@
 module.exports ={
     "list": [{
-        "letter": "热门",
+        "letter": "hot",
         "data": [
             {
 				name: "中华人民共和国",
@@ -375,10 +375,7 @@ module.exports ={
                 number: "+509"
             }
         ]
-    }, {
-        "letter": "I",
-        "data": []
-    }, {
+    },{
         "letter": "J",
         "data": [
             {
@@ -659,9 +656,6 @@ module.exports ={
             }
         ]
     }, {
-        "letter": "O",
-        "data": []
-    }, {
         "letter": "P",
         "data": [
             {
@@ -833,12 +827,6 @@ module.exports ={
                 number: "+1868"
             }
         ]
-    }, {
-        "letter": "U",
-        "data": []
-    }, {
-        "letter": "V",
-        "data": []
     }, {
         "letter": "W",
         "data": [
