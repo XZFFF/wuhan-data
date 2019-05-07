@@ -44,8 +44,6 @@
     export default {
         data() {
             return {
-                msgContents: ["界面显示错乱", "启动缓慢，卡出翔了", "UI无法直视，丑哭了", "偶发性崩溃"],
-                stars: [1, 2, 3, 4, 5],
                 imageList: [],
                 sendDate: {
                     score: 0,
@@ -95,7 +93,7 @@
                     }
                 })
                 uni.uploadFile({
-                    url: "https://service.dcloud.net.cn/feedback",
+                    url: "http://192.168.0.105/feedback",
                     files: imgs,
                     formData: this.sendDate,
                     success: (res) => {

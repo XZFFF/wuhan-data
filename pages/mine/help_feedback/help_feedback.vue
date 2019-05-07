@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="uni-list">
-			<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" @click="goDetailPage(value)">
+			<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list" :key="key" @click="goDetailPage(value)">
 				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
 					<view class="uni-media-list-body" style="justify-content: center">
 						<view class="uni-media-list-text" style="font-size: 35upx">{{value.title}}</view>
@@ -9,7 +9,7 @@
 				</view>
 			</view>
 		</view>
-		<input type="button" class="feedback-submit" style="line-height:80upx" value="反馈我的问题" v-for="(value,key) in feedback" @click="goDetailPage(value)" />
+		<input type="button" class="feedback-submit" style="line-height:80upx" value="反馈我的问题" v-for="(value,key) in feedback" :key="key" @click="goDetailPage(value)" />
 	</view>
 </template>
 

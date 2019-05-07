@@ -2,14 +2,13 @@
 	<view>
 		<!-- 标签栏 -->
 		<view class="tab-bar">
-			<view class="swiper-tab">
-				<view v-for="(tab,index) in tabBars" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :data-current="index" @click="tapTab">
-					{{tab.name}}
-				</view>
+			<view id="tab-bar" class="swiper-tab" scroll-x :scroll-left="scrollLeft">
+				<view v-for="(tab,index) in tabBars" :key="tab.id" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="tab.id"
+				 :data-current="index" @click="tapTab(index)">{{tab.name}}</view>
 			</view>
 		</view>
 		<!-- 内容 -->
-		<swiper :current="tabIndex" class="swiper-box" duration="300">
+		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" style="height: 2000upx;">
 			<swiper-item>
 				<view class="uni-list">
 					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list1" :key="key" @click="goDetailPage(value)">
@@ -25,7 +24,7 @@
 					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list2" :key="key" @click="goDetailPage(value)">
 						<view class="list-body">
 							<view class="list-text" style="font-size: 35upx">{{value.title}}</view>
-							<view class="list-label">{{value.label}}</view>
+							<view class="list-label"  >{{value.label}}</view>
 						</view>
 					</view>
 				</view>
@@ -39,6 +38,7 @@
 		data() {
 			return {
 				title: 'list',
+				scrollLeft: 0,
 				isClickChange: false,
 				tabIndex: 0,
 				tabBars: [{
@@ -49,7 +49,7 @@
 				menu_list1: [
 					 {
 					title: "GDP",
-					label: "综合"
+					label: "综合综合综合"
 				},{
 					title: "工业用电总量",
 					label: "工业"
@@ -65,14 +65,40 @@
 			}
 		},
 		methods: {
-			async tapTab(e) { //点击tab-bar
-				var that = this;
-			    if (this.tabIndex === e.target.dataset.current) {
-			        return false;
-			    } else {
-			        that.tabIndex = e.target.dataset.current   
-			    }
-			}
+			async changeTab(e) {
+				let index = e.detail.current;
+				if (this.isClickChange) {
+					this.tabIndex = index;
+					this.isClickChange = false;
+					return;
+				}
+				let tabBar = await this.getElSize("tab-bar"),
+					tabBarScrollLeft = tabBar.scrollLeft;
+				
+				this.isClickChange = false;
+				this.tabIndex = index; //一旦访问data就会出问题
+			},
+			getElSize(id) { //得到元素的size
+				return new Promise((res, rej) => {
+					uni.createSelectorQuery().select('#' + id).fields({
+						size: true,
+						scrollOffset: true
+					}, (data) => {
+						res(data);
+					}).exec();
+				});
+			},
+			async tapTab(index) { //点击tab-bar
+				if (this.tabIndex === index) {
+					return false;
+				} else {
+					let tabBar = await this.getElSize("tab-bar"),
+						tabBarScrollLeft = tabBar.scrollLeft; //点击的时候记录并设置scrollLeft
+					this.scrollLeft = tabBarScrollLeft;
+					this.isClickChange = true;
+					this.tabIndex = index;
+				}
+			},
 		}
 	}
 </script>
@@ -108,7 +134,8 @@
 	.list-label{
 		margin-left: 40upx;
 		margin-top: 20upx;
-		width: 100upx;
+		padding: 0 30upx;
+		min-width: 0;
 		height: 45upx;
 		border-radius: 20px; 
 		background-color: #1A82D2;
