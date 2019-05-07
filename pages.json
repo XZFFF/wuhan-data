@@ -192,6 +192,13 @@
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "修改密码"
 			}
+		},
+		{
+			"path": "pages/mine/news/newsA/newsA",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "消息A"
+			}
 		}
 	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色

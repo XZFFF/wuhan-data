@@ -122,7 +122,7 @@
 				this.showImg = true;
 			}, 400);
 		},
-		onLoad:function(){
+		/*onLoad:function(){
 			var that = this;
 			uni.request({
 				url: "http://192.168.62.1/personInfo.php",
@@ -136,7 +136,7 @@
 				
 			})
 			
-		},
+		},*/
 		methods: {
 			goDetailPage(e) {
 				let path = e.url ? e.url : e;
