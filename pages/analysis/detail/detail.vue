@@ -1,8 +1,7 @@
 <template>
 	<scroll-view scroll-y="true" class="container">
-		<!-- 标题栏 -->
-		<!-- <wd-time-picker></wd-time-picker> -->
-		<!-- <wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item> -->
+		<wd-time-picker></wd-time-picker>
+		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
 		<wd-related-list></wd-related-list>
 	</scroll-view>
 </template>
@@ -11,8 +10,6 @@
 	import wdTimePicker from '@/components/wd-time-picker/wd-time-picker.vue';
 	import wdChooseItem from '@/components/wd-choose-item/wd-choose-item.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
-
-	let relatedData = [{},{}];
 
 	export default {
 		components: {
@@ -23,7 +20,7 @@
 		data() {
 			return {
 				indexDetail: {},
-				relatedData: relatedData,
+				relatedData: [],
 				indexId: "1000",
 				indexName: "指标详情页",
 			};
@@ -39,6 +36,7 @@
 		},
 		onShow: function() {
 			this.initIndexDetail();
+			this.initRelatedData();
 		},
 		onPullDownRefresh: function() {
 			this.initIndexDetail();
@@ -71,7 +69,13 @@
 					},
 					complete: () => {}
 				});
-			}
+			},
+			initRelatedData() {
+				this.relatedData = [{
+					indexId: '0',
+					indexName: 'GDP'
+				}];
+			},
 		}
 	}
 </script>

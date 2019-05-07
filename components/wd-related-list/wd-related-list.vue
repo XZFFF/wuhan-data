@@ -4,18 +4,9 @@
 			<image src="../../../static/icon/link/link.png"></image>
 			<text>相关指标</text>
 		</view>
-		<!-- <view class="related-list"> -->
 		<uni-list>
-			<uni-list-item title="12"></uni-list-item>
-			<uni-list-item title="132"></uni-list-item>
-			<uni-list-item title="132"></uni-list-item>
 			<uni-list-item v-for="(item, index) in relatedData" :key="index" :title="item.indexName"></uni-list-item>
-			<!-- <wd-list-item v-for="(item, index) in relatedData" :key="index" :title="item.indexName"></wd-list-item> -->
-			<!-- <view v-for="(item, index) in relatedData" :key="index" @click="openRelatedDetail(item)"> -->
-			<!-- <wd-list-item :title="item.indexName"></wd-list-item> -->
-			<!-- </view> -->
 		</uni-list>
-		<!-- </view> -->
 	</view>
 </template>
 
@@ -34,10 +25,7 @@
 			relatedData: {
 				type: Array,
 				default: function() {
-					return [{
-						indexId: '0',
-						indexName: '相关指标1',
-					}];
+					return [];
 				}
 			},
 		},
@@ -82,14 +70,5 @@
 	.related-nav text {
 		margin: auto 20upx;
 		font-size: 14px;
-	}
-
-	.related-list {
-		display: flex;
-		flex-direction: column;
-		/* box-sizing: border-box; */
-		background-color: #FFFFFF;
-		font-size: 28upx;
-		line-height: inherit;
 	}
 </style>
