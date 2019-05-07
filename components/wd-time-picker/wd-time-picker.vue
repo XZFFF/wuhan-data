@@ -10,8 +10,8 @@
 				<text>起始时间:</text>
 			</view>
 			<view class="ti-condition-choose uni-list-cell-db">
-				<picker @change="bindPickerChange1" :value="index1" :range="array1">
-					<text>{{array1[index1]}}</text>
+				<picker @change="bindStartPickerChange" :value="startIndex" :range="startArray">
+					<text>{{startArray[startIndex]}}</text>
 				</picker>
 			</view>
 		</view>
@@ -21,8 +21,8 @@
 				<text>结束时间:</text>
 			</view>
 			<view class="ti-condition-choose uni-list-cell-db">
-				<picker @change="bindPickerChange2" :value="index2" :range="array2">
-					<text>{{array2[index2]}}</text>
+				<picker @change="bindEndPickerChange" :value="endIndex" :range="endArray">
+					<text>{{endArray[endIndex]}}</text>
 				</picker>
 			</view>
 		</view>
@@ -48,28 +48,33 @@
 <script>
 	export default {
 		props: {
-			array1: {
+			startArray: {
 				type: Array,
 				default: function() {
 					return ['2017Q1', '2017Q2'];
 				}
 			},
+			endArray: {
+				type: Array,
+				default: function() {
+					return ['2018Q1', '2018Q2'];
+				}
+			},
 		},
 		data() {
 			return {
-				index1: 0,
-				index2: 0,
-				array2: ['2018Q1', '2018Q2', '2018Q3', '2018Q4'],
+				startIndex: 0,
+				endIndex: 0,
 			};
 		},
 		methods: {
-			bindPickerChange1: function(e) {
-				console.log('picker发送选择改变，携带值为：' + e.target.value)
-				this.index1 = e.target.value
+			bindStartPickerChange: function(e) {
+				console.log('start picker发送选择改变，携带值为：' + e.target.value)
+				this.startIndex = e.target.value
 			},
-			bindPickerChange2: function(e) {
-				console.log('picker发送选择改变，携带值为：' + e.target.value)
-				this.index2 = e.target.value
+			bindEndPickerChange: function(e) {
+				console.log('end picker发送选择改变，携带值为：' + e.target.value)
+				this.endIndex = e.target.value
 			}
 		}
 	}
