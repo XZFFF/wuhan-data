@@ -5,19 +5,17 @@
 			<view class="personal" style="color: #FFFFFF;"  v-for="(value,index) in personal_information" :key="index" @click="goDetailPage(value)">
 				<view class="uni-list-cell-navigate uni-media-list" style="; width: 100%;"> 
 					<image class="head" src="../../../static/icon/mine/head.png"></image>
-					<view class="information">
-						<view class="name-rank" style="display: inline-block;">
-							<view class="name" style="font-size: 35upx;float: left;margin-top: 15upx;">
-								李晓华
+					<view class="information" v-for="(user,key) in userInformation" :key="key">
+						<view class="name-rank" style="display: inline-flex;">
+							<view class="username" style="font-size: 35upx;float: left;margin-top: 15upx;">
+								{{user.username}}
 							</view>
 							<view class="rank">
-								<text style="font-size: 28upx;">
-									处长
-								</text>
+								{{user.rank}}
 							</view>
 						</view>
 						<view class="tel" style="font-size: 30upx;">
-							181 **** 0000
+							{{user.tel}}
 						</view>
 					</view>
 				<view class="right-arrow"></view>	
@@ -48,6 +46,18 @@
 					</view>
 				</view>
 			</view>
+			<uni-popup :show="type === 'bottom-share'" position="bottom" @hidePopup="togglePopup('')">
+				<view class="bottom-title">分享到</view>
+				<view class="bottom-content">
+					<view class="bottom-content-box" v-for="(item, index) in bottomData" :key="index">
+						<view class="bottom-content-image" :class="item.name">
+							<image class="icon" style="height: 90upx; width: 90upx;" :src="item.img" @click="share(item)" ></image>
+						</view>
+						<view class="bottom-content-text">{{item.text}}</view>
+					</view>
+				</view>
+				<view class="bottom-btn" @click="togglePopup('')">取消分享</view>
+			</uni-popup>
 		</view>
 		<!-- 底部 -->
 		<view class="bottom-text">
@@ -58,15 +68,52 @@
 </template>
 
 <script>
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
+		components: {
+			uniPopup
+		},
 		data() {
 			return {
 				tabIndex: 2,
 				title: 'list',
 				showImg: true,
+				type: '',
 				personal_information: [{
 					url: "information"
 				}], 
+				userInformation:[],
+				bottomData: [{
+						text: '微信',
+						img: '../../../static/icon/mine/wechatfriend.png',
+						name: 'wx'
+					},
+					{
+						text: '朋友圈',
+						img: '../../../static/icon/mine/wechatmoments.png',
+						name: 'wx'
+					},
+					{
+						text: 'QQ',
+						img: '../../../static/icon/mine/qq.png',
+						name: 'qq'
+					},
+					{
+						text: '微博',
+						img: '../../../static/icon/mine/weibo.png',
+						name: 'weibo'
+					},
+					{
+						text: '复制',
+						img: '../../../static/icon/mine/copyurl.png',
+						name: 'copy'
+					},
+					{
+						text: '更多',
+						img: '../../../static/icon/mine/more.png',
+						name: 'more'
+					}
+				],
 				browse_icon: [{
 					title: "收藏",
 					url: "collection",
@@ -79,8 +126,7 @@
 					title: "消息",
 					url: "news",
 					img: "../../../static/icon/mine/mail.png"
-				},
-				],
+				},],
 					
 				menu_list: [
 					{
@@ -110,11 +156,9 @@
 					img: "../../../static/icon/mine/feedback.png"
 				},
 				],
-				
 				exit: [{
 					url: "login",
-				}
-				]
+				}]
 			};
 		},
 		onLoad() {
@@ -122,22 +166,62 @@
 				this.showImg = true;
 			}, 400);
 		},
-		/*onLoad:function(){
-			var that = this;
-			uni.request({
-				url: "http://192.168.62.1/personInfo.php",
-				data: {
-					tel: "1"
-				},
-				success: (res) => {
-					let list=JSON.stringify(res.data);
-					console.log("返回数据状态:" + list);
-				},
-				
-			})
-			
-		},*/
+		onLoad:function(){
+			try {
+					const userInfo = uni.getStorageSync('user_Info');
+					if (userInfo) {
+						this.userInformation = userInfo
+					} else {
+						this.initUserInformation();
+					}
+				} catch (e) {
+					console.log('无法从本地缓存获取相应数据');
+				}
+			this.checkNetwork();
+			this.initUserInformation();
+		},
+		onBackPress() {
+			if (this.type !== '') {
+				this.type = '';
+				return true;
+			}
+		},
 		methods: {
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						console.log(res.networkType);
+						if (res.networkType == 'none') {
+							console.log('network:' + res.networkType);
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
+			initUserInformation() {
+				uni.request({
+					url: 'http://192.168.43.119/personInfo.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.userInformation = res.data;
+						console.log(this.userInformation);
+						uni.setStorage({
+							key: 'user_Info',
+							data: this.userInformation,
+							success: function() {
+								console.log('成功请求个人信息数据并存入本地缓存');
+							}
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
 			goDetailPage(e) {
 				let path = e.url ? e.url : e;
 				let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
@@ -148,40 +232,63 @@
 			},
 			goDetailPage1(e) {
 				if(e.id == 0){
+					//#ifdef APP-PLUS
 					var req = { //升级检测数据  
 						"appid": "__UNI__123456",  
-						"version": "1.0.1"
+						"version": "1.0.0"
 					}; 
 					uni.request({  
-						url: "http://192.168.126.1/checkUpdate.php",  
+						url: "http://192.168.43.119/checkUpdate.php",  
 						data: req,
 						success: (res) => {
+							let updateUrl = res.data.url;
 							if (res.statusCode == 200 && res.data.status === 1) {
 								uni.showModal({ //提醒用户更新  
-									title: "更新提示",  
-									content: res.data.note+"",
-									success: (res) => {  
-										//if (res.confirm) {  
-											//plus.runtime.openURL(res.data.url);  
-										//} 
-									}  
-								})  
+									title: "更新提示",
+									content: res.data.note,
+									success: (res) => {
+										const downloadTask = uni.downloadFile({
+											url: updateUrl, //仅为示例，并非真实的资源
+											success: (res) => {
+												console.log(updateUrl);
+												if (res.statusCode === 200) {
+													console.log('下载成功');
+												}
+											}
+										});
+										downloadTask.onProgressUpdate((res) => {
+											console.log('下载进度' + res.progress);
+											console.log('已经下载的数据长度' + res.totalBytesWritten);
+											console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+											// 测试条件，取消下载任务。
+											if (res.progress > 50) {
+												downloadTask.abort();
+											}
+										});
+									}
+								})
 							}
-							//else if(res.data.status === 0)
-							else
+							else if(res.data.status === 0)
 							{
 								uni.showModal({
 									title: "已为最新版本，无需更新"
 								})
 							}
-						}  
-					}) 
+						},
+						fail: () => {
+							uni.showModal({
+								title: "网络错误",
+								icon: none,
+							})
+						}
+					})
+					//#endif
 				}
 				else if(e.id == 1){
 					
 				}
 				else if(e.id == 2){
-					
+					this.togglePopup('bottom-share');
 				}
 				else
 				{
@@ -191,8 +298,50 @@
 						url: url
 					});
 					return false;
-				}	
+				}
 			},
+			togglePopup(type) {
+				this.type = type;
+			},
+			share(e) {
+				var pro;
+				var sce;
+				if(e.text === "微信")
+				{
+					pro = "weixin";
+					sce = "WXSceneSession";
+				}
+				else if(e.text === "朋友圈")
+				{
+					pro = "weixin";
+					sce = "WXSenceTimeline";
+				}
+				else if(e.text === "QQ")
+				{
+					pro = "qq";
+					sce = "";
+				}
+				else if(e.text === "微博")
+				{
+					pro = "sinaweibo";
+					sce = "";
+				}
+					uni.share({
+						provider: pro,
+						service: sce,
+						href: "https://www.baidu.com",
+						type: 2,
+						title: "数说武汉",
+						summary: "数说武汉app测试",
+						imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
+						success: function (res) {
+							console.log("success:" + JSON.stringify(res));
+						},
+						fail: function (err) {
+							console.log("fail:" + JSON.stringify(err));
+						}
+					})
+			}
 		}
 	}
 </script>
@@ -220,8 +369,9 @@
 	.rank{
 		width: 80upx; 
 		height: 40upx;
+		padding: 2upx 10upx;
 		margin-left: 15upx;
-		margin-top: 25upx;
+		margin-top: 20upx;
 		background-color: rgba(255, 255, 255, 0.11); 
 		border-color: rgba(255, 255, 255, 0.2); 
 		border-radius: 10px; 
@@ -229,7 +379,6 @@
 		float: left;
 		border-style: solid; 
 		text-align: center; 
-		line-height: 20px; 
 	}
 	
 	.personal-browse {
@@ -284,5 +433,46 @@
 		background: red;
 		border-radius: 50%;
 	}
+	
+	.bottom-title {
+		line-height: 60upx;
+		font-size: 24upx;
+		padding: 15upx 0;
+	}
+	
+	.bottom-content {
+		display: flex;
+		flex-wrap: wrap;
+		padding: 0 35upx;
+	}
+	
+	.bottom-content-box {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 15upx;
+		width: 25%;
+		box-sizing: border-box;
+	}
+	
+	.bottom-content-image {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
+		border-radius: 10upx;
+	}
+	
+	.bottom-content-text {
+		font-size: 26upx;
+		color: #333;
+		margin-top: 10upx;
+	}
+	
+	.bottom-btn {
+		height: 90upx;
+		line-height: 90upx;
+	}
+		
 	
 </style>

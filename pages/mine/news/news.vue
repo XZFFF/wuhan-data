@@ -57,7 +57,55 @@
 			};
 			uni.removeStorageSync('readIndex');
 		},
+		onShow: function() {
+			try {
+				const myNews = uni.getStorageSync('my_news');
+				if (myNews) {
+					this.menu_list = myNews
+				} else {
+					this.initMyNews();
+				}
+			} catch (e) {
+				console.log('无法从本地缓存获取相应数据');
+			}
+			this.checkNetwork();
+			this.initMyNews();
+		},
 		methods: {
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						console.log(res.networkType);
+						if (res.networkType == 'none') {
+							console.log('network:' + res.networkType);
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
+			initMyNews() {
+				uni.request({
+					url: 'http://192.168.126.1/MyNews.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.menu_list = res.data;
+						uni.setStorage({
+							key: 'my_news',
+							data: this.menu_list,
+							success: function() {
+								console.log('成功请求消息数据并存入本地缓存');
+							}
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
 			goDetailPage(index) {
 				this.tabIndex[index]=-1;
 				console.log("index:"+index);
@@ -93,7 +141,7 @@
 		height: 0;
 		background-color: rgb(204,62,62);
 		border-radius: 50%;
-		padding: 15upx;
+		padding: 10upx;
 		position: absolute;
 		margin: auto; 
 		top: 0;

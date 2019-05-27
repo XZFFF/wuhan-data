@@ -10,12 +10,12 @@
 		<view style="margin-top: 80upx;">
 			<view class="change-list">
 				<view class="list">
-						<input class="input"  placeholder="输入您的新密码" />
+					<input class="input" password="true" placeholder="输入您的新密码" v-model="modifiedPass" />
 				</view>
 			</view>
 			<view class="change-list">
 				<view class="list">
-						<input class="input"  placeholder="再次输入新密码以确认" />
+					<input class="input" password="true" placeholder="再次输入新密码以确认" v-model="modifiedPass1" />
 				</view>
 			</view>
 			<button class="finish-button" @click="goLogin">
@@ -27,17 +27,50 @@
 
 <script>
 	export default {
+		data(){
+			return{
+				modifiedPass: '',
+				modifiedPass1: '',
+			}
+		},
 		methods: {
 			goLogin(e){
-				uni.showToast({
-					title: '修改密码需要重新登录',
-					icon: 'none'
-				});
-				let url = '../login/login';
-				uni.navigateTo({
-					url: url
-				});
-				return false;
+				if(this.modifiedPass != this.modifiedPass1){
+					uni.showToast({
+						title: '两次输入的密码不一致',
+						icon: 'none'
+					});
+				}
+				else if(this.modifiedPass.length<6 || this.modifiedPass.length>14){
+					uni.showToast({
+						title: '请输入6至14位密码',
+						icon: 'none'
+					});
+				}
+				else {
+					uni.request({
+						url: "http://localhost/personInfo.php", //仅为示例，并非真实接口地址。
+						method: 'POST',
+						data: this.modifiedPass,
+						success: (res) => {
+							uni.showToast({
+								title: '修改密码需要重新登录',
+								icon: 'none'
+							});
+							let url = '../login/login';
+							uni.navigateTo({
+								url: url
+							});
+							return false;
+						},
+						fail: () => {
+							uni.showToast({
+								icon: 'none',
+								title: '网络异常,请稍后重试'
+							});
+						},
+					})
+				}
 			}
 		}
 	}

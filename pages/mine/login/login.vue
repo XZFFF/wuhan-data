@@ -19,27 +19,30 @@
 							</view>
 							<view class="login-list">
 								<view class="title" @click="goTelIndex" style="display: flex;">{{countryTel}}
-								<view class="triangle">
-								</view>
+									<view class="triangle">
+									</view>
 								</view>
 								<view class="list">
-										<input class="input"  placeholder="请输入手机号" />
+									<input class="input" v-model="tel0" placeholder="请输入手机号" />
 								</view>
 							</view>
 							<view class="login-list">
 								<text class="title">验证码</text>
 								<view class="list" style="width: 35%;">
-									<input class="input"  placeholder="请输入验证码" />
+									<input class="input" v-model="verCode" placeholder="请输入验证码" />
 								</view>
-								<input type="button" class="verification-code" style="line-height: 60upx;" value="获取验证码" />
+								<button class="verification-code" style="line-height: 60upx;" @click="smsVerification">
+									{{codeButton}}
+								</button>
+								<!--input type="button" class="verification-code" id="code" style="line-height: 60upx;" value="获取验证码" @click="smsVerification(obj)"-->
 							</view>
 							<view class="login-list">
 								<text class="title">密码</text>
 								<view class="list">
-									<input class="input"  placeholder="请输入密码" />
+									<input class="input" password="true" placeholder="请输入6-14位密码" v-model="passw0" />
 								</view>
 							</view>
-							<input type="button" class="login-button" style="line-height:80upx" value="注册" />
+							<input type="button" class="login-button" style="line-height:80upx" value="注册" @click="registe" />
 						</swiper-item>
 						<swiper-item>
 							<view style="font-size: 50upx; margin-left: 50upx; margin-top: 70upx; ">
@@ -51,13 +54,13 @@
 							<view class="login-list">
 								<text class="title">账户</text>
 								<view class="list">
-									<input class="input" type="text" value="user" v-model="tel" placeholder="默认为手机号" />
+									<input class="input" type="text" v-model="tel1" placeholder="默认为手机号" />
 								</view>
 							</view>
 							<view class="login-list">
 								<text class="title">密码</text>
 								<view class="list">
-									<input class="input" password="true" type="text" value="pass" v-model="passw" placeholder="请输入密码" />
+									<input class="input" password="true" type="text" v-model="passw" placeholder="请输入密码" />
 								</view>
 							</view>
 							<view class="forget-password" v-for="(value,key) in forget_password" :key="key" @click="goDetailPage(value)">
@@ -75,13 +78,47 @@
 <script>
 	var self;
 	var webapiaddress = null;
+	function downcount(countdown){
+		countdown--;
+		if(countdown!=0){countdown=setTimeout(function() {  
+		        downcount(countdown);  
+		    }, 1000);//定时每秒减一 
+
+		return countdown;}
+		
+	}
+	function codeButton(obj){
+		uni.showToast({
+			icon: 'none',
+			title: '验证码已发送'
+		});
+		countdown = 5;
+		timedown(obj);
+		return;
+	}
+	function timedown(obj) {  
+                if (countdown == 0) {  
+                    //obj.removeAttribute("disabled");  
+                    obj.value = "获取验证码";
+                    return clearTimeout();//清除定时，没有的话会导致后面每次减一越来越快  
+                } else {  
+                    //obj.setAttribute("disabled", true);  
+                    obj.value = "重新发送(" + countdown + ")";  
+                    countdown--;  
+                }  
+                setTimeout(function() {  
+                        timedown(obj);  
+                    }, 1000);//定时每秒减一  
+            }
 	export default {
 		data() {
 			lists: [], (self = this);
 			return {
 				isClickChange: false,
 				tabIndex: 0,
-				tel: "",
+				tel0: "",
+				tel1: "",
+				codeButton: "获取验证码",
 				passw: "",
 				countryTel: "+86",
 				tabBars: [{
@@ -152,7 +189,6 @@
 				});
 				return false;
 			},
-
 			lands() {
 				if (this.tel.length <= 0 || this.passw.length <= 0) {
 					uni.showToast({
@@ -162,7 +198,7 @@
 					return;
             	} else {
 					var req = {
-						"tel": this.tel,  
+						"tel": this.tel1,  
 						"password": this.passw
 					};
 					uni.request({
@@ -195,6 +231,77 @@
 						},
 					})
 				}
+			},
+			smsVerification(obj) {
+				var countdown = 0;
+				uni.showToast({
+					icon: 'none',
+					title: '验证码已发送'
+				});
+				countdown = 5;
+				countdown = downcount(countdown);
+				this.codeButton = countdown;
+				return;
+				/*let tel = this.tel0;
+				let code = this.verCode;
+				if (tel.length == 0) {
+					uni.showToast({
+						icon: 'none',
+						title: '手机号不能为空'
+					});
+					return;
+				}
+				else if (tel.length != 11) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入正确的手机号'
+					});
+					return;
+				}
+				else {
+					uni.showToast({
+						icon: 'none',
+						title: '验证码已发送'
+					});
+					countdown = 5;
+					var codeButton = this.codeButton;
+					this.timedown(countdown);
+					return;
+				}*/
+			},
+			registe(){
+				var req={
+					"tel": this.tel0,
+					"verCode": this.verCode,
+					"passw": this.passw0
+				}
+				uni.request({
+					url: "http://192.168.126.1/login.php", //仅为示例，并非真实接口地址。
+					data: req,
+					success: (res) => {
+						if(2 != 2){
+							uni.showToast({
+								icon: 'none',
+								title: '用户名或密码错误'
+							});
+							return;
+						}
+						else if(2 == 2){
+							setTimeout(function() {  
+							        uni.showToast({
+							        	icon: 'none',
+							        	title: '注册成功'
+							        }); 
+							    }, 1000);
+							this.tabIndex = 1;
+						}
+					},fail: () => {
+						uni.showToast({
+							icon: 'none',
+							title: '网络异常,请稍后重试'
+						});
+					},
+				})
 			}
 		},
 	}
@@ -240,7 +347,6 @@
 	}
 	.list{
 		width: 70%;
-		clolor: rgb(247,247,247);
 		float: left;
 	}
 	.input{
