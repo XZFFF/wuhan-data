@@ -46,23 +46,30 @@
 				}, {
 					name: '指标数据',
 				}],
-				menu_list1: [
-					 {
-					title: "GDP",
-					label: "综合"
-				},{
-					title: "工业用电总量",
-					label: "工业"
-				},],
-				menu_list2: [
-					 {
-					title: "GDP",
-					label: "综合"
-				},{
-					title: "工业用电总量",
-					label: "工业"
-				},]
+				menu_list1: [],
+				menu_list2: []
 			}
+		},
+		onShow: function() {
+			try {
+				const footprintEconomy = uni.getStorageSync('footprint_economy');
+				if (footprintEconomy) {
+					this.menu_list1 = footprintEconomy
+				} else {
+					this.initFootprintEconomy();
+				}
+				const footprintIndex = uni.getStorageSync('footprint_index');
+				if (footprintIndex) {
+					this.menu_list2 = footprintIndex
+				} else {
+					this.initFootprintIndex();
+				}
+			} catch (e) {
+				console.log('无法从本地缓存获取相应数据');
+			}
+			this.checkNetwork();
+			this.initFootprintEconomy();
+			this.initFootprintIndex();
 		},
 		methods: {
 			/*async tapTab(e) { //点击tab-bar
@@ -73,6 +80,59 @@
 			        that.tabIndex = e.target.dataset.current   
 			    }
 			}*/
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						console.log(res.networkType);
+						if (res.networkType == 'none') {
+							console.log('network:' + res.networkType);
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
+			initFootprintEconomy() {
+				uni.request({
+					url: 'http://192.168.126.1/FootprintEconomy.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.menu_list1 = res.data;
+						uni.setStorage({
+							key: 'footprint_economy',
+							data: this.menu_list1,
+							success: function() {
+								console.log('成功请求经济分析足迹数据并存入本地缓存');
+							}
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
+			initFootprintIndex() {
+				uni.request({
+					url: 'http://192.168.126.1/FootprintIndex.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.menu_list2 = res.data;
+						uni.setStorage({
+							key: 'footprint_index',
+							data: this.menu_list2,
+							success: function() {
+								console.log('成功请求指标数据足迹数据并存入本地缓存');
+							}
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
 			async changeTab(e) {
 				let index = e.detail.current;
 				if (this.isClickChange) {

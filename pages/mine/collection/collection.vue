@@ -24,7 +24,7 @@
 					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list2" :key="key" @click="goDetailPage(value)">
 						<view class="list-body">
 							<view class="list-text" style="font-size: 35upx">{{value.title}}</view>
-							<view class="list-label"  >{{value.label}}</view>
+							<view class="list-label">{{value.label}}</view>
 						</view>
 					</view>
 				</view>
@@ -46,25 +46,85 @@
 				}, {
 					name: '指标数据',
 				}],
-				menu_list1: [
-					 {
-					title: "GDP",
-					label: "综合综合综合"
-				},{
-					title: "工业用电总量",
-					label: "工业"
-				},],
-				menu_list2: [
-					 {
-					title: "GDP",
-					label: "综合"
-				},{
-					title: "工业用电总量",
-					label: "工业"
-				},]
+				menu_list1: [],
+				menu_list2: []
 			}
 		},
+		onShow: function() {
+			try {
+				const collectionEconomy = uni.getStorageSync('collection_economy');
+				if (collectionEconomy) {
+					this.menu_list1 = collectionEconomy
+				} else {
+					this.initCollectionEconomy();
+				}
+				const collectionIndex = uni.getStorageSync('collection_index');
+				if (collectionIndex) {
+					this.menu_list2 = collectionIndex
+				} else {
+					this.initCollectionIndex();
+				}
+			} catch (e) {
+				console.log('无法从本地缓存获取相应数据');
+			}
+			this.checkNetwork();
+			this.initCollectionEconomy();
+			this.initCollectionIndex();
+		},
 		methods: {
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						console.log(res.networkType);
+						if (res.networkType == 'none') {
+							console.log('network:' + res.networkType);
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
+			initCollectionEconomy() {
+				uni.request({
+					url: 'http://192.168.126.1/CollectionEconomy.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.menu_list1 = res.data;
+						uni.setStorage({
+							key: 'collection_economy',
+							data: this.menu_list1,
+							success: function() {
+								console.log('成功请求经济分析收藏数据并存入本地缓存');
+							}
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
+			initCollectionIndex() {
+				uni.request({
+					url: 'http://192.168.126.1/CollectionIndex.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.menu_list2 = res.data;
+						uni.setStorage({
+							key: 'collection_index',
+							data: this.menu_list2,
+							success: function() {
+								console.log('成功请求指标数据收藏数据并存入本地缓存');
+							}
+						});
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
 			async changeTab(e) {
 				let index = e.detail.current;
 				if (this.isClickChange) {

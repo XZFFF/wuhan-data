@@ -1,28 +1,31 @@
 <template>
-	<view>
+	<view style="height: 100%; ">
 		<view>
 			<image class="sure" src="../../../static/icon/mine/sure.png"></image>
-			<p style="text-align: center; font-size: 60upx;margin-top: 20upx;color: #1A82D2;">
+			<p style="text-align: center; font-size: 60upx;margin-top: 20upx; color: #1A82D2;">
 				数说武汉<br />
 				账户中心<br />
 			</p>
 		</view>
 		<view style="margin-top: 80upx;">
 			<view class="change-list">
+				<view class="title" @click="goTelIndex" style="display: flex;">{{countryTel}}
+					<view class="triangle">
+					</view>
+				</view>
 				<view class="list">
 					<input class="input"  placeholder="请输入手机号" v-model="tel" />
 				</view>
 			</view>
 			<view class="change-list">
-				<view class="list" style="width: 55%;">
+				<text class="title">验证码</text>
+				<view class="list" style="width: 35%;">
 					<input class="input"  placeholder="请输入验证码" v-model="verificationCode" />
 				</view>
-				<button class="verification-code">
-					获取验证码
-				</button>
+				<input type="button" class="verification-code" style="line-height: 60upx;" value="获取验证码" />
 			</view>
-			<button class="finish-button" @click="goChangePassword">
-				完成验证
+			<button class="finish-button" @click="changeTel">
+				更换手机
 			</button>
 		</view>
 	</view>
@@ -34,10 +37,24 @@
 			return{
 				tel: '',
 				verificationCode: '',
+				countryTel: "+86",
 			}
 		},
+		onShow() {
+			const changeTel = uni.getStorageSync('changeTel');
+			if(changeTel.flag)
+				this.countryTel = changeTel.tel;
+			uni.removeStorageSync('changeTel');
+		},
 		methods: {
-			goChangePassword(e) {
+			goTelIndex(e) {
+				let url = '../login/telIndex/telIndex';
+				uni.navigateTo({
+					url: url
+				});
+				return false;
+			},
+			changeTel(e){
 				uni.request({
 					url: 'http://localhost/personInfo.php',
 					method: 'POST',
@@ -55,14 +72,9 @@
 						else{
 							uni.showToast({
 								icon: 'none',
-								title: '验证成功'
+								title: '手机号更换成功'
 							});
-							var url='../change_password/change_password';
-							setTimeout(function() {
-								uni.navigateTo({
-									url: url
-								});
-							}, 800);//定时每秒减一 
+							uni.navigateBack()
 							return false;
 						}
 					},
@@ -89,36 +101,47 @@
 	}
 	.change-list{
 		display: flex;
-		margin-top: 20upx;
-		margin-left: 20upx;
+		margin-top: 50upx;
+		margin-left: 50upx;
 	}
 	.list{
-		width: 98%;
-		clolor: rgb(255,255,255);
+		width: 70%;
 		float: left;
 	}
 	.input{
-		height: 100upx;
 		background-color: rgb(255,255,255);
 		border-radius: 5px;
 		font-size: 30upx;
 		padding: 0 20upx;
 	}
-	.verification-code{
-		width: 40%;
-		height: 100upx;
-		font-size: 30upx;
-		color: #FFFFFF;
-		padding: 10upx;
-		background-color: rgb(26,130,210);
-	}
 	.finish-button{
-		width: 96%;
+		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
 		color: #FFFFFF;
 		background-color: rgb(26,130,210);
 		border-radius: 5px; 
 		margin-top: 60upx;
+	}
+	.verification-code{
+		width: 35%;
+		height: 60upx;
+		font-size: 30upx;
+		color: #FFFFFF;
+		background-color: rgb(26,130,210);
+	}
+	.title{
+		float: left;
+		width: 120upx;
+		font-size: 35upx;
+	}
+	.triangle{
+		width: 0;
+		height: 0;
+		margin-top: 22upx;
+		margin-left: 20upx;
+		border-width: 5px 5px 0;
+		border-style: solid;
+		border-color: rgb(68,68,68) transparent transparent;
 	}
 </style>
