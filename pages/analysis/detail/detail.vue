@@ -2,7 +2,7 @@
 	<scroll-view scroll-y="true" class="container">
 		<wd-time-picker></wd-time-picker>
 		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
-		<wd-related-list></wd-related-list>
+		<wd-related-list :relatedData="relatedData"></wd-related-list>
 	</scroll-view>
 </template>
 
@@ -72,8 +72,17 @@
 			},
 			initRelatedData() {
 				this.relatedData = [{
-					indexId: '0',
-					indexName: 'GDP'
+					indexId: '1',
+					indexName: '全社会用电量'
+				},{
+					indexId: '2',
+					indexName: '工业用电量'
+				},{
+					indexId: '3',
+					indexName: '铁路货运量'
+				},{
+					indexId: '4',
+					indexName: '金融机构贷款余额'
 				}];
 			},
 		}

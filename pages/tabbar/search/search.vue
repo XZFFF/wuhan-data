@@ -234,13 +234,14 @@
 		 *  点击导航栏 buttons 时触发
 		 */
 		onNavigationBarButtonTap(e) {
+			let self = this;
 			uni.showActionSheet({
 				itemList: ['全部', '国统', '湖统', '大数据'],
 				success: function(res) {
 					var itemList = ['全部', '国统', '湖统', '大数据'];
 					// 这里无法直接调用前面的itemList，所以重新声明一次
 					console.log('选择了' + itemList[res.tapIndex]);
-					this.type = itemList[res.tapIndex];
+					self.type = itemList[res.tapIndex];
 					// 通过控制该页面的webview对象来重置导航栏的button中text数值
 					let pages = getCurrentPages();
 					let page = pages[pages.length - 1];
@@ -250,11 +251,11 @@
 					if (!titleObj.buttons) {
 						return;
 					}
-					titleObj.buttons[0].text = this.type;
+					titleObj.buttons[0].text = self.type;
 					currentWebview.setStyle({
 						titleNView: titleObj
 					});
-					console.log('搜索类型更改为:' + this.type);
+					console.log('搜索类型更改为:' + self.type);
 					// #endif
 				},
 				fail: function(res) {

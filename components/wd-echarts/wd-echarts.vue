@@ -2,7 +2,7 @@
 	<view class="canvasView" :style="{height:nbHeight + 'px'}">
 		<view class="echart-nav">
 			<image src="../../../static/icon/echarts/trend-upward.png"></image>
-			<text>ECharts展示</text>
+			<text>{{title}}</text>
 		</view>
 		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="echarts" />
 	</view>
@@ -21,7 +21,11 @@
 				type: String,
 				default: 'ec-canvas',
 			},
-			nbHeight: Number
+			nbHeight: Number,
+			title: {
+				type: String,
+				default: 'ECharts图例',
+			},
 		},
 		components: {
 			mpvueEcharts

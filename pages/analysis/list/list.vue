@@ -84,6 +84,7 @@
 					this.checkNetwork();
 				},
 				complete: () => {
+					// console.log(this.categoryList[1]);
 					if (JSON.stringify(e) != '{}') {
 						this.analysisId = e.analysis_id;
 						// 设置初始化的左右侧子栏数据(默认为第一个)

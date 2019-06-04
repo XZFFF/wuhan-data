@@ -3,7 +3,7 @@
 	<view class="table-main">
 		<view class="table-nav">
 			<image src="../../../static/icon/echarts/table.png"></image>
-			<text>表格展示</text>
+			<text>{{title}}</text>
 		</view>
 
 		<view class="page">
@@ -27,7 +27,11 @@
 						['表头2', '']
 					]
 				}
-			}
+			},
+			title: {
+				type: String,
+				default: '表格展示',
+			},
 		},
 		data() {
 			return {};

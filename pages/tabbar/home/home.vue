@@ -61,33 +61,9 @@
 			};
 		},
 		onShow: function() {
-			// 优先取缓存数据, 若缓存数据没有从服务器拉数据并更新缓存
-			try {
-				const homeSlideshow = uni.getStorageSync('home_slideshow');
-				if (homeSlideshow) {
-					this.slideshow = homeSlideshow
-				} else {
-					this.initSlideShow();
-				}
-				const homeAnalysisIcon = uni.getStorageSync('home_analysis_icon');
-				if (homeAnalysisIcon) {
-					this.analysisIcon = homeAnalysisIcon
-				} else {
-					this.initAnalysisIcon();
-				}
-				const homeTopic = uni.getStorageSync('home_topic');
-				if (homeTopic) {
-					this.topic = homeTopic
-				} else {
-					this.initTopic();
-				}
-			} catch (e) {
-				console.log('无法从本地缓存获取相应数据');
-			}
-			uni.getStorageSync('home_slideshow');
-			uni.getStorageSync('home_analysis_icon');
-			uni.getStorageSync('home_topic');
-			// 即使本地缓存中有数据，也需要同步服务器的数据，以服务器数据为准
+			// 优先检测网络状态：
+			// 1、网络正常=>发起请求=>请求成功并缓存数据=>请求失败则尝试取出缓存数据=>若无缓存数据则提示网络异常 
+			// 2、网络不正常=>尝试取出缓存数据=>若无缓存数据则提示网络异常
 			this.initHomePage();
 		},
 		onPullDownRefresh: function() {
@@ -96,10 +72,28 @@
 		},
 		methods: {
 			initHomePage() {
-				this.checkNetwork();
-				this.initSlideShow();
-				this.initAnalysisIcon();
-				this.initTopic();
+				if (this.checkNetwork()) {
+					this.initSlideShow();
+					this.initAnalysisIcon();
+					this.initTopic();
+				} else {
+					try {
+						const homeSlideshow = uni.getStorageSync('home_slideshow');
+						if (homeSlideshow) {
+							this.slideshow = homeSlideshow
+						}
+						const homeAnalysisIcon = uni.getStorageSync('home_analysis_icon');
+						if (homeAnalysisIcon) {
+							this.analysisIcon = homeAnalysisIcon
+						}
+						const homeTopic = uni.getStorageSync('home_topic');
+						if (homeTopic) {
+							this.topic = homeTopic
+						}
+					} catch (e) {
+						console.log('无法从本地缓存获取相应数据');
+					}
+				}
 			},
 			checkNetwork() {
 				uni.getNetworkType({
@@ -112,6 +106,9 @@
 								duration: 1000,
 								icon: 'loading'
 							});
+							return false;
+						} else {
+							return true;
 						}
 					}
 				});
@@ -132,7 +129,9 @@
 							}
 						});
 					},
-					fail: (e) => {},
+					fail: (e) => {
+						this.getSlideShowStorage();
+					},
 					complete: () => {}
 				});
 			},
@@ -149,7 +148,12 @@
 							data: this.analysisIcon
 						});
 					},
-					fail: (e) => {},
+					fail: (e) => {
+						let homeAnalysisIcon = uni.getStorageSync('home_analysis_icon');
+						if (homeAnalysisIcon) {
+							this.analysisIcon = homeAnalysisIcon
+						}
+					},
 					complete: () => {}
 				});
 			},
@@ -185,9 +189,24 @@
 							data: this.topic
 						});
 					},
-					fail: (e) => {},
+					fail: (e) => {
+						let homeTopic = uni.getStorageSync('home_topic');
+						if (homeTopic) {
+							this.topic = homeTopic
+						}
+					},
 					complete: () => {}
 				});
+			},
+			getSlideShowStorage() {
+				try {
+					const homeSlideshow = uni.getStorageSync('home_slideshow');
+					if (homeSlideshow) {
+						this.slideshow = homeSlideshow
+					}
+				} catch (e) {
+					console.log('无法从本地缓存获取相应数据');
+				}
 			},
 			openAnalysisList(e) {
 				var analysisId = e.currentTarget.dataset.analysisid;

@@ -34,10 +34,10 @@
 			<view class="ti-condition-radio uni-list-cell-db">
 				<radio-group name="radio">
 					<label>
-						<radio value="radio1" checked="true">选项一</radio>
+						<radio value="radio1" checked="true">季度</radio>
 					</label>
 					<label>
-						<radio value="radio2">选项二</radio>
+						<radio value="radio2">年度</radio>
 					</label>
 				</radio-group>
 			</view>
@@ -51,13 +51,13 @@
 			startArray: {
 				type: Array,
 				default: function() {
-					return ['2017Q1', '2017Q2'];
+					return ['2018Q1', '2018Q2', '2018Q3', '2018Q4', '2019Q1'];
 				}
 			},
 			endArray: {
 				type: Array,
 				default: function() {
-					return ['2018Q1', '2018Q2'];
+					return ['2019Q2', '2019Q1', '2018Q4', '2018Q3', '2018Q2'];
 				}
 			},
 		},
