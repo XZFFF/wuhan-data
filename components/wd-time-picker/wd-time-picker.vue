@@ -7,6 +7,17 @@
 
 		<view class="ti-condition">
 			<view class="ti-condition-name">
+				<text>时间频度:</text>
+			</view>
+			<view class="ti-condition-choose uni-list-cell-db">
+				<picker @change="bindFreqPickerChange" :value="freqIndex" :range="freqArray">
+					<text>{{freqArray[freqIndex]}}</text>
+				</picker>
+			</view>
+		</view>
+
+		<view class="ti-condition">
+			<view class="ti-condition-name">
 				<text>起始时间:</text>
 			</view>
 			<view class="ti-condition-choose uni-list-cell-db">
@@ -26,48 +37,73 @@
 				</picker>
 			</view>
 		</view>
+		<view class="ti-condition">
+			<button type="primary" plain="true" @tap="pickerConfirm">确定</button>
+		</view>
 
-		<view class="ti-condition" style="padding-bottom: 30upx;">
+		<!-- 		<view v-if="chooseFreq.showMonth === true || chooseFreq.showMonth === 'true' || chooseFreq.showQuarter === true || chooseFreq.showQuarter === 'true' || chooseFreq.showYear === true || chooseFreq.showYear === 'true'"
+		 class="ti-condition" style="padding-bottom: 30upx;">
 			<view class="ti-condition-name">
 				<text>季/年度:</text>
 			</view>
 			<view class="ti-condition-radio uni-list-cell-db">
-				<radio-group name="radio">
-					<label>
-						<radio value="radio1" checked="true">季度</radio>
+				<radio-group name="ti-freq-group" @change="radioChange">
+					<label v-if="chooseFreq.showMonth === true || chooseFreq.showMonth === 'true'">
+						<radio value="radio-m" :checked="index === current" >月度</radio>
 					</label>
-					<label>
-						<radio value="radio2">年度</radio>
+					<label v-if="chooseFreq.showQuarter === true || chooseFreq.showQuarter === 'true'">
+						<radio value="radio-q" :checked="index === current" >季度</radio>
+					</label>
+					<label v-if="chooseFreq.showYear === true || chooseFreq.showYear === 'true'">
+						<radio value="radio-y" :checked="index === current" >年度</radio>
 					</label>
 				</radio-group>
 			</view>
-		</view>
+		</view> -->
+
+
 	</view>
 </template>
 
 <script>
 	export default {
 		props: {
-			startArray: {
-				type: Array,
-				default: function() {
-					return ['2018Q1', '2018Q2', '2018Q3', '2018Q4', '2019Q1'];
-				}
-			},
-			endArray: {
-				type: Array,
-				default: function() {
-					return ['2019Q2', '2019Q1', '2018Q4', '2018Q3', '2018Q2'];
-				}
-			},
+			timeCondition: {
+				type: Object
+			}
 		},
 		data() {
 			return {
+				freqArray: ['月度', '季度'],
+				freqIndex: 0,
+				startArray: ['201801', '201802', '201803', '201804'],
 				startIndex: 0,
+				endArray: ['201901', '201902', '201903', '201904'],
 				endIndex: 0,
-			};
+			}
+
+		},
+		onReady() {
+			let freqCondition = [];
+			for (let i = 0; i < this.timeCondition.length; i++) {
+				freqCondition[i] = this.timeCondition[i].freqName;
+			}
+			this.freqArray = freqCondition;
 		},
 		methods: {
+			bindFreqPickerChange: function(e) {
+				console.log('freq picker发送选择改变，携带值为：' + e.target.value)
+				this.freqIndex = e.target.value;
+				this.startArray = this.timeCondition[this.freqIndex].startArray;
+				this.endArray = this.timeCondition[this.freqIndex].endArray;
+				// if (this.freqIndex == 0) {
+				// 	this.startArray = this.timeCondition[this.freqIndex].startArray;
+				// 	this.endArray = this.timeCondition[this.freqIndex].endArray;
+				// } else if (this.freqIndex == 1) {
+				// 	this.startArray = ['2018Q1', '2018Q2', '2018Q3', '2018Q4', '2019Q1'];
+				// 	this.endArray = ['2019Q2', '2019Q1', '2018Q4', '2018Q3', '2018Q2'];
+				// }
+			},
 			bindStartPickerChange: function(e) {
 				console.log('start picker发送选择改变，携带值为：' + e.target.value)
 				this.startIndex = e.target.value
@@ -75,7 +111,24 @@
 			bindEndPickerChange: function(e) {
 				console.log('end picker发送选择改变，携带值为：' + e.target.value)
 				this.endIndex = e.target.value
-			}
+			},
+
+			pickerConfirm(e) {
+				let timeFreq = this.freqArray[this.freqIndex];
+				let startTime = this.startArray[this.startIndex];
+				let endTime = this.endArray[this.endIndex];
+				if (startTime > endTime) {
+					uni.showModal({
+						title: "提示",
+						content: "结束时间不能小于开始时间",
+					});
+				}
+				this.$emit("confirm", {
+					startTime: this.startTime,
+					endTime: this.endTime,
+					timeFreq: this.timeFreq,
+				});
+			},
 		}
 	}
 </script>

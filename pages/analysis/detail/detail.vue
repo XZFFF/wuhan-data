@@ -1,6 +1,6 @@
 <template>
 	<scroll-view scroll-y="true" class="container">
-		<wd-time-picker></wd-time-picker>
+		<wd-time-picker :timeCondition="timeCondition"></wd-time-picker>
 		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
 	</scroll-view>
@@ -19,6 +19,7 @@
 		},
 		data() {
 			return {
+				timeCondition: [],
 				indexDetail: {},
 				relatedData: [],
 				indexId: "1000",
@@ -37,6 +38,7 @@
 		onShow: function() {
 			this.initIndexDetail();
 			this.initRelatedData();
+			this.initTimeCondition();
 		},
 		// 导航栏自定义按钮
 		onNavigationBarButtonTap(e) {
@@ -51,6 +53,19 @@
 			})
 		},
 		methods: {
+			initTimeCondition() {
+				this.timeCondition = [{
+						freqName: '月度',
+						startArray: ['201701', '201702'],
+						endArray: ['201709', '201710'],
+					},
+					{
+						freqName: '年度',
+						startArray: ['2016', '2017'],
+						endArray: ['2017', '2018'],
+					}
+				];
+			},
 			initIndexDetail() {
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/analysisDetail.php',
