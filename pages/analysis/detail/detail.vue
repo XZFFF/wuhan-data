@@ -1,6 +1,6 @@
 <template>
 	<scroll-view scroll-y="true" class="container">
-		<wd-time-picker :timeCondition="timeCondition"></wd-time-picker>
+		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
 		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
 	</scroll-view>
@@ -95,6 +95,23 @@
 					indexName: '金融机构贷款余额'
 				}];
 			},
+			onConfirm(val) {
+				console.log('发起更新数据请求');
+				console.log(val);
+				this.relatedData = [{
+					indexId: '1',
+					indexName: '全社会用电量'
+				}, {
+					indexId: '2',
+					indexName: '工业用电量'
+				}, {
+					indexId: '3',
+					indexName: '铁路货运量'
+				}, {
+					indexId: '4',
+					indexName: '金融机构贷款余额改变'
+				}];
+			}
 		}
 	}
 </script>

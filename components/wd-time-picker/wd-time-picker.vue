@@ -117,6 +117,7 @@
 				let timeFreq = this.freqArray[this.freqIndex];
 				let startTime = this.startArray[this.startIndex];
 				let endTime = this.endArray[this.endIndex];
+				console.log(timeFreq + startTime + endTime);
 				if (startTime > endTime) {
 					uni.showModal({
 						title: "提示",
@@ -124,9 +125,9 @@
 					});
 				}
 				this.$emit("confirm", {
-					startTime: this.startTime,
-					endTime: this.endTime,
-					timeFreq: this.timeFreq,
+					startTime: startTime,
+					endTime: endTime,
+					timeFreq: timeFreq,
 				});
 			},
 		}
