@@ -98,6 +98,19 @@
 			onConfirm(val) {
 				console.log('发起更新数据请求');
 				console.log(val);
+				// http://1.wuhandata.applinzi.com/searchDetail.php
+				uni.request({
+					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.indexDetail = res.data;
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+					},
+					complete: () => {}
+				});
 				this.relatedData = [{
 					indexId: '1',
 					indexName: '全社会用电量'
