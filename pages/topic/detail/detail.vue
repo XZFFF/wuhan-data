@@ -126,7 +126,24 @@
 				})
 			}
 		},
-		methods: {}
+		onShow: function() {
+			this.initTopicDetail();
+		},
+		methods: {
+			initTopicDetail() {
+				uni.request({
+					url: '',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.requestData = res.data;
+					},
+					fail: (e) => {
+					},
+					complete: () => {}
+				});
+			},
+		}
 	}
 </script>
 

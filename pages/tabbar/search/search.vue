@@ -149,7 +149,6 @@
 			 * 清理历史搜索数据
 			 */
 			clearSearch() {
-				console.log('触发的类型:' + this.type);
 				uni.showModal({
 					title: '提示',
 					content: '是否清理全部搜索历史？',

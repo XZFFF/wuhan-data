@@ -38,10 +38,6 @@
 			this.initIndexDetail();
 			this.initRelatedData();
 		},
-		onPullDownRefresh: function() {
-			this.initIndexDetail();
-			uni.stopPullDownRefresh();
-		},
 		// 导航栏自定义按钮
 		onNavigationBarButtonTap(e) {
 			if (e.index === 0) {
@@ -62,7 +58,6 @@
 					data: {},
 					success: res => {
 						this.indexDetail = res.data;
-						console.log(this.indexDetail);
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
@@ -74,13 +69,13 @@
 				this.relatedData = [{
 					indexId: '1',
 					indexName: '全社会用电量'
-				},{
+				}, {
 					indexId: '2',
 					indexName: '工业用电量'
-				},{
+				}, {
 					indexId: '3',
 					indexName: '铁路货运量'
-				},{
+				}, {
 					indexId: '4',
 					indexName: '金融机构贷款余额'
 				}];

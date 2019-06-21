@@ -76,9 +76,6 @@
 								"type": "favorite"
 							}
 						]
-					},
-					"pullToRefresh": {
-						"support": true
 					}
 				}
 			}
@@ -87,7 +84,12 @@
 			"path": "pages/topic/list/list",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "专题列表"
+				"navigationBarTitleText": "专题列表",
+				"app-plus": {
+					"pullToRefresh": {
+						"support": true
+					}
+				}
 			}
 		},
 		{

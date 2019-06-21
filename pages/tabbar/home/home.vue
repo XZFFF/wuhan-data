@@ -61,54 +61,43 @@
 			};
 		},
 		onShow: function() {
-			// 优先检测网络状态：
-			// 1、网络正常=>发起请求=>请求成功并缓存数据=>请求失败则尝试取出缓存数据=>若无缓存数据则提示网络异常 
-			// 2、网络不正常=>尝试取出缓存数据=>若无缓存数据则提示网络异常
 			this.initHomePage();
 		},
 		onPullDownRefresh: function() {
+			this.removeStorage();
 			this.initHomePage();
 			uni.stopPullDownRefresh();
 		},
 		methods: {
 			initHomePage() {
-				if (this.checkNetwork()) {
-					this.initSlideShow();
-					this.initAnalysisIcon();
-					this.initTopic();
-				} else {
-					try {
-						const homeSlideshow = uni.getStorageSync('home_slideshow');
-						if (homeSlideshow) {
-							this.slideshow = homeSlideshow
-						}
-						const homeAnalysisIcon = uni.getStorageSync('home_analysis_icon');
-						if (homeAnalysisIcon) {
-							this.analysisIcon = homeAnalysisIcon
-						}
-						const homeTopic = uni.getStorageSync('home_topic');
-						if (homeTopic) {
-							this.topic = homeTopic
-						}
-					} catch (e) {
-						console.log('无法从本地缓存获取相应数据');
-					}
-				}
+				this.checkNetwork();
+				this.initSlideShow();
+				this.initAnalysisIcon();
+				this.initTopic();
+			},
+			removeStorage() {
+				uni.removeStorage({
+					key: 'home_slideshow',
+				});
+				this.slideshow = [];
+				uni.removeStorage({
+					key: 'home_analysis_icon',
+				});
+				this.analysisIcon = [];
+				uni.removeStorage({
+					key: 'home_topic',
+				});
+				this.topic = [];
 			},
 			checkNetwork() {
 				uni.getNetworkType({
 					success: function(res) {
-						console.log(res.networkType);
 						if (res.networkType == 'none') {
-							console.log('network:' + res.networkType);
 							uni.showToast({
 								title: '无网络连接',
 								duration: 1000,
 								icon: 'loading'
 							});
-							return false;
-						} else {
-							return true;
 						}
 					}
 				});
@@ -130,7 +119,11 @@
 						});
 					},
 					fail: (e) => {
-						this.getSlideShowStorage();
+						let homeSlideshow = uni.getStorageSync('home_slideshow');
+						if (homeSlideshow) {
+							console.log('成功取出缓存数据');
+							this.slideshow = homeSlideshow;
+						}
 					},
 					complete: () => {}
 				});
@@ -151,7 +144,7 @@
 					fail: (e) => {
 						let homeAnalysisIcon = uni.getStorageSync('home_analysis_icon');
 						if (homeAnalysisIcon) {
-							this.analysisIcon = homeAnalysisIcon
+							this.analysisIcon = homeAnalysisIcon;
 						}
 					},
 					complete: () => {}
@@ -192,21 +185,11 @@
 					fail: (e) => {
 						let homeTopic = uni.getStorageSync('home_topic');
 						if (homeTopic) {
-							this.topic = homeTopic
+							this.topic = homeTopic;
 						}
 					},
 					complete: () => {}
 				});
-			},
-			getSlideShowStorage() {
-				try {
-					const homeSlideshow = uni.getStorageSync('home_slideshow');
-					if (homeSlideshow) {
-						this.slideshow = homeSlideshow
-					}
-				} catch (e) {
-					console.log('无法从本地缓存获取相应数据');
-				}
 			},
 			openAnalysisList(e) {
 				var analysisId = e.currentTarget.dataset.analysisid;

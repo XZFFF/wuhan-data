@@ -21,30 +21,56 @@
 				topic: []
 			};
 		},
-		onLoad: function() {
-			uni.showLoading({
-				title: "Loading..."
-			})
-			setTimeout(function() {
-				uni.hideLoading();
-			}, 2000);
-			// 通过请求接口获取专题数据
-			uni.request({
-				url: 'http://wuhandata.applinzi.com/topicList.php',
-				method: 'GET',
-				data: {},
-				success: res => {
-					uni.hideLoading();
-					this.topic = res.data;
-				},
-				fail: (e) => {},
-				complete: () => {}
-			});
+		onShow: function() {
+			this.checkNetwork();
+			this.initTopicList();
+		},
+		onPullDownRefresh: function() {
+			this.removeStorage();
+			this.checkNetwork();
+			this.initTopicList();
+			uni.stopPullDownRefresh();
 		},
 		methods: {
+			removeStorage() {
+				uni.removeStorage({
+					key: 'topic_list',
+				});
+				this.topic = [];
+			},
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						if (res.networkType == 'none') {
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
+			initTopicList() {
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/topicList.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						this.topic = res.data;
+					},
+					fail: (e) => {
+						let topicList = uni.getStorageSync('topic_list');
+						if (topicList) {
+							this.topic = topicList;
+						}
+					},
+					complete: () => {}
+				});
+			},
 			open_topic_detail(e) {
 				uni.navigateTo({
-					url:'../detail/detail'
+					url: '../detail/detail'
 				})
 			}
 		}
