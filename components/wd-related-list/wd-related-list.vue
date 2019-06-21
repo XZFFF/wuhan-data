@@ -5,7 +5,7 @@
 			<text>相关指标</text>
 		</view>
 		<uni-list>
-			<uni-list-item v-for="(item, index) in relatedData" :key="index" :title="item.indexName"></uni-list-item>
+			<uni-list-item v-for="(item, index) in relatedData" :key="index" :title="item.indexName" @click="openRelatedDetail(item)"></uni-list-item>
 		</uni-list>
 	</view>
 </template>
@@ -13,13 +13,11 @@
 <script>
 	import uniList from '@/components/uni-list/uni-list.vue';
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
-	import wdListItem from '@/components/wd-list-item/wd-list-item.vue';
 
 	export default {
 		components: {
 			uniList,
-			uniListItem,
-			wdListItem
+			uniListItem
 		},
 		props: {
 			relatedData: {
