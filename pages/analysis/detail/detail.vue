@@ -58,12 +58,13 @@
 						freqName: '月度',
 						startArray: ['201701', '201702'],
 						endArray: ['201709', '201710'],
+						current: [0, 1]
 					},
 					{
 						freqName: '年度',
 						startArray: ['2016', '2017'],
 						endArray: ['2017', '2018'],
-					}
+					},
 				];
 			},
 			initIndexDetail() {

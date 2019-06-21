@@ -74,11 +74,11 @@
 		},
 		data() {
 			return {
-				freqArray: ['月度', '季度'],
+				freqArray: [],
 				freqIndex: 0,
-				startArray: ['201801', '201802', '201803', '201804'],
+				startArray: [],
 				startIndex: 0,
-				endArray: ['201901', '201902', '201903', '201904'],
+				endArray: [],
 				endIndex: 0,
 			}
 
@@ -87,8 +87,17 @@
 			let freqCondition = [];
 			for (let i = 0; i < this.timeCondition.length; i++) {
 				freqCondition[i] = this.timeCondition[i].freqName;
+				if (this.timeCondition[i].hasOwnProperty("current")) {
+					this.freqIndex = i;
+				}
 			}
 			this.freqArray = freqCondition;
+			this.startArray = this.timeCondition[this.freqIndex].startArray;
+			this.endArray = this.timeCondition[this.freqIndex].endArray;
+			if (this.timeCondition[this.freqIndex].hasOwnProperty("current")) {
+				this.startIndex = this.timeCondition[this.freqIndex].current[0];
+				this.endIndex = this.timeCondition[this.freqIndex].current[1];
+			}
 		},
 		methods: {
 			bindFreqPickerChange: function(e) {
@@ -96,13 +105,6 @@
 				this.freqIndex = e.target.value;
 				this.startArray = this.timeCondition[this.freqIndex].startArray;
 				this.endArray = this.timeCondition[this.freqIndex].endArray;
-				// if (this.freqIndex == 0) {
-				// 	this.startArray = this.timeCondition[this.freqIndex].startArray;
-				// 	this.endArray = this.timeCondition[this.freqIndex].endArray;
-				// } else if (this.freqIndex == 1) {
-				// 	this.startArray = ['2018Q1', '2018Q2', '2018Q3', '2018Q4', '2019Q1'];
-				// 	this.endArray = ['2019Q2', '2019Q1', '2018Q4', '2018Q3', '2018Q2'];
-				// }
 			},
 			bindStartPickerChange: function(e) {
 				console.log('start picker发送选择改变，携带值为：' + e.target.value)
