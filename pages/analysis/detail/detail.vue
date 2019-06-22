@@ -3,6 +3,7 @@
 		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
 		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
+		<wd-share></wd-share>
 	</scroll-view>
 </template>
 
@@ -10,12 +11,14 @@
 	import wdTimePicker from '@/components/wd-time-picker/wd-time-picker.vue';
 	import wdChooseItem from '@/components/wd-choose-item/wd-choose-item.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
+	import wdShare from '@/components/wd-share/wd-share.vue';
 
 	export default {
 		components: {
 			wdTimePicker,
 			wdChooseItem,
-			wdRelatedList
+			wdRelatedList,
+			wdShare
 		},
 		data() {
 			return {
@@ -40,18 +43,7 @@
 			this.initRelatedData();
 			this.initTimeCondition();
 		},
-		// 导航栏自定义按钮
-		onNavigationBarButtonTap(e) {
-			if (e.index === 0) {
-				uni.share({
 
-				})
-			}
-			uni.showToast({
-				title: e.index === 0 ? "你点了分享按钮" : "你点了收藏按钮",
-				icon: "none"
-			})
-		},
 		methods: {
 			initTimeCondition() {
 				this.timeCondition = [{
@@ -125,7 +117,7 @@
 					indexId: '4',
 					indexName: '金融机构贷款余额改变'
 				}];
-			}
+			},
 		}
 	}
 </script>
@@ -145,5 +137,62 @@
 		flex-direction: column;
 		/* padding-bottom: 30upx; */
 		box-sizing: border-box;
+	}
+
+	.bottom-text {
+		margin-top: 100upx;
+		font-size: 25upx;
+		text-align: center;
+		color: #CDCDCD;
+	}
+
+	.active {
+		position: absolute;
+		margin-left: 35upx;
+		margin-top: 5upx;
+		width: 15upx;
+		height: 15upx;
+		background: red;
+		border-radius: 50%;
+	}
+
+	.bottom-title {
+		line-height: 60upx;
+		font-size: 24upx;
+		padding: 15upx 0;
+	}
+
+	.bottom-content {
+		display: flex;
+		flex-wrap: wrap;
+		padding: 0 35upx;
+	}
+
+	.bottom-content-box {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 15upx;
+		width: 25%;
+		box-sizing: border-box;
+	}
+
+	.bottom-content-image {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
+		border-radius: 10upx;
+	}
+
+	.bottom-content-text {
+		font-size: 26upx;
+		color: #333;
+		margin-top: 10upx;
+	}
+
+	.bottom-btn {
+		height: 90upx;
+		line-height: 90upx;
 	}
 </style>
