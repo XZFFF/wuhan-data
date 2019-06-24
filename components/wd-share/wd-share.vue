@@ -319,6 +319,14 @@
 	})
 	// #endif
 	export default {
+		props: {
+			indexId: {
+				type: String
+			},
+			indexName: {
+				type: String
+			},
+		},
 		data() {
 			return {
 				title: ''
@@ -343,6 +351,8 @@
 					break;
 				case "favorite":
 					// TODO 收藏按钮
+					console.log(this.indexId + this.indexName);
+					break;
 				default:
 					uni.showToast({
 						title: e.type,

@@ -3,7 +3,7 @@
 		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
 		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share></wd-share>
+		<wd-share :indexId="indexId" :indexName="indexName"></wd-share>
 	</scroll-view>
 </template>
 
@@ -43,7 +43,6 @@
 			this.initRelatedData();
 			this.initTimeCondition();
 		},
-
 		methods: {
 			initTimeCondition() {
 				this.timeCondition = [{
