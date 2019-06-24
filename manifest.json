@@ -45,9 +45,13 @@
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "targetSdkVersion" : 24,
+                "schemes" : "wuhandata"
             },
-            "ios" : {},
+            "ios" : {
+                "urltypes" : "wuhandata"
+            },
             /* ios打包配置 */
             "sdkConfigs" : {},
             "icons" : {
