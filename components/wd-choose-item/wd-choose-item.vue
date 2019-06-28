@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<wd-table v-if="requestItem.type === 'table'" :title="requestItem.title" :tableBody="requestItem.tableBody"></wd-table>
-		<wd-echarts v-if="requestItem.type === 'echarts'" :title="requestItem.title" :nbOption="requestItem.option" :canvasId="itemId" :nbHeight="requestItem.height"></wd-echarts>
+		<wd-table v-if="requestItem.classType === 'table'" :title="requestItem.classTitle" :tableBody="requestItem.tableBody"></wd-table>
+		<wd-echarts v-if="requestItem.classType === 'echarts'" :title="requestItem.classTitle" :nbOption="requestItem.echartOption" :canvasId="itemId" :nbHeight="requestItem.classHeight"></wd-echarts>
 	</view>
 </template>
 

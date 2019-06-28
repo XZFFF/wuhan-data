@@ -21,7 +21,10 @@
 				type: String,
 				default: 'ec-canvas',
 			},
-			nbHeight: Number,
+			nbHeight: {
+				type: String,
+				default: "400",
+			},
 			title: {
 				type: String,
 				default: 'ECharts图例',
