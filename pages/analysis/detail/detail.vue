@@ -1,7 +1,7 @@
 <template>
-	<view class="container">
+	<view class="container" :style="{height:totalHeight + 'px'}">
 		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
-		<view class="class-block" :style="{height:totalHeight + 'px'}">
+		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
 				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
@@ -37,6 +37,9 @@
 				relatedData: [],
 				indexId: "1000",
 				indexName: "指标详情页",
+				totalHeight: 1000,
+				classTotalHeight: 400
+
 			};
 		},
 		onLoad: function(e) {
@@ -71,7 +74,29 @@
 				// 	complete: () => {}
 				// });
 				this.indexDetail = echartsData.data.classInfo;
-				this.totalHeight = echartsData.data.classInfo.length * 400;
+				let classHeight = 0;
+				for (let i = 0; i < echartsData.data.classInfo.length; i++) {
+					let item = echartsData.data.classInfo[i];
+					let h = 0;
+					if (item.classType == 'table') {
+						if (typeof item.classHeight === 'string') {
+							h = parseInt(item.classHeight);
+						} else {
+							h = 500;
+						}
+					} else if (item.classType == 'echarts') {
+						if (typeof item.classHeight === 'string') {
+							h = parseInt(item.classHeight);
+						} else {
+							h = 400;
+						}
+					}
+					classHeight += h;
+				}
+				this.classTotalHeight = classHeight;
+				this.totalHeight = 200 + classHeight + (echartsData.data.relatedData.length + 1) * 40;
+				console.log(this.classTotalHeight);
+				console.log(this.totalHeight);
 			},
 			initRelatedData() {
 				this.relatedData = echartsData.data.relatedData;
@@ -118,7 +143,6 @@
 		display: flex;
 		flex: 1;
 		width: 100%;
-		height: 4500px;
 		flex-direction: column;
 		box-sizing: border-box;
 	}
