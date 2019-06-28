@@ -1,22 +1,32 @@
 <template>
-	<scroll-view scroll-y="true" class="container">
+	<view class="container">
 		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
-		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
+		<view class="class-block" :style="{height:totalHeight + 'px'}">
+			<block v-for="(item, index) in indexDetail" :key="index">
+				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
+				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
+				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
+			</block>
+		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
 		<wd-share :indexId="indexId" :indexName="indexName"></wd-share>
-	</scroll-view>
+	</view>
 </template>
 
 <script>
 	import wdTimePicker from '@/components/wd-time-picker/wd-time-picker.vue';
-	import wdChooseItem from '@/components/wd-choose-item/wd-choose-item.vue';
+	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
+	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
+
+	import echartsData from "../../../common/echarts.json";
 
 	export default {
 		components: {
 			wdTimePicker,
-			wdChooseItem,
+			wdEcharts,
+			wdTable,
 			wdRelatedList,
 			wdShare
 		},
@@ -45,47 +55,26 @@
 		},
 		methods: {
 			initTimeCondition() {
-				this.timeCondition = [{
-						freqName: '月度',
-						startArray: ['201701', '201702'],
-						endArray: ['201709', '201710'],
-						current: [0, 1]
-					},
-					{
-						freqName: '年度',
-						startArray: ['2016', '2017'],
-						endArray: ['2017', '2018'],
-					},
-				];
+				this.timeCondition = echartsData.data.timeCondition;
 			},
 			initIndexDetail() {
-				uni.request({
-					url: 'http://wuhandata.applinzi.com/analysisDetail.php',
-					method: 'GET',
-					data: {},
-					success: res => {
-						this.indexDetail = res.data;
-					},
-					fail: (e) => {
-						console.log(e.errMsg);
-					},
-					complete: () => {}
-				});
+				// uni.request({
+				// 	url: 'http://wuhandata.applinzi.com/analysisDetail.php',
+				// 	method: 'GET',
+				// 	data: {},
+				// 	success: res => {
+				// 		this.indexDetail = res.data;
+				// 	},
+				// 	fail: (e) => {
+				// 		console.log(e.errMsg);
+				// 	},
+				// 	complete: () => {}
+				// });
+				this.indexDetail = echartsData.data.classInfo;
+				this.totalHeight = echartsData.data.classInfo.length * 400;
 			},
 			initRelatedData() {
-				this.relatedData = [{
-					indexId: '1',
-					indexName: '全社会用电量'
-				}, {
-					indexId: '2',
-					indexName: '工业用电量'
-				}, {
-					indexId: '3',
-					indexName: '铁路货运量'
-				}, {
-					indexId: '4',
-					indexName: '金融机构贷款余额'
-				}];
+				this.relatedData = echartsData.data.relatedData;
 			},
 			onConfirm(val) {
 				console.log('发起更新数据请求');
@@ -104,15 +93,6 @@
 					complete: () => {}
 				});
 				this.relatedData = [{
-					indexId: '1',
-					indexName: '全社会用电量'
-				}, {
-					indexId: '2',
-					indexName: '工业用电量'
-				}, {
-					indexId: '3',
-					indexName: '铁路货运量'
-				}, {
 					indexId: '4',
 					indexName: '金融机构贷款余额改变'
 				}];
@@ -122,21 +102,33 @@
 </script>
 
 <style>
-	page,
+	page {
+		display: flex;
+		background: #f4f5f6;
+		width: 750upx;
+		overflow-x: hidden;
+	}
+
 	view {
+		/* 设置flex会导致classHeight无效，但不设置会导致classTitle错位 */
 		display: flex;
 	}
 
-	page {
-		min-height: 100%;
-	}
-
 	.container {
+		display: flex;
 		flex: 1;
+		width: 100%;
+		height: 4500px;
 		flex-direction: column;
-		/* padding-bottom: 30upx; */
 		box-sizing: border-box;
 	}
+
+	.class-block {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
 
 	.bottom-text {
 		margin-top: 100upx;
