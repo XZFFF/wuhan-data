@@ -1,49 +1,60 @@
 <template>
-	<scroll-view scroll-y="true" class="container">
-
-		<wd-choose-item v-for="(indexDetailItem, index) in indexDetail" :key="index" :requestItem="indexDetailItem"></wd-choose-item>
-	</scroll-view>
+	<view class="container" :style="{height:totalHeight + 'px'}">
+		<block v-for="(item, index) in indexDetail" :key="index">
+			<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
+			<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
+			 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
+		</block>
+	</view>
 </template>
 
 <script>
-	import wdChooseItem from "@/components/wd-choose-item/wd-choose-item.vue";
+	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
+	import wdTable from '@/components/wd-table/wd-table.vue';
 	import echartsData from "../../../common/echarts.json";
 	export default {
 		components: {
-			wdChooseItem
+			wdEcharts,
+			wdTable
 		},
 		data() {
 			return {
 				indexDetail: {},
+				totalHeight: 400
 			};
 		},
-		onLoad: function(e) {},
-		onShow: function() {
+		onLoad: function(e) {
 			this.initIndexDetail();
+		},
+		onShow: function() {
+
 		},
 		methods: {
 			initIndexDetail() {
 				let serverData = echartsData;
 				this.indexDetail = serverData.data.classInfo;
+				this.totalHeight = serverData.data.classInfo.length * 400;
 			},
 		}
 	}
 </script>
 
 <style>
-	page,
+	page {
+		display: flex;
+		background: #f4f5f6;
+		width: 750upx;
+		overflow-x: hidden;
+	}
+
 	view {
+		/* 设置flex会导致classHeight无效，但不设置会导致classTitle错位 */
 		display: flex;
 	}
 
-	page {
-		min-height: 100%;
-	}
-
 	.container {
-		flex: 1;
+		display: flex;
 		flex-direction: column;
-		/* padding-bottom: 30upx; */
-		box-sizing: border-box;
+		width: 100%;
 	}
 </style>

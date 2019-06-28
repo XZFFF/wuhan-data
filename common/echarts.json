@@ -15,10 +15,24 @@
 			}
 		],
 		"classInfo": [{
+				"id": "0",
+				"classTitle": "表格示例",
+				"classType": "table",
+				"tableBody": [
+					[" ", "GDP总量", "第一产业", "第二产业", "第三产业"],
+					["2018Q1", "490", "150", "220", "120"],
+					["2018Q2", "546", "232", "182", "132"],
+					["2018Q3", "493", "201", "191", "101"],
+					["2018Q4", "522", "154", "234", "134"],
+					["2019Q1", "570", "190", "290", "90"],
+					["2018Q2", "900", "340", "330", "230"]
+				]
+			},
+			{
 				"id": "1",
 				"classTitle": "折线图",
 				"classType": "echarts",
-				"classHeight": "300",
+				"classHeight": "200",
 				"echartOption": {
 					"grid": {
 						"containLabel": true
@@ -56,7 +70,7 @@
 				"id": "2",
 				"classTitle": "区域图",
 				"classType": "echarts",
-				"classHeight": "300",
+				"classHeight": "400",
 				"echartOption": {
 					"grid": {
 						"containLabel": true
@@ -107,14 +121,14 @@
 				"id": "3",
 				"classTitle": "饼状图",
 				"classType": "echarts",
-				"classHeight": "300",
+				"classHeight": "400",
 				"echartOption": {
 					"grid": {
 						"containLabel": true
 					},
 					"tooltip": {
 						"show": true,
-						"trigger": "axis"
+						"trigger": "item"
 					},
 					"legend": {
 						"top": "top",
@@ -253,7 +267,7 @@
 				"id": "6",
 				"classTitle": "柱状图",
 				"classType": "echarts",
-				"classHeight": "300",
+				"classHeight": "400",
 				"echartOption": {
 					"grid": {
 						"containLabel": true
@@ -293,15 +307,16 @@
 				"id": "7",
 				"classTitle": "散点图",
 				"classType": "echarts",
-				"classHeight": "300",
+				"classHeight": "400",
 				"echartOption": {
 					"grid": {
 						"containLabel": true
 					},
 					"tooltip": {
 						"show": true,
-						"trigger": "axis",
-						"snap": true
+						"trigger": "item",
+						"snap": true,
+						"formatter": "({c0})"
 					},
 					"legend": {
 						"top": "top"
@@ -412,7 +427,7 @@
 				"id": "9",
 				"classTitle": "折柱混搭图",
 				"classType": "echarts",
-				"classHeight": "300",
+				"classHeight": "400",
 				"echartOption": {
 					"grid": {
 						"containLabel": true

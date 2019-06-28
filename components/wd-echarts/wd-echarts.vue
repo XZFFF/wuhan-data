@@ -1,8 +1,8 @@
 <template>
-	<view class="canvasView" :style="{height:nbHeight + 'px'}">
+	<view class="canvas-view" :style="{height:classHeight + 'px'}">
 		<view class="echart-nav">
 			<image src="../../../static/icon/echarts/trend-upward.png"></image>
-			<text>{{title}}</text>
+			<text>{{classTitle}}</text>
 		</view>
 		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="echarts" />
 	</view>
@@ -11,27 +11,26 @@
 <script>
 	import * as echarts from '@/components/echarts/echarts.min.js';
 	import mpvueEcharts from '@/components/mpvue-echarts/src/echarts.vue';
-
 	export default {
+		components: {
+			mpvueEcharts
+		},
 		props: {
-			nbOption: {
+			echartOption: {
 				type: Object
 			},
 			canvasId: {
 				type: String,
 				default: 'ec-canvas',
 			},
-			nbHeight: {
+			classHeight: {
 				type: String,
 				default: "400",
 			},
-			title: {
+			classTitle: {
 				type: String,
 				default: 'ECharts图例',
 			},
-		},
-		components: {
-			mpvueEcharts
 		},
 		data() {
 			return {
@@ -39,40 +38,31 @@
 			};
 		},
 		onLoad() {
-			// console.log(this.nbOption);
-			// this.lazyInit();
-		},
-		updated() {
-			// console.log(this.nbOption);
+			console.log(this.classHeight);
 		},
 		methods: {
-			// lazyInit() {
-			// 	console.log('lazyInit:' + this.nbOption);
-			// 	this.$refs.echarts.init()
-			// },
 			onInit(canvas, width, height) {
-				console.log(Boolean(this.nbOption));
-				let nbChart = echarts.init(canvas, null, {
+				let wdChart = echarts.init(canvas, null, {
 					width: width,
 					height: height
 				})
-				canvas.setChart(nbChart)
+				canvas.setChart(wdChart)
 
-				nbChart.setOption(this.nbOption)
-				return nbChart
+				wdChart.setOption(this.echartOption)
+				return wdChart
 			}
 		}
 	}
 </script>
 
 <style>
-	.canvasView {
-		margin-top: 30upx;
-		height: 1000upx;
-		width: 750upx;
-		background-color: #FFFFFF;
+	.canvas-view {
 		flex: 1;
 		flex-direction: column;
+		background-color: #FFFFFF;
+		width: 100%;
+		height: 400upx;
+		margin-top: 30upx;
 	}
 
 	.echart-nav {

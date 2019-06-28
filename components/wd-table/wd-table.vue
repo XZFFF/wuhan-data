@@ -78,7 +78,7 @@
 	.table {
 		width: 100%;
 		overflow: hidden;
-		max-height: 700upx;
+		max-height: 600upx;
 	}
 
 	.columnItem {
