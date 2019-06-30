@@ -37,8 +37,8 @@
 				</picker>
 			</view>
 		</view>
-		<view class="ti-condition">
-			<button type="primary" plain="true" @tap="pickerConfirm">确定</button>
+		<view class="ti-condition" style="padding-bottom: 20upx;">
+			<button type="default" plain="true" size="mini" @tap="pickerConfirm">确定</button>
 		</view>
 	</view>
 </template>
