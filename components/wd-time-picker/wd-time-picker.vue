@@ -40,28 +40,6 @@
 		<view class="ti-condition">
 			<button type="primary" plain="true" @tap="pickerConfirm">确定</button>
 		</view>
-
-		<!-- 		<view v-if="chooseFreq.showMonth === true || chooseFreq.showMonth === 'true' || chooseFreq.showQuarter === true || chooseFreq.showQuarter === 'true' || chooseFreq.showYear === true || chooseFreq.showYear === 'true'"
-		 class="ti-condition" style="padding-bottom: 30upx;">
-			<view class="ti-condition-name">
-				<text>季/年度:</text>
-			</view>
-			<view class="ti-condition-radio uni-list-cell-db">
-				<radio-group name="ti-freq-group" @change="radioChange">
-					<label v-if="chooseFreq.showMonth === true || chooseFreq.showMonth === 'true'">
-						<radio value="radio-m" :checked="index === current" >月度</radio>
-					</label>
-					<label v-if="chooseFreq.showQuarter === true || chooseFreq.showQuarter === 'true'">
-						<radio value="radio-q" :checked="index === current" >季度</radio>
-					</label>
-					<label v-if="chooseFreq.showYear === true || chooseFreq.showYear === 'true'">
-						<radio value="radio-y" :checked="index === current" >年度</radio>
-					</label>
-				</radio-group>
-			</view>
-		</view> -->
-
-
 	</view>
 </template>
 
@@ -69,7 +47,7 @@
 	export default {
 		props: {
 			timeCondition: {
-				type: Object
+				type: Array
 			}
 		},
 		data() {
@@ -81,25 +59,36 @@
 				endArray: [],
 				endIndex: 0,
 			}
-
+		},
+		onLoad() {
+			this.setTimeCondition();
 		},
 		onReady() {
-			let freqCondition = [];
-			for (let i = 0; i < this.timeCondition.length; i++) {
-				freqCondition[i] = this.timeCondition[i].freqName;
-				if (this.timeCondition[i].hasOwnProperty("current")) {
-					this.freqIndex = i;
-				}
-			}
-			this.freqArray = freqCondition;
-			this.startArray = this.timeCondition[this.freqIndex].startArray;
-			this.endArray = this.timeCondition[this.freqIndex].endArray;
-			if (this.timeCondition[this.freqIndex].hasOwnProperty("current")) {
-				this.startIndex = this.timeCondition[this.freqIndex].current[0];
-				this.endIndex = this.timeCondition[this.freqIndex].current[1];
+			if (this.timeCondition.length != 0) {
+				this.setTimeCondition();
 			}
 		},
 		methods: {
+			setTimeCondition() {
+				let pageTimeCondition = this.timeCondition;
+				console.log(pageTimeCondition);
+				if (pageTimeCondition.length != 0) {
+					let freqCondition = [];
+					for (let i = 0; i < pageTimeCondition.length; i++) {
+						freqCondition[i] = pageTimeCondition[i].freqName;
+						if (pageTimeCondition[i].hasOwnProperty("current")) {
+							this.freqIndex = i;
+						}
+					}
+					this.freqArray = freqCondition;
+					this.startArray = pageTimeCondition[this.freqIndex].startArray;
+					this.endArray = pageTimeCondition[this.freqIndex].endArray;
+					if (pageTimeCondition[this.freqIndex].hasOwnProperty("current")) {
+						this.startIndex = pageTimeCondition[this.freqIndex].current[0];
+						this.endIndex = pageTimeCondition[this.freqIndex].current[1];
+					}
+				}
+			},
 			bindFreqPickerChange: function(e) {
 				console.log('freq picker发送选择改变，携带值为：' + e.target.value)
 				this.freqIndex = e.target.value;
