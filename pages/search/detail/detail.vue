@@ -115,8 +115,7 @@
 								duration: 500
 							})
 						}
-						// 设置各部分数据
-						_self.timeCondition = searchDetailApi.data.timeConditionNew;
+						// 更新图例数据
 						_self.indexDetail = searchDetailApi.data.classInfoNew;
 						// 计算classHeight及总Height
 						this.setHeight();

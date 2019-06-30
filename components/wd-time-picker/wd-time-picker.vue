@@ -47,7 +47,7 @@
 	export default {
 		props: {
 			timeCondition: {
-				type: Array
+				type: Array,
 			}
 		},
 		data() {
@@ -60,13 +60,14 @@
 				endIndex: 0,
 			}
 		},
-		onLoad() {
-			this.setTimeCondition();
-		},
-		onReady() {
-			if (this.timeCondition.length != 0) {
+		watch: {
+			// 监听timeCodition数据
+			timeCondition(newValue, oldValue) {
 				this.setTimeCondition();
 			}
+		},
+		onLoad() {
+			this.setTimeCondition();
 		},
 		methods: {
 			setTimeCondition() {
@@ -90,20 +91,16 @@
 				}
 			},
 			bindFreqPickerChange: function(e) {
-				console.log('freq picker发送选择改变，携带值为：' + e.target.value)
 				this.freqIndex = e.target.value;
 				this.startArray = this.timeCondition[this.freqIndex].startArray;
 				this.endArray = this.timeCondition[this.freqIndex].endArray;
 			},
 			bindStartPickerChange: function(e) {
-				console.log('start picker发送选择改变，携带值为：' + e.target.value)
 				this.startIndex = e.target.value
 			},
 			bindEndPickerChange: function(e) {
-				console.log('end picker发送选择改变，携带值为：' + e.target.value)
 				this.endIndex = e.target.value
 			},
-
 			pickerConfirm(e) {
 				let timeFreq = this.freqArray[this.freqIndex];
 				let startTime = this.startArray[this.startIndex];
