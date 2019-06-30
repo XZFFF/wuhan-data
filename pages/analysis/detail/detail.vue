@@ -20,7 +20,7 @@
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
 
-	import echartsData from "@/common/api/echarts.json";
+	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 
 	export default {
 		components: {
@@ -73,10 +73,14 @@
 				// 	},
 				// 	complete: () => {}
 				// });
-				this.indexDetail = echartsData.data.classInfo;
+				let analysisDetailApi = analysisDetailApiJson;
+				let classInfo = analysisDetailApi.data.classInfo;
+				let relatedInfo = analysisDetailApi.data.relatedData;
+				
+				this.indexDetail = classInfo;
 				let classHeight = 0;
-				for (let i = 0; i < echartsData.data.classInfo.length; i++) {
-					let item = echartsData.data.classInfo[i];
+				for (let i = 0; i < classInfo.length; i++) {
+					let item = classInfo[i];
 					let h = 0;
 					if (item.classType == 'table') {
 						if (typeof item.classHeight === 'string') {
@@ -94,12 +98,12 @@
 					classHeight += h;
 				}
 				this.classTotalHeight = classHeight;
-				this.totalHeight = 200 + classHeight + (echartsData.data.relatedData.length + 1) * 40;
+				this.totalHeight = 200 + classHeight + (relatedInfo.length + 1) * 40;
 				console.log(this.classTotalHeight);
 				console.log(this.totalHeight);
 			},
 			initRelatedData() {
-				this.relatedData = echartsData.data.relatedData;
+				this.relatedData = relatedInfo;
 			},
 			onConfirm(val) {
 				console.log('发起更新数据请求');
