@@ -11,6 +11,8 @@
 <script>
 	import * as echarts from '@/components/echarts/echarts.min.js';
 	import mpvueEcharts from '@/components/mpvue-echarts/src/echarts.vue';
+	
+	var wdChart;
 	export default {
 		components: {
 			mpvueEcharts
@@ -37,10 +39,15 @@
 				echarts: echarts
 			};
 		},
+		watch: {
+			echartOption(newOption, oldOption) {
+				wdChart.setOption(this.echartOption)
+			}
+		},
 		onLoad() {},
 		methods: {
 			onInit(canvas, width, height) {
-				let wdChart = echarts.init(canvas, null, {
+				wdChart = echarts.init(canvas, null, {
 					width: width,
 					height: height
 				})

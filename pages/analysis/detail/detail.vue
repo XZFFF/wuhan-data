@@ -64,14 +64,6 @@
 			this.totalHeight = 1000;
 			this.classTotalHeight = 400;
 		},
-		onBackPress(options) {
-			console.log(options);
-			if (options.from === 'navigateBack') {
-				return false;
-			}
-			this.backToList();
-			return true;
-		},
 		methods: {
 			initAnalysisDetail() {
 				this.checkNetwork();
@@ -121,8 +113,7 @@
 							})
 						}
 						// 设置各部分数据
-						_self.timeCondition = analysisDetailApi.data.timeCondition;
-						_self.indexDetail = analysisDetailApi.data.classInfo;
+						_self.indexDetail = analysisDetailApi.data.classInfoNew;
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
@@ -170,12 +161,6 @@
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = 200 + classHeight + (relatedInfo.length + 1) * 40;
 			},
-			// TODO 依然会按照堆栈页面返回
-			backToList() {
-				uni.redirectTo({
-					url: '../list/list'
-				})
-			}
 		}
 	}
 </script>
