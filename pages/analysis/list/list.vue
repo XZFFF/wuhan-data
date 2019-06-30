@@ -24,6 +24,8 @@
 <script>
 	// 引入公共样式
 	import wdIndiItem from '@/components/wd-indi-item/wd-indi-item.vue';
+	import analysisListApiJson from '@/common/api/analysisList.json';
+
 	export default {
 		components: {
 			wdIndiItem
@@ -39,13 +41,51 @@
 				subCategoryList: []
 			};
 		},
+		onLoad: function(e) {
+			if (JSON.stringify(e) != '{}') {
+				this.analysisId = e.analysis_id;
+			}
+			this.initAnalysisList();
+		},
 		methods: {
+			initAnalysisList() {
+				uni.request({
+					url: "http://wuhandata.applinzi.com/analysisList.php",
+					method: 'GET',
+					data: {},
+					success: res => {
+						// 获取homepage的数据
+						let analysisListApi = analysisListApiJson;
+						// 检查json数据
+						if (analysisListApi.errCode != 0 || analysisListApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: analysisListApi.errMsg,
+								duration: 500
+							})
+						}
+						// 设置各部分数据
+						this.categoryList = analysisListApi.data.list
+						// 数据存入缓存
+						uni.setStorage({
+							key: 'analysis_list',
+							data: this.categoryList,
+						});
+					},
+					fail: (e) => {},
+					complete: () => {
+						// 设置初始化的左右侧子栏数据(默认为第一个)
+						this.categoryActive = this.analysisId;
+						this.subCategoryList = this.categoryList[this.analysisId].subList;
+					}
+				});
+				this.height = uni.getSystemInfoSync().windowHeight;
+			},
 			checkNetwork() {
 				uni.getNetworkType({
 					success: function(res) {
-						console.log(res.networkType);
 						if (res.networkType == 'none') {
-							console.log('network:' + res.networkType);
 							uni.showToast({
 								title: '无网络连接',
 								duration: 1000,
@@ -65,36 +105,6 @@
 				this.scrollTop = -this.scrollHeight * index;
 			}
 		},
-		onLoad: function(e) {
-			uni.showLoading({
-				title: "Loading..."
-			})
-			setTimeout(function() {
-				uni.hideLoading();
-			}, 2000);
-			uni.request({
-				url: "http://wuhandata.applinzi.com/analysisList.php",
-				method: 'GET',
-				data: {},
-				success: res => {
-					uni.hideLoading();
-					this.categoryList = res.data;
-				},
-				fail: (e) => {
-					this.checkNetwork();
-				},
-				complete: () => {
-					// console.log(this.categoryList[1]);
-					if (JSON.stringify(e) != '{}') {
-						this.analysisId = e.analysis_id;
-						// 设置初始化的左右侧子栏数据(默认为第一个)
-						this.categoryActive = this.analysisId;
-						this.subCategoryList = this.categoryList[this.analysisId].subList;
-					}
-				}
-			});
-			this.height = uni.getSystemInfoSync().windowHeight;
-		}
 	}
 </script>
 
