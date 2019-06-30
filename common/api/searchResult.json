@@ -1,0 +1,19 @@
+{
+	"errCode": "0",
+	"errMsg": "success",
+	"data": {
+		"result": [{
+				"id": "1",
+				"name": "地区生产总值(GDP)"
+			},
+			{
+				"id": "2",
+				"name": "PMI指数"
+			},
+			{
+				"id": "3",
+				"name": "R&D经费占GDP比重"
+			}
+		]
+	}
+}

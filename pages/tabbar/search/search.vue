@@ -125,6 +125,39 @@
 				});
 
 			},
+			/**
+			 * 关键字搜索
+			 */
+			getInputtips(val) {
+				console.log('当前类型是:' + this.type + ' 搜索词为:' + val);
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/searchResult.php',
+					method: 'GET',
+					data: {
+						keyword: val,
+						type: this.type,
+					},
+					success: res => {
+						let searchResultApi = searchResultApiJson;
+						// 检查json数据
+						if (searchResultApi.errCode != 0 || searchResultApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: searchResultApi.errMsg,
+								duration: 500
+							})
+						}
+						// 设置各部分数据
+						let dataObj = searchResultApi.data.result;
+						// let dataObj = res.data;
+						dataObj = util.dataHandle(dataObj, val);
+						this.resultList = dataObj;
+					},
+					fail: (e) => {},
+					complete: () => {}
+				});
+			},
 			checkNetwork() {
 				uni.getNetworkType({
 					success: function(res) {
@@ -134,6 +167,20 @@
 								duration: 1000,
 								icon: 'loading'
 							});
+						}
+					}
+				});
+			},
+			/**
+			 * 清理历史搜索数据
+			 */
+			clearSearch() {
+				uni.showModal({
+					title: '提示',
+					content: '是否清理全部搜索历史？',
+					success: res => {
+						if (res.confirm) {
+							this.historyList = util.removeHistory();
 						}
 					}
 				});
@@ -166,54 +213,6 @@
 					})
 				}
 			},
-			/**
-			 * 清理历史搜索数据
-			 */
-			clearSearch() {
-				uni.showModal({
-					title: '提示',
-					content: '是否清理全部搜索历史？',
-					success: res => {
-						if (res.confirm) {
-							this.historyList = util.removeHistory();
-						}
-					}
-				});
-			},
-			/**
-			 * 关键字搜索
-			 */
-			getInputtips(val) {
-				console.log('当前类型是:' + this.type + ' 搜索词为:' + val);
-				uni.request({
-					url: 'http://wuhandata.applinzi.com/searchResult.php',
-					method: 'GET',
-					data: {
-						keyword: val,
-						type: this.type,
-					},
-					success: res => {
-						let searchResultApi = searchResultApiJson;
-						// 检查json数据
-						if (searchResultApi.errCode != 0 || searchResultApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: searchResultApi.errMsg,
-								duration: 500
-							})
-						}
-						// 设置各部分数据
-						let dataObj = searchResultApi.data;
-						// let dataObj = res.data;
-						dataObj = util.dataHandle(dataObj, val);
-						this.resultList = dataObj;
-					},
-					fail: (e) => {},
-					complete: () => {}
-				});
-
-			}
 		},
 		/**
 		 * 当 searchInput 输入时触发
