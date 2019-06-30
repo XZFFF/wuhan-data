@@ -83,7 +83,15 @@
 					success: res => {
 						// 获取homepage的数据
 						let homeApi = homeApiJson;
-						// TODO 检查json数据
+						// 检查json数据
+						if (homeApi.errCode != 0 || homeApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: homeApi.errMsg,
+								duration: 500
+							})
+						}
 						// 设置各部分数据
 						this.slideshow = homeApi.data.slideshow;
 						this.analysis = homeApi.data.analysis;
