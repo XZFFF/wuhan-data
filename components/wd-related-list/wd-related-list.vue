@@ -1,5 +1,5 @@
 <template>
-	<view class="related-main">
+	<view v-if="relatedData.length != 0" class="related-main">
 		<view class="related-nav">
 			<image src="../../../static/icon/link/link.png"></image>
 			<text>相关指标</text>
