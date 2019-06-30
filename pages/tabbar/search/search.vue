@@ -12,7 +12,7 @@
 
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
-				<view v-if="searchHistoryList.length > 0" class="history-content">
+				<view v-if="historyList.length > 0" class="history-content">
 					<view class="history-item" v-for="(item, index) in tranName" :key="index">
 						{{item.name}}
 					</view>
@@ -28,7 +28,7 @@
 					</view>
 				</view>
 				<uni-list style="background-color: #FFFFFF;">
-					<view v-for="(item, index) in searchTrendList" :key="index" @click="searchTrendTap(item)">
+					<view v-for="(item, index) in trendList" :key="index" @click="searchTrendTap(item)">
 						<wd-trend-list-item :trendId="item.id" :title="item.title" :trendArrow="item.arrow" :trendRate="item.rate"></wd-trend-list-item>
 					</view>
 				</uni-list>
@@ -36,8 +36,8 @@
 		</view>
 		<!-- 搜索结果列表 -->
 		<view v-else class="">
-			<view v-if="searchResultList.length > 0" class="history-list-box">
-				<view class="history-list-item" v-for="(item, index) in searchResultList" :key="index" @click="searchResultTap(item)">
+			<view v-if="resultList.length > 0" class="history-list-box">
+				<view class="history-list-item" v-for="(item, index) in resultList" :key="index" @click="searchResultTap(item)">
 					<rich-text :nodes="item.nameNodes"></rich-text>
 				</view>
 			</view>
@@ -52,6 +52,9 @@
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
 	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue'
 
+	import searchApiJson from '@/common/api/search.json';
+	import searchResultApiJson from '@/common/api/searchResult.json';
+
 	export default {
 		components: {
 			uniList,
@@ -59,8 +62,9 @@
 			wdTrendListItem
 		},
 		computed: {
+			// 搜索结果指标名称过长则截断
 			tranName: function() {
-				let result = this.searchHistoryList;
+				let result = this.historyList;
 				for (var i = 0; i < result.length; i++) {
 					if (result[i].name.length > 6) {
 						result[i].name = result[i].name.substring(0, 4) + '..';
@@ -71,49 +75,67 @@
 		},
 		data() {
 			return {
-				type: '全部（默认）',
-				flng: true,
-				timer: null,
+				type: '全部',
 				isHistory: true,
-				list: [],
-				searchHistoryList: [],
-				searchTrendList: [],
-				searchResultList: []
+				historyList: [],
+				trendList: [],
+				resultList: []
 			};
 		},
 		onShow() {
-			console.log('search page onShow');
-			this.isHistory = true;
-
-			this.searchHistoryList = uni.getStorageSync('search_history');
-			this.getInputtips('GDP');
-
-			const searchTrend = uni.getStorageSync('search_trend');
-			if (searchTrend) {
-				this.searchTrendList = searchTrend
-			} else {
-				this.initSearchTrend();
-			}
+			this.initSearch();
 		},
 		methods: {
-			initSearchTrend() {
-				// 获取搜索趋势的接口
+			initSearch() {
+				this.checkNetwork();
+				this.isHistory = true;
+				// 取出历史搜索缓存数据
+				this.historyList = uni.getStorageSync('search_history');
+				// 获取搜索趋势数据
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/searchTrend.php',
 					method: 'GET',
 					data: {},
 					success: res => {
-						this.searchTrendList = res.data;
+						let searchApi = searchApiJson;
+						// 检查json数据
+						if (searchApi.errCode != 0 || searchApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: searchApi.errMsg,
+								duration: 500
+							})
+						}
+						// 设置各部分数据
+						this.trendList = searchApi.data.trend;
+						// this.trendList = res.data;
 						uni.setStorage({
 							key: 'search_trend',
-							data: this.searchTrendList,
-							success: function() {
-								console.log('成功请求搜索趋势数据并存入本地缓存');
-							}
+							data: this.trendList,
 						});
 					},
-					fail: (e) => {},
+					fail: (e) => {
+						let searchTrend = uni.getStorageSync('search_trend');
+						if (searchTrend) {
+							this.trendList = searchTrend
+						}
+					},
 					complete: () => {}
+				});
+
+			},
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						if (res.networkType == 'none') {
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
 				});
 			},
 			/**
@@ -130,16 +152,15 @@
 			 */
 			searchResultTap(item) {
 				item = JSON.parse(JSON.stringify(item));
-				// 如果当前是历史搜索页面 ，那么点击不储存,直接 跳转
+				// 如果当前是历史搜索页面,那么点击不储存,直接跳转
 				if (this.isHistory) {
 					return;
 				} else {
 					this.isHistory = true;
-					// 点击列表存储搜索数据
+					// 点击列表存储搜索数据,更新历史搜索记录
 					util.setHistory(item);
-					this.searchHistoryList = uni.getStorageSync('search_history');
+					this.historyList = uni.getStorageSync('search_history');
 					// 跳转到对应的界面,这里先做的是返回上一个界面
-					console.log(item.id + item.name);
 					uni.navigateTo({
 						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name
 					})
@@ -154,7 +175,7 @@
 					content: '是否清理全部搜索历史？',
 					success: res => {
 						if (res.confirm) {
-							this.searchHistoryList = util.removeHistory();
+							this.historyList = util.removeHistory();
 						}
 					}
 				});
@@ -163,18 +184,30 @@
 			 * 关键字搜索
 			 */
 			getInputtips(val) {
-				console.log('当前类型是:' + this.type);
+				console.log('当前类型是:' + this.type + ' 搜索词为:' + val);
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/searchResult.php',
-					method: 'POST',
+					method: 'GET',
 					data: {
 						keyword: val,
 						type: this.type,
 					},
 					success: res => {
-						let dataObj = res.data;
+						let searchResultApi = searchResultApiJson;
+						// 检查json数据
+						if (searchResultApi.errCode != 0 || searchResultApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: searchResultApi.errMsg,
+								duration: 500
+							})
+						}
+						// 设置各部分数据
+						let dataObj = searchResultApi.data;
+						// let dataObj = res.data;
 						dataObj = util.dataHandle(dataObj, val);
-						this.searchResultList = dataObj;
+						this.resultList = dataObj;
 					},
 					fail: (e) => {},
 					complete: () => {}
@@ -189,8 +222,8 @@
 			let text = e.text;
 			if (!text) {
 				this.isHistory = true;
-				this.searchHistoryList = [];
-				this.searchHistoryList = uni.getStorageSync('search_history');
+				this.historyList = [];
+				this.historyList = uni.getStorageSync('search_history');
 				return;
 			} else {
 				this.isHistory = false;
@@ -200,13 +233,12 @@
 		/**
 		 * 点击软键盘搜索按键触发
 		 */
-		/*
 		onNavigationBarSearchInputConfirmed(e) {
 			let text = e.text;
 			if (!text) {
 				this.isHistory = true;
-				this.searchHistoryList = [];
-				this.searchHistoryList = uni.getStorageSync('search_history');
+				this.historyList = [];
+				this.historyList = uni.getStorageSync('search_history');
 				uni.showModal({
 					title: '提示',
 					content: '请输入内容。',
@@ -215,20 +247,8 @@
 					}
 				});
 				return;
-			} else {
-				uni.showModal({
-					title: '提示',
-					content: `您输入的内容为"${text}",如果点击确定,将记录到历史搜索,并返回.如果取消不做操作`,
-					success: res => {
-						if (res.confirm) {
-							util.setHistory(text);
-							uni.navigateBack();
-						}
-					}
-				});
 			}
 		},
-		*/
 		/**
 		 *  点击导航栏 buttons 时触发
 		 */
@@ -254,7 +274,6 @@
 					currentWebview.setStyle({
 						titleNView: titleObj
 					});
-					console.log('搜索类型更改为:' + self.type);
 					// #endif
 				},
 				fail: function(res) {

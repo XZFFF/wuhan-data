@@ -1,0 +1,37 @@
+{
+	"errCode": "0",
+	"errMsg": "success",
+	"data": {
+		"trend": [{
+				"id": "1",
+				"title": "GDP总量",
+				"arrow": "up",
+				"rate": "7.12%"
+			},
+			{
+				"id": "2",
+				"title": "全国PMI",
+				"arrow": "up",
+				"rate": "4.42%"
+			},
+			{
+				"id": "3",
+				"title": "工业生产总值",
+				"arrow": "up",
+				"rate": "1.25%"
+			},
+			{
+				"id": "4",
+				"title": "农业生产总值",
+				"arrow": "down",
+				"rate": "1.49%"
+			},
+			{
+				"id": "5",
+				"title": "服务业指数",
+				"arrow": "down",
+				"rate": "0.21%"
+			}
+		]
+	}
+}
