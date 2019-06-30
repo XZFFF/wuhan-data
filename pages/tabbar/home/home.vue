@@ -20,7 +20,7 @@
 		</view>
 		<!-- 经济分析 -->
 		<view class="icon-layout">
-			<view class="icon-single-layout" v-for="(item,index) in analysisIcon" :key="index">
+			<view class="icon-single-layout" v-for="(item,index) in analysis" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="openAnalysisList"
 				 :data-analysisid=item.id>
 					<image class="icon-single-backicon" :src="item.icon_url"></image>
@@ -44,6 +44,10 @@
 	// 引入公共样式
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
+
+	import homeApiJson from '@/common/api/home.json';
+
+
 	export default {
 		components: {
 			uniIcon,
@@ -56,7 +60,7 @@
 				interval: 2000, // 自动切换时长
 				duration: 500, // 切换时长
 				slideshow: [],
-				analysisIcon: [],
+				analysis: [],
 				topic: [],
 			};
 		},
@@ -64,30 +68,35 @@
 			this.initHomePage();
 		},
 		onPullDownRefresh: function() {
-			this.removeStorage();
+			this.removeHomeStorage();
 			this.initHomePage();
 			uni.stopPullDownRefresh();
 		},
 		methods: {
 			initHomePage() {
 				this.checkNetwork();
-				this.initSlideShow();
-				this.initAnalysisIcon();
-				this.initTopic();
-			},
-			removeStorage() {
-				uni.removeStorage({
-					key: 'home_slideshow',
+				// 通过请求接口获取轮播图
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/slideshow.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						// 获取homepage的数据
+						let homeApi = homeApiJson;
+						// TODO 检查json数据
+						// 设置各部分数据
+						this.slideshow = homeApi.data.slideshow;
+						this.analysis = homeApi.data.analysis;
+						this.topic = this.randTopic(homeApi.data.topic);
+						// 数据存入缓存
+						this.setHomeStorage();
+					},
+					fail: (e) => {
+						//取出缓存数据并绑定到data
+						this.getHomeStorage();
+					},
+					complete: () => {}
 				});
-				this.slideshow = [];
-				uni.removeStorage({
-					key: 'home_analysis_icon',
-				});
-				this.analysisIcon = [];
-				uni.removeStorage({
-					key: 'home_topic',
-				});
-				this.topic = [];
 			},
 			checkNetwork() {
 				uni.getNetworkType({
@@ -102,94 +111,67 @@
 					}
 				});
 			},
-			initSlideShow() {
-				// 通过请求接口获取轮播图
-				uni.request({
-					url: 'http://wuhandata.applinzi.com/slideshow.php',
-					method: 'GET',
-					data: {},
-					success: res => {
-						this.slideshow = res.data;
-						uni.setStorage({
-							key: 'home_slideshow',
-							data: this.slideshow,
-							success: function() {
-								console.log('成功请求轮播图数据并存入本地缓存');
-							}
-						});
-					},
-					fail: (e) => {
-						let homeSlideshow = uni.getStorageSync('home_slideshow');
-						if (homeSlideshow) {
-							console.log('成功取出缓存数据');
-							this.slideshow = homeSlideshow;
-						}
-					},
-					complete: () => {}
+			setHomeStorage() {
+				uni.setStorage({
+					key: 'home_slideshow',
+					data: this.slideshow,
+				});
+				uni.setStorage({
+					key: 'home_analysis',
+					data: this.analysis
+				});
+				uni.setStorage({
+					key: 'home_topic',
+					data: this.topic
 				});
 			},
-			initAnalysisIcon() {
-				// 获取经济分析所有icon数据
-				uni.request({
-					url: 'http://wuhandata.applinzi.com/analysisIcon.php',
-					method: 'GET',
-					data: {},
-					success: res => {
-						this.analysisIcon = res.data;
-						uni.setStorage({
-							key: 'home_analysis_icon',
-							data: this.analysisIcon
-						});
-					},
-					fail: (e) => {
-						let homeAnalysisIcon = uni.getStorageSync('home_analysis_icon');
-						if (homeAnalysisIcon) {
-							this.analysisIcon = homeAnalysisIcon;
-						}
-					},
-					complete: () => {}
-				});
+			getHomeStorage() {
+				let homeSlideshow = uni.getStorageSync('home_slideshow');
+				if (homeSlideshow) {
+					this.slideshow = homeSlideshow;
+				}
+				let homeAnalysis = uni.getStorageSync('home_analysis');
+				if (homeAnalysis) {
+					this.analysis = homeAnalysis;
+				}
+				let homeTopic = uni.getStorageSync('home_topic');
+				if (homeTopic) {
+					this.topic = homeTopic;
+				}
 			},
-			initTopic() {
-				// 通过请求接口获取专题数据
-				uni.request({
-					url: 'http://wuhandata.applinzi.com/topicList.php',
-					method: 'GET',
-					data: {},
-					success: res => {
-						let resTopic = res.data;
-						let t = [];
-						let len = resTopic.length;
-						let tid1 = Math.floor(Math.random() * len);
-						t.push(resTopic[tid1]);
-						if (len > 1) {
-							// 防止出现重复的
-							let tid2 = Math.floor(Math.random() * len);
-							while (1) {
-								tid2 = Math.floor(Math.random() * len);
-								if (tid2 != tid1) {
-									t.push(resTopic[tid2]);
-									break;
-								}
-							}
-							this.topic = t;
-						} else {
-							this.topic = t;
-						}
-
-						uni.setStorage({
-							key: 'home_topic',
-							data: this.topic
-						});
-					},
-					fail: (e) => {
-						let homeTopic = uni.getStorageSync('home_topic');
-						if (homeTopic) {
-							this.topic = homeTopic;
-						}
-					},
-					complete: () => {}
+			removeHomeStorage() {
+				uni.removeStorage({
+					key: 'home_slideshow',
 				});
+				this.slideshow = [];
+				uni.removeStorage({
+					key: 'home_analysis',
+				});
+				this.analysis = [];
+				uni.removeStorage({
+					key: 'home_topic',
+				});
+				this.topic = [];
+			},
+			randTopic(resTopic) {
+				let t = [];
+				let len = resTopic.length;
+				let tid1 = Math.floor(Math.random() * len);
+				t.push(resTopic[tid1]);
+				if (len > 1) {
+					// 防止出现重复的
+					let tid2 = Math.floor(Math.random() * len);
+					while (1) {
+						tid2 = Math.floor(Math.random() * len);
+						if (tid2 != tid1) {
+							t.push(resTopic[tid2]);
+							break;
+						}
+					}
+					return t;
+				} else {
+					return t;
+				}
 			},
 			openAnalysisList(e) {
 				var analysisId = e.currentTarget.dataset.analysisid;
