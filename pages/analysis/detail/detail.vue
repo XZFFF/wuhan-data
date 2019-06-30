@@ -159,7 +159,8 @@
 					classHeight += h;
 				}
 				_self.classTotalHeight = classHeight;
-				_self.totalHeight = 200 + classHeight + (relatedInfo.length + 1) * 40;
+				let relatedHeight = relatedInfo.length == 0 ? 0 : (relatedInfo.length + 1) * 40;
+				_self.totalHeight = 200 + classHeight + relatedHeight;
 			},
 		}
 	}
