@@ -20,7 +20,7 @@
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
 
-	import echartsData from "../../../common/echarts.json";
+	import echartsData from "@/common/api/echarts.json";
 
 	export default {
 		components: {

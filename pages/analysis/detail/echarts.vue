@@ -11,7 +11,7 @@
 <script>
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
-	import echartsData from "../../../common/echarts.json";
+	import echartsData from "@/common/api/echarts.json";
 	export default {
 		components: {
 			wdEcharts,
