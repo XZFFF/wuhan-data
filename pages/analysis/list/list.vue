@@ -73,7 +73,13 @@
 							data: this.categoryList,
 						});
 					},
-					fail: (e) => {},
+					fail: (e) => {
+						// 调用缓存数据
+						let analysisList = uni.getStorageSync('analysis_list');
+						if (analysisList) {
+							this.categoryList = analysisList
+						}
+					},
 					complete: () => {
 						// 设置初始化的左右侧子栏数据(默认为第一个)
 						this.categoryActive = this.analysisId;
