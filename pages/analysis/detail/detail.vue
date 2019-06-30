@@ -22,6 +22,7 @@
 
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 
+	var _self;
 	export default {
 		components: {
 			wdTimePicker,
@@ -32,17 +33,18 @@
 		},
 		data() {
 			return {
-				timeCondition: [],
-				indexDetail: {},
-				relatedData: [],
 				indexId: "1000",
 				indexName: "指标详情页",
+				timeCondition: [],
+				indexDetail: [],
+				relatedData: [],
 				totalHeight: 1000,
 				classTotalHeight: 400
 
 			};
 		},
 		onLoad: function(e) {
+			_self = this;
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
@@ -50,35 +52,103 @@
 					title: e.indexName
 				})
 			}
+			this.initAnalysisDetail();
 		},
-		onShow: function() {
-			this.initIndexDetail();
-			this.initRelatedData();
-			this.initTimeCondition();
+		onUnload() {
+			// 退出界面时重新初始化数据
+			this.indexId = "1000";
+			this.indexName = "指标详情页";
+			this.timeCondition = [];
+			this.indexDetail = [];
+			this.relatedData = [];
+			this.totalHeight = 1000;
+			this.classTotalHeight = 400;
+		},
+		onBackPress(options) {
+			console.log(options);
+			if (options.from === 'navigateBack') {
+				return false;
+			}
+			this.backToList();
+			return true;
 		},
 		methods: {
-			initTimeCondition() {
-				this.timeCondition = echartsData.data.timeCondition;
+			initAnalysisDetail() {
+				this.checkNetwork();
+				uni.request({
+					url: 'http://wuhandata.applinzi.com/analysisDetail.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						let analysisDetailApi = analysisDetailApiJson;
+						// 检查json数据
+						if (analysisDetailApi.errCode != 0 || analysisDetailApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: analysisDetailApi.errMsg,
+								duration: 500
+							})
+						}
+						// 设置各部分数据
+						_self.timeCondition = analysisDetailApi.data.timeCondition;
+						_self.indexDetail = analysisDetailApi.data.classInfo;
+						_self.relatedData = analysisDetailApi.data.relatedData;
+						// 计算classHeight及总Height
+						this.setHeight();
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+					},
+					complete: () => {}
+				});
 			},
-			initIndexDetail() {
-				// uni.request({
-				// 	url: 'http://wuhandata.applinzi.com/analysisDetail.php',
-				// 	method: 'GET',
-				// 	data: {},
-				// 	success: res => {
-				// 		this.indexDetail = res.data;
-				// 	},
-				// 	fail: (e) => {
-				// 		console.log(e.errMsg);
-				// 	},
-				// 	complete: () => {}
-				// });
-				let analysisDetailApi = analysisDetailApiJson;
-				let classInfo = analysisDetailApi.data.classInfo;
-				let relatedInfo = analysisDetailApi.data.relatedData;
-				
-				this.indexDetail = classInfo;
+			onConfirm(val) {
+				console.log('发起更新数据请求' + val);
+				uni.request({
+					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
+					method: 'GET',
+					data: {},
+					success: res => {
+						let analysisDetailApi = analysisDetailApiJson;
+						// 检查json数据
+						if (analysisDetailApi.errCode != 0 || analysisDetailApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: analysisDetailApi.errMsg,
+								duration: 500
+							})
+						}
+						// 设置各部分数据
+						_self.timeCondition = analysisDetailApi.data.timeCondition;
+						_self.indexDetail = analysisDetailApi.data.classInfo;
+						// 计算classHeight及总Height
+						this.setHeight();
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+					},
+					complete: () => {}
+				});
+			},
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						if (res.networkType == 'none') {
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
+			setHeight() {
 				let classHeight = 0;
+				let classInfo = _self.indexDetail;
+				let relatedInfo = _self.relatedData;
 				for (let i = 0; i < classInfo.length; i++) {
 					let item = classInfo[i];
 					let h = 0;
@@ -97,35 +167,15 @@
 					}
 					classHeight += h;
 				}
-				this.classTotalHeight = classHeight;
-				this.totalHeight = 200 + classHeight + (relatedInfo.length + 1) * 40;
-				console.log(this.classTotalHeight);
-				console.log(this.totalHeight);
+				_self.classTotalHeight = classHeight;
+				_self.totalHeight = 200 + classHeight + (relatedInfo.length + 1) * 40;
 			},
-			initRelatedData() {
-				this.relatedData = relatedInfo;
-			},
-			onConfirm(val) {
-				console.log('发起更新数据请求');
-				console.log(val);
-				// http://1.wuhandata.applinzi.com/searchDetail.php
-				uni.request({
-					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
-					method: 'GET',
-					data: {},
-					success: res => {
-						this.indexDetail = res.data;
-					},
-					fail: (e) => {
-						console.log(e.errMsg);
-					},
-					complete: () => {}
-				});
-				this.relatedData = [{
-					indexId: '4',
-					indexName: '金融机构贷款余额改变'
-				}];
-			},
+			// TODO 依然会按照堆栈页面返回
+			backToList() {
+				uni.redirectTo({
+					url: '../list/list'
+				})
+			}
 		}
 	}
 </script>
