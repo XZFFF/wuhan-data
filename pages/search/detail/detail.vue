@@ -127,7 +127,6 @@
 					complete: () => {}
 				});
 			},
-
 			checkNetwork() {
 				uni.getNetworkType({
 					success: function(res) {

@@ -134,12 +134,6 @@
 				]
 			}
 		],
-		"relatedData": [{
-			"indexId": "1",
-			"indexName": "相关指标1"
-		}, {
-			"indexId": "2",
-			"indexName": "相关指标2"
-		}]
+		"relatedData": []
 	}
 }

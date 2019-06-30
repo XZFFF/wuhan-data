@@ -37,9 +37,7 @@
 				echarts: echarts
 			};
 		},
-		onLoad() {
-			console.log(this.classHeight);
-		},
+		onLoad() {},
 		methods: {
 			onInit(canvas, width, height) {
 				let wdChart = echarts.init(canvas, null, {
