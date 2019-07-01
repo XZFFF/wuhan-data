@@ -9,7 +9,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share :indexId="indexId" :indexName="indexName"></wd-share>
+		<wd-share :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite"></wd-share>
 	</view>
 </template>
 
@@ -51,25 +51,17 @@
 				uni.setNavigationBarTitle({
 					title: e.indexName
 				});
-				// 更新导航栏收藏按钮颜色
-				if (this.isFavorite) {
-					let pages = getCurrentPages();
-					let page = pages[pages.length - 1];
-					// #ifdef APP-PLUS  
-					let currentWebview = page.$getAppWebview();
-					let titleObj = currentWebview.getStyle().titleNView;
-					if (!titleObj.buttons) {
-						return;
-					}
-					titleObj.buttons[1].color = "f9da74";
-					currentWebview.setStyle({
-						titleNView: titleObj
-					});
-					// #endif
-				}
 			}
 			// 初始化页面数据
 			this.initAnalysisDetail();
+			// 渲染收藏icon
+			if (this.isFavorite == false || this.isFavorite == "false") {
+				this.isFavorite == false;
+				this.initFavColor("#ffffff");
+			} else {
+				this.isFavorite == true;
+				this.initFavColor("#f9da74");
+			}
 		},
 		onUnload() {
 			// 退出界面时重新初始化数据
@@ -81,6 +73,8 @@
 			this.relatedData = [];
 			this.totalHeight = 1000;
 			this.classTotalHeight = 400;
+			// 渲染收藏icon
+			this.initFavColor("ffffff");
 		},
 		methods: {
 			initAnalysisDetail() {
@@ -153,6 +147,25 @@
 						}
 					}
 				});
+			},
+			initFavColor(initColor) {
+				// 更新导航栏收藏按钮颜色 f9da74
+				console.log('step0:' + initColor);
+				let pages = getCurrentPages();
+				let page = pages[pages.length - 1];
+				// #ifdef APP-PLUS  
+				let currentWebview = page.$getAppWebview();
+				let titleObj = currentWebview.getStyle().titleNView;
+				if (titleObj.buttons) {
+					titleObj.buttons[1].color = initColor;
+					currentWebview.setStyle({
+						titleNView: titleObj
+					});
+					console.log('change favorite color');
+				} else {
+					console.log('no found buttons');
+				}
+				// #endif
 			},
 			setHeight() {
 				let classHeight = 0;

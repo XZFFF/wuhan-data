@@ -326,6 +326,10 @@
 			indexName: {
 				type: String
 			},
+			isFavorite: {
+				type: Boolean,
+				default: false
+			}
 		},
 		data() {
 			return {
@@ -341,7 +345,6 @@
 			}
 		},
 		onNavigationBarButtonTap(e) {
-			let self = this;
 			switch (e.type) {
 				case "share": //点击分享按钮
 					// #ifdef APP-PLUS
@@ -350,11 +353,9 @@
 					// #endif
 					break;
 				case "favorite":
-					// TODO 收藏按钮
-					this.isFavorite = !this.isFavorite;
-					console.log(this.indexId + this.indexName + this.isFavorite);
 					let favColor = "#ffffff";
-					if (this.isFavorite) {
+					if (this.isFavorite == false || this.isFavorite == "false") {
+						this.isFavorite = true;
 						favColor = "#f9da74";
 						uni.showToast({
 							title: "收藏成功",
@@ -362,6 +363,7 @@
 							duration: 1000,
 						});
 					} else {
+						this.isFavorite = false;
 						favColor = "#ffffff";
 						uni.showToast({
 							title: "已取消收藏",
