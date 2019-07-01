@@ -2,7 +2,7 @@
 	<view class="container">
 		<!-- 专题 -->
 		<view class="topic">
-			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail">
+			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail(item)">
 				<wd-card-item :image="item.image" :title="item.title"></wd-card-item>
 			</view>
 		</view>
@@ -12,6 +12,7 @@
 <script>
 	// 引入公共样式
 	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
+	import topicListApiJson from '@/common/api/topicList.json';
 	export default {
 		components: {
 			wdCardItem
@@ -22,12 +23,10 @@
 			};
 		},
 		onShow: function() {
-			this.checkNetwork();
 			this.initTopicList();
 		},
 		onPullDownRefresh: function() {
 			this.removeStorage();
-			this.checkNetwork();
 			this.initTopicList();
 			uni.stopPullDownRefresh();
 		},
@@ -52,12 +51,30 @@
 				});
 			},
 			initTopicList() {
+				this.checkNetwork();
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/topicList.php',
 					method: 'GET',
 					data: {},
 					success: res => {
-						this.topic = res.data;
+						// 获取topicList的数据
+						let topicListApi = topicListApiJson;
+						// 检查json数据
+						if (topicListApi.errCode != 0 || topicListApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: topicListApi.errMsg,
+								duration: 500
+							})
+						}
+						// 设置各部分数据
+						this.topic = topicListApi.data.topic;
+						// 数据存入缓存
+						uni.setStorage({
+							key: 'topic_list',
+							data: this.topic,
+						});
 					},
 					fail: (e) => {
 						let topicList = uni.getStorageSync('topic_list');
@@ -68,9 +85,9 @@
 					complete: () => {}
 				});
 			},
-			open_topic_detail(e) {
+			open_topic_detail(item) {
 				uni.navigateTo({
-					url: '../detail/detail'
+					url: '../detail/detail?topicId=' + item.id + '&topicName=' + item.title
 				})
 			}
 		}
