@@ -73,7 +73,6 @@
 			this.relatedData = [];
 			this.totalHeight = 1000;
 			this.classTotalHeight = 400;
-			// 渲染收藏icon
 			this.initFavColor("ffffff");
 		},
 		methods: {
@@ -151,10 +150,10 @@
 				// 更新导航栏收藏按钮颜色
 				let pages = getCurrentPages();
 				let page = pages[pages.length - 1];
-				// #ifdef APP-PLUS  
+				// #ifdef APP-PLUS
 				let currentWebview = page.$getAppWebview();
 				let titleObj = currentWebview.getStyle().titleNView;
-				if (titleObj.buttons) {
+				if (!titleObj.buttons) {
 					return;
 				}
 				titleObj.buttons[1].color = initColor;

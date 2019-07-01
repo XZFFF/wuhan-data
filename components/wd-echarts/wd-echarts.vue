@@ -42,7 +42,7 @@
 		},
 		watch: {
 			echartOption(newOption, oldOption) {
-				console.log(this.$refs.echarts.chart);
+				//console.log(this.$refs.echarts.chart);
 				wdChart = this.$refs.echarts.chart;
 				wdChart.setOption(this.echartOption)
 			}

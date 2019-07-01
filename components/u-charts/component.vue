@@ -142,7 +142,7 @@
 			},
 			// TODO 更新图例数据需完善
 			changeData() {
-				console.log(this.opts);
+				//console.log(this.opts);
 				let newdata = this.opts;
 				can[this.canvasId].updateData({
 					series: newdata.series,

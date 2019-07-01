@@ -105,8 +105,14 @@
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "具体指标页",
 				"app-plus": {
-					"pullToRefresh": {
-						"support": true
+					"titleNView": {
+						"buttons": [{
+								"type": "share"
+							},
+							{
+								"type": "favorite"
+							}
+						]
 					}
 				}
 			}

@@ -72,7 +72,6 @@
 		methods: {
 			setTimeCondition() {
 				let pageTimeCondition = this.timeCondition;
-				console.log(pageTimeCondition);
 				if (pageTimeCondition.length != 0) {
 					let freqCondition = [];
 					for (let i = 0; i < pageTimeCondition.length; i++) {
@@ -105,7 +104,6 @@
 				let timeFreq = this.freqArray[this.freqIndex];
 				let startTime = this.startArray[this.startIndex];
 				let endTime = this.endArray[this.endIndex];
-				console.log(timeFreq + startTime + endTime);
 				if (startTime > endTime) {
 					uni.showModal({
 						title: "提示",
