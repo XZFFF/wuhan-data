@@ -36,6 +36,7 @@
 			return {
 				indexId: "1000",
 				indexName: "指标详情页",
+				isFavorite: false,
 				timeCondition: [],
 				indexDetail: [],
 				relatedData: [],

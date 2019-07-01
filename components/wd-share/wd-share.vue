@@ -341,6 +341,7 @@
 			}
 		},
 		onNavigationBarButtonTap(e) {
+			let self = this;
 			switch (e.type) {
 				case "share": //点击分享按钮
 					//TODO 未处理h5，h5应调用qq浏览器等自带的share api，如果浏览器不自带share，那么分享图标不应该显示。或者从简的话，h5整个就不显示分享按钮
@@ -351,7 +352,39 @@
 					break;
 				case "favorite":
 					// TODO 收藏按钮
-					console.log(this.indexId + this.indexName);
+					this.isFavorite = !this.isFavorite;
+					console.log(this.indexId + this.indexName + this.isFavorite);
+					let favColor = "#ffffff";
+					if (this.isFavorite) {
+						favColor = "#f9da74";
+						uni.showToast({
+							title: "收藏成功",
+							icon: "none",
+							duration: 1000,
+						});
+					} else {
+						favColor = "#ffffff";
+						uni.showToast({
+							title: "已取消收藏",
+							icon: "none",
+							duration: 1000,
+						});
+					}
+					// 更新导航栏收藏按钮颜色
+					let pages = getCurrentPages();
+					let page = pages[pages.length - 1];
+					// #ifdef APP-PLUS  
+					let currentWebview = page.$getAppWebview();
+					let titleObj = currentWebview.getStyle().titleNView;
+					if (!titleObj.buttons) {
+						return;
+					}
+					titleObj.buttons[1].color = favColor;
+					currentWebview.setStyle({
+						titleNView: titleObj
+					});
+					// #endif
+					// TODO 发送收藏/取消收藏请求
 					break;
 				default:
 					uni.showToast({
