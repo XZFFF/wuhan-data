@@ -44,9 +44,7 @@
 	// 引入公共样式
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
-
 	import homeApiJson from '@/common/api/home.json';
-
 
 	export default {
 		components: {

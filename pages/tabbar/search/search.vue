@@ -207,9 +207,12 @@
 					// 点击列表存储搜索数据,更新历史搜索记录
 					util.setHistory(item);
 					this.historyList = uni.getStorageSync('search_history');
+					if (typeof item.isFavorite == undefined) {
+						item.isFavorite = false;
+					}
 					// 跳转到对应的界面,这里先做的是返回上一个界面
 					uni.navigateTo({
-						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name
+						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + "&isFavorite=" + item.isFavorite
 					})
 				}
 			},

@@ -19,7 +19,6 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
-
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 
 	var _self;
@@ -35,12 +34,12 @@
 			return {
 				indexId: "1000",
 				indexName: "指标详情页",
+				isFavorite: false,
 				timeCondition: [],
 				indexDetail: [],
 				relatedData: [],
 				totalHeight: 1000,
 				classTotalHeight: 400
-
 			};
 		},
 		onLoad: function(e) {
@@ -48,10 +47,28 @@
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
+				this.isFavorite = e.isFavorite;
 				uni.setNavigationBarTitle({
 					title: e.indexName
-				})
+				});
+				// 更新导航栏收藏按钮颜色
+				if (this.isFavorite) {
+					let pages = getCurrentPages();
+					let page = pages[pages.length - 1];
+					// #ifdef APP-PLUS  
+					let currentWebview = page.$getAppWebview();
+					let titleObj = currentWebview.getStyle().titleNView;
+					if (!titleObj.buttons) {
+						return;
+					}
+					titleObj.buttons[1].color = "f9da74";
+					currentWebview.setStyle({
+						titleNView: titleObj
+					});
+					// #endif
+				}
 			}
+			// 初始化页面数据
 			this.initAnalysisDetail();
 		},
 		onUnload() {

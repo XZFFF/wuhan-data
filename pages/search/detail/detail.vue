@@ -19,7 +19,6 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue'
-
 	import searchDetailApiJson from "@/common/api/searchDetail.json";
 
 	var _self;
@@ -47,12 +46,28 @@
 		onLoad: function(e) {
 			_self = this;
 			if (JSON.stringify(e) != '{}') {
-				console.log(e);
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
+				this.isFavorite = e.isFavorite;
 				uni.setNavigationBarTitle({
 					title: e.indexName
 				})
+				// 更新导航栏收藏按钮颜色
+				if (this.isFavorite) {
+					let pages = getCurrentPages();
+					let page = pages[pages.length - 1];
+					// #ifdef APP-PLUS  
+					let currentWebview = page.$getAppWebview();
+					let titleObj = currentWebview.getStyle().titleNView;
+					if (!titleObj.buttons) {
+						return;
+					}
+					titleObj.buttons[1].color = "f9da74";
+					currentWebview.setStyle({
+						titleNView: titleObj
+					});
+					// #endif
+				}
 			}
 			this.initSearchDetail();
 		},
