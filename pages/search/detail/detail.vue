@@ -102,7 +102,6 @@
 						}
 						// 设置各部分数据
 						_self.timeCondition = searchDetailApi.data.timeCondition;
-						console.log(searchDetailApi.data.timeCondition);
 						_self.indexDetail = searchDetailApi.data.classInfo;
 						_self.relatedData = searchDetailApi.data.relatedData;
 						// 计算classHeight及总Height
@@ -116,7 +115,6 @@
 			},
 			onConfirm(val) {
 				this.checkNetwork();
-				console.log('发起更新数据请求' + val);
 				uni.request({
 					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
 					method: 'GET',
