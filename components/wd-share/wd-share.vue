@@ -344,7 +344,6 @@
 			let self = this;
 			switch (e.type) {
 				case "share": //点击分享按钮
-					//TODO 未处理h5，h5应调用qq浏览器等自带的share api，如果浏览器不自带share，那么分享图标不应该显示。或者从简的话，h5整个就不显示分享按钮
 					// #ifdef APP-PLUS
 					nvMask.show()
 					nvImageMenu.show() //5+应支持从底部向上弹出的动画

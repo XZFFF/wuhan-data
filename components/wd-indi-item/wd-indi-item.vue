@@ -2,11 +2,11 @@
 	<view class="index-item">
 		<!-- 指标起始竖条 -->
 		<view class="index-item-start-bar"></view>
-		<view class="index-item-name" @tap="openDetail(indexId, indexName)">
+		<view class="index-item-name" @tap="openDetail(indexId, indexName, isFavorite)">
 			<text>{{tranIndexName}}</text>
 		</view>
 		<!-- 指标描述 -->
-		<view class="index-item-desc" @tap="openDetail(indexId, indexName)">
+		<view class="index-item-desc" @tap="openDetail(indexId, indexName, isFavorite)">
 			<view class="index-item-desc-item" v-for="(item, i) in desc" :key="i">
 				<text>{{item.descName}}:</text>
 				<!-- 蓝#4F90F8 红#CE7670 #C45C56 -->
@@ -62,7 +62,6 @@
 					return this.indexName
 				}
 			},
-
 			favIcon() {
 				if (this.isFavorite) {
 					return 'favorite-active.png';
@@ -78,14 +77,9 @@
 		},
 		methods: {
 			// 跳转到指标详情页
-			openDetail(indexId, indexName) {
-// 				uni.showToast({
-// 					title: "该栏目正在开发...",
-// 					icon: "none",
-// 					duration: 1000,
-// 				})
+			openDetail(indexId, indexName, isFavorite) {
 				uni.navigateTo({
-					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName
+					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName + '&isFavorite=' + isFavorite
 				});
 			},
 			changeFav() {
@@ -104,9 +98,6 @@
 					})
 				}
 			}
-		},
-		onLoad() {
-			console.log(this.item);
 		}
 	}
 </script>
@@ -118,7 +109,7 @@
 		height: 120upx;
 		margin: 40upx auto;
 		background: #FFFFFF;
-		box-shadow:2px 2px 1px #aaaaaa;
+		box-shadow: 2px 2px 1px #aaaaaa;
 	}
 
 	.index-item-start-bar {
