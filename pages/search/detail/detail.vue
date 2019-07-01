@@ -75,6 +75,7 @@
 			// 退出界面时重新初始化数据
 			this.indexId = "1000";
 			this.indexName = "指标详情页";
+			this.isFavorite = false;
 			this.timeCondition = [];
 			this.indexDetail = [];
 			this.relatedData = [];

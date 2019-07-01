@@ -51,7 +51,6 @@
 	import uniList from '@/components/uni-list/uni-list.vue'
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
 	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue'
-
 	import searchApiJson from '@/common/api/search.json';
 	import searchResultApiJson from '@/common/api/searchResult.json';
 
