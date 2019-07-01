@@ -1,123 +1,46 @@
 <template>
-	<scroll-view scroll-y="true" class="container">
+	<view class="container" :style="{height:totalHeight + 'px'}">
 		<uni-card title="专题描述">
-			{{desc}}
+			{{topicDesc}}
 		</uni-card>
-		<wd-choose-item v-for="(requestItem, index) in requestTestData" :key="index" :requestItem="requestItem"></wd-choose-item>
-	</scroll-view>
+		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
+			<block v-for="(item, index) in indexDetail" :key="index">
+				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
+				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
+				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
+			</block>
+		</view>
+		<wd-share :indexId="topicId" :indexName="topicName"></wd-share>
+	</view>
 </template>
 
 <script>
 	import uniCard from '@/components/uni-card/uni-card.vue';
-	import wdChooseItem from '../../../components/wd-choose-item/wd-choose-item.vue';
+	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
+	import wdTable from '@/components/wd-table/wd-table.vue';
+	import wdShare from '@/components/wd-share/wd-share.vue';
+	import topicDetailApiJson from "@/common/api/topicDetail.json";
 
-	let requestTestData = [{
-		"id": "1",
-		"title": "GDP发展趋势",
-		"type": "echarts",
-		"height": "300",
-		"option": {
-			"grid": {
-				"containLabel": true
-			},
-			"xAxis": {
-				"type": "category",
-				"data": ['2018Q1', '2018Q2', '2018Q3', '2018Q4', '2019Q1', '2019Q2']
-			},
-			"yAxis": {
-				"type": "value",
-				"min": 400,
-				"max": 1000
-			},
-			"series": [{
-				"type": "line",
-				"data": [490, 546, 493, 522, 570, 900]
-			}]
-		}
-	}, {
-		"id": "2",
-		"title": "GDP累计值",
-		"type": "table",
-		"tableBody": [
-			[" ", "GDP总量", "第一产业", "第二产业", "第三产业"],
-			["2018Q1", "490", "150", "220", "120"],
-			["2018Q2", "546", "232", "182", "132"],
-			["2018Q3", "493", "201", "191", "101"],
-			["2018Q4", "522", "154", "234", "134"],
-			["2019Q1", "570", "190", "290", "90"],
-			["2018Q2", "900", "340", "330", "230"],
-		]
-	}, {
-		"id": "3",
-		"title": "GDP及三大产业累计值趋势",
-		"type": "echarts",
-		"height": "400",
-		"option": {
-			"legend": {
-				"top": "bottom",
-				"data": ['第三产业', '第二产业', '第一产业', 'GDP']
-			},
-			"grid": {
-				"containLabel": true
-			},
-			"xAxis": {
-				"type": "category",
-				"boundaryGap": false,
-				"data": ['2018Q1', '2018Q2', '2018Q3', '2018Q4', '2019Q1', '2019Q2']
-			},
-			"yAxis": {
-				"type": "value"
-			},
-			"series": [{
-					"name": '第三产业',
-					"type": 'line',
-					"stack": '总量',
-					"areaStyle": {},
-					"data": [120, 132, 101, 134, 90, 230]
-				},
-				{
-					"name": '第二产业',
-					"type": 'line',
-					"stack": '总量',
-					"areaStyle": {},
-					"data": [220, 182, 191, 234, 290, 330]
-				},
-				{
-					"name": '第一产业',
-					"type": 'line',
-					"stack": '总量',
-					"areaStyle": {},
-					"data": [150, 232, 201, 154, 190, 340]
-				},
-				{
-					"name": 'GDP',
-					"type": 'line',
-					"stack": '总量',
-					"areaStyle": {"normal": {}},
-					"data": [490, 546, 493, 522, 570, 900]
-				}
-			]
-		}
-	}];
-
-
+	var _self;
 	export default {
 		components: {
 			uniCard,
-			wdChooseItem
+			wdEcharts,
+			wdTable,
+			wdShare
 		},
 		data() {
-			let desc =
-				"固定资产投资是拉动经济发展的重要引擎，涉及服务业、制造业、旅游、房地产等诸多领域，对国民经济的直接间接传导路径庞杂。因此，对固定资产投资的分析，历来是宏观经济综合分析的重点。本专题从规模、结构、质量、投资环境的角度展开，与同类型城市投资情况对比，帮助于发现湖北省投资发展中的问题，为湖北省投资规模扩大、结构优化提供决策参考。";
 			return {
 				topicId: "1000",
-				topicName: "固定资产投资",
-				desc: desc,
-				requestTestData: requestTestData,
-				requestData: {},
+				topicName: "专题详情页",
+				topicDesc: "",
+				indexDetail: [],
+				totalHeight: 1000,
+				classTotalHeight: 400
 			};
 		},
 		onLoad: function(e) {
+			_self = this;
 			if (JSON.stringify(e) != '{}') {
 				this.topicId = e.topicId;
 				this.topicName = e.topicName;
@@ -125,42 +48,113 @@
 					title: e.topicName
 				})
 			}
-		},
-		onShow: function() {
 			this.initTopicDetail();
+		},
+		onUnload() {
+			// 退出界面时重新初始化数据
+			this.topicId = "1000";
+			this.topicName = "专题详情页";
+			this.topicDesc = "";
+			this.indexDetail = [];
+			this.totalHeight = 1000;
+			this.classTotalHeight = 400;
 		},
 		methods: {
 			initTopicDetail() {
 				uni.request({
-					url: '',
+					url: 'http://wuhandata.applinzi.com/analysisDetail.php',
 					method: 'GET',
 					data: {},
 					success: res => {
-						this.requestData = res.data;
+						let topicDetailApi = topicDetailApiJson;
+						// 检查json数据
+						if (topicDetailApi.errCode != 0 || topicDetailApi.errCode != '0') {
+							// TODO 记录到服务端日志表中
+							uni.showToast({
+								icon: 'none',
+								title: topicDetailApi.errMsg,
+								duration: 500
+							})
+						}
+						// 设置各部分数据
+						_self.topicId = topicDetailApi.data.topicId;
+						_self.topicName = topicDetailApi.data.topicName;
+						_self.topicDesc = topicDetailApi.data.topicDesc;
+						_self.indexDetail = topicDetailApi.data.classInfo;
+						// 计算classHeight及总Height
+						this.setHeight();
 					},
 					fail: (e) => {
+						console.log(e.errMsg);
 					},
 					complete: () => {}
 				});
+			},
+			checkNetwork() {
+				uni.getNetworkType({
+					success: function(res) {
+						if (res.networkType == 'none') {
+							uni.showToast({
+								title: '无网络连接',
+								duration: 1000,
+								icon: 'loading'
+							});
+						}
+					}
+				});
+			},
+			setHeight() {
+				let classHeight = 0;
+				let classInfo = _self.indexDetail;
+				for (let i = 0; i < classInfo.length; i++) {
+					let item = classInfo[i];
+					let h = 0;
+					if (item.classType == 'table') {
+						if (typeof item.classHeight === 'string') {
+							h = parseInt(item.classHeight);
+						} else {
+							h = 500;
+						}
+					} else if (item.classType == 'echarts') {
+						if (typeof item.classHeight === 'string') {
+							h = parseInt(item.classHeight);
+						} else {
+							h = 400;
+						}
+					}
+					classHeight += h;
+				}
+				_self.classTotalHeight = classHeight;
+				_self.totalHeight = classHeight;
 			},
 		}
 	}
 </script>
 
 <style>
-	page,
+	page {
+		display: flex;
+		background: #f4f5f6;
+		width: 750upx;
+		overflow-x: hidden;
+	}
+
 	view {
+		/* 设置flex会导致classHeight无效，但不设置会导致classTitle错位 */
 		display: flex;
 	}
 
-	page {
-		min-height: 100%;
+	.container {
+		display: flex;
+		flex: 1;
+		width: 100%;
+		flex-direction: column;
+		box-sizing: border-box;
 	}
 
-	.container {
-		flex: 1;
+	.class-block {
+		display: flex;
 		flex-direction: column;
-		padding-bottom: 30upx;
-		box-sizing: border-box;
+		width: 100%;
 	}
 </style>
