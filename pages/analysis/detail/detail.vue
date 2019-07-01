@@ -108,7 +108,6 @@
 				});
 			},
 			onConfirm(val) {
-				console.log('发起更新数据请求' + val);
 				uni.request({
 					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
 					method: 'GET',
@@ -149,22 +148,19 @@
 				});
 			},
 			initFavColor(initColor) {
-				// 更新导航栏收藏按钮颜色 f9da74
-				console.log('step0:' + initColor);
+				// 更新导航栏收藏按钮颜色
 				let pages = getCurrentPages();
 				let page = pages[pages.length - 1];
 				// #ifdef APP-PLUS  
 				let currentWebview = page.$getAppWebview();
 				let titleObj = currentWebview.getStyle().titleNView;
 				if (titleObj.buttons) {
-					titleObj.buttons[1].color = initColor;
-					currentWebview.setStyle({
-						titleNView: titleObj
-					});
-					console.log('change favorite color');
-				} else {
-					console.log('no found buttons');
+					return;
 				}
+				titleObj.buttons[1].color = initColor;
+				currentWebview.setStyle({
+					titleNView: titleObj
+				});
 				// #endif
 			},
 			setHeight() {
