@@ -9,7 +9,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share :indexId="indexId" :indexName="indexName"></wd-share>
+		<wd-share :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite"></wd-share>
 	</view>
 </template>
 
@@ -52,23 +52,8 @@
 				uni.setNavigationBarTitle({
 					title: e.indexName
 				})
-				// 更新导航栏收藏按钮颜色
-				if (this.isFavorite) {
-					let pages = getCurrentPages();
-					let page = pages[pages.length - 1];
-					// #ifdef APP-PLUS  
-					let currentWebview = page.$getAppWebview();
-					let titleObj = currentWebview.getStyle().titleNView;
-					if (!titleObj.buttons) {
-						return;
-					}
-					titleObj.buttons[1].color = "f9da74";
-					currentWebview.setStyle({
-						titleNView: titleObj
-					});
-					// #endif
-				}
 			}
+			// 初始化指标数据
 			this.initSearchDetail();
 		},
 		onUnload() {
@@ -81,6 +66,7 @@
 			this.relatedData = [];
 			this.totalHeight = 1000;
 			this.classTotalHeight = 400;
+			this.initFavColor("ffffff");
 		},
 		methods: {
 			initSearchDetail() {
@@ -104,6 +90,15 @@
 						_self.timeCondition = searchDetailApi.data.timeCondition;
 						_self.indexDetail = searchDetailApi.data.classInfo;
 						_self.relatedData = searchDetailApi.data.relatedData;
+						// 渲染收藏icon
+						this.isFavorite = false;
+						if (this.isFavorite == false || this.isFavorite == "false") {
+							this.isFavorite == false;
+							this.initFavColor("#ffffff");
+						} else {
+							this.isFavorite == true;
+							this.initFavColor("#f9da74");
+						}
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
@@ -153,6 +148,22 @@
 						}
 					}
 				});
+			},
+			initFavColor(initColor) {
+				// 更新导航栏收藏按钮颜色
+				let pages = getCurrentPages();
+				let page = pages[pages.length - 1];
+				// #ifdef APP-PLUS
+				let currentWebview = page.$getAppWebview();
+				let titleObj = currentWebview.getStyle().titleNView;
+				if (!titleObj.buttons) {
+					return;
+				}
+				titleObj.buttons[1].color = initColor;
+				currentWebview.setStyle({
+					titleNView: titleObj
+				});
+				// #endif
 			},
 			setHeight() {
 				let classHeight = 0;
