@@ -2,15 +2,10 @@
 	<view>
 		<view class="uni-list">
 			<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,index) in menu_list" :key="index" :data-current="index" @click="goDetailPage(index)">
-				<!--view class="readSign"-->
-				<view style="width: 50upx;position: relative;">
-					<view :class="['redPoint',tabIndex[index]==index ? 'active' : '']">
-					</view>
-				</view>
 				<view>
 					<view class="uni-list-cell-navigate">
 						<view class="list-cell-title">{{value.title}}</view>
-						<view class="list-cell-badge">{{value.badge}}</view>
+						<view class="list-cell-badge">{{value.label}}</view>
 						<view class="list-cell-datetime">{{value.datetime}}</view>
 					</view>
 					<view class="list-cell-text uni-ellipsis">{{value.text}}</view>
@@ -24,38 +19,8 @@
 	export default {
 		data() {
 			return {
-				tabIndex: [0,1,2],
-				menu_list: [{
-					title: "数说武汉v2.0即将发布",
-					badge: "系统通知",
-					datetime: "1天前",
-					text: "新版本马上更新，请继续关注我们的最新进展。想获取更多帮助可以联系客服人员",
-					url: "newsA"
-				},
-				{
-					title: '您关注的"湖北经济"有新内容',
-					badge: "推送消息",
-					datetime: "2天前",
-					text: "湖北经济在2019.3.6新增了内容，您可以及时查看感兴趣的内容",
-					url: "newsA"
-				},
-				{
-					title: '您关注的"湖北经济"有新内容',
-					badge: "推送消息",
-					datetime: "2天前",
-					text: "湖北经济在2019.3.6新增了内容，您可以及时查看感兴趣的内容",
-					url: "newsA"
-				},
-				]
+				menu_list: []
 			}
-		},
-		onShow() {
-			const readIndex = uni.getStorageSync('readIndex'); 
-			if (readIndex.flag) {  
-				console.log(readIndex);  
-				this.tabIndex = readIndex.read;
-			};
-			uni.removeStorageSync('readIndex');
 		},
 		onShow: function() {
 			try {
@@ -88,12 +53,17 @@
 				});
 			},
 			initMyNews() {
+				const userID = uni.getStorageSync('user_id');
 				uni.request({
-					url: 'http://192.168.126.1/MyNews.php',
+					url: 'http://192.168.124.11:8080/wuhan_data1/getMessage',
 					method: 'GET',
-					data: {},
+					data: {
+						"id": userID,
+						},
 					success: res => {
-						this.menu_list = res.data;
+						let list=JSON.stringify(res.data);
+						console.log("返回数据状态:" + list);
+						this.menu_list = res.data.data;
 						uni.setStorage({
 							key: 'my_news',
 							data: this.menu_list,
@@ -107,12 +77,13 @@
 				});
 			},
 			goDetailPage(index) {
-				this.tabIndex[index]=-1;
-				console.log("index:"+index);
-				console.log("tab:"+this.tabIndex);
-				uni.setStorageSync('readIndex',{
-					flag: 1,
-					read: this.tabIndex});
+				uni.setStorage({
+					key: 'news_index',
+					data: index,
+					success: function() {
+						console.log('消息索引存入本地缓存');
+					}
+				});
 				uni.navigateTo({
 					url: 'newsA/newsA'
 				});

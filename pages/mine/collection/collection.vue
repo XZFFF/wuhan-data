@@ -88,12 +88,18 @@
 				});
 			},
 			initCollectionEconomy() {
+				const userID = uni.getStorageSync('user_id');
 				uni.request({
-					url: 'http://192.168.126.1/CollectionEconomy.php',
+					url: 'http://192.168.124.11:8080/wuhan_data1/getCollect',
 					method: 'GET',
-					data: {},
+					data: {
+						"id": userID,
+					},
 					success: res => {
-						this.menu_list1 = res.data;
+						let list=JSON.stringify(res.data);
+						console.log("返回数据状态:" + list);
+						this.menu_list1 = res.data.economyData;
+						this.menu_list2 = res.data.indexData;
 						uni.setStorage({
 							key: 'collection_economy',
 							data: this.menu_list1,
@@ -101,18 +107,6 @@
 								console.log('成功请求经济分析收藏数据并存入本地缓存');
 							}
 						});
-					},
-					fail: (e) => {},
-					complete: () => {}
-				});
-			},
-			initCollectionIndex() {
-				uni.request({
-					url: 'http://192.168.126.1/CollectionIndex.php',
-					method: 'GET',
-					data: {},
-					success: res => {
-						this.menu_list2 = res.data;
 						uni.setStorage({
 							key: 'collection_index',
 							data: this.menu_list2,

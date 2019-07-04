@@ -35,33 +35,54 @@
 		},
 		methods: {
 			goLogin(e){
+				var regNumber = /\d+/;
+				var regString = /[a-zA-Z]+/;
 				if(this.modifiedPass != this.modifiedPass1){
 					uni.showToast({
 						title: '两次输入的密码不一致',
 						icon: 'none'
 					});
 				}
-				else if(this.modifiedPass.length<6 || this.modifiedPass.length>14){
+				/*else if(this.modifiedPass.length<6 || this.modifiedPass.length>14){
 					uni.showToast({
 						title: '请输入6至14位密码',
 						icon: 'none'
 					});
 				}
+				else if (!(regNumber.test(this.modifiedPass) && regString.test(this.modifiedPass))) {
+					uni.showToast({
+						icon: 'none',
+						title: '密码只能为且必须包含字母和数字'
+					});
+				}*/
 				else {
+					const userID = uni.getStorageSync('user_id');
 					uni.request({
-						url: "http://localhost/personInfo.php", //仅为示例，并非真实接口地址。
+						url: "http://192.168.1.101:8080/wuhan_data1/changePassword", //仅为示例，并非真实接口地址。
 						method: 'POST',
-						data: this.modifiedPass,
+						data: {
+							"id": userID,
+							password: this.modifiedPass,
+						},
 						success: (res) => {
-							uni.showToast({
-								title: '修改密码需要重新登录',
-								icon: 'none'
-							});
-							let url = '../login/login';
-							uni.navigateTo({
-								url: url
-							});
-							return false;
+							if(res.data.code == 1){
+								uni.showToast({
+									title: '修改成功，请重新登录',
+									icon: 'none'
+								});
+								let url = '../login/login';
+								uni.navigateTo({
+									url: url
+								});
+								return false;
+							}
+							else if(res.data.code == 0)
+							{
+								uni.showToast({
+									title: '修改失败，请稍后重试',
+									icon: 'none'
+								});
+							}
 						},
 						fail: () => {
 							uni.showToast({

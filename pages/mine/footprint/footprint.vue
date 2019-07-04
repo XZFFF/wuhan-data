@@ -96,17 +96,30 @@
 				});
 			},
 			initFootprintEconomy() {
+				const userID = uni.getStorageSync('user_id');
 				uni.request({
-					url: 'http://192.168.126.1/FootprintEconomy.php',
+					url: 'http://192.168.124.5/FootprintEconomy.php',
 					method: 'GET',
-					data: {},
+					data: {
+						"id": userID,
+					},
 					success: res => {
-						this.menu_list1 = res.data;
+						let list=JSON.stringify(res.data);
+						console.log("返回数据状态:" + list);
+						this.menu_list1 = res.data.economyData;
+						this.menu_list2 = res.data.indexData;
 						uni.setStorage({
 							key: 'footprint_economy',
 							data: this.menu_list1,
 							success: function() {
 								console.log('成功请求经济分析足迹数据并存入本地缓存');
+							}
+						});
+						uni.setStorage({
+							key: 'footprint_index',
+							data: this.menu_list2,
+							success: function() {
+								console.log('成功请求指标数据足迹数据并存入本地缓存');
 							}
 						});
 					},
@@ -116,10 +129,14 @@
 			},
 			initFootprintIndex() {
 				uni.request({
-					url: 'http://192.168.126.1/FootprintIndex.php',
+					url: 'http://192.168.124.5/FootprintIndex.php',
 					method: 'GET',
-					data: {},
+					data: {
+						"id": 1,
+					},
 					success: res => {
+						let list=JSON.stringify(res.data);
+						console.log("返回数据状态:" + list);
 						this.menu_list2 = res.data;
 						uni.setStorage({
 							key: 'footprint_index',

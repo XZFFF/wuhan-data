@@ -4,7 +4,7 @@
 			<text>问题和意见</text>
 		</view>
 		<view class="feedback-body">
-			<textarea placeholder="请详细描述您的问题和意见" v-model="sendDate.content" class="feedback-textare" />
+			<textarea placeholder="请详细描述您的问题和意见" v-model="sendDate.text" class="feedback-textare" />
 		</view>
         <view class='feedback-title'>
             <text>图片(选填,提供问题截图,总大小10M以下)</text>
@@ -43,25 +43,27 @@
 <script>
     export default {
         data() {
+			const userID = uni.getStorageSync('user_id');
             return {
                 imageList: [],
                 sendDate: {
+					id: userID,
                     score: 0,
-                    content: "",
+                    text: "",
                     contact: ""
                 }
             }
         },
         onLoad() {
             let deviceInfo = {
-                appid: plus.runtime.appid,
+                /*appid: plus.runtime.appid,
                 imei: plus.device.imei, //设备标识
                 p: plus.os.name === "Android" ? "a" : "i", //平台类型，i表示iOS平台，a表示Android平台。
                 md: plus.device.model, //设备型号
                 app_version: plus.runtime.version,
                 plus_version: plus.runtime.innerVersion, //基座版本号
                 os: plus.os.version,
-                net: "" + plus.networkinfo.getCurrentType()
+                net: "" + plus.networkinfo.getCurrentType()*/
             }
             this.sendDate = Object.assign(deviceInfo, this.sendDate);
         },
@@ -84,7 +86,7 @@
                     urls: this.imageList
                 });
             },
-            send() { //发送反馈
+            send(e) { //发送反馈
                 console.log(JSON.stringify(this.sendDate));
                 let imgs = this.imageList.map((value, index) => {
                     return {
@@ -93,24 +95,34 @@
                     }
                 })
                 uni.uploadFile({
-                    url: "http://192.168.0.105/feedback",
+                    url: "http://192.168.124.11:8080/wuhan_data1/ttt",
                     files: imgs,
                     formData: this.sendDate,
                     success: (res) => {
-                        if (res.statusCode === 200) {
+						console.log("success");
+                        if (res.data.code == 1) {
                             uni.showToast({
-                                title: "反馈成功!"
+                                title: "反馈成功"
                             });
                             this.imageList = [];
                             this.sendDate = {
                                 score: 0,
-                                content: "",
+                                text: "",
                                 contact: ""
                             }
                         }
+						else if(res.data.code == 0)
+						{
+							uni.showToast({
+							    title: "反馈失败，请稍后重试"
+							});
+						}
                     },
-                    fail: (res) => {
-                        console.log(res)
+                    fail: () => {
+                        uni.showToast({
+                        	icon: 'none',
+                        	title: '网络异常,请稍后重试'
+                        });
                     }
                 });
             }

@@ -31,10 +31,10 @@
 								<view class="list" style="width: 35%;">
 									<input class="input" v-model="verCode" placeholder="请输入验证码" />
 								</view>
-								<button class="verification-code" style="line-height: 60upx;" @click="smsVerification">
-									{{codeButton}}
+								<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification" >
+									{{smsText}}
 								</button>
-								<!--input type="button" class="verification-code" id="code" style="line-height: 60upx;" value="获取验证码" @click="smsVerification(obj)"-->
+								<!--input type="button" class="verification-code" id="code" style="line-height: 60upx;" :value="smsText" @click="smsVerification()"-->
 							</view>
 							<view class="login-list">
 								<text class="title">密码</text>
@@ -76,46 +76,20 @@
 </template>
 
 <script>
-	var self;
-	var webapiaddress = null;
-	function downcount(countdown){
-		countdown--;
-		if(countdown!=0){countdown=setTimeout(function() {  
-		        downcount(countdown);  
-		    }, 1000);//定时每秒减一 
-
-		return countdown;}
-		
-	}
-	function codeButton(obj){
-		uni.showToast({
-			icon: 'none',
-			title: '验证码已发送'
-		});
-		countdown = 5;
-		timedown(obj);
-		return;
-	}
-	function timedown(obj) {  
-                if (countdown == 0) {  
-                    //obj.removeAttribute("disabled");  
-                    obj.value = "获取验证码";
-                    return clearTimeout();//清除定时，没有的话会导致后面每次减一越来越快  
-                } else {  
-                    //obj.setAttribute("disabled", true);  
-                    obj.value = "重新发送(" + countdown + ")";  
-                    countdown--;  
-                }  
-                setTimeout(function() {  
-                        timedown(obj);  
-                    }, 1000);//定时每秒减一  
-            }
 	export default {
+		props: {
+			second: {
+				type: Number,
+				default: 0
+			}
+		},
 		data() {
-			lists: [], (self = this);
 			return {
 				isClickChange: false,
 				tabIndex: 0,
+				smsText: '获取验证码',
+				seconds: 0,
+				timer: null,
 				tel0: "",
 				tel1: "",
 				codeButton: "获取验证码",
@@ -138,6 +112,9 @@
 			if(changeTel.flag)
 				this.countryTel = changeTel.tel;
 			uni.removeStorageSync('changeTel');
+		},
+		created: function (e) {
+			
 		},
 		methods: {
 			async changeTab(e) {
@@ -190,7 +167,7 @@
 				return false;
 			},
 			lands() {
-				if (this.tel.length <= 0 || this.passw.length <= 0) {
+				if (this.tel1.length <= 0 || this.passw.length <= 0) {
 					uni.showToast({
 						title: '账号或密码不能为空',
 						icon: 'none'
@@ -198,23 +175,25 @@
 					return;
             	} else {
 					var req = {
-						"tel": this.tel1,  
+						"tel": this.tel1,
 						"password": this.passw
 					};
+					console.log("参数:" + req);
 					uni.request({
-						url: "http://192.168.126.1/login.php", //仅为示例，并非真实接口地址。
+						method: 'POST',
+						url: "http://192.168.124.11:8080/wuhan_data1/loginchekByTel", //仅为示例，并非真实接口地址。
 						data: req,
 						success: (res) => {
 							let list=JSON.stringify(res.data);
 							console.log("返回数据状态:" + list);
-							if(res.data.status === 2){
-								uni.showToast({
-									icon: 'none',
-									title: '用户名或密码错误'
+							if(res.data.code === 1){
+								uni.setStorage({
+									key: 'user_id',
+									data: res.data.id,
+									success: function() {
+										console.log('成功请求个人ID并存入本地缓存');
+									}
 								});
-								return;
-							}
-							else if(res.data.status === 1){
 								uni.showToast({
 									icon: 'none',
 									title: '登录成功'
@@ -222,6 +201,13 @@
 								uni.switchTab({
 									url: '../../tabbar/home/home',
 								})
+							}
+							else if(res.data.code === 0){
+								uni.showToast({
+									icon: 'none',
+									title: '用户名或密码错误'
+								});
+								return;
 							}
 						},fail: () => {
 							uni.showToast({
@@ -232,79 +218,154 @@
 					})
 				}
 			},
-			smsVerification(obj) {
-				var countdown = 0;
-				uni.showToast({
-					icon: 'none',
-					title: '验证码已发送'
-				});
-				countdown = 5;
-				countdown = downcount(countdown);
-				this.codeButton = countdown;
-				return;
-				/*let tel = this.tel0;
-				let code = this.verCode;
-				if (tel.length == 0) {
-					uni.showToast({
-						icon: 'none',
-						title: '手机号不能为空'
-					});
-					return;
+			smsVerification(e) {
+				if(this.smsText === '获取验证码'){
+					/*let tel = this.tel0;
+					let code = this.verCode;
+					if (tel.length == 0) {
+						uni.showToast({
+							icon: 'none',
+							title: '手机号不能为空'
+						});
+						return;
+					}
+					else if (tel.length != 11) {
+						uni.showToast({
+							icon: 'none',
+							title: '请输入正确的手机号'
+						});
+						return;
+					}
+					else */
+					{
+						uni.request({
+							url: 'http://192.168.1.104/return1.php',
+							//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
+							data: {
+								"tel": this.tel0
+							},
+							success: (res) => {
+								let list=JSON.stringify(res.data);
+								console.log("返回数据状态:" + list);
+								if(res.data.code === 1){
+									uni.showToast({
+										icon: 'none',
+										title: '验证码发送成功'
+									});
+									console.log("已发送验证码");
+									this.second = 12;
+									this.seconds = this.second
+									this.countDown()
+									this.timer = setInterval(() => {
+									  this.seconds--
+									  if (this.seconds < 1) {
+									    //this.timeUp()
+										this.smsText = '获取验证码'
+										clearInterval(this.timer)
+									    return
+									  }
+									  this.countDown()
+									}, 1000)
+								}
+								else if(res.data.code === 0){
+									uni.showToast({
+										icon: 'none',
+										title: '验证码发送失败，请重试'
+									});
+								}
+							},fail: () => {
+								uni.showToast({
+									icon: 'none',
+									title: '网络异常,请稍后重试'
+								});
+							},
+						})
+					}
 				}
-				else if (tel.length != 11) {
-					uni.showToast({
-						icon: 'none',
-						title: '请输入正确的手机号'
-					});
-					return;
+			},
+			countDown () {
+				let seconds = this.seconds
+				let [second] = [1]
+				if (seconds > 1) {
+					second = Math.floor(seconds)
 				}
-				else {
-					uni.showToast({
-						icon: 'none',
-						title: '验证码已发送'
-					});
-					countdown = 5;
-					var codeButton = this.codeButton;
-					this.timedown(countdown);
-					return;
-				}*/
+				if (second < 10) {
+					second = '0' + second
+				}
+				second = '重新发送(' + second + 's)'
+				this.smsText = second
 			},
 			registe(){
 				var req={
 					"tel": this.tel0,
 					"verCode": this.verCode,
-					"passw": this.passw0
+					"password": this.passw0
 				}
-				uni.request({
-					url: "http://192.168.126.1/login.php", //仅为示例，并非真实接口地址。
-					data: req,
-					success: (res) => {
-						if(2 != 2){
+				var regNumber = /\d+/;
+				var regString = /[a-zA-Z]+/;
+				/*if(this.tel0.length != 11)
+				{
+					uni.showToast({
+						icon: 'none',
+						title: '请输入正确的手机号'
+					});
+				}
+				else if(this.verCode.length == null)
+				{
+					uni.showToast({
+						icon: 'none',
+						title: '请输入验证码'
+					});
+				}
+				//判断密码是否合法
+				else if(this.passw0.length<6||this.passw0.length>14)
+				{
+					uni.showToast({
+						icon: 'none',
+						title: '密码长度应为6到14位'
+					});
+				}
+				else if (!(regNumber.test(this.passw0) && regString.test(this.passw0))) {
+					uni.showToast({
+						icon: 'none',
+						title: '密码只能为且必须包含字母和数字'
+					});
+				}*/
+				//else
+				{
+					uni.request({
+						method: 'POST',
+						url: "http://192.168.1.101:8080/wuhan_data1/userRegisterlAPP", //仅为示例，并非真实接口地址。
+						data: req,
+						success: (res) => {
+							if(res.data.code != 1){
+								uni.showToast({
+									icon: 'none',
+									title: '验证码错误'
+								});
+								return;
+							}
+							else if(res.data.code == 1){
+								setTimeout(function() {
+								        uni.showToast({
+								        	icon: 'none',
+								        	title: '注册成功'
+								        }); 
+								    }, 1000);
+								this.tabIndex = 1;
+							}
+						},fail: () => {
 							uni.showToast({
 								icon: 'none',
-								title: '用户名或密码错误'
+								title: '网络异常,请稍后重试'
 							});
-							return;
-						}
-						else if(2 == 2){
-							setTimeout(function() {  
-							        uni.showToast({
-							        	icon: 'none',
-							        	title: '注册成功'
-							        }); 
-							    }, 1000);
-							this.tabIndex = 1;
-						}
-					},fail: () => {
-						uni.showToast({
-							icon: 'none',
-							title: '网络异常,请稍后重试'
-						});
-					},
-				})
+						},
+					})
+				}
 			}
 		},
 	}
+	
 </script>
 
 <style>
@@ -358,9 +419,13 @@
 	.verification-code{
 		width: 35%;
 		height: 60upx;
-		font-size: 30upx;
+		font-size: 25upx;
 		color: #FFFFFF;
+		background-color: rgb(95,99,104);
+	}
+	.active1{
 		background-color: rgb(26,130,210);
+		font-size: 30upx;
 	}
 	.login-button{
 		width: 90%;

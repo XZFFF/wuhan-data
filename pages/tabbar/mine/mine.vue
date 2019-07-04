@@ -3,12 +3,13 @@
 		<view class="tops" style=" background-color: #3A82CC;height: 180upx; ">
 			<!-- 个人信息栏 -->
 			<view class="personal" style="color: #FFFFFF;"  v-for="(value,index) in personal_information" :key="index" @click="goDetailPage(value)">
-				<view class="uni-list-cell-navigate uni-media-list" style="; width: 100%;"> 
-					<image class="head" src="../../../static/icon/mine/head.png"></image>
-					<view class="information" v-for="(user,key) in userInformation" :key="key">
+				<view class="uni-list-cell-navigate uni-media-list" style="width: 100%;" v-for="(user,key) in userInformation" :key="key"> 
+					<image class="head" :src="head"></image>
+					<!--image class="head" v-for="(index,key) in headImg" :key="key"></image-->
+					<view class="information">
 						<view class="name-rank" style="display: inline-flex;">
 							<view class="username" style="font-size: 35upx;float: left;margin-top: 15upx;">
-								{{user.username}}
+								{{user.realName}}
 							</view>
 							<view class="rank">
 								{{user.rank}}
@@ -46,6 +47,23 @@
 					</view>
 				</view>
 			</view>
+			<uni-popup :show="type === 'middle-update'" position="middle" mode="fixed" @hidePopup="togglePopup('')">
+				<view style="height: 330upx;width: 450upx;">
+					<view style="font-size: 35upx;">更新提示</view>
+					<view style="margin-top: 20upx;margin-bottom: 20upx;height: 150upx;">{{updateText}}</view>
+					<input type="button" class="pop-button" value="下载" @click="Update()" />
+					<input type="button" class="pop-button" style="float: right;" value="取消" @click="togglePopup('')" />
+				</view>
+			</uni-popup>
+			<uni-popup :show="type === 'middle-download'" position="middle" mode="fixed" @hidePopup="togglePopup('')">
+				<view style="height: 200upx;width: 400upx;">
+					<view>下载进度</view>
+					<view class="progress-box">
+						<progress :percent="downProgress" show-info stroke-width="3" />
+					</view>
+					<input type="button" class="pop-button" style="float: right;" value="取消" @click="togglePopup('')" />
+				</view>
+			</uni-popup>
 			<uni-popup :show="type === 'bottom-share'" position="bottom" @hidePopup="togglePopup('')">
 				<view class="bottom-title">分享到</view>
 				<view class="bottom-content">
@@ -71,18 +89,28 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		components: {
-			uniPopup
+			uniPopup,
 		},
 		data() {
 			return {
+				head: '',
+				downProgress: '',
 				tabIndex: 2,
 				title: 'list',
 				showImg: true,
 				type: '',
+				updateText: '123',
+				downloadUrl: '',
 				personal_information: [{
 					url: "information"
 				}], 
-				userInformation:[],
+				userInformation:[{
+					//realName: "1",
+					//rank: "2",
+					//tel: "3",
+					//head: "https://img-blog.csdn.net/20180426190001195?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FubmluZzg2NTI1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70",
+				}
+				],
 				bottomData: [{
 						text: '微信',
 						img: '../../../static/icon/mine/wechatfriend.png',
@@ -166,11 +194,14 @@
 				this.showImg = true;
 			}, 400);
 		},
-		onLoad:function(){
+		//onLoad:function(){
+		onShow: function(){
 			try {
 					const userInfo = uni.getStorageSync('user_Info');
+					//const userHead = uni.getStorageSync('user_Head');
 					if (userInfo) {
-						this.userInformation = userInfo
+						this.userInformation = userInfo;
+						this.head = userHead;
 					} else {
 						this.initUserInformation();
 					}
@@ -203,13 +234,22 @@
 				});
 			},
 			initUserInformation() {
+				const userID = uni.getStorageSync('user_id');
 				uni.request({
-					url: 'http://192.168.43.119/personInfo.php',
+					url: 'http://192.168.1.104/personInfo.php',
+					//url: 'http://192.168.124.11:8080/wuhan_data1/homePage',
 					method: 'GET',
-					data: {},
-					success: res => {
+					data: {
+						"id": userID,
+					},
+					success: (res) => {
+						//this.userInformation = res.data.data;
 						this.userInformation = res.data;
-						console.log(this.userInformation);
+						//this.head = "http://192.168.124.11:8080/wuhan_data1/"+res.data.data[0].head;
+						//console.log("头像："+this.head);
+						//console.log("返回数据:" + res.data.data);
+						let list=JSON.stringify(res.data);
+						console.log("返回数据状态:" + list);
 						uni.setStorage({
 							key: 'user_Info',
 							data: this.userInformation,
@@ -217,9 +257,20 @@
 								console.log('成功请求个人信息数据并存入本地缓存');
 							}
 						});
+						/*uni.setStorage({
+							key: 'user_Head',
+							data: this.head,
+							success: function() {
+								console.log('成功请求个人头像数据并存入本地缓存');
+							}
+						});*/
 					},
-					fail: (e) => {},
-					complete: () => {}
+					fail: () => {
+						uni.showToast({
+							icon: 'none',
+							title: '网络异常,请稍后重试'
+						});
+					},
 				});
 			},
 			goDetailPage(e) {
@@ -238,37 +289,16 @@
 						"version": "1.0.0"
 					}; 
 					uni.request({  
-						url: "http://192.168.43.119/checkUpdate.php",  
+						url: "http://100.64.206.197/checkUpdate.php",  
 						data: req,
 						success: (res) => {
-							let updateUrl = res.data.url;
-							if (res.statusCode == 200 && res.data.status === 1) {
-								uni.showModal({ //提醒用户更新  
-									title: "更新提示",
-									content: res.data.note,
-									success: (res) => {
-										const downloadTask = uni.downloadFile({
-											url: updateUrl, //仅为示例，并非真实的资源
-											success: (res) => {
-												console.log(updateUrl);
-												if (res.statusCode === 200) {
-													console.log('下载成功');
-												}
-											}
-										});
-										downloadTask.onProgressUpdate((res) => {
-											console.log('下载进度' + res.progress);
-											console.log('已经下载的数据长度' + res.totalBytesWritten);
-											console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
-											// 测试条件，取消下载任务。
-											if (res.progress > 50) {
-												downloadTask.abort();
-											}
-										});
-									}
-								})
+							console.log("返回值："+res.data.code);
+							if (res.data.code === 1) {
+								this.type = 'middle-update';
+								this.updateText = res.data.text;
+								this.downloadUrl = res.data.url;
 							}
-							else if(res.data.status === 0)
+							else if(res.data.code === 0)
 							{
 								uni.showModal({
 									title: "已为最新版本，无需更新"
@@ -277,7 +307,7 @@
 						},
 						fail: () => {
 							uni.showModal({
-								title: "网络错误",
+								title: "网络错误,请稍后重试",
 								icon: none,
 							})
 						}
@@ -285,10 +315,10 @@
 					//#endif
 				}
 				else if(e.id == 1){
-					
+					this.userInformation={"realName":"aaa",};
 				}
 				else if(e.id == 2){
-					this.togglePopup('bottom-share');
+					this.type = 'bottom-share';
 				}
 				else
 				{
@@ -300,12 +330,55 @@
 					return false;
 				}
 			},
+			Update() {
+				this.type = ''
+				this.type = 'middle-download';
+				//#ifdef APP-PLUS
+				let updateUrl = this.downloadUrl;
+				const downloadTask = uni.downloadFile({
+					url: updateUrl, //仅为示例，并非真实的资源
+					success: (res) => {
+						console.log("正在下载");
+						if (res.statusCode === 200) {
+							console.log('下载成功');
+							this.type = '';
+							var tempFilePaths = res.tempFilePath;  
+                            this.install(tempFilePaths);
+							return;
+						}
+					}
+				});
+				downloadTask.onProgressUpdate((res) => {
+					this.downProgress = res.progress;
+					//console.log('下载进度' + res.progress);
+					//console.log('已经下载的数据长度' + res.totalBytesWritten);
+					//console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+				});
+				//#endif
+			},
+			install: function (path) {//安装  
+                console.log(path)  
+                plus.runtime.install(path, {  
+                    force: true  
+                }, function () {  
+                    //uni.hideNavigationBarLoading();  
+                    console.log("加载完成！");  
+                    uni.navigateBack({  
+                        delta: 1,  
+                    });  
+                }, function (e) {  
+
+                    console.log(JSON.stringify(e));  
+
+                });  
+            } ,
 			togglePopup(type) {
 				this.type = type;
 			},
 			share(e) {
-				var pro;
-				var sce;
+				let pro = "";
+				let sce = "";
+				let type = 0;
 				if(e.text === "微信")
 				{
 					pro = "weixin";
@@ -319,18 +392,19 @@
 				else if(e.text === "QQ")
 				{
 					pro = "qq";
-					sce = "";
+					type = 1;
 				}
 				else if(e.text === "微博")
 				{
 					pro = "sinaweibo";
-					sce = "";
 				}
 					uni.share({
+						//provider: "weixin",
+						//scene: "WXSceneSession",
 						provider: pro,
-						service: sce,
+						scene: sce,
+						type: type,
 						href: "https://www.baidu.com",
-						type: 2,
 						title: "数说武汉",
 						summary: "数说武汉app测试",
 						imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
@@ -340,7 +414,7 @@
 						fail: function (err) {
 							console.log("fail:" + JSON.stringify(err));
 						}
-					})
+					});
 			}
 		}
 	}
@@ -379,6 +453,7 @@
 		float: left;
 		border-style: solid; 
 		text-align: center; 
+		line-height: 40upx;
 	}
 	
 	.personal-browse {
@@ -472,6 +547,13 @@
 	.bottom-btn {
 		height: 90upx;
 		line-height: 90upx;
+	}
+	
+	.pop-button {
+		font-size: 30upx;
+		float: left;
+		background-color: rgba(255,255,255,1);
+		border: rgba(255,255,255,1) solid;
 	}
 		
 	
