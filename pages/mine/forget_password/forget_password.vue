@@ -155,7 +155,7 @@
 								});
 							}
 							else if(res.data.code == 1){
-								uni.setStorage({
+								uni.setStorageSync({
 									key: 'user_id',
 									data: res.data.id,
 									success: function() {

@@ -64,7 +64,7 @@
 						let list=JSON.stringify(res.data);
 						console.log("返回数据状态:" + list);
 						this.menu_list = res.data.data;
-						uni.setStorage({
+						uni.setStorageSync({
 							key: 'my_news',
 							data: this.menu_list,
 							success: function() {
@@ -77,7 +77,7 @@
 				});
 			},
 			goDetailPage(index) {
-				uni.setStorage({
+				uni.setStorageSync({
 					key: 'news_index',
 					data: index,
 					success: function() {
@@ -85,7 +85,7 @@
 					}
 				});
 				uni.navigateTo({
-					url: 'newsA/newsA'
+					url: 'news_details/news_details'
 				});
 				return false;
 			},

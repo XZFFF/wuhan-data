@@ -118,7 +118,7 @@
 					success: res => {
 						this.userInformation = res.data;
 						console.log(this.userInformation);
-						uni.setStorage({
+						uni.setStorageSync({
 							key: 'user_Info',
 							data: this.userInformation,
 							success: function() {
@@ -132,7 +132,6 @@
 							title: '网络异常,请稍后重试'
 						});
 					},
-					complete: () => {}
 				});
 			},
 			bindPickerChange: function(e) {

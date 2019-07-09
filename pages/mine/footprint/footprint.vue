@@ -62,14 +62,13 @@
 				if (footprintIndex) {
 					this.menu_list2 = footprintIndex
 				} else {
-					this.initFootprintIndex();
+					this.initFootprintEconomy();
 				}
 			} catch (e) {
 				console.log('无法从本地缓存获取相应数据');
 			}
 			this.checkNetwork();
 			this.initFootprintEconomy();
-			this.initFootprintIndex();
 		},
 		methods: {
 			/*async tapTab(e) { //点击tab-bar
@@ -108,14 +107,14 @@
 						console.log("返回数据状态:" + list);
 						this.menu_list1 = res.data.economyData;
 						this.menu_list2 = res.data.indexData;
-						uni.setStorage({
+						uni.setStorageSync({
 							key: 'footprint_economy',
 							data: this.menu_list1,
 							success: function() {
 								console.log('成功请求经济分析足迹数据并存入本地缓存');
 							}
 						});
-						uni.setStorage({
+						uni.setStorageSync({
 							key: 'footprint_index',
 							data: this.menu_list2,
 							success: function() {
@@ -123,31 +122,12 @@
 							}
 						});
 					},
-					fail: (e) => {},
-					complete: () => {}
-				});
-			},
-			initFootprintIndex() {
-				uni.request({
-					url: 'http://192.168.124.5/FootprintIndex.php',
-					method: 'GET',
-					data: {
-						"id": 1,
+					fail: (e) => {
+						uni.showModal({
+							title: "网络错误,请稍后重试",
+							icon: none,
+						})
 					},
-					success: res => {
-						let list=JSON.stringify(res.data);
-						console.log("返回数据状态:" + list);
-						this.menu_list2 = res.data;
-						uni.setStorage({
-							key: 'footprint_index',
-							data: this.menu_list2,
-							success: function() {
-								console.log('成功请求指标数据足迹数据并存入本地缓存');
-							}
-						});
-					},
-					fail: (e) => {},
-					complete: () => {}
 				});
 			},
 			async changeTab(e) {

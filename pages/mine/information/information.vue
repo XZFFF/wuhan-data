@@ -135,14 +135,14 @@
 						//this.head = "http://192.168.124.11:8080/wuhan_data1/"+res.data.data[0].head;
 						let list=JSON.stringify(res.data);
 						console.log("返回数据状态:" + list);
-						uni.setStorage({
+						uni.setStorageSync({
 							key: 'user_Info',
 							data: this.userInformation,
 							success: function() {
 								console.log('成功请求个人信息数据并存入本地缓存');
 							}
 						});
-						/*uni.setStorage({
+						/*uni.setStorageSync({
 							key: 'user_Head',
 							data: this.head,
 							success: function() {

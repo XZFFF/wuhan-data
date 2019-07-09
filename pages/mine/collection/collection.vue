@@ -62,14 +62,13 @@
 				if (collectionIndex) {
 					this.menu_list2 = collectionIndex
 				} else {
-					this.initCollectionIndex();
+					this.initCollectionEconomy();
 				}
 			} catch (e) {
 				console.log('无法从本地缓存获取相应数据');
 			}
 			this.checkNetwork();
 			this.initCollectionEconomy();
-			this.initCollectionIndex();
 		},
 		methods: {
 			checkNetwork() {
@@ -100,14 +99,14 @@
 						console.log("返回数据状态:" + list);
 						this.menu_list1 = res.data.economyData;
 						this.menu_list2 = res.data.indexData;
-						uni.setStorage({
+						uni.setStorageSync({
 							key: 'collection_economy',
 							data: this.menu_list1,
 							success: function() {
 								console.log('成功请求经济分析收藏数据并存入本地缓存');
 							}
 						});
-						uni.setStorage({
+						uni.setStorageSync({
 							key: 'collection_index',
 							data: this.menu_list2,
 							success: function() {
@@ -115,8 +114,12 @@
 							}
 						});
 					},
-					fail: (e) => {},
-					complete: () => {}
+					fail: (e) => {
+						uni.showModal({
+							title: "网络错误,请稍后重试",
+							icon: none,
+						})
+					},
 				});
 			},
 			async changeTab(e) {
