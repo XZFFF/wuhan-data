@@ -207,7 +207,7 @@
 			"path": "pages/mine/news/news_details/news_details",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "消息A"
+				"navigationBarTitleText": "消息详情"
 			}
 		},
 		{
