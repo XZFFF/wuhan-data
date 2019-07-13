@@ -12,6 +12,7 @@
 <script>
 	// 引入公共样式
 	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
+	import  { isApi } from '@/common/checkApi.js';
 	import topicListApiJson from '@/common/api/topicList.json';
 	export default {
 		components: {
@@ -60,14 +61,7 @@
 						// 获取topicList的数据
 						let topicListApi = topicListApiJson;
 						// 检查json数据
-						if (topicListApi.errCode != 0 || topicListApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: topicListApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(topicListApi);
 						// 设置各部分数据
 						this.topic = topicListApi.data.topic;
 						// 数据存入缓存

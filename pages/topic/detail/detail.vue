@@ -1,6 +1,6 @@
 <template>
 	<view class="container" :style="{height:totalHeight + 'px'}">
-		<uni-card title="专题描述">
+		<uni-card title="专题描述" extra="123">
 			{{topicDesc}}
 		</uni-card>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
@@ -19,6 +19,7 @@
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
+	import  { isApi } from '@/common/checkApi.js';
 	import topicDetailApiJson from "@/common/api/topicDetail.json";
 
 	var _self;
@@ -68,14 +69,7 @@
 					success: res => {
 						let topicDetailApi = topicDetailApiJson;
 						// 检查json数据
-						if (topicDetailApi.errCode != 0 || topicDetailApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: topicDetailApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(topicDetailApi);
 						// 设置各部分数据
 						_self.topicId = topicDetailApi.data.topicId;
 						_self.topicName = topicDetailApi.data.topicName;

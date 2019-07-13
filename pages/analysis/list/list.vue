@@ -24,6 +24,7 @@
 <script>
 	// 引入公共样式
 	import wdIndiItem from '@/components/wd-indi-item/wd-indi-item.vue';
+	import  { isApi } from '@/common/checkApi.js';
 	import analysisListApiJson from '@/common/api/analysisList.json';
 
 	export default {
@@ -57,14 +58,7 @@
 						// 获取homepage的数据
 						let analysisListApi = analysisListApiJson;
 						// 检查json数据
-						if (analysisListApi.errCode != 0 || analysisListApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: analysisListApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(analysisListApi);
 						// 设置各部分数据
 						this.categoryList = analysisListApi.data.list
 						// 数据存入缓存

@@ -19,6 +19,9 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
+	import {
+		isApi
+	} from '@/common/checkApi.js';
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 
 	var _self;
@@ -85,14 +88,7 @@
 					success: res => {
 						let analysisDetailApi = analysisDetailApiJson;
 						// 检查json数据
-						if (analysisDetailApi.errCode != 0 || analysisDetailApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: analysisDetailApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(analysisDetailApi);
 						// 设置各部分数据
 						_self.timeCondition = analysisDetailApi.data.timeCondition;
 						_self.indexDetail = analysisDetailApi.data.classInfo;
@@ -114,14 +110,7 @@
 					success: res => {
 						let analysisDetailApi = analysisDetailApiJson;
 						// 检查json数据
-						if (analysisDetailApi.errCode != 0 || analysisDetailApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: analysisDetailApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(analysisDetailApi);
 						// 设置各部分数据
 						_self.indexDetail = analysisDetailApi.data.classInfoNew;
 						// 计算classHeight及总Height

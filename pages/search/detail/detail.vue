@@ -18,7 +18,8 @@
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
-	import wdShare from '@/components/wd-share/wd-share.vue'
+	import wdShare from '@/components/wd-share/wd-share.vue';
+	import  { isApi } from '@/common/checkApi.js';
 	import searchDetailApiJson from "@/common/api/searchDetail.json";
 
 	var _self;
@@ -78,14 +79,7 @@
 					success: res => {
 						let searchDetailApi = searchDetailApiJson;
 						// 检查json数据
-						if (searchDetailApi.errCode != 0 || searchDetailApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: searchDetailApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(searchDetailApi);
 						// 设置各部分数据
 						_self.timeCondition = searchDetailApi.data.timeCondition;
 						_self.indexDetail = searchDetailApi.data.classInfo;
@@ -117,14 +111,7 @@
 					success: res => {
 						let searchDetailApi = searchDetailApiJson;
 						// 检查json数据
-						if (searchDetailApi.errCode != 0 || searchDetailApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: searchDetailApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(searchDetailApi);
 						// 更新图例数据
 						_self.indexDetail = searchDetailApi.data.classInfoNew;
 						// 计算classHeight及总Height

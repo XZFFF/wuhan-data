@@ -48,9 +48,12 @@
 
 <script>
 	import util from '@/components/wd-search/js/util.js';
-	import uniList from '@/components/uni-list/uni-list.vue'
-	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
-	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue'
+	import uniList from '@/components/uni-list/uni-list.vue';
+	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
+	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue';
+	import {
+		isApi
+	} from '@/common/checkApi.js';
 	import searchApiJson from '@/common/api/search.json';
 	import searchResultApiJson from '@/common/api/searchResult.json';
 
@@ -98,14 +101,7 @@
 					success: res => {
 						let searchApi = searchApiJson;
 						// 检查json数据
-						if (searchApi.errCode != 0 || searchApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: searchApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(searchApi);
 						// 设置各部分数据
 						this.trendList = searchApi.data.trend;
 						// this.trendList = res.data;
@@ -122,11 +118,8 @@
 					},
 					complete: () => {}
 				});
-
 			},
-			/**
-			 * 关键字搜索
-			 */
+			//关键字搜索
 			getInputtips(val) {
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/searchResult.php',
@@ -138,14 +131,7 @@
 					success: res => {
 						let searchResultApi = searchResultApiJson;
 						// 检查json数据
-						if (searchResultApi.errCode != 0 || searchResultApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: searchResultApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(searchResultApi);
 						// 设置各部分数据
 						let dataObj = searchResultApi.data.result;
 						// let dataObj = res.data;

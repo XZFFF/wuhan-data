@@ -44,6 +44,7 @@
 	// 引入公共样式
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
+	import  { isApi } from '@/common/checkApi.js';
 	import homeApiJson from '@/common/api/home.json';
 
 	export default {
@@ -82,14 +83,7 @@
 						// 获取homepage的数据
 						let homeApi = homeApiJson;
 						// 检查json数据
-						if (homeApi.errCode != 0 || homeApi.errCode != '0') {
-							// TODO 记录到服务端日志表中
-							uni.showToast({
-								icon: 'none',
-								title: homeApi.errMsg,
-								duration: 500
-							})
-						}
+						isApi(homeApi);
 						// 设置各部分数据
 						this.slideshow = homeApi.data.slideshow;
 						this.analysis = homeApi.data.analysis;
