@@ -5,11 +5,9 @@
 			<text>{{title}}</text>
 		</view>
 
-		<view class="card-text-page">
-			<scroll-view scroll-x="false" scroll-y="true" style="max-height: 250upx; width: 700upx; word-wrap: break-word; word-break: normal;">
-				{{cardText}}
-			</scroll-view>
-		</view>
+		<scroll-view scroll-x="false" scroll-y="true" class="card-text-page">
+			{{cardText}}
+		</scroll-view>
 	</view>
 </template>
 
@@ -63,10 +61,12 @@
 	}
 
 	.card-text-page {
+		display: inline-block;
 		width: 750upx;
-		overflow: hidden;
-		white-space: nowrap;
+		max-height: 200upx;
 		padding: 15upx;
 		font-size: 26upx;
+		word-wrap: break-word;
+		word-break: normal;
 	}
 </style>
