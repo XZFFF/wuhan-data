@@ -34,7 +34,7 @@
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="openTopicList"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail">
-				<wd-card-item :image="item.image" :title="item.title"></wd-card-item>
+				<wd-card-image :image="item.image" :title="item.title"></wd-card-image>
 			</view>
 		</view>
 	</view>
@@ -43,14 +43,14 @@
 <script>
 	// 引入公共样式
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
-	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
+	import wdCardImage from '@/components/wd-card-image/wd-card-image.vue';
 	import  { isApi } from '@/common/checkApi.js';
 	import homeApiJson from '@/common/api/home.json';
 
 	export default {
 		components: {
 			uniIcon,
-			wdCardItem
+			wdCardImage
 		},
 		data() {
 			return {

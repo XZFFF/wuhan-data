@@ -3,7 +3,7 @@
 		<!-- 专题 -->
 		<view class="topic">
 			<view v-for="(item,index) in topic" :key="index" @click="open_topic_detail(item)">
-				<wd-card-item :image="item.image" :title="item.title"></wd-card-item>
+				<wd-card-image :image="item.image" :title="item.title"></wd-card-image>
 			</view>
 		</view>
 	</view>
@@ -11,12 +11,12 @@
 
 <script>
 	// 引入公共样式
-	import wdCardItem from '@/components/wd-card-item/wd-card-item.vue';
+	import wdCardImage from '@/components/wd-card-image/wd-card-image.vue';
 	import  { isApi } from '@/common/checkApi.js';
 	import topicListApiJson from '@/common/api/topicList.json';
 	export default {
 		components: {
-			wdCardItem
+			wdCardImage
 		},
 		data() {
 			return {

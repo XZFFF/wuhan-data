@@ -82,13 +82,17 @@
 			initAnalysisDetail() {
 				this.checkNetwork();
 				uni.request({
-					url: 'http://wuhandata.applinzi.com/analysisDetail.php',
-					method: 'GET',
-					data: {},
+					url: 'http://localhost:8080/wuhan_data1/special',
+					method: 'POST',
+					data: {
+						indexId:"123",
+					},
 					success: res => {
-						let analysisDetailApi = analysisDetailApiJson;
+						// let analysisDetailApi = analysisDetailApiJson;
+						let analysisDetailApi = res;
+						console.log(analysisDetailApi);
 						// 检查json数据
-						isApi(analysisDetailApi);
+						//isApi(analysisDetailApi);
 						// 设置各部分数据
 						_self.timeCondition = analysisDetailApi.data.timeCondition;
 						_self.indexDetail = analysisDetailApi.data.classInfo;

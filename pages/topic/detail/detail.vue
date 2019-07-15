@@ -1,10 +1,9 @@
 <template>
 	<view class="container" :style="{height:totalHeight + 'px'}">
-		<uni-card title="专题描述" extra="123">
-			{{topicDesc}}
-		</uni-card>
+
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
+				<wd-card-text v-if="item.classType === 'card'" :title="item.classTitle" :cardText="item.cardText"></wd-card-text>
 				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
 				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
 				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
@@ -19,7 +18,10 @@
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
-	import  { isApi } from '@/common/checkApi.js';
+	import wdCardText from '@/components/wd-card-text/wd-card-text.vue';
+	import {
+		isApi
+	} from '@/common/checkApi.js';
 	import topicDetailApiJson from "@/common/api/topicDetail.json";
 
 	var _self;
@@ -28,7 +30,8 @@
 			uniCard,
 			wdEcharts,
 			wdTable,
-			wdShare
+			wdShare,
+			wdCardText
 		},
 		data() {
 			return {
@@ -71,9 +74,11 @@
 						// 检查json数据
 						isApi(topicDetailApi);
 						// 设置各部分数据
-						_self.topicId = topicDetailApi.data.topicId;
-						_self.topicName = topicDetailApi.data.topicName;
-						_self.topicDesc = topicDetailApi.data.topicDesc;
+						_self.topicId = topicDetailApi.data.topicInfo.topicId;
+						_self.topicName = topicDetailApi.data.topicInfo.topicName;
+						uni.setNavigationBarTitle({
+							title: _self.topicName
+						})
 						_self.indexDetail = topicDetailApi.data.classInfo;
 						// 计算classHeight及总Height
 						this.setHeight();
