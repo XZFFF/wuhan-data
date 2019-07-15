@@ -4,33 +4,38 @@
 	"data": {
 		"trend": [{
 				"id": "1",
-				"title": "GDP总量",
+				"name": "GDP总量",
 				"arrow": "up",
-				"rate": "7.12%"
+				"rate": "7.12%",
+				"source": "国统"
 			},
 			{
 				"id": "2",
-				"title": "全国PMI",
+				"name": "全国PMI",
 				"arrow": "up",
-				"rate": "4.42%"
+				"rate": "4.42%",
+				"source": "国统"
 			},
 			{
 				"id": "3",
-				"title": "工业生产总值",
+				"name": "工业生产总值",
 				"arrow": "up",
-				"rate": "1.25%"
+				"rate": "1.25%",
+				"source": "国统"
 			},
 			{
 				"id": "4",
-				"title": "农业生产总值",
+				"name": "农业生产总值",
 				"arrow": "down",
-				"rate": "1.49%"
+				"rate": "1.49%",
+				"source": "国统"
 			},
 			{
 				"id": "5",
-				"title": "服务业指数",
+				"name": "服务业指数",
 				"arrow": "down",
-				"rate": "0.21%"
+				"rate": "0.21%",
+				"source": "国统"
 			}
 		]
 	}

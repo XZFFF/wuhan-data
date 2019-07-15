@@ -29,7 +29,7 @@
 				</view>
 				<uni-list style="background-color: #FFFFFF;">
 					<view v-for="(item, index) in trendList" :key="index" @click="searchTrendTap(item)">
-						<wd-trend-list-item :trendId="item.id" :title="item.title" :trendArrow="item.arrow" :trendRate="item.rate"></wd-trend-list-item>
+						<wd-trend-list-item :trendId="item.id" :title="item.name" :trendArrow="item.arrow" :trendRate="item.rate"></wd-trend-list-item>
 					</view>
 				</uni-list>
 			</view>
@@ -77,7 +77,7 @@
 		},
 		data() {
 			return {
-				type: '全部',
+				source: '全部',
 				isHistory: true,
 				historyList: [],
 				trendList: [],
@@ -95,7 +95,7 @@
 				this.historyList = uni.getStorageSync('search_history');
 				// 获取搜索趋势数据
 				uni.request({
-					url: 'http://wuhandata.applinzi.com/searchTrend.php',
+					url: 'http://localhost:8080/wuhan_data1/searchsource',
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -103,8 +103,8 @@
 						// 检查json数据
 						isApi(searchApi);
 						// 设置各部分数据
+						//this.trendList = res.data.data.trend;
 						this.trendList = searchApi.data.trend;
-						// this.trendList = res.data;
 						uni.setStorage({
 							key: 'search_trend',
 							data: this.trendList,
@@ -122,11 +122,11 @@
 			//关键字搜索
 			getInputtips(val) {
 				uni.request({
-					url: 'http://wuhandata.applinzi.com/searchResult.php',
-					method: 'GET',
+					url: 'http://localhost:8080/wuhan_data1/searchIndi',
+					method: 'POST',
 					data: {
-						keyword: val,
-						type: this.type,
+						keyWord: val,
+						source: this.source,
 					},
 					success: res => {
 						let searchResultApi = searchResultApiJson;
@@ -173,9 +173,9 @@
 			 * 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			 */
 			searchTrendTap(item) {
-				util.setHistory(item.title);
+				util.setHistory(item.name);
 				uni.navigateTo({
-					url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.title
+					url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + "&source=" + item.source
 				})
 			},
 			/**
@@ -191,12 +191,10 @@
 					// 点击列表存储搜索数据,更新历史搜索记录
 					util.setHistory(item);
 					this.historyList = uni.getStorageSync('search_history');
-					if (typeof item.isFavorite == undefined) {
-						item.isFavorite = false;
-					}
+					// TODO 记录历史搜索记录到服务端
 					// 跳转到对应的界面,这里先做的是返回上一个界面
 					uni.navigateTo({
-						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + "&isFavorite=" + item.isFavorite
+						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + "&source=" + item.source
 					})
 				}
 			},
@@ -245,7 +243,7 @@
 				success: function(res) {
 					var itemList = ['全部', '国统', '湖统', '大数据'];
 					// 这里无法直接调用前面的itemList，所以重新声明一次
-					self.type = itemList[res.tapIndex];
+					self.source = itemList[res.tapIndex];
 					// 通过控制该页面的webview对象来重置导航栏的button中text数值
 					let pages = getCurrentPages();
 					let page = pages[pages.length - 1];
@@ -255,7 +253,7 @@
 					if (!titleObj.buttons) {
 						return;
 					}
-					titleObj.buttons[0].text = self.type;
+					titleObj.buttons[0].text = self.source;
 					currentWebview.setStyle({
 						titleNView: titleObj
 					});

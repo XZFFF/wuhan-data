@@ -19,7 +19,9 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
-	import  { isApi } from '@/common/checkApi.js';
+	import {
+		isApi
+	} from '@/common/checkApi.js';
 	import searchDetailApiJson from "@/common/api/searchDetail.json";
 
 	var _self;
@@ -36,6 +38,7 @@
 			return {
 				indexId: "1000",
 				indexName: "指标详情页",
+				source: "",
 				isFavorite: false,
 				timeCondition: [],
 				indexDetail: [],
@@ -49,7 +52,6 @@
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
-				this.isFavorite = e.isFavorite;
 				uni.setNavigationBarTitle({
 					title: e.indexName
 				})
@@ -61,6 +63,7 @@
 			// 退出界面时重新初始化数据
 			this.indexId = "1000";
 			this.indexName = "指标详情页";
+			this.source = "";
 			this.isFavorite = false;
 			this.timeCondition = [];
 			this.indexDetail = [];
@@ -75,7 +78,10 @@
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/searchDetail.php',
 					method: 'GET',
-					data: {},
+					data: {
+						"indexId": this.indexId,
+						"source": this.source
+					},
 					success: res => {
 						let searchDetailApi = searchDetailApiJson;
 						// 检查json数据
@@ -107,7 +113,13 @@
 				uni.request({
 					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
 					method: 'GET',
-					data: {},
+					data: {
+						"indexId": this.indexId,
+						"source": this.source,
+						"startTime": val.stratTime,
+						"endTime": val.endTime,
+						"timeFreq": val.timeFreq
+					},
 					success: res => {
 						let searchDetailApi = searchDetailApiJson;
 						// 检查json数据
