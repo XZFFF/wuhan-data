@@ -38,7 +38,10 @@
 		<view v-else class="">
 			<view v-if="resultList.length > 0" class="history-list-box">
 				<view class="history-list-item" v-for="(item, index) in resultList" :key="index" @click="searchResultTap(item)">
-					<rich-text :nodes="item.nameNodes"></rich-text>
+					<rich-text style="display: flex; align-items: center;" :nodes="item.nameNodes"></rich-text>
+					<view class="tag-view">
+				<uni-tag :text="item.source" :type="item.tagType" size="small" :circle="true"></uni-tag>
+			</view>
 				</view>
 			</view>
 			<view v-else class="no-data">没有搜索到相关内容</view>
@@ -48,6 +51,7 @@
 
 <script>
 	import util from '@/components/wd-search/js/util.js';
+	import uniTag from '@/components/uni-tag/uni-tag.vue'
 	import uniList from '@/components/uni-list/uni-list.vue';
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
 	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue';
@@ -59,6 +63,7 @@
 
 	export default {
 		components: {
+			uniTag,
 			uniList,
 			uniListItem,
 			wdTrendListItem
@@ -91,6 +96,8 @@
 			initSearch() {
 				this.checkNetwork();
 				this.isHistory = true;
+				this.isHistory = false;
+				this.getInputtips('GD');
 				// 取出历史搜索缓存数据
 				this.historyList = uni.getStorageSync('search_history');
 				// 获取搜索趋势数据
@@ -319,6 +326,8 @@
 	}
 
 	.history-list-item {
+		display: flex;
+		justify-content: flex-start;
 		padding: 30upx 0;
 		margin-left: 30upx;
 		border-bottom: 1px #EEEEEE solid;
@@ -339,5 +348,10 @@
 		text-align: center;
 		color: #999;
 		margin: 100upx;
+	}
+	
+	.tag-view {
+		margin: 10upx 20upx;
+		display: inline-block;
 	}
 </style>

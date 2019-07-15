@@ -4,15 +4,18 @@
 	"data": {
 		"result": [{
 				"id": "1",
-				"name": "地区生产总值(GDP)"
+				"name": "地区生产总值(GDP)",
+				"source": "国统"
 			},
 			{
 				"id": "2",
-				"name": "PMI指数"
+				"name": "PMI指数",
+				"source": "湖统"
 			},
 			{
 				"id": "3",
-				"name": "R&D经费占GDP比重"
+				"name": "R&D经费占GDP比重",
+				"source": "大数据"
 			}
 		]
 	}
