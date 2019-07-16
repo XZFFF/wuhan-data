@@ -127,13 +127,6 @@
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						let dataApi = analysisConfirmApiJson;
-						// 检查json数据
-						isApi(dataApi);
-						// 设置各部分数据
-						_self.indexDetail = dataApi.data.classInfo;
-						// 计算classHeight及总Height
-						this.setHeight();
 					},
 					complete: () => {}
 				});

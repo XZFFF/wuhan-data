@@ -98,6 +98,18 @@
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
+						let dataApi = searchDetailApiJson;
+						// 检查json数据
+						isApi(dataApi);
+						// 设置各部分数据
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+						_self.timeCondition = dataApi.data.timeCondition;
+						_self.indexDetail = dataApi.data.classInfo;
+						_self.relatedData = dataApi.data.relatedData;
+						// 计算classHeight及总Height
+						this.setHeight();
 					},
 					complete: () => {}
 				});
