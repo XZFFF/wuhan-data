@@ -76,18 +76,18 @@
 				this.checkNetwork();
 				// 通过请求接口获取轮播图
 				uni.request({
-					url: 'http://wuhandata.applinzi.com/slideshow.php',
+					url: 'http://localhost:8080/wuhan_data1/initHome',
 					method: 'GET',
 					data: {},
 					success: res => {
 						// 获取homepage的数据
-						let homeApi = homeApiJson;
+						let dataApi = res.data;
 						// 检查json数据
-						isApi(homeApi);
+						isApi(dataApi);
 						// 设置各部分数据
-						this.slideshow = homeApi.data.slideshow;
-						this.analysis = homeApi.data.analysis;
-						this.topic = this.randTopic(homeApi.data.topic);
+						this.slideshow = dataApi.data.slideshow;
+						this.analysis = dataApi.data.analysis;
+						this.topic = this.randTopic(dataApi.data.topic);
 						// 数据存入缓存
 						this.setHomeStorage();
 					},

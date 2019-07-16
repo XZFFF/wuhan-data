@@ -66,25 +66,25 @@
 					method: 'GET',
 					data: {},
 					success: res => {
-						let topicDetailApi = topicDetailApiJson;
+						let dataApi = topicDetailApiJson;
 						// 检查json数据
-						isApi(topicDetailApi);
+						isApi(dataApi);
 						// 设置各部分数据
-						_self.indexId = topicDetailApi.data.baseInfo.indexId;
-						_self.indexName = topicDetailApi.data.baseInfo.indexName;
-						_self.indexDetail = topicDetailApi.data.classInfo;
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.indexDetail = dataApi.data.classInfo;
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						let topicDetailApi = topicDetailApiJson;
+						let dataApi = topicDetailApiJson;
 						// 检查json数据
-						isApi(topicDetailApi);
+						isApi(dataApi);
 						// 设置各部分数据
-						_self.indexId = topicDetailApi.data.baseInfo.indexId;
-						_self.indexName = topicDetailApi.data.baseInfo.indexName;
-						_self.indexDetail = topicDetailApi.data.classInfo;
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.indexDetail = dataApi.data.classInfo;
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
