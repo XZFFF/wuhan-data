@@ -2,26 +2,9 @@
 	"errCode": "0",
 	"errMsg": "success",
 	"data": {
-		"baseInfo": {
-			"indexId": "1000",
-			"indexName": "指标详情页",
-			"isFavorite": false
-		},
-		"timeCondition": [{
-				"freqName": "月度",
-				"startArray": ["201701", "201702"],
-				"endArray": ["201709", "201710"],
-				"current": [0, 1]
-			},
-			{
-				"freqName": "年度",
-				"startArray": ["2016", "2017"],
-				"endArray": ["2017", "2018"]
-			}
-		],
 		"classInfo": [{
 				"id": "1",
-				"classTitle": "柱状图",
+				"classTitle": "折线图",
 				"classType": "echarts",
 				"classHeight": "300",
 				"echartOption": {
@@ -33,7 +16,7 @@
 						"trigger": "axis"
 					},
 					"legend": {
-						"data": ["DQ", "TY"]
+						"data": ["DQL", "TYL"]
 					},
 					"xAxis": {
 						"name": "x轴",
@@ -47,13 +30,13 @@
 						"max": 1000
 					},
 					"series": [{
-						"name": "DQ",
-						"type": "bar",
-						"data": [490, 546, 493, 522, 570, 900]
+						"name": "DQL",
+						"type": "line",
+						"data": [790, 790, 790, 790, 790, 900]
 					}, {
-						"name": "TY",
+						"name": "TYL",
 						"type": "bar",
-						"data": [390, 446, 393, 422, 470, 800]
+						"data": [890, 946, 493, 522, 580, 910]
 					}]
 				}
 			},
@@ -63,7 +46,7 @@
 				"classType": "table",
 				"classHeight": "300",
 				"tableBody": [
-					[" ", "GDP总量", "第一产业", "第二产业", "第三产业"],
+					[" ", "GDP总量改", "第一产业改", "第二产业改", "第三产业改"],
 					["2018Q1", "490", "150", "220", "120"],
 					["2018Q2", "546", "232", "182", "132"],
 					["2018Q3", "493", "201", "191", "101"],
@@ -74,7 +57,7 @@
 			},
 			{
 				"id": "3",
-				"classTitle": "柱状图",
+				"classTitle": "折线图",
 				"classType": "echarts",
 				"classHeight": "300",
 				"echartOption": {
@@ -86,7 +69,7 @@
 						"trigger": "axis"
 					},
 					"legend": {
-						"data": ["DQ", "TY"]
+						"data": ["DQL", "TYL"]
 					},
 					"xAxis": {
 						"name": "x轴",
@@ -100,17 +83,16 @@
 						"max": 1000
 					},
 					"series": [{
-						"name": "DQ",
+						"name": "DQL",
 						"type": "bar",
-						"data": [490, 546, 493, 522, 570, 900]
+						"data": [790, 890, 890, 890, 890, 890]
 					}, {
-						"name": "TY",
-						"type": "bar",
-						"data": [390, 446, 393, 422, 470, 800]
+						"name": "TYL",
+						"type": "line",
+						"data": [890, 946, 493, 522, 580, 910]
 					}]
 				}
 			}
-		],
-		"relatedData": []
+		]
 	}
 }

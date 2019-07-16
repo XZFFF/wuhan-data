@@ -23,6 +23,7 @@
 		isApi
 	} from '@/common/checkApi.js';
 	import searchDetailApiJson from "@/common/api/searchDetail.json";
+	import searchConfirmApiJson from "@/common/api/searchConfirm.json";
 
 	var _self;
 
@@ -52,12 +53,11 @@
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
-				uni.setNavigationBarTitle({
-					title: e.indexName
-				})
 			}
+			this.initNav();
 			// 初始化指标数据
 			this.initSearchDetail();
+			this.initNav();
 		},
 		onUnload() {
 			// 退出界面时重新初始化数据
@@ -83,22 +83,16 @@
 						"source": this.source
 					},
 					success: res => {
-						let searchDetailApi = searchDetailApiJson;
+						let dataApi = searchDetailApiJson;
 						// 检查json数据
-						isApi(searchDetailApi);
+						isApi(dataApi);
 						// 设置各部分数据
-						_self.timeCondition = searchDetailApi.data.timeCondition;
-						_self.indexDetail = searchDetailApi.data.classInfo;
-						_self.relatedData = searchDetailApi.data.relatedData;
-						// 渲染收藏icon
-						this.isFavorite = false;
-						if (this.isFavorite == false || this.isFavorite == "false") {
-							this.isFavorite == false;
-							this.initFavColor("#ffffff");
-						} else {
-							this.isFavorite == true;
-							this.initFavColor("#f9da74");
-						}
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+						_self.timeCondition = dataApi.data.timeCondition;
+						_self.indexDetail = dataApi.data.classInfo;
+						_self.relatedData = dataApi.data.relatedData;
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
@@ -121,11 +115,11 @@
 						"timeFreq": val.timeFreq
 					},
 					success: res => {
-						let searchDetailApi = searchDetailApiJson;
+						let dataApi = searchConfirmApiJson;
 						// 检查json数据
-						isApi(searchDetailApi);
+						isApi(dataApi);
 						// 更新图例数据
-						_self.indexDetail = searchDetailApi.data.classInfoNew;
+						_self.indexDetail = dataApi.data.classInfo;
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
@@ -134,6 +128,20 @@
 					},
 					complete: () => {}
 				});
+			},
+			initNav() {
+				// 渲染导航栏title
+				uni.setNavigationBarTitle({
+					title: this.indexName
+				});
+				// 渲染收藏icon
+				if (this.isFavorite == false || this.isFavorite == "false") {
+					this.isFavorite == false;
+					this.initFavColor("#ffffff");
+				} else {
+					this.isFavorite == true;
+					this.initFavColor("#f9da74");
+				}
 			},
 			checkNetwork() {
 				uni.getNetworkType({
