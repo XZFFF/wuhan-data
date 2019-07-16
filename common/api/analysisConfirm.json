@@ -2,10 +2,6 @@
 	"errCode": "0",
 	"errMsg": "success",
 	"data": {
-		"baseInfo": {
-			"indexId": "1",
-			"indexName": "高质量发展"
-		},
 		"classInfo": [{
 				"id": "0",
 				"classTitle": "表格示例",
@@ -22,15 +18,9 @@
 			},
 			{
 				"id": "1",
-				"classTitle": "专题描述1",
-				"classType": "card",
-				"cardText": "固定资产投资是拉动经济发展的重要引擎，涉及服务业、制造业、旅游、房地产等诸多领域，对国民经济的直接间接传导路径庞杂。"
-			},
-			{
-				"id": "2",
-				"classTitle": "折线图",
+				"classTitle": "折线图23",
 				"classType": "echarts",
-				"classHeight": "200",
+				"classHeight": "300",
 				"echartOption": {
 					"grid": {
 						"containLabel": true
@@ -56,22 +46,16 @@
 					"series": [{
 						"name": "DQ",
 						"type": "line",
-						"data": [490, 546, 493, 522, 570, 900]
+						"data": [390, 446, 493, 522, 570, 900]
 					}, {
 						"name": "TY",
-						"type": "line",
+						"type": "bar",
 						"data": [390, 446, 393, 422, 470, 800]
 					}]
 				}
 			},
 			{
-				"id": "3",
-				"classTitle": "专题描述2",
-				"classType": "card",
-				"cardText": "对固定资产投资的分析，历来是宏观经济综合分析的重点。本专题从规模、结构、质量、投资环境的角度展开，与同类型城市投资情况对比，帮助于发现湖北省投资发展中的问题，为湖北省投资规模扩大、结构优化提供决策参考。"
-			},
-			{
-				"id": "4",
+				"id": "2",
 				"classTitle": "区域图",
 				"classType": "echarts",
 				"classHeight": "400",

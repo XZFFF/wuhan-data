@@ -1,6 +1,5 @@
 <template>
 	<view class="container" :style="{height:totalHeight + 'px'}">
-
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-card-text v-if="item.classType === 'card'" :title="item.classTitle" :cardText="item.cardText"></wd-card-text>
@@ -9,7 +8,7 @@
 				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
 			</block>
 		</view>
-		<wd-share :indexId="topicId" :indexName="topicName"></wd-share>
+		<wd-share :indexId="indexId" :indexName="indexName"></wd-share>
 	</view>
 </template>
 
@@ -35,9 +34,8 @@
 		},
 		data() {
 			return {
-				topicId: "1000",
-				topicName: "专题详情页",
-				topicDesc: "",
+				indexId: "1000",
+				indexName: "专题详情页",
 				indexDetail: [],
 				totalHeight: 1000,
 				classTotalHeight: 400
@@ -46,19 +44,17 @@
 		onLoad: function(e) {
 			_self = this;
 			if (JSON.stringify(e) != '{}') {
-				this.topicId = e.topicId;
-				this.topicName = e.topicName;
-				uni.setNavigationBarTitle({
-					title: e.topicName
-				})
+				this.indexId = e.indexId;
+				this.indexName = e.indexName;
 			}
+			this.initNav();
 			this.initTopicDetail();
+			this.initNav();
 		},
 		onUnload() {
 			// 退出界面时重新初始化数据
-			this.topicId = "1000";
-			this.topicName = "专题详情页";
-			this.topicDesc = "";
+			this.indexId = "1000";
+			this.indexName = "专题详情页";
 			this.indexDetail = [];
 			this.totalHeight = 1000;
 			this.classTotalHeight = 400;
@@ -74,19 +70,31 @@
 						// 检查json数据
 						isApi(topicDetailApi);
 						// 设置各部分数据
-						_self.topicId = topicDetailApi.data.topicInfo.topicId;
-						_self.topicName = topicDetailApi.data.topicInfo.topicName;
-						uni.setNavigationBarTitle({
-							title: _self.topicName
-						})
+						_self.indexId = topicDetailApi.data.baseInfo.indexId;
+						_self.indexName = topicDetailApi.data.baseInfo.indexName;
 						_self.indexDetail = topicDetailApi.data.classInfo;
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
+						let topicDetailApi = topicDetailApiJson;
+						// 检查json数据
+						isApi(topicDetailApi);
+						// 设置各部分数据
+						_self.indexId = topicDetailApi.data.baseInfo.indexId;
+						_self.indexName = topicDetailApi.data.baseInfo.indexName;
+						_self.indexDetail = topicDetailApi.data.classInfo;
+						// 计算classHeight及总Height
+						this.setHeight();
 					},
 					complete: () => {}
+				});
+			},
+			initNav() {
+				// 渲染导航栏title
+				uni.setNavigationBarTitle({
+					title: this.indexName
 				});
 			},
 			checkNetwork() {

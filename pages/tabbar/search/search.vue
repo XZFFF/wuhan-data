@@ -96,8 +96,6 @@
 			initSearch() {
 				this.checkNetwork();
 				this.isHistory = true;
-				this.isHistory = false;
-				this.getInputtips('GD');
 				// 取出历史搜索缓存数据
 				this.historyList = uni.getStorageSync('search_history');
 				// 获取搜索趋势数据

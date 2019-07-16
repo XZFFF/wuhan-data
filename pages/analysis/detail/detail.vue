@@ -23,6 +23,7 @@
 		isApi
 	} from '@/common/checkApi.js';
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
+	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
 
 	var _self;
 	export default {
@@ -48,23 +49,14 @@
 		onLoad: function(e) {
 			_self = this;
 			if (JSON.stringify(e) != '{}') {
-				this.indexId = e.indexId;
-				this.indexName = e.indexName;
-				this.isFavorite = e.isFavorite;
-				uni.setNavigationBarTitle({
-					title: e.indexName
-				});
+				_self.indexId = e.indexId;
+				_self.indexName = e.indexName;
+				_self.isFavorite = e.isFavorite;
 			}
+			this.initNav();
 			// 初始化页面数据
 			this.initAnalysisDetail();
-			// 渲染收藏icon
-			if (this.isFavorite == false || this.isFavorite == "false") {
-				this.isFavorite == false;
-				this.initFavColor("#ffffff");
-			} else {
-				this.isFavorite == true;
-				this.initFavColor("#f9da74");
-			}
+			this.initNav();
 		},
 		onUnload() {
 			// 退出界面时重新初始化数据
@@ -85,23 +77,36 @@
 					url: 'http://localhost:8080/wuhan_data1/special',
 					method: 'POST',
 					data: {
-						indexId:"123",
+						indexId: "123",
 					},
 					success: res => {
-						// let analysisDetailApi = analysisDetailApiJson;
-						let analysisDetailApi = res;
-						console.log(analysisDetailApi);
+						let dataApi = analysisDetailApiJson;
 						// 检查json数据
-						//isApi(analysisDetailApi);
+						isApi(dataApi);
 						// 设置各部分数据
-						_self.timeCondition = analysisDetailApi.data.timeCondition;
-						_self.indexDetail = analysisDetailApi.data.classInfo;
-						_self.relatedData = analysisDetailApi.data.relatedData;
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+						_self.timeCondition = dataApi.data.timeCondition;
+						_self.indexDetail = dataApi.data.classInfo;
+						_self.relatedData = dataApi.data.relatedData;
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
+						let dataApi = analysisDetailApiJson;
+						// 检查json数据
+						isApi(dataApi);
+						// 设置各部分数据
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+						_self.timeCondition = dataApi.data.timeCondition;
+						_self.indexDetail = dataApi.data.classInfo;
+						_self.relatedData = dataApi.data.relatedData;
+						// 计算classHeight及总Height
+						this.setHeight();
 					},
 					complete: () => {}
 				});
@@ -112,16 +117,23 @@
 					method: 'GET',
 					data: {},
 					success: res => {
-						let analysisDetailApi = analysisDetailApiJson;
+						let dataApi = analysisConfirmApiJson;
 						// 检查json数据
-						isApi(analysisDetailApi);
+						isApi(dataApi);
 						// 设置各部分数据
-						_self.indexDetail = analysisDetailApi.data.classInfoNew;
+						_self.indexDetail = dataApi.data.classInfo;
 						// 计算classHeight及总Height
 						this.setHeight();
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
+						let dataApi = analysisConfirmApiJson;
+						// 检查json数据
+						isApi(dataApi);
+						// 设置各部分数据
+						_self.indexDetail = dataApi.data.classInfo;
+						// 计算classHeight及总Height
+						this.setHeight();
 					},
 					complete: () => {}
 				});
@@ -138,6 +150,20 @@
 						}
 					}
 				});
+			},
+			initNav() {
+				// 渲染导航栏title
+				uni.setNavigationBarTitle({
+					title: this.indexName
+				});
+				// 渲染收藏icon
+				if (this.isFavorite == false || this.isFavorite == "false") {
+					this.isFavorite == false;
+					this.initFavColor("#ffffff");
+				} else {
+					this.isFavorite == true;
+					this.initFavColor("#f9da74");
+				}
 			},
 			initFavColor(initColor) {
 				// 更新导航栏收藏按钮颜色
