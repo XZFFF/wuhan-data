@@ -59,33 +59,22 @@
 			this.initSearchDetail();
 			this.initNav();
 		},
-		onUnload() {
-			// 退出界面时重新初始化数据
-			this.indexId = "1000";
-			this.indexName = "指标详情页";
-			this.source = "";
-			this.isFavorite = false;
-			this.timeCondition = [];
-			this.indexDetail = [];
-			this.relatedData = [];
-			this.totalHeight = 1000;
-			this.classTotalHeight = 400;
-			this.initFavColor("ffffff");
-		},
 		methods: {
 			initSearchDetail() {
 				checkApi.checkNetwork();
 				let dataApi = {};
-				console.log(this.indexName + this.source);
+				console.log(this.indexId + this.indexName + this.source);
 				uni.request({
-					url: 'http://192.168.124.4:8080/wuhan_data1/indiDetail',
+					url: 'http://192.168.124.4:8080/wuhan_data1/searchDetail',
 					method: 'POST',
 					data: {
-						"indexName": this.indexName,
+						"indexId": this.indexId,
 						"source": this.source
 					},
 					success: res => {
+						console.log(JSON.stringify(res.data));
 						dataApi = res.data;
+						// dataAPi = searchDetailApiJson;
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
@@ -121,23 +110,32 @@
 					url: 'http://192.168.124.4:8080/wuhan_data1/indiDetail1',
 					method: 'POST',
 					data: {
-						"indexName": this.indexName,
+						"indexId": this.indexId,
 						"source": this.source,
 						"startTime": val.startTime,
 						"endTime": val.endTime,
 						"timeFreq": val.timeFreq
 					},
 					success: res => {
-						let dataApi = res.data;
-						// 检查json数据
-						checkApi.isApi(dataApi);
-						// 更新图例数据
-						_self.indexDetail = dataApi.data.classInfo;
-						// 计算classHeight及总Height
-						this.setHeight();
+						try {
+							let dataApi = res.data;
+							// 检查json数据
+							checkApi.isApi(dataApi);
+							// 更新图例数据
+							_self.indexDetail = dataApi.data.classInfo;
+							// 计算classHeight及总Height
+							this.setHeight();
+						} catch (e) {
+							console.log(e.message);
+						}
 					},
 					fail: (e) => {
-						console.log(e.errMsg);
+						console.log(e.message);
+						uni.showToast({
+							icon: 'none',
+							title: e.message,
+							duration: 500
+						});
 					},
 					complete: () => {}
 				});
