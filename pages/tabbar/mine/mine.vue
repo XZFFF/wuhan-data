@@ -92,11 +92,7 @@
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
-	import {
-		isApi,
-		checkNetwork,
-		checkToken
-	} from '@/common/checkApi.js';
+	import checkApi from '@/common/checkApi.js';
 	import mineConfig from "@/common/config/mine.json";
 	import getUserApiJson from "@/common/api/getUser.json";
 	export default {
@@ -133,7 +129,7 @@
 		},
 		onLoad() {},
 		onShow: function() {
-			if (checkToken()) {
+			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
 			}
 			this.initUser();
@@ -149,7 +145,7 @@
 				if (!this.token) {
 					return;
 				}
-				checkNetwork();
+				checkApi.checkNetwork();
 				uni.request({
 					url: 'http://www.baidu.com',
 					method: 'POST',
@@ -158,7 +154,7 @@
 					},
 					success: (res) => {
 						let dataApi = getUserApiJson;
-						isApi(dataApi);
+						checkApi.isApi(dataApi);
 						this.user = dataApi.data;
 						let userStr = JSON.stringify(this.user);
 						uni.setStorage({
@@ -215,6 +211,7 @@
 						"appid": "__UNI__123456",
 						"version": "1.0.0"
 					};
+					checkApi.checkNetwork();
 					uni.request({
 						url: "http://100.64.206.197/checkUpdate.php",
 						data: req,
@@ -230,12 +227,7 @@
 								})
 							}
 						},
-						fail: () => {
-							uni.showModal({
-								title: "网络错误,请稍后重试",
-								icon: none,
-							})
-						}
+						fail: () => {}
 					})
 					//#endif
 				} else if (e.id == 1) {

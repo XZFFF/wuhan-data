@@ -40,8 +40,8 @@
 				<view class="history-list-item" v-for="(item, index) in resultList" :key="index" @click="searchResultTap(item)">
 					<rich-text style="display: flex; align-items: center;" :nodes="item.nameNodes"></rich-text>
 					<view class="tag-view">
-				<uni-tag :text="item.source" :type="item.tagType" size="small" :circle="true"></uni-tag>
-			</view>
+						<uni-tag :text="item.source" :type="item.tagType" size="small" :circle="true"></uni-tag>
+					</view>
 				</view>
 			</view>
 			<view v-else class="no-data">没有搜索到相关内容</view>
@@ -55,9 +55,7 @@
 	import uniList from '@/components/uni-list/uni-list.vue';
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
 	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue';
-	import {
-		isApi
-	} from '@/common/checkApi.js';
+	import checkApi from '@/common/checkApi.js';
 	import searchApiJson from '@/common/api/search.json';
 	import searchResultApiJson from '@/common/api/searchResult.json';
 
@@ -90,43 +88,50 @@
 			};
 		},
 		onShow() {
+			this.isHistory = true;
 			this.initSearch();
 		},
 		methods: {
 			initSearch() {
-				this.checkNetwork();
+				checkApi.checkNetwork();
 				this.isHistory = true;
 				// 取出历史搜索缓存数据
 				this.historyList = uni.getStorageSync('search_history');
+				// 取出搜索趋势缓存数据
+				let searchTrend = uni.getStorageSync('search_trend');
+				if (searchTrend) {
+					this.trendList = searchTrend
+				}
 				// 获取搜索趋势数据
 				uni.request({
 					url: 'http://192.168.124.4:8080/wuhan_data1/searchTrend',
 					method: 'GET',
 					data: {},
 					success: res => {
-						let searchApi = res.data;
-						// 检查json数据
-						isApi(searchApi);
-						// 设置各部分数据
-						//this.trendList = res.data.data.trend;
-						this.trendList = searchApi.data.trend;
-						uni.setStorage({
-							key: 'search_trend',
-							data: this.trendList,
-						});
+						try {
+							let searchApi = res.data;
+							// 检查json数据
+							checkApi.isApi(searchApi);
+							// 设置各部分数据
+							//this.trendList = res.data.data.trend;
+							this.trendList = searchApi.data.trend;
+							uni.setStorage({
+								key: 'search_trend',
+								data: this.trendList,
+							});
+						} catch (e) {
+							console.log(e.message);
+						}
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						let searchTrend = uni.getStorageSync('search_trend');
-						if (searchTrend) {
-							this.trendList = searchTrend
-						}
 					},
 					complete: () => {}
 				});
 			},
 			//关键字搜索
 			getInputtips(val) {
+				checkApi.checkNetwork();
 				uni.request({
 					url: 'http://192.168.124.4:8080/wuhan_data1/searchIndi',
 					method: 'POST',
@@ -137,7 +142,7 @@
 					success: res => {
 						let searchResultApi = res.data;
 						// 检查json数据
-						isApi(searchResultApi);
+						checkApi.isApi(searchResultApi);
 						// 设置各部分数据
 						let dataObj = searchResultApi.data.result;
 						// let dataObj = res.data;
@@ -181,7 +186,7 @@
 			searchTrendTap(item) {
 				util.setHistory(item.name);
 				uni.navigateTo({
-					url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + "&source=" + item.source
+					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + "&source=" + item.source
 				})
 			},
 			/**
@@ -199,7 +204,7 @@
 					this.historyList = uni.getStorageSync('search_history');
 					// TODO 记录历史搜索记录到服务端
 					// 跳转到对应的界面,这里先做的是返回上一个界面
-					console.log("source"+item.source);
+					console.log("source" + item.source);
 					uni.navigateTo({
 						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + "&source=" + item.source
 					})
@@ -349,7 +354,7 @@
 		color: #999;
 		margin: 100upx;
 	}
-	
+
 	.tag-view {
 		margin: 10upx 20upx;
 		display: inline-block;
