@@ -19,9 +19,7 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
-	import {
-		isApi
-	} from '@/common/checkApi.js';
+	import checkApi from '@/common/checkApi.js';
 	import searchDetailApiJson from "@/common/api/searchDetail.json";
 	import searchConfirmApiJson from "@/common/api/searchConfirm.json";
 
@@ -76,7 +74,7 @@
 		},
 		methods: {
 			initSearchDetail() {
-				this.checkNetwork();
+				checkApi.checkNetwork();
 				let dataApi = {};
 				console.log(this.indexName + this.source);
 				uni.request({
@@ -95,7 +93,7 @@
 					},
 					complete: () => {
 						// 检查json数据
-						isApi(dataApi);
+						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						try {
 							_self.indexId = dataApi.data.baseInfo.indexId;
@@ -118,7 +116,7 @@
 				});
 			},
 			onConfirm(val) {
-				this.checkNetwork();
+				checkApi.checkNetwork();
 				uni.request({
 					url: 'http://192.168.124.4:8080/wuhan_data1/indiDetail1',
 					method: 'POST',
@@ -132,7 +130,7 @@
 					success: res => {
 						let dataApi = res.data;
 						// 检查json数据
-						isApi(dataApi);
+						checkApi.isApi(dataApi);
 						// 更新图例数据
 						_self.indexDetail = dataApi.data.classInfo;
 						// 计算classHeight及总Height
@@ -157,19 +155,6 @@
 					this.isFavorite == true;
 					this.initFavColor("#f9da74");
 				}
-			},
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						if (res.networkType == 'none') {
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
-				});
 			},
 			initFavColor(initColor) {
 				// 更新导航栏收藏按钮颜色
