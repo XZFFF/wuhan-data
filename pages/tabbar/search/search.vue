@@ -100,11 +100,11 @@
 				this.historyList = uni.getStorageSync('search_history');
 				// 获取搜索趋势数据
 				uni.request({
-					url: 'http://localhost:8080/wuhan_data1/searchsource',
+					url: 'http://192.168.124.4:8080/wuhan_data1/searchTrend',
 					method: 'GET',
 					data: {},
 					success: res => {
-						let searchApi = searchApiJson;
+						let searchApi = res.data;
 						// 检查json数据
 						isApi(searchApi);
 						// 设置各部分数据
@@ -116,6 +116,7 @@
 						});
 					},
 					fail: (e) => {
+						console.log(e.errMsg);
 						let searchTrend = uni.getStorageSync('search_trend');
 						if (searchTrend) {
 							this.trendList = searchTrend
@@ -127,14 +128,14 @@
 			//关键字搜索
 			getInputtips(val) {
 				uni.request({
-					url: 'http://localhost:8080/wuhan_data1/searchIndi',
+					url: 'http://192.168.124.4:8080/wuhan_data1/searchIndi',
 					method: 'POST',
 					data: {
-						keyWord: val,
+						keyword: val,
 						source: this.source,
 					},
 					success: res => {
-						let searchResultApi = searchResultApiJson;
+						let searchResultApi = res.data;
 						// 检查json数据
 						isApi(searchResultApi);
 						// 设置各部分数据
@@ -198,6 +199,7 @@
 					this.historyList = uni.getStorageSync('search_history');
 					// TODO 记录历史搜索记录到服务端
 					// 跳转到对应的界面,这里先做的是返回上一个界面
+					console.log("source"+item.source);
 					uni.navigateTo({
 						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + "&source=" + item.source
 					})

@@ -73,29 +73,22 @@
 		methods: {
 			initAnalysisDetail() {
 				this.checkNetwork();
+				let dataApi;
 				uni.request({
-					url: 'http://localhost:8080/wuhan_data1/special',
+					url: 'www.baidu.com',
 					method: 'POST',
 					data: {
 						indexId: "123",
 					},
 					success: res => {
-						let dataApi = analysisDetailApiJson;
-						// 检查json数据
-						isApi(dataApi);
-						// 设置各部分数据
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
-						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-						_self.timeCondition = dataApi.data.timeCondition;
-						_self.indexDetail = dataApi.data.classInfo;
-						_self.relatedData = dataApi.data.relatedData;
-						// 计算classHeight及总Height
-						this.setHeight();
+						dataApi = analysisDetailApiJson;
+
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						let dataApi = analysisDetailApiJson;
+						dataApi = analysisDetailApiJson;
+					},
+					complete: () => {
 						// 检查json数据
 						isApi(dataApi);
 						// 设置各部分数据
@@ -107,17 +100,17 @@
 						_self.relatedData = dataApi.data.relatedData;
 						// 计算classHeight及总Height
 						this.setHeight();
-					},
-					complete: () => {}
+					}
 				});
 			},
 			onConfirm(val) {
+				let dataApi;
 				uni.request({
 					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
 					method: 'GET',
 					data: {},
 					success: res => {
-						let dataApi = analysisConfirmApiJson;
+						dataApi = analysisConfirmApiJson;
 						// 检查json数据
 						isApi(dataApi);
 						// 设置各部分数据

@@ -61,24 +61,19 @@
 		},
 		methods: {
 			initTopicDetail() {
+				let dataApi;
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/analysisDetail.php',
 					method: 'GET',
 					data: {},
 					success: res => {
-						let dataApi = topicDetailApiJson;
-						// 检查json数据
-						isApi(dataApi);
-						// 设置各部分数据
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
-						_self.indexDetail = dataApi.data.classInfo;
-						// 计算classHeight及总Height
-						this.setHeight();
+						dataApi = topicDetailApiJson;
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						let dataApi = topicDetailApiJson;
+						dataApi = topicDetailApiJson;
+					},
+					complete: () => {
 						// 检查json数据
 						isApi(dataApi);
 						// 设置各部分数据
@@ -87,8 +82,7 @@
 						_self.indexDetail = dataApi.data.classInfo;
 						// 计算classHeight及总Height
 						this.setHeight();
-					},
-					complete: () => {}
+					}
 				});
 			},
 			initNav() {

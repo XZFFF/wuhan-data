@@ -64,6 +64,7 @@
 			};
 		},
 		onShow: function() {
+			console.log(this.apiUrl);
 			this.initHomePage();
 		},
 		onPullDownRefresh: function() {

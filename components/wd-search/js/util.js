@@ -35,6 +35,7 @@ const util = {
 					item.tagType = "warning";
 					break;
 				default:
+					item.tagType = "default";
 					break;
 			}
 		}

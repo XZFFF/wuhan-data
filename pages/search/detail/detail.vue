@@ -50,9 +50,11 @@
 		},
 		onLoad: function(e) {
 			_self = this;
+			console.log(e.toString());
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
+				this.source = e.source;
 			}
 			this.initNav();
 			// 初始化指标数据
@@ -75,59 +77,60 @@
 		methods: {
 			initSearchDetail() {
 				this.checkNetwork();
+				let dataApi = {};
+				console.log(this.indexName + this.source);
 				uni.request({
-					url: 'http://wuhandata.applinzi.com/searchDetail.php',
-					method: 'GET',
+					url: 'http://192.168.124.4:8080/wuhan_data1/indiDetail',
+					method: 'POST',
 					data: {
-						"indexId": this.indexId,
+						"indexName": this.indexName,
 						"source": this.source
 					},
 					success: res => {
-						let dataApi = searchDetailApiJson;
-						// 检查json数据
-						isApi(dataApi);
-						// 设置各部分数据
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
-						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-						_self.timeCondition = dataApi.data.timeCondition;
-						_self.indexDetail = dataApi.data.classInfo;
-						_self.relatedData = dataApi.data.relatedData;
-						// 计算classHeight及总Height
-						this.setHeight();
+						dataApi = res.data;
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						let dataApi = searchDetailApiJson;
+						dataApi = searchDetailApiJson;
+					},
+					complete: () => {
 						// 检查json数据
 						isApi(dataApi);
 						// 设置各部分数据
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
-						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-						_self.timeCondition = dataApi.data.timeCondition;
-						_self.indexDetail = dataApi.data.classInfo;
-						_self.relatedData = dataApi.data.relatedData;
-						// 计算classHeight及总Height
-						this.setHeight();
-					},
-					complete: () => {}
+						try {
+							_self.indexId = dataApi.data.baseInfo.indexId;
+							_self.indexName = dataApi.data.baseInfo.indexName;
+							_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+							_self.timeCondition = dataApi.data.timeCondition;
+							_self.indexDetail = dataApi.data.classInfo;
+							_self.relatedData = dataApi.data.relatedData;
+							// 计算classHeight及总Height
+							this.setHeight();
+						} catch (e) {
+							console.log(e.message);
+							uni.showToast({
+								icon: 'none',
+								title: e.message,
+								duration: 500
+							});
+						}
+					}
 				});
 			},
 			onConfirm(val) {
 				this.checkNetwork();
 				uni.request({
-					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
-					method: 'GET',
+					url: 'http://192.168.124.4:8080/wuhan_data1/indiDetail1',
+					method: 'POST',
 					data: {
-						"indexId": this.indexId,
+						"indexName": this.indexName,
 						"source": this.source,
-						"startTime": val.stratTime,
+						"startTime": val.startTime,
 						"endTime": val.endTime,
 						"timeFreq": val.timeFreq
 					},
 					success: res => {
-						let dataApi = searchConfirmApiJson;
+						let dataApi = res.data;
 						// 检查json数据
 						isApi(dataApi);
 						// 更新图例数据
@@ -187,7 +190,7 @@
 			setHeight() {
 				let classHeight = 0;
 				let classInfo = _self.indexDetail;
-				let relatedInfo = _self.relatedData;
+
 				for (let i = 0; i < classInfo.length; i++) {
 					let item = classInfo[i];
 					let h = 0;
@@ -207,7 +210,11 @@
 					classHeight += h;
 				}
 				_self.classTotalHeight = classHeight;
-				let relatedHeight = relatedInfo.length == 0 ? 0 : (relatedInfo.length + 1) * 40;
+				let relatedHeight = 0;
+				if (_self.relatedData) {
+					let relatedInfo = _self.relatedData;
+					relatedHeight = relatedInfo.length == 0 ? 0 : (relatedInfo.length + 1) * 40;
+				}
 				_self.totalHeight = 200 + classHeight + relatedHeight;
 			}
 		},
