@@ -184,6 +184,7 @@
 			goDetailPage(e) {
 				let path = e.url ? e.url : e;
 				let url = ~path.indexOf('platform') ? path : '../' + path + '/' + path;
+				uni.removeStorageSync('user_id');
 				uni.navigateTo({
 					url: url
 				});

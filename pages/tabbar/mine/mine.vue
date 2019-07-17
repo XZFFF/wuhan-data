@@ -2,8 +2,8 @@
 	<view>
 		<view class="tops" style=" background-color: #3A82CC;height: 180upx; ">
 			<!-- 个人信息栏 -->
-			<view class="personal" style="color: #FFFFFF;"  v-for="(value,index) in personal_information" :key="index" @click="goDetailPage(value)">
-				<view class="uni-list-cell-navigate uni-media-list" style="width: 100%;" v-for="(user,key) in userInformation" :key="key"> 
+			<view class="personal" style="color: #FFFFFF;"  v-for="(value,index) in personal_information" :key="index" @click="goDetailPage(value)" v-if="userID">
+				<view class="uni-list-cell-navigate uni-media-list" style="width: 100%;" v-for="(user,key) in userInformation" :key="key" > 
 					<image class="head" :src="head"></image>
 					<!--image class="head" v-for="(index,key) in headImg" :key="key"></image-->
 					<view class="information">
@@ -21,6 +21,12 @@
 					</view>
 				<view class="right-arrow"></view>	
 				</view>
+			</view>
+			<view class="loginPrompt" v-if="!userID" @click="goLogin(e)">
+				<image class="head" src="../../../static/icon/mine/head.png"></image>
+				<font style="margin-left: 20upx; line-height: 110upx;text-align: center;">
+					点击进行登录
+				</font>
 			</view>
 		</view>
 		<!-- 个人浏览 -->
@@ -93,6 +99,7 @@
 		},
 		data() {
 			return {
+				userID: '',
 				head: '',
 				downProgress: '',
 				tabIndex: 2,
@@ -196,6 +203,8 @@
 		},
 		//onLoad:function(){
 		onShow: function(){
+			this.userID = uni.getStorageSync('user_id');
+			//this.userID = 1;
 			try {
 					const userInfo = uni.getStorageSync('user_Info');
 					//const userHead = uni.getStorageSync('user_Head');
@@ -234,13 +243,13 @@
 				});
 			},
 			initUserInformation() {
-				const userID = uni.getStorageSync('user_id');
+				const ID = uni.getStorageSync('user_id');
 				uni.request({
 					url: 'http://192.168.1.104/personInfo.php',
 					//url: 'http://192.168.124.11:8080/wuhan_data1/homePage',
 					method: 'GET',
 					data: {
-						"id": userID,
+						"id": ID,
 					},
 					success: (res) => {
 						//this.userInformation = res.data.data;
@@ -273,13 +282,28 @@
 					},
 				});
 			},
-			goDetailPage(e) {
-				let path = e.url ? e.url : e;
-				let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
+			goLogin(){
+				let url = "../../mine/login/login"
 				uni.navigateTo({
-					url: url
+					url: url,
 				});
-				return false;
+			},
+			goDetailPage(e) {
+				if(null == null)
+				{
+					uni.showToast({
+						icon: 'none',
+						title: "您还没有登录，请先登录"
+					});
+				}
+				else{
+					let path = e.url ? e.url : e;
+					let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
+					uni.navigateTo({
+						url: url
+					});
+					return false;
+				}
 			},
 			goDetailPage1(e) {
 				if(e.id == 0){
@@ -580,6 +604,12 @@
 		background-color: rgba(255,255,255,1);
 		border: rgba(255,255,255,1) solid;
 	}
-		
+	
+	.loginPrompt{
+		font-size: 35upx;
+		margin-left: 30upx;
+		padding-top: 30upx;
+		color: #FFFFFF;
+	}
 	
 </style>
