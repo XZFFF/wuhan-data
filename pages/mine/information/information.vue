@@ -1,166 +1,130 @@
 <template>
 	<view>
-	<view v-for="(user,index) in userInformation" :key="index">
-		<!-- 账户信息 -->
-		<view style="padding: 35upx 30upx 0;">
-			<text style="color: #868686; font-size: 32upx; ">账户信息</text>
-		</view>
-		<view class="uni-list">
-			<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in list0" :key="key" @click="chooseImg">
-				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="height: 130upx;display: flex;">
-					<view class="uni-media-list-body" style="justify-content: center">
-						<view class="uni-media-list-text" style="font-size: 30upx">{{value.title}}</view>
+		<view>
+			<!-- 账户信息 -->
+			<view style="padding: 35upx 30upx 0;">
+				<text style="color: #868686; font-size: 32upx; ">账户信息</text>
+			</view>
+			<view class="uni-list">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" @click="chooseImg()">
+					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="height: 130upx;display: flex;">
+						<view class="uni-media-list-body" style="justify-content: center">
+							<view class="uni-media-list-text" style="font-size: 30upx">我的头像</view>
+						</view>
+						<view class="media-list-logo">
+							<image style="height: 100upx; width: 100upx;margin-top: 10upx;" :src="user.head"></image>
+						</view>
 					</view>
-					<view class="media-list-logo">
-						<image style="height: 100upx; width: 100upx;margin-top: 10upx;" :src="head"></image>
+				</view>
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover">
+					<view class="uni-list-cell-navigate uni-media-list">
+						<view class="uni-media-list-text" style="font-size: 30upx">手机号码</view>
+						<view class="uni-media-list-text" style="float: right;color: #868686;font-size: 25upx;">{{user.tel}}</view>
+					</view>
+				</view>
+				<information-list title="职务" :content="user.roleName"></information-list>
+			</view>
+			<view class="uni-list" style="margin-top: 20upx;">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" @click="goDetailPage('change_tel')">
+					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
+						<view class="uni-media-list-text" style="font-size: 30upx">更换手机号</view>
 					</view>
 				</view>
 			</view>
-			<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in list1" :key="key" @click="goDetailPage(value)">
-				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
-					<view class="uni-media-list-text" style="font-size: 30upx">{{value.title}}</view>
-					<view class="uni-media-list-text" style="float: right;color: #868686;font-size: 25upx;">{{user.tel}}</view>
-				</view>
+			<view style="padding: 35upx 30upx 0;">
+				<text style="color: #868686; font-size: 32upx; ">个人信息</text>
+				<image src="../../../static/icon/mine/tune.png" style="width:40upx;height: 40upx;float: right;" @click="goDetailPage('edit_information')"></image>
 			</view>
-			<information-list title="职务" :content="user.rank"></information-list>
-		</view>
-		<view class="uni-list" style="margin-top: 20upx;">
-			<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in list2" :key="key" @click="goDetailPage(value)">
-				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
-					<view class="uni-media-list-text" style="font-size: 30upx">{{value.title}}</view>
-				</view>
+			<view class="uni-list">
+				<information-list title="真实姓名" :content="user.realName"></information-list>
+				<information-list title="性别" :content="user.gender"></information-list>
+				<information-list title="出生日期" :content="user.birthday"></information-list>
+				<information-list title="所在地区" :content="user.city"></information-list>
+				<information-list title="个人描述" :content="user.description"></information-list>
 			</view>
+			<input type="button" class="exitButton" style="line-height:80upx" value="退出登录" @click="goDetailPage('exit')" />
 		</view>
-		<view style="padding: 35upx 30upx 0;">
-			<text style="color: #868686; font-size: 32upx; ">个人信息</text>
-			<image v-for="(value,key) in edit" :key="key" src="../../../static/icon/mine/tune.png" style="width:40upx;height: 40upx;float: right;" @click="goDetailPage(value)"></image>
-		</view>
-		<view class="uni-list">
-			<information-list title="真实姓名" :content="user.realName"></information-list>
-			<information-list title="性别" :content="user.sex"></information-list>
-			<information-list title="出生日期" :content="user.birth"></information-list>
-			<information-list title="所在地区" :content="user.city"></information-list>
-			<information-list title="个人描述" :content="user.description"></information-list>
-		</view>
-		<input type="button" class="exitButton" style="line-height:80upx" value="退出登录" v-for="(value,key) in exit" :key="key" @click="goDetailPage(value)" />
-	</view>
 	</view>
 </template>
 
 <script>
-	import informationList from '../../../components/information-list/information-list.vue';
-	export default{
+	import informationList from '@/components/information-list/information-list.vue';
+	import checkApi from '@/common/checkApi.js';
+	import getUserApiJson from "@/common/api/getUser.json";
+
+	export default {
 		components: {
 			informationList,
 		},
-		data(){
+		data() {
 			return {
-				head:'https://img-blog.csdn.net/20180426190001195?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FubmluZzg2NTI1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70',
-				title: 'list',
+				token: "WMJD12UDHIkjksda",
+				user: {
+					"userId": "2012",
+					"tel": "15999671690",
+					"realName": "谢泽丰",
+					"gender": "男",
+					"head": "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=400062461,2874561526&fm=27&gp=0.jpg",
+					"birthday": "1997-03-18",
+					"city": "武汉市",
+					"description": "越努力，越幸运",
+					"department": "工业部",
+					"roleName": "主任"
+				}, // 用户信息
 				showImg: true,
-				userInformation: [],
-				list0: [
-					{
-						title: "我的头像",
-					},
-				],
-				head: '',
-				list1: [
-					{
-						title: "手机认证",
-						url: "change_tel"
-					}
-				],
-				list2: [
-					{
-						title: "修改密码",
-						url: "change_password"
-					}
-				],
-				edit: [
-					{
-						url: "edit_information"
-					}
-				],
-				exit: [
-					{
-						url: "login"
-					}
-				]
 			}
 		},
-		onShow:function(){
-			try {
-					const userInfo = uni.getStorageSync('user_Info');
-					//const userHead = uni.getStorageSync('user_Head');
-					if (userInfo) {
-						this.userInformation = userInfo;
-						//this.head = userHead;
-					} else {
-						this.initUserInformation();
-					}
-				} catch (e) {
-					console.log('无法从本地缓存获取相应数据');
-				}
-				this.checkNetwork();
-				this.initUserInformation();
+		onShow: function() {
+			if (checkApi.checkToken()) {
+				this.token = uni.getStorageSync('token');
+			} else {
+				uni.showToast({
+					icon: 'none',
+					title: "您还没有登录，请先登录",
+					duration: 1000,
+				});
+				// setTimeout(function() {
+				// 	uni.navigateTo({
+				// 		url: "../login/login"
+				// 	})
+				// }, 1000);
+			}
+			this.initUser();
 		},
 		methods: {
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						console.log(res.networkType);
-						if (res.networkType == 'none') {
-							console.log('network:' + res.networkType);
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
-				});
-			},
-			initUserInformation() {
-				const userID = uni.getStorageSync('user_id');
+			initUser() {
+				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.1.104/personInfo.php',
-					//url: 'http://192.168.124.11:8080/wuhan_data1/personalInformation',
+					url: 'http://www.baidu.com',
 					data: {
-						"id": userID,
+						"token": this.token,
 					},
 					success: res => {
-						//this.userInformation = res.data.data;
-						this.userInformation = res.data;
-						//this.head = "http://192.168.124.11:8080/wuhan_data1/"+res.data.data[0].head;
-						let list=JSON.stringify(res.data);
-						console.log("返回数据状态:" + list);
+						let dataApi = getUserApiJson;
+						checkApi.isApi(dataApi);
+						this.user = dataApi.data;
+						let userStr = JSON.stringify(this.user);
+						console.log(typeof userStr);
 						uni.setStorageSync({
-							key: 'user_Info',
-							data: this.userInformation,
+							key: 'user',
+							data: userStr,
 							success: function() {
 								console.log('成功请求个人信息数据并存入本地缓存');
 							}
 						});
-						/*uni.setStorageSync({
-							key: 'user_Head',
-							data: this.head,
-							success: function() {
-								console.log('成功请求个人头像数据并存入本地缓存');
-							}
-						});*/
+						let userJsonStr = uni.getStorageSync('user');
+						console.log(userJsonStr);
 					},
 					fail: (e) => {},
 					complete: () => {}
 				});
 			},
 			chooseImg() { //选择图片
-				const userID = uni.getStorageSync('user_id');
-			    uni.chooseImage({
-			        sourceType: ["camera", "album"],
-			        sizeType: "compressed",
-			        count: 1,
-			        success: (chooseImageRes) => {
+				uni.chooseImage({
+					sourceType: ["camera", "album"],
+					sizeType: "compressed",
+					count: 1,
+					success: (chooseImageRes) => {
 						const tempFilePaths = chooseImageRes.tempFilePaths;
 						/*uni.uploadFile({
 							//url: 'http://192.168.124.11:8080/wuhan_data1/UpImagesHead', //仅为示例，非真实的接口地址
@@ -168,7 +132,7 @@
 							filePath: tempFilePaths[0],
 							header:{"content-type": "multipart/form-data"},
 							formData: {
-								"id": userID,
+								"token": this.token,
 								},
 							name: 'file',
 							success: (uploadFileRes) => {
@@ -176,32 +140,65 @@
 								console.log(uploadFileRes.data);
 							}
 						});*/
-						this.head = '',
-			            this.head = this.head.concat(chooseImageRes.tempFilePaths);
-			        },
-			    })
+						this.user.head = '';
+						this.user.head = this.user.head.concat(chooseImageRes.tempFilePaths);
+					},
+				})
 			},
-			goDetailPage(e) {
-				let path = e.url ? e.url : e;
-				let url = ~path.indexOf('platform') ? path : '../' + path + '/' + path;
-				uni.removeStorageSync('user_id');
-				uni.navigateTo({
-					url: url
-				});
-				return false;
+			goDetailPage(func) {
+				let url = "";
+				switch (func) {
+					case 'change_tel':
+						url = "../change_tel/change_tel";
+						break;
+					case 'edit_information':
+						url = "../edit_information/edit_information";
+						break;
+					case 'exit':
+						uni.showModal({
+							title: '提示',
+							content: '是否退出登录？',
+							success: res => {
+								if (res.confirm) {
+									uni.removeStorage({
+										key: "token"
+									});
+									uni.removeStorage({
+										key: "user"
+									});
+									url = "../login/login";
+									uni.navigateTo({
+										url: url
+									});
+									return;
+								}
+							}
+						});
+						break;
+					default:
+						url = "";
+						break;
+				}
+				if (url != "") {
+					console.log(url);
+					uni.navigateTo({
+						url: url
+					});
+				}
+				return;
 			}
 		}
 	}
 </script>
 
 <style>
-	.exitButton{
+	.exitButton {
 		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
 		color: #FFFFFF;
-		background-color: rgb(229,28,35);
-		border-radius: 5px; 
+		background-color: rgb(229, 28, 35);
+		border-radius: 5px;
 		margin-top: 60upx;
 	}
 </style>

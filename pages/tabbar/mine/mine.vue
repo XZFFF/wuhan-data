@@ -92,7 +92,6 @@
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
-	import wdShare from '@/components/wd-share/wd-share.vue';
 	import {
 		isApi,
 		checkNetwork,
@@ -102,8 +101,7 @@
 	import getUserApiJson from "@/common/api/getUser.json";
 	export default {
 		components: {
-			uniPopup,
-			wdShare
+			uniPopup
 		},
 		data() {
 			return {
@@ -162,9 +160,10 @@
 						let dataApi = getUserApiJson;
 						isApi(dataApi);
 						this.user = dataApi.data;
+						let userStr = JSON.stringify(this.user);
 						uni.setStorage({
 							key: 'user',
-							data: this.user,
+							data: userStr,
 							success: function() {
 								console.log('成功请求个人信息数据并存入本地缓存');
 							}
