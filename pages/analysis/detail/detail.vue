@@ -78,10 +78,10 @@
 					data: {
 						indexId: "2",
 					},
-					success: res => {
+					success: (res) => {
 						console.log("成功获取数据");
 						dataApi = res.data;
-						dataApi = analysisDetailApiJson;
+						//dataApi = analysisDetailApiJson;
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
@@ -110,20 +110,35 @@
 			onConfirm(val) {
 				checkApi.checkNetwork();
 				let dataApi;
+				let requestData = {
+					"indexId": "2",
+					"startTime": val.startTime,
+					"endTime": val.endTime,
+					"timeFreq": val.timeFreq
+				};
+				console.log(JSON.stringify(requestData));
 				uni.request({
-					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
+					url: 'http://192.168.124.12:8080/wuhan_data1/ff',
 					method: 'POST',
 					data: {
-						indexId: this.indexId
+						"indexId": "2",
+						"startTime": val.startTime,
+						"endTime": val.endTime,
+						"timeFreq": val.timeFreq
 					},
-					success: res => {
-						dataApi = res.data;
-						// 检查json数据
-						checkApi.isApi(dataApi);
-						// 设置各部分数据
-						_self.indexDetail = dataApi.data.classInfo;
-						// 计算classHeight及总Height
-						this.setHeight();
+					success: (res) => {
+						try {
+							dataApi = res.data;
+							console.log(JSON.stringify(dataApi));
+							// 检查json数据
+							checkApi.isApi(dataApi);
+							// 设置各部分数据
+							_self.indexDetail = dataApi.data.classInfo;
+							// 计算classHeight及总Height
+							this.setHeight();
+						} catch (e) {
+							console.log(e.message);
+						}
 					},
 					fail: (e) => {
 						console.log(e.errMsg);

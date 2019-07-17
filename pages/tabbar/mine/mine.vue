@@ -131,6 +131,20 @@
 		onShow: function() {
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
+			} else {
+				this.token = "";
+				this.user = {
+					"userId": "",
+					"tel": "",
+					"realName": "",
+					"gender": "",
+					"head": "",
+					"birthday": "",
+					"city": "",
+					"description": "",
+					"department": "",
+					"roleName": ""
+				};
 			}
 			this.initUser();
 		},

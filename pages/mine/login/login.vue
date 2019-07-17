@@ -67,6 +67,15 @@
 				this.countryTel = changeTel.tel;
 			}
 		},
+		// #ifdef APP-PLUS
+		onBackPress() {
+			console.log("执行关闭");
+			uni.switchTab({
+				url: "../../tabbar/mine/mine"
+			});
+			return true;
+		},
+		// #endif
 		methods: {
 			goTelIndex(e) {
 				let url = '../../mine/login/telIndex/telIndex';

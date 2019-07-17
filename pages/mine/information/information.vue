@@ -84,9 +84,9 @@
 					duration: 1000,
 				});
 				setTimeout(function() {
-					uni.navigateTo({
-						url: "../login/login"
-					})
+					uni.switchTab({
+						url: "../../tabbar/mine/mine"
+					});
 				}, 1000);
 			}
 			this.initUser();
@@ -157,10 +157,11 @@
 									uni.removeStorage({
 										key: "user"
 									});
-									url = "../login/login";
-									uni.navigateTo({
-										url: url
-									});
+									setTimeout(function() {
+										uni.switchTab({
+											url: "../../tabbar/mine/mine"
+										});
+									}, 1000);
 									return;
 								}
 							}

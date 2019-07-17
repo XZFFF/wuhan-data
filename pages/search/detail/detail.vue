@@ -107,7 +107,7 @@
 			onConfirm(val) {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.4:8080/wuhan_data1/indiDetail1',
+					url: 'http://192.168.124.4:8080/wuhan_data1/searchConfirm',
 					method: 'POST',
 					data: {
 						"indexId": this.indexId,
