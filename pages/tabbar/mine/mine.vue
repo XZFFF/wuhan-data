@@ -2,27 +2,26 @@
 	<view>
 		<view class="tops" style=" background-color: #3A82CC;height: 180upx; ">
 			<!-- 个人信息栏 -->
-			<view class="personal" style="color: #FFFFFF;"  v-for="(value,index) in personal_information" :key="index" @click="goDetailPage(value)" v-if="userID">
-				<view class="uni-list-cell-navigate uni-media-list" style="width: 100%;" v-for="(user,key) in userInformation" :key="key" > 
-					<image class="head" :src="head"></image>
-					<!--image class="head" v-for="(index,key) in headImg" :key="key"></image-->
+			<view class="personal" style="color: #FFFFFF;" @click="goUserDetail()" v-if="token">
+				<view class="uni-list-cell-navigate uni-media-list" style="width: 100%;">
+					<image class="head" :src="user.head"></image>
 					<view class="information">
 						<view class="name-rank" style="display: inline-flex;">
 							<view class="username" style="font-size: 35upx;float: left;margin-top: 15upx;">
 								{{user.realName}}
 							</view>
 							<view class="rank">
-								{{user.rank}}
+								{{user.roleName}}
 							</view>
 						</view>
 						<view class="tel" style="font-size: 30upx;">
 							{{user.tel}}
 						</view>
 					</view>
-				<view class="right-arrow"></view>	
+					<view class="right-arrow"></view>
 				</view>
 			</view>
-			<view class="loginPrompt" v-if="!userID" @click="goLogin(e)">
+			<view class="loginPrompt" v-if="!token" @click="goLogin(e)">
 				<image class="head" src="../../../static/icon/mine/head.png"></image>
 				<font style="margin-left: 20upx; line-height: 110upx;text-align: center;">
 					点击进行登录
@@ -33,7 +32,7 @@
 		<view class="personal-browse">
 			<view class="icon-single-layout" v-for="(value,index) in browse_icon" :key="index" @click="goDetailPage(value)">
 				<view style="display: table">
-					<span :class="['red-point',tabIndex==index ? 'active' : '']"></span>
+					<span :class="['red-point',index == 2 ? 'active' : '']"></span>
 					<image style="width: 50upx; height: 50upx; display:flex" :src="value.img"></image>
 					<view class="text" style="font-size:30upx; color:#1E90FF">{{value.title}}</view>
 				</view>
@@ -75,7 +74,7 @@
 				<view class="bottom-content">
 					<view class="bottom-content-box" v-for="(item, index) in bottomData" :key="index">
 						<view class="bottom-content-image" :class="item.name">
-							<image class="icon" style="height: 90upx; width: 90upx;" :src="item.img" @click="share(item)" ></image>
+							<image class="icon" style="height: 90upx; width: 90upx;" :src="item.img" @click="share(item)"></image>
 						</view>
 						<view class="bottom-content-text">{{item.text}}</view>
 					</view>
@@ -85,140 +84,61 @@
 		</view>
 		<!-- 底部 -->
 		<view class="bottom-text">
-			武汉市发展与改革委员会<br/>
+			武汉市发展与改革委员会<br />
 			All rights reserved ©2019
 		</view>
 	</view>
 </template>
 
 <script>
-	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import uniPopup from '@/components/uni-popup/uni-popup.vue';
+	import wdShare from '@/components/wd-share/wd-share.vue';
+	import {
+		isApi,
+		checkNetwork,
+		checkToken
+	} from '@/common/checkApi.js';
+	import mineConfig from "@/common/config/mine.json";
+	import getUserApiJson from "@/common/api/getUser.json";
 	export default {
 		components: {
 			uniPopup,
+			wdShare
 		},
 		data() {
 			return {
-				userID: '',
-				head: '',
-				downProgress: '',
-				tabIndex: 2,
-				title: 'list',
+				token: "WMJD12UDHIkjksda",
+				user: {
+					"userId": "2012",
+					"tel": "15999671690",
+					"realName": "谢泽丰",
+					"gender": "男",
+					"head": "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=400062461,2874561526&fm=27&gp=0.jpg",
+					"birthday": "1997-03-18",
+					"city": "武汉市",
+					"description": "越努力，越幸运",
+					"department": "工业部",
+					"roleName": "主任"
+				}, // 用户信息
 				showImg: true,
-				type: '',
-				updateText: '123',
-				downloadUrl: '',
-				personal_information: [{
-					url: "information"
-				}], 
-				userInformation:[{
-					//realName: "1",
-					//rank: "2",
-					//tel: "3",
-					//head: "https://img-blog.csdn.net/20180426190001195?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FubmluZzg2NTI1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70",
-				}
-				],
-				bottomData: [{
-						text: '微信',
-						img: '../../../static/icon/mine/wechatfriend.png',
-						name: 'wx'
-					},
-					{
-						text: '朋友圈',
-						img: '../../../static/icon/mine/wechatmoments.png',
-						name: 'wx'
-					},
-					{
-						text: 'QQ',
-						img: '../../../static/icon/mine/qq.png',
-						name: 'qq'
-					},
-					{
-						text: '微博',
-						img: '../../../static/icon/mine/weibo.png',
-						name: 'weibo'
-					},
-					{
-						text: '复制',
-						img: '../../../static/icon/mine/copyurl.png',
-						name: 'copy'
-					},
-					{
-						text: '更多',
-						img: '../../../static/icon/mine/more.png',
-						name: 'more'
-					}
-				],
-				browse_icon: [{
-					title: "收藏",
-					url: "collection",
-					img: "../../../static/icon/mine/favorite.png"
-				}, {
-					title: "足迹",
-					url: "footprint",
-					img: "../../../static/icon/mine/clock.png"
-				}, {
-					title: "消息",
-					url: "news",
-					img: "../../../static/icon/mine/mail.png"
-				},],
-					
-				menu_list: [
-					{
-					id: 0,
-					title: "检查更新",
-					url: "update",
-					img: "../../../static/icon/mine/update.png"
-				},{
-					id: 1,
-					title: "清除缓存",
-					url: "clear_cache",
-					img: "../../../static/icon/mine/clear.png"
-				},{
-					id: 2,
-					title: "分享应用",
-					url: "share_app",
-					img: "../../../static/icon/mine/share.png"
-				},{
-					id: 3,
-					title: "关于我们",
-					url: "about_us",
-					img: "../../../static/icon/mine/about.png"
-				},{
-					id: 4,
-					title: "问题反馈",
-					url: "help_feedback",
-					img: "../../../static/icon/mine/feedback.png"
+				type: '', // 弹窗类型
+				versionUpdate: {
+					"version": "",
+					"description": "版本更新说明",
+					"download": "",
+					"downProgress": ""
 				},
-				],
-				exit: [{
-					url: "login",
-				}]
+				bottomData: mineConfig.bottomData,
+				browse_icon: mineConfig.browse_icon,
+				menu_list: mineConfig.menu_list,
 			};
 		},
-		onLoad() {
-			setTimeout(() => {
-				this.showImg = true;
-			}, 400);
-		},
-		//onLoad:function(){
-		onShow: function(){
-			this.userID = uni.getStorageSync('user_id');
-			//this.userID = 1;
-			try {
-					const userInfo = uni.getStorageSync('user_Info');
-					//const userHead = uni.getStorageSync('user_Head');
-					if (userInfo) {
-						this.userInformation = userInfo;
-						this.head = userHead;
-					} else {
-						this.initUserInformation();
-					}
-				} catch (e) {
-					console.log('无法从本地缓存获取相应数据');
-				}
-			this.checkNetwork();
-			this.initUserInformation();
+		onLoad() {},
+		onShow: function() {
+			if (checkToken()) {
+				this.token = uni.getStorageSync('token');
+			}
+			this.initUser();
 		},
 		onBackPress() {
 			if (this.type !== '') {
@@ -227,76 +147,60 @@
 			}
 		},
 		methods: {
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						console.log(res.networkType);
-						if (res.networkType == 'none') {
-							console.log('network:' + res.networkType);
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
-				});
-			},
-			initUserInformation() {
-				const ID = uni.getStorageSync('user_id');
+			initUser() {
+				if (!this.token) {
+					return;
+				}
+				checkNetwork();
 				uni.request({
-					url: 'http://192.168.1.104/personInfo.php',
-					//url: 'http://192.168.124.11:8080/wuhan_data1/homePage',
-					method: 'GET',
+					url: 'http://www.baidu.com',
+					method: 'POST',
 					data: {
-						"id": ID,
+						"token": this.token,
 					},
 					success: (res) => {
-						//this.userInformation = res.data.data;
-						this.userInformation = res.data;
-						//this.head = "http://192.168.124.11:8080/wuhan_data1/"+res.data.data[0].head;
-						//console.log("头像："+this.head);
-						//console.log("返回数据:" + res.data.data);
-						let list=JSON.stringify(res.data);
-						console.log("返回数据状态:" + list);
+						let dataApi = getUserApiJson;
+						isApi(dataApi);
+						this.user = dataApi.data;
 						uni.setStorage({
-							key: 'user_Info',
-							data: this.userInformation,
+							key: 'user',
+							data: this.user,
 							success: function() {
 								console.log('成功请求个人信息数据并存入本地缓存');
 							}
 						});
-						/*uni.setStorage({
-							key: 'user_Head',
-							data: this.head,
-							success: function() {
-								console.log('成功请求个人头像数据并存入本地缓存');
-							}
-						});*/
 					},
-					fail: () => {
-						uni.showToast({
-							icon: 'none',
-							title: '网络异常,请稍后重试'
-						});
+					fail: (e) => {
+						console.log(e.errMsg);
 					},
 				});
 			},
-			goLogin(){
-				let url = "../../mine/login/login"
+			goLogin() {
 				uni.navigateTo({
-					url: url,
+					url: "../../mine/login/login",
 				});
 			},
-			goDetailPage(e) {
-				if(null == null)
-				{
+			goUserDetail() {
+				if (!this.token) {
 					uni.showToast({
 						icon: 'none',
-						title: "您还没有登录，请先登录"
+						title: "您还没有登录，请先登录",
+						duration: 500,
+					});
+				} else {
+					uni.navigateTo({
+						url: "../../mine/information/information"
 					});
 				}
-				else{
+			},
+			goDetailPage(e) {
+				if (!this.token) {
+					uni.showToast({
+						icon: 'none',
+						title: "您还没有登录，请先登录",
+						duration: 500,
+					});
+				} else {
 					let path = e.url ? e.url : e;
 					let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
 					uni.navigateTo({
@@ -306,24 +210,22 @@
 				}
 			},
 			goDetailPage1(e) {
-				if(e.id == 0){
+				if (e.id == 0) {
 					//#ifdef APP-PLUS
 					var req = { //升级检测数据  
-						"appid": "__UNI__123456",  
+						"appid": "__UNI__123456",
 						"version": "1.0.0"
-					}; 
-					uni.request({  
-						url: "http://100.64.206.197/checkUpdate.php",  
+					};
+					uni.request({
+						url: "http://100.64.206.197/checkUpdate.php",
 						data: req,
 						success: (res) => {
-							console.log("返回值："+res.data.code);
+							console.log("返回值：" + res.data.code);
 							if (res.data.code === 1) {
 								this.type = 'middle-update';
 								this.updateText = res.data.text;
 								this.downloadUrl = res.data.url;
-							}
-							else if(res.data.code === 0)
-							{
+							} else if (res.data.code === 0) {
 								uni.showModal({
 									title: "已为最新版本，无需更新"
 								})
@@ -337,24 +239,22 @@
 						}
 					})
 					//#endif
-				}
-				else if(e.id == 1){
+				} else if (e.id == 1) {
 					try {
-						uni.removeStorageSync('analysis_list');
-						uni.removeStorageSync('collection_economy');
-						uni.removeStorageSync('collection_index');
-						uni.removeStorageSync('user_Info');
-						uni.removeStorageSync('footprint_economy');
-						uni.removeStorageSync('footprint_index');
-						uni.removeStorageSync('user_Head');
-						uni.removeStorageSync('changeTel');
-						uni.removeStorageSync('my_news');
-						uni.removeStorageSync('news_index');
 						uni.removeStorageSync('home_slideshow');
 						uni.removeStorageSync('home_analysis');
 						uni.removeStorageSync('home_topic');
-						uni.removeStorageSync('search_trend');
+						uni.removeStorageSync('analysis_list');
 						uni.removeStorageSync('topic_list');
+						uni.removeStorageSync('search_trend');
+						uni.removeStorageSync('user');
+						uni.removeStorageSync('collection_economy');
+						uni.removeStorageSync('collection_index');
+						uni.removeStorageSync('footprint_economy');
+						uni.removeStorageSync('footprint_index');
+						uni.removeStorageSync('changeTel');
+						uni.removeStorageSync('my_news');
+						uni.removeStorageSync('news_index');
 						uni.showModal({
 							title: "缓存清除成功",
 							icon: none,
@@ -365,12 +265,9 @@
 							icon: none,
 						})
 					}
-				}
-				else if(e.id == 2){
+				} else if (e.id == 2) {
 					this.type = 'bottom-share';
-				}
-				else
-				{
+				} else {
 					let path = e.url ? e.url : e;
 					let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
 					uni.navigateTo({
@@ -391,8 +288,8 @@
 						if (res.statusCode === 200) {
 							console.log('下载成功');
 							this.type = '';
-							var tempFilePaths = res.tempFilePath;  
-                            this.install(tempFilePaths);
+							var tempFilePaths = res.tempFilePath;
+							this.install(tempFilePaths);
 							return;
 						}
 					}
@@ -405,22 +302,22 @@
 				});
 				//#endif
 			},
-			install: function (path) {//安装  
-                console.log(path)  
-                plus.runtime.install(path, {  
-                    force: true  
-                }, function () {  
-                    //uni.hideNavigationBarLoading();  
-                    console.log("加载完成！");  
-                    uni.navigateBack({  
-                        delta: 1,  
-                    });  
-                }, function (e) {  
+			install: function(path) { //安装  
+				console.log(path)
+				plus.runtime.install(path, {
+					force: true
+				}, function() {
+					//uni.hideNavigationBarLoading();  
+					console.log("加载完成！");
+					uni.navigateBack({
+						delta: 1,
+					});
+				}, function(e) {
 
-                    console.log(JSON.stringify(e));  
+					console.log(JSON.stringify(e));
 
-                });  
-            } ,
+				});
+			},
 			togglePopup(type) {
 				this.type = type;
 			},
@@ -428,83 +325,75 @@
 				let pro = "";
 				let sce = "";
 				let type = 0;
-				if(e.text === "微信")
-				{
+				if (e.text === "微信") {
 					pro = "weixin";
 					sce = "WXSceneSession";
-				}
-				else if(e.text === "朋友圈")
-				{
+				} else if (e.text === "朋友圈") {
 					pro = "weixin";
 					sce = "WXSenceTimeline";
-				}
-				else if(e.text === "QQ")
-				{
+				} else if (e.text === "QQ") {
 					pro = "qq";
 					type = 1;
-				}
-				else if(e.text === "微博")
-				{
+				} else if (e.text === "微博") {
 					pro = "sinaweibo";
 				}
-					uni.share({
-						//provider: "weixin",
-						//scene: "WXSceneSession",
-						provider: pro,
-						scene: sce,
-						type: type,
-						href: "https://www.baidu.com",
-						title: "数说武汉",
-						summary: "数说武汉app测试",
-						imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
-						success: function (res) {
-							console.log("success:" + JSON.stringify(res));
-						},
-						fail: function (err) {
-							console.log("fail:" + JSON.stringify(err));
-						}
-					});
+				uni.share({
+					//provider: "weixin",
+					//scene: "WXSceneSession",
+					provider: pro,
+					scene: sce,
+					type: type,
+					href: "https://www.baidu.com",
+					title: "数说武汉",
+					summary: "数说武汉app测试",
+					imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
+					success: function(res) {
+						console.log("success:" + JSON.stringify(res));
+					},
+					fail: function(err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				});
 			}
 		}
 	}
 </script>
 
-<style>	
-	
-	.personal{
+<style>
+	.personal {
 		height: 200upx;
 	}
-	
-	.head{
+
+	.head {
 		width: 110upx;
 		height: 110upx;
 		float: left;
-		border-radius:100%; 
-		overflow:hidden;
+		border-radius: 100%;
+		overflow: hidden;
 	}
-	
-	.information{
-		font-size:35upx;
+
+	.information {
+		font-size: 35upx;
 		width: 500upx;
 		display: inline-block;
 	}
-	
-	.rank{
-		width: 80upx; 
+
+	.rank {
+		width: 80upx;
 		height: 40upx;
 		padding: 2upx 10upx;
 		margin-left: 15upx;
 		margin-top: 20upx;
-		background-color: rgba(255, 255, 255, 0.11); 
-		border-color: rgba(255, 255, 255, 0.2); 
-		border-radius: 10px; 
-		border-width: 1px; 
+		background-color: rgba(255, 255, 255, 0.11);
+		border-color: rgba(255, 255, 255, 0.2);
+		border-radius: 10px;
+		border-width: 1px;
 		float: left;
-		border-style: solid; 
-		text-align: center; 
+		border-style: solid;
+		text-align: center;
 		line-height: 40upx;
 	}
-	
+
 	.personal-browse {
 		display: flex;
 		flex-direction: row;
@@ -513,6 +402,7 @@
 		padding: 5upx;
 		background-color: #FFFFFF;
 	}
+
 	.right-arrow {
 		float: right;
 		width: 8px;
@@ -523,7 +413,7 @@
 		border-style: solid;
 		transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
 	}
-	
+
 	.icon-single-layout {
 		display: flex;
 		justify-content: center;
@@ -531,24 +421,24 @@
 		padding-top: 20upx;
 		padding-bottom: 20upx;
 	}
-	
-	.menu{
+
+	.menu {
 		margin-top: 50upx;
 	}
-	
-	.uni-list-cell{
+
+	.uni-list-cell {
 		padding-top: 4px;
 		padding-bottom: 4px;
 	}
-	
-	.bottom-text{
+
+	.bottom-text {
 		margin-top: 100upx;
 		font-size: 25upx;
 		text-align: center;
 		color: #CDCDCD;
 	}
-	
-	.active{
+
+	.active {
 		position: absolute;
 		margin-left: 35upx;
 		margin-top: 5upx;
@@ -557,19 +447,19 @@
 		background: red;
 		border-radius: 50%;
 	}
-	
+
 	.bottom-title {
 		line-height: 60upx;
 		font-size: 24upx;
 		padding: 15upx 0;
 	}
-	
+
 	.bottom-content {
 		display: flex;
 		flex-wrap: wrap;
 		padding: 0 35upx;
 	}
-	
+
 	.bottom-content-box {
 		display: flex;
 		flex-direction: column;
@@ -578,7 +468,7 @@
 		width: 25%;
 		box-sizing: border-box;
 	}
-	
+
 	.bottom-content-image {
 		display: flex;
 		justify-content: center;
@@ -586,30 +476,29 @@
 		overflow: hidden;
 		border-radius: 10upx;
 	}
-	
+
 	.bottom-content-text {
 		font-size: 26upx;
 		color: #333;
 		margin-top: 10upx;
 	}
-	
+
 	.bottom-btn {
 		height: 90upx;
 		line-height: 90upx;
 	}
-	
+
 	.pop-button {
 		font-size: 30upx;
 		float: left;
-		background-color: rgba(255,255,255,1);
-		border: rgba(255,255,255,1) solid;
+		background-color: rgba(255, 255, 255, 1);
+		border: rgba(255, 255, 255, 1) solid;
 	}
-	
-	.loginPrompt{
+
+	.loginPrompt {
 		font-size: 35upx;
 		margin-left: 30upx;
 		padding-top: 30upx;
 		color: #FFFFFF;
 	}
-	
 </style>
