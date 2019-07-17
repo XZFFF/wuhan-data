@@ -18,9 +18,7 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
 	import wdCardText from '@/components/wd-card-text/wd-card-text.vue';
-	import {
-		isApi
-	} from '@/common/checkApi.js';
+	import checkApi from '@/common/checkApi.js';
 	import topicDetailApiJson from "@/common/api/topicDetail.json";
 
 	var _self;
@@ -61,6 +59,7 @@
 		},
 		methods: {
 			initTopicDetail() {
+				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
 					url: 'http://wuhandata.applinzi.com/analysisDetail.php',
@@ -75,7 +74,7 @@
 					},
 					complete: () => {
 						// 检查json数据
-						isApi(dataApi);
+						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						_self.indexId = dataApi.data.baseInfo.indexId;
 						_self.indexName = dataApi.data.baseInfo.indexName;
@@ -89,19 +88,6 @@
 				// 渲染导航栏title
 				uni.setNavigationBarTitle({
 					title: this.indexName
-				});
-			},
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						if (res.networkType == 'none') {
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
 				});
 			},
 			setHeight() {

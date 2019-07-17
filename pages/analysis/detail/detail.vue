@@ -19,9 +19,7 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
-	import {
-		isApi
-	} from '@/common/checkApi.js';
+	import checkApi from '@/common/checkApi.js';
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
 
@@ -72,17 +70,18 @@
 		},
 		methods: {
 			initAnalysisDetail() {
-				this.checkNetwork();
+				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					url: 'www.baidu.com',
+					url: 'http://192.168.124.12:8080/wuhan_data1/ee',
 					method: 'POST',
 					data: {
-						indexId: "123",
+						indexId: "2",
 					},
 					success: res => {
+						console.log("成功获取数据");
+						dataApi = res.data;
 						dataApi = analysisDetailApiJson;
-
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
@@ -90,29 +89,37 @@
 					},
 					complete: () => {
 						// 检查json数据
-						isApi(dataApi);
+						checkApi.isApi(dataApi);
 						// 设置各部分数据
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
-						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-						_self.timeCondition = dataApi.data.timeCondition;
-						_self.indexDetail = dataApi.data.classInfo;
-						_self.relatedData = dataApi.data.relatedData;
-						// 计算classHeight及总Height
-						this.setHeight();
+						try {
+							//_self.indexId = dataApi.data.baseInfo.indexId;
+							//_self.indexName = dataApi.data.baseInfo.indexName;
+							//_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+							_self.timeCondition = dataApi.data.timeCondition;
+							_self.indexDetail = dataApi.data.classInfo;
+							_self.relatedData = dataApi.data.relatedData;
+							// 计算classHeight及总Height
+							this.setHeight();
+						} catch (e) {
+							console.log(e.message);
+						}
+
 					}
 				});
 			},
 			onConfirm(val) {
+				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
 					url: 'http://1.wuhandata.applinzi.com/searchDetail.php',
-					method: 'GET',
-					data: {},
+					method: 'POST',
+					data: {
+						indexId: this.indexId
+					},
 					success: res => {
-						dataApi = analysisConfirmApiJson;
+						dataApi = res.data;
 						// 检查json数据
-						isApi(dataApi);
+						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						_self.indexDetail = dataApi.data.classInfo;
 						// 计算classHeight及总Height
@@ -122,19 +129,6 @@
 						console.log(e.errMsg);
 					},
 					complete: () => {}
-				});
-			},
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						if (res.networkType == 'none') {
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
 				});
 			},
 			initNav() {
