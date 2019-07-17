@@ -1,0 +1,72 @@
+{
+	"browse_icon": [{
+		"title": "收藏",
+		"url": "collection",
+		"img": "../../../static/icon/mine/favorite.png"
+	}, {
+		"title": "足迹",
+		"url": "footprint",
+		"img": "../../../static/icon/mine/clock.png"
+	}, {
+		"title": "消息",
+		"url": "news",
+		"img": "../../../static/icon/mine/mail.png"
+	}],
+	"menu_list": [{
+		"id": 0,
+		"title": "检查更新",
+		"url": "update",
+		"img": "../../../static/icon/mine/update.png"
+	}, {
+		"id": 1,
+		"title": "清除缓存",
+		"url": "clear_cache",
+		"img": "../../../static/icon/mine/clear.png"
+	}, {
+		"id": 2,
+		"title": "分享应用",
+		"url": "share_app",
+		"img": "../../../static/icon/mine/share.png"
+	}, {
+		"id": 3,
+		"title": "关于我们",
+		"url": "about_us",
+		"img": "../../../static/icon/mine/about.png"
+	}, {
+		"id": 4,
+		"title": "问题反馈",
+		"url": "help_feedback",
+		"img": "../../../static/icon/mine/feedback.png"
+	}],
+	"bottomData": [{
+			"text": "微信",
+			"img": "../../../static/icon/mine/wechatfriend.png",
+			"name": "wx"
+		},
+		{
+			"text": "朋友圈",
+			"img": "../../../static/icon/mine/wechatmoments.png",
+			"name": "wx"
+		},
+		{
+			"text": "QQ",
+			"img": "../../../static/icon/mine/qq.png",
+			"name": "qq"
+		},
+		{
+			"text": "微博",
+			"img": "../../../static/icon/mine/weibo.png",
+			"name": "weibo"
+		},
+		{
+			"text": "复制",
+			"img": "../../../static/icon/mine/copyurl.png",
+			"name": "copy"
+		},
+		{
+			"text": "更多",
+			"img": "../../../static/icon/mine/more.png",
+			"name": "more"
+		}
+	]
+}
