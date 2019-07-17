@@ -1,23 +1,23 @@
 <template>
 	<view>
-		<view class="uni-list" v-for="(user,index) in userInformation" :key="index">
+		<view class="uni-list">
 			<view class="uni-list-cell">
 				<view class="title">真实姓名</view>
-				<input class="input" :placeholder="user.realName" v-model="realName" maxlength="10"/>
+				<input class="input" :placeholder="user.realName" v-model="realName" maxlength="10" />
 			</view>
 			<view class="uni-list-cell">
 				<view class="title">性别</view>
 				<picker class="input" @change="bindPickerChange" :range="array">
-					<input disabled="true" :placeholder="user.sex" v-model="sex" />
+					<input disabled="true" :placeholder="user.gender" v-model="sex" />
 				</picker>
 			</view>
 			<view class="uni-list-cell">
 				<view class="title">出生日期</view>
 				<picker class="input" mode="date" @change="bindDateChange">
-					<input disabled="true" :start="startDate" :end="endDate" :placeholder="user.birth" v-model="birth" />
+					<input disabled="true" :start="startDate" :end="endDate" :placeholder="user.birthday" v-model="birthday" />
 				</picker>
 			</view>
-			<view class="uni-list-cell"> 
+			<view class="uni-list-cell">
 				<view class="title">所在地区</view>
 				<input class="input" disabled="true" :placeholder="user.city" @click="showMulLinkageTwoPicker" v-model="city" />
 			</view>
@@ -33,23 +33,30 @@
 </template>
 
 <script>
-	import mpvuePicker from '../../../components/mpvue-picker/mpvuePicker.vue';
-	import cityData from '../../../common/city.data.js';
-	export default{
+	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
+	import cityData from '@/common/city.data.js';
+	import checkApi from '@/common/checkApi.js';
+	import getUserApiJson from "@/common/api/getUser.json";
+
+	export default {
 		components: {
 			mpvuePicker,
 		},
-		data(){
+		data() {
 			return {
-				realName: '',
-				realName1: '',
-				sex: '',
-				sex1: '',
-				birth: '',
-				city: '',
-				city1: '',
-				description: '',
-				description1: '',
+				token: "WMJD12UDHIkjksda",
+				user: {
+					"userId": "2012",
+					"tel": "15999671690",
+					"realName": "谢泽丰",
+					"gender": "男",
+					"head": "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=400062461,2874561526&fm=27&gp=0.jpg",
+					"birthdayday": "1997-03-18",
+					"city": "武汉市",
+					"description": "越努力，越幸运",
+					"department": "工业部",
+					"roleName": "主任"
+				}, // 用户信息
 				mulLinkageTwoPicker: cityData,
 				cityPickerValueDefault: [0, 0, 1],
 				themeColor: '#007AFF',
@@ -58,10 +65,10 @@
 				deepLength: 1,
 				userInformation: [],
 				pickerValueDefault: [0],
-				pickerValueArray:[],
+				pickerValueArray: [],
 				array: ['男', '女'],
 				index: '',
-				}
+			}
 		},
 		computed: {
 			startDate() {
@@ -71,73 +78,57 @@
 				return this.getDate('end');
 			}
 		},
-		onLoad:function(){
-			try {
-					const userInfo = uni.getStorageSync('user_Info');
-					if (userInfo) {
-						this.userInformation = userInfo;
-						let list=JSON.stringify(userInfo);
-						console.log("返回数据状态:" + list);
-						this.realName = userInfo[0].realName;
-						this.sex = userInfo[0].sex;
-						this.birth = userInfo[0].birth;
-						this.city = userInfo[0].city;
-						this.description = userInfo[0].description;
-					} else {
-						this.initUserInformation();
-					}
-				} catch (e) {
-					console.log('无法从本地缓存获取相应数据');
-				}
-			this.checkNetwork();
-			this.initUserInformation();
+		onShow: function() {
+			if (checkApi.checkToken()) {
+				this.token = uni.getStorageSync('token');
+			} else {
+				uni.showToast({
+					icon: 'none',
+					title: "您还没有登录，请先登录",
+					duration: 1000,
+				});
+				// setTimeout(function() {
+				// 	uni.navigateTo({
+				// 		url: "../login/login"
+				// 	})
+				// }, 1000);
+			}
+			this.initUser();
 		},
 		methods: {
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						console.log(res.networkType);
-						if (res.networkType == 'none') {
-							console.log('network:' + res.networkType);
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
-				});
-			},
-			initUserInformation() {
-				const userID = uni.getStorageSync('user_id');
+			initUser() {
+				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.18/personInfo.php',
+					url: 'http://www.baidu.com',
 					data: {
-						"id": userID
+						"token": this.token,
 					},
-					success: res => {
-						this.userInformation = res.data;
-						console.log(this.userInformation);
+					success: (res) => {
+						let dataApi = getUserApiJson;
+						checkApi.isApi(dataApi);
+						this.user = dataApi.data;
+						let userStr = JSON.stringify(this.user);
 						uni.setStorageSync({
-							key: 'user_Info',
-							data: this.userInformation,
+							key: 'user',
+							data: userStr,
 							success: function() {
 								console.log('成功请求个人信息数据并存入本地缓存');
 							}
 						});
 					},
-					fail: () => {
-						uni.showToast({
-							icon: 'none',
-							title: '网络异常,请稍后重试'
-						});
-					},
+					fail: (e) => {},
+					complete: () => {}
 				});
 			},
 			bindPickerChange: function(e) {
 				this.index = e.target.value;
-				this.sex = this.array[this.index];
-				console.log('picker发送选择改变，携带值为：' + this.sex);
+				this.user.gender = this.array[this.index];
+			},
+			bindDateChange: function(e) {
+				this.user.birthday = e.target.value;
+			},
+			onConfirm(e) {
+				this.user.city = e.label;
 			},
 			showMulLinkageTwoPicker() {
 				this.pickerValueArray = this.mulLinkageTwoPicker
@@ -145,14 +136,6 @@
 				this.deepLength = 2
 				this.pickerValueDefault = [0, 0]
 				this.$refs.mpvuePicker.show()
-			},
-			onConfirm(e) {
-				this.city = e.label;
-				console.log('picker发送选择改变，携带值为：' + this.city);
-			},
-			bindDateChange: function(e) {
-				this.birth = e.target.value;
-				console.log('picker发送选择改变，携带值为：' + this.birth);
 			},
 			getDate(type) {
 				const date = new Date();
@@ -166,53 +149,34 @@
 				}
 				month = month > 9 ? month : '0' + month;;
 				day = day > 9 ? day : '0' + day;
-			
 				return `${year}-${month}-${day}`;
 			},
-			confirmRevision (){
-				this.realName1 = encodeURI(this.realName);
-				this.sex1 = encodeURI(this.sex);
-				this.city1 = encodeURI(this.city);
-				this.description1 = encodeURI(this.description);
+			confirmRevision() {
+				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.11:8080/wuhan_data1/changeInfo',
+					url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
-						"id": 22,
-						"realName": this.realName1,
-						"sex": this.sex1,
-						"birth": this.birth,
-						"city": this.city1,
-						"description": this.description1,
+						"token": this.token,
+						"realName": encodeURI(this.user.realName),
+						"sex": encodeURI(this.user.sex),
+						"birthday": encodeURI(this.user.birthdayday),
+						"city": encodeURI(this.user.city),
+						"description": encodeURI(this.user.description),
 					},
-					success: res => {
-						if(res.data.code == 1)
-						{
-							let list=JSON.stringify(res.data);
-							console.log("返回数据状态:" + list);
-							setTimeout(function() {  
-							        uni.showToast({
-										title: '成功修改个人信息',
-							        	icon: 'none',
-							        }); 
-							    }, 300);
-							uni.navigateBack();
-							return false;
-						}
-						if(res.data.code == 0)
-						{
+					success: (res) => {
+						let dataApi = getUserApiJson;
+
+						checkApi.isApi(dataApi);
+						setTimeout(function() {
 							uni.showToast({
-								title: '修改失败，请稍后重试',
+								title: '成功修改个人信息',
 								icon: 'none',
 							});
-						}
+						}, 300);
+						uni.navigateBack();
 					},
-					fail: () => {
-						uni.showToast({
-							icon: 'none',
-							title: '网络异常,请稍后重试'
-						});
-					},
+					fail: () => {},
 				});
 			}
 		}
@@ -220,28 +184,31 @@
 </script>
 
 <style>
-	.uni-list-cell{
-		padding-left:35upx;
+	.uni-list-cell {
+		padding-left: 35upx;
 		height: 100upx;
 		display: flex;
 	}
-	.title{
+
+	.title {
 		font-size: 35upx;
 		float: left;
 		width: 25%;
 	}
-	.input{
+
+	.input {
 		font-size: 35upx;
 		float: left;
 		width: 75%;
 	}
-	.confirm-button{
+
+	.confirm-button {
 		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
 		color: #FFFFFF;
-		background-color: rgb(26,130,210);
-		border-radius: 5px; 
+		background-color: rgb(26, 130, 210);
+		border-radius: 5px;
 		margin-top: 80upx;
 	}
 </style>

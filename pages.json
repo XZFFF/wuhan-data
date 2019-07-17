@@ -308,6 +308,11 @@
 				"name": "ucharts",
 				"path": "pages/analysis/detail/ucharts",
 				"query": ""
+			},
+			{
+				"name": "mine",
+				"path": "pages/tabbar/mine/mine",
+				"query": ""
 			}
 		]
 	}

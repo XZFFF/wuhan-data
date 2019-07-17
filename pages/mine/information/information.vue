@@ -99,7 +99,7 @@
 					data: {
 						"token": this.token,
 					},
-					success: res => {
+					success: (res) => {
 						let dataApi = getUserApiJson;
 						checkApi.isApi(dataApi);
 						this.user = dataApi.data;
