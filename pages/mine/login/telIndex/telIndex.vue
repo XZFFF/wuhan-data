@@ -7,8 +7,8 @@
 						<view class="uni-list-cell-divider" :id="list.letter">
 							{{list.letter}}
 						</view>
-						<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(item,index) in list.data" :key="index" :data-current="index"
-						 :class="list.data.length -1 == index ? 'uni-list-cell-last' : ''" @click="changeTel(key,index)">
+						<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(item,index) in list.data" :key="index"
+						 :data-current="index" :class="list.data.length -1 == index ? 'uni-list-cell-last' : ''" @click="changeTel(key,index)">
 							<view class="uni-list-cell-navigate">
 								{{item.name}}
 							</view>
@@ -85,14 +85,14 @@
 				this.touchmove = false;
 				this.touchmoveIndex = -1;
 			},
-			changeTel(key,index) {
+			changeTel(key, index) {
 				let countryTel = this.lists[key].data[index].number;
 				console.log("返回index:" + countryTel);
-				uni.setStorageSync('changeTel',{
-						flag: 1,
-						tel: countryTel,
-						});
-				uni.navigateBack ()
+				uni.setStorageSync('changeTel', {
+					flag: 1,
+					tel: countryTel,
+				});
+				uni.navigateBack()
 			}
 		}
 	}
@@ -152,8 +152,9 @@
 		color: #fff;
 		background-color: rgba(0, 0, 0, 0.5);
 	}
-	.tel{
+
+	.tel {
 		margin-right: 50upx;
-		color: rgb(169,169,169);
+		color: rgb(169, 169, 169);
 	}
 </style>

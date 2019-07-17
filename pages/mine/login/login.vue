@@ -23,7 +23,7 @@
 						<view class="list" style="width: 35%;">
 							<input class="input" v-model="verCode" placeholder="请输入验证码" />
 						</view>
-						<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification" >
+						<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification">
 							{{smsText}}
 						</button>
 					</view>
@@ -38,6 +38,10 @@
 </template>
 
 <script>
+	import checkApi from '@/common/checkApi.js';
+	import loginApiJson from "@/common/api/login.json";
+	import getVercodeApiJson from "@/common/api/getVercode.json";
+
 	export default {
 		props: {
 			second: {
@@ -59,21 +63,11 @@
 		//页面初始加载
 		onShow() {
 			const changeTel = uni.getStorageSync('changeTel');
-			if(changeTel.flag)
+			if (changeTel.flag) {
 				this.countryTel = changeTel.tel;
-			uni.removeStorageSync('changeTel');
+			}
 		},
 		methods: {
-			getElSize(id) { //得到元素的size
-				return new Promise((res, rej) => {
-					uni.createSelectorQuery().select('#' + id).fields({
-						size: true,
-						scrollOffset: true
-					}, (data) => {
-						res(data);
-					}).exec();
-				});
-			},
 			goTelIndex(e) {
 				let url = '../../mine/login/telIndex/telIndex';
 				uni.navigateTo({
@@ -82,143 +76,136 @@
 				return false;
 			},
 			lands() {
-				/*let regNumber = /\d+/;
+				let regNumber = /\d+/;
 				if (!(regNumber.test(this.tel)) || this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的手机号'
 					});
-				else if(this.verCode.length == null)
-				{
+					return;
+				}
+				if (this.verCode.length == null) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入验证码'
 					});
+					return;
 				}
-				else */
-				{
-					var req = {
-						"tel": this.tel1,
+				checkApi.checkNetwork();
+				uni.request({
+					method: 'POST',
+					url: "http://192.168.124.11:8080/wuhan_data1/loginchekByTel", //仅为示例，并非真实接口地址。
+					data: {
+						"tel": this.tel,
 						"password": this.passw
-					};
-					console.log("参数:" + req);
-					uni.request({
-						method: 'POST',
-						url: "http://192.168.124.11:8080/wuhan_data1/loginchekByTel", //仅为示例，并非真实接口地址。
-						data: req,
-						success: (res) => {
-							let list=JSON.stringify(res.data);
-							console.log("返回数据状态:" + list);
-							try{
-								if(res.data.code === 1){
-									uni.setStorageSync({
-										key: 'user_id',
-										data: res.data.id,
-										success: function() {
-											console.log('成功请求个人ID并存入本地缓存');
-										}
-									});
-									uni.showToast({
-										icon: 'none',
-										title: '登录成功'
-									});
-									uni.switchTab({
-										url: '../../tabbar/home/home',
-									})
+					},
+					success: (res) => {
+						try {
+							let dataApi = loginApiJson;
+							checkApi.isApi(dataApi);
+							uni.setStorageSync({
+								key: 'token',
+								data: dataApi.data.token,
+								success: function() {
+									console.log('成功请求token并存入本地缓存');
 								}
-								else if(res.data.code === 0){
-									uni.showToast({
-										icon: 'none',
-										title: '手机号或验证码错误'
-									});
-									return;
+							});
+							uni.setStorageSync({
+								key: 'user',
+								data: JSON.stringify(dataApi.data),
+								success: function() {
+									console.log('成功请求user并存入本地缓存');
 								}
-							}catch(e){
-								uni.showToast({
-									icon: 'none',
-									title: '请求错误'
-								});
-							}
-							
-						},fail: () => {
+							});
 							uni.showToast({
 								icon: 'none',
-								title: '网络异常,请稍后重试'
+								title: '登录成功'
 							});
-						},
-					})
-				}
+							uni.switchTab({
+								url: '../../tabbar/mine/mine',
+							})
+						} catch (e) {
+							console.log(e.message);
+							uni.showToast({
+								icon: 'none',
+								title: e.message
+							});
+						}
+
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+						uni.showToast({
+							icon: 'none',
+							title: e.errMsg
+						});
+					},
+				})
 			},
 			smsVerification(e) {
-				if(this.smsText === '获取验证码'){
-					let regNumber = /\d+/;
-					/*if (!(regNumber.test(this.tel))) {
-						uni.showToast({
-							icon: 'none',
-							title: '请输入正确的手机号'
-						});
-					else if(this.tel.length != 11)
-					{
-						uni.showToast({
-							icon: 'none',
-							title: '请输入正确的手机号'
-						});
-					}
-					else */
-					{
-						uni.request({
-							url: 'http://192.168.1.104/return1.php',
-							//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
-							data: {
-								"tel": this.tel
-							},
-							success: (res) => {
-								let list=JSON.stringify(res.data);
-								console.log("返回数据状态:" + list);
-								try{
-									if(res.data.code === 1){
-										uni.showToast({
-											icon: 'none',
-											title: '验证码发送成功'
-										});
-										console.log("已发送验证码");
-										this.second = 12;
-										this.seconds = this.second
-										this.countDown()
-										this.timer = setInterval(() => {
-										  this.seconds--
-										  if (this.seconds < 1) {
-										    //this.timeUp()
-											this.smsText = '获取验证码'
-											clearInterval(this.timer)
-										    return
-										  }
-										  this.countDown()
-										}, 1000)
-									}
-									else if(res.data.code === 0){
-										uni.showToast({
-											icon: 'none',
-											title: '验证码发送失败，请重试'
-										});
-									}
-								}catch(e){
-									uni.showToast({
-										icon: 'none',
-										title: '请求错误'
-									});
-								}
-							},fail: () => {
-								uni.showToast({
-									icon: 'none',
-									title: '网络异常,请稍后重试'
-								});
-							},
-						})
-					}
+				if (this.smsText != '获取验证码') {
+					return;
 				}
+				let regNumber = /\d+/;
+				if (!(regNumber.test(this.tel))) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入正确的手机号'
+					});
+					return;
+				}
+				if (this.tel.length != 11) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入正确的手机号'
+					});
+					return;
+				}
+				checkApi.checkNetwork();
+				uni.request({
+					url: 'http://www.baidu.com',
+					data: {
+						"tel": this.tel
+					},
+					success: (res) => {
+						try {
+							let dataApi = getVercodeApiJson;
+							checkApi.isApi(dataApi);
+							uni.showToast({
+								icon: 'none',
+								title: '验证码发送成功'
+							});
+							this.second = 12;
+							this.seconds = this.second
+							this.countDown()
+							this.timer = setInterval(() => {
+								this.seconds--
+								if (this.seconds < 1) {
+									//this.timeUp()
+									this.smsText = '获取验证码'
+									clearInterval(this.timer)
+									return
+								}
+								this.countDown()
+							}, 1000);
+						} catch (e) {
+							console.log(e.message);
+							uni.showToast({
+								icon: 'none',
+								title: e.message
+							});
+						}
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+						uni.showToast({
+							icon: 'none',
+							title: e.errMsg
+						});
+					},
+				})
 			},
-			countDown () {
+			countDown() {
 				let seconds = this.seconds
 				let [second] = [1]
 				if (seconds > 1) {
@@ -230,85 +217,12 @@
 				second = '重新发送(' + second + 's)'
 				this.smsText = second
 			},
-			registe(){
-				var req={
-					"tel": this.tel,
-					"verCode": this.verCode
-				}
-				var regNumber = /\d+/;
-				/*if (!(regNumber.test(this.tel))) {
-					uni.showToast({
-						icon: 'none',
-						title: '请输入正确的手机号'
-					});
-				else if(this.tel.length != 11)
-				{
-					uni.showToast({
-						icon: 'none',
-						title: '请输入正确的手机号'
-					});
-				}
-				else if(this.verCode.length == null)
-				{
-					uni.showToast({
-						icon: 'none',
-						title: '请输入验证码'
-					});
-				}
-				//判断密码是否合法
-				else if(this.passw0.length<6||this.passw0.length>14)
-				{
-					uni.showToast({
-						icon: 'none',
-						title: '密码长度应为6到14位'
-					});
-				}
-				else if (!(regNumber.test(this.passw0) && regString.test(this.passw0))) {
-					uni.showToast({
-						icon: 'none',
-						title: '密码只能为且必须包含字母和数字'
-					});
-				}*/
-				//else
-				{
-					uni.request({
-						method: 'POST',
-						url: "http://192.168.1.101:8080/wuhan_data1/userRegisterlAPP", //仅为示例，并非真实接口地址。
-						data: req,
-						success: (res) => {
-							if(res.data.code != 1){
-								uni.showToast({
-									icon: 'none',
-									title: '验证码错误'
-								});
-								return;
-							}
-							else if(res.data.code == 1){
-								setTimeout(function() {
-								        uni.showToast({
-								        	icon: 'none',
-								        	title: '注册成功'
-								        }); 
-								    }, 1000);
-								this.tabIndex = 1;
-							}
-						},fail: () => {
-							uni.showToast({
-								icon: 'none',
-								title: '网络异常,请稍后重试'
-							});
-						},
-					})
-				}
-			}
 		},
 	}
-	
 </script>
 
 <style>
-	
-	.login-box{
+	.login-box {
 		height: 780upx;
 		width: 90%;
 		background-color: #FFFFFF;
@@ -316,77 +230,89 @@
 		margin-right: auto;
 		border-radius: 10px;
 	}
-	.swiper-tab{
-		border-top: 1px solid rgb(72,155,219);
+
+	.swiper-tab {
+		border-top: 1px solid rgb(72, 155, 219);
 		width: 100%;
 		height: 100upx;
 	}
-	.swiper-tab-list{
+
+	.swiper-tab-list {
 		width: 20%;
 		height: 80upx;
 		margin-top: 25upx;
 		margin-left: 15%;
 		margin-right: 15%;
 		font-size: 40upx;
-		color: rgb(134,134,134);
+		color: rgb(134, 134, 134);
 	}
-	.active{
+
+	.active {
 		color: #3A82CC;
 		border-bottom: 4px solid #3A82CC;
 	}
-	.login-list{
+
+	.login-list {
 		display: flex;
 		margin-top: 60upx;
 		margin-left: 50upx;
 	}
-	.title{
+
+	.title {
 		float: left;
 		width: 120upx;
 		font-size: 35upx;
 	}
-	.list{
+
+	.list {
 		width: 70%;
 		float: left;
 	}
-	.input{
-		background-color: rgb(247,247,247);
+
+	.input {
+		background-color: rgb(247, 247, 247);
 		border-radius: 5px;
 		font-size: 30upx;
 		padding: 0 20upx;
 	}
-	.verification-code{
+
+	.verification-code {
 		width: 35%;
 		height: 60upx;
 		font-size: 25upx;
 		color: #FFFFFF;
-		background-color: rgb(95,99,104);
+		background-color: rgb(95, 99, 104);
 	}
-	.active1{
-		background-color: rgb(26,130,210);
+
+	.active1 {
+		background-color: rgb(26, 130, 210);
 		font-size: 30upx;
 	}
-	.login-button{
+
+	.login-button {
 		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
 		color: #FFFFFF;
-		background-color: rgb(26,130,210);
-		border-radius: 5px; 
+		background-color: rgb(26, 130, 210);
+		border-radius: 5px;
 		margin-top: 80upx;
 	}
-	.forget-password{
+
+	.forget-password {
 		margin-left: 50upx;
 		margin-top: 50upx;
 		font-size: 35upx;
-		color: rgb(26,130,210);
+		color: rgb(26, 130, 210);
 	}
-	.triangle{
+
+	.triangle {
 		width: 0;
 		height: 0;
 		margin-top: 22upx;
 		margin-left: 20upx;
 		border-width: 5px 5px 0;
 		border-style: solid;
-		border-color: rgb(68,68,68) transparent transparent;
+		border-color: rgb(68, 68, 68) transparent transparent;
 	}
 </style>
