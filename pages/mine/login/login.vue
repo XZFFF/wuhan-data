@@ -84,7 +84,7 @@
 					});
 					return;
 				}
-				if (this.verCode.length == null) {
+				if (this.verCode.length == 0) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入验证码'
@@ -94,7 +94,7 @@
 				checkApi.checkNetwork();
 				uni.request({
 					method: 'POST',
-					url: "http://192.168.124.11:8080/wuhan_data1/loginchekByTel", //仅为示例，并非真实接口地址。
+					url: "http://www.baidu.com", //仅为示例，并非真实接口地址。
 					data: {
 						"tel": this.tel,
 						"password": this.passw
@@ -103,23 +103,15 @@
 						try {
 							let dataApi = loginApiJson;
 							checkApi.isApi(dataApi);
-							uni.setStorageSync({
-								key: 'token',
-								data: dataApi.data.token,
-								success: function() {
-									console.log('成功请求token并存入本地缓存');
-								}
-							});
-							uni.setStorageSync({
-								key: 'user',
-								data: JSON.stringify(dataApi.data),
-								success: function() {
-									console.log('成功请求user并存入本地缓存');
-								}
-							});
+							console.log(dataApi);
+							let tokenStr = JSON.stringify(dataApi.data.token);
+							let userStr = JSON.stringify(dataApi.data);
+							uni.setStorageSync('token', tokenStr);
+							uni.setStorageSync('user', userStr);
 							uni.showToast({
 								icon: 'none',
-								title: '登录成功'
+								title: '登录成功',
+								duration: 1000
 							});
 							uni.switchTab({
 								url: '../../tabbar/mine/mine',
@@ -147,14 +139,7 @@
 					return;
 				}
 				let regNumber = /\d+/;
-				if (!(regNumber.test(this.tel))) {
-					uni.showToast({
-						icon: 'none',
-						title: '请输入正确的手机号'
-					});
-					return;
-				}
-				if (this.tel.length != 11) {
+				if (!(regNumber.test(this.tel)) || this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的手机号'
@@ -181,7 +166,6 @@
 							this.timer = setInterval(() => {
 								this.seconds--
 								if (this.seconds < 1) {
-									//this.timeUp()
 									this.smsText = '获取验证码'
 									clearInterval(this.timer)
 									return

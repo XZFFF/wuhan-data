@@ -56,11 +56,11 @@ module.exports = {
 		let token = uni.getStorageSync('token');
 		if (!token) {
 			// 提示登录状态过期
-			uni.showToast({
-				icon: 'none',
-				title: "登录已过期",
-				duration: 500
-			});
+			// uni.showToast({
+			// 	icon: 'none',
+			// 	title: "登录已过期",
+			// 	duration: 500
+			// });
 			return false;
 		}
 		return true;

@@ -101,18 +101,18 @@
 		},
 		data() {
 			return {
-				token: "WMJD12UDHIkjksda",
+				token: "",
 				user: {
-					"userId": "2012",
-					"tel": "15999671690",
-					"realName": "谢泽丰",
-					"gender": "男",
-					"head": "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=400062461,2874561526&fm=27&gp=0.jpg",
-					"birthday": "1997-03-18",
-					"city": "武汉市",
-					"description": "越努力，越幸运",
-					"department": "工业部",
-					"roleName": "主任"
+					"userId": "",
+					"tel": "",
+					"realName": "",
+					"gender": "",
+					"head": "",
+					"birthday": "",
+					"city": "",
+					"description": "",
+					"department": "",
+					"roleName": ""
 				}, // 用户信息
 				showImg: true,
 				type: '', // 弹窗类型
@@ -157,13 +157,7 @@
 						checkApi.isApi(dataApi);
 						this.user = dataApi.data;
 						let userStr = JSON.stringify(this.user);
-						uni.setStorage({
-							key: 'user',
-							data: userStr,
-							success: function() {
-								console.log('成功请求个人信息数据并存入本地缓存');
-							}
-						});
+						uni.setStorageSync('user', userStr);
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
