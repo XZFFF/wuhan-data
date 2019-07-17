@@ -1,0 +1,31 @@
+{
+	"errCode": "0",
+	"errMsg": "获取收藏信息成功",
+	"data": {
+		"economyData": [{
+				"collectId": "2",
+				"type": "经济分析",
+				"indexId": "25",
+				"indexName": "GDP总量及三大产业增量分析",
+				"source": "综合",
+				"createTime": "2019-07-17 14:30:21"
+			},
+			{
+				"collectId": "4",
+				"type": "经济分析",
+				"indexId": "32",
+				"indexName": "货运量增幅",
+				"source": "工业",
+				"createTime": "2019-07-17 11:30:22"
+			}
+		],
+		"indexData": [{
+			"collectId": "7",
+			"type": "指标数据",
+			"indexId": "241",
+			"indexName": "湖北PMI",
+			"source": "湖统",
+			"createTime": "2019-07-17 15:32:21"
+		}]
+	}
+}

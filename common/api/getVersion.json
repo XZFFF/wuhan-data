@@ -1,0 +1,10 @@
+{
+	"errCode": "0",
+	"errMsg": "最新版本信息获取成功",
+	"data": {
+		"appid": "33yiuhdw21idu1",
+		"version": "2.1.3",
+		"description": "最新版本的更新内容描述1最新版本的更新内容描述2最新版本的更新内容描述3",
+		"download": "http://localhost:8080/wuhan_data.apk"
+	}
+}

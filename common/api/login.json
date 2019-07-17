@@ -1,0 +1,17 @@
+{
+	"errCode": "0",
+	"errMsg": "登录成功",
+	"data": {
+		"token": "WMJD12UDHIkjksda",
+		"userId": "2012",
+		"tel": "15999671690",
+		"realName": "谢泽丰",
+		"gender": "男",
+		"head": "http://localhost:8080/head.png",
+		"birthday": "1997-03-18",
+		"city": "武汉市",
+		"description": "越努力，越幸运",
+		"department": "工业部",
+		"roleName": "主任"
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"errCode": "0",
+	"errMsg": "头像更新成功",
+	"data": {
+		"head": "http://localhost:8080/head.png"
+	}
+}
