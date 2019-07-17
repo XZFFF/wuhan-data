@@ -11,10 +11,10 @@
 			<view class="change-list">
 				<text class="title">验证码</text>
 				<view class="list">
-					<input class="input"  placeholder="请输入验证码" v-model="verificationCode" />
+					<input class="input" type="number" placeholder="请输入验证码" v-model="verificationCode" />
 				</view>
 			</view>
-			<button :class="['finish-button',smsText==='获取验证码' ? 'active1' : '']" style="font-size: 35upx;" @click="smsVerification" >
+			<button :class="['sms-button',smsText==='获取验证码' ? 'active' : '']" style="font-size: 35upx;" @click="smsVerification" >
 				{{smsText}}
 			</button>
 			<button class="finish-button" @click="changeTel">
@@ -25,6 +25,9 @@
 </template>
 
 <script>
+	import checkApi from '@/common/checkApi.js';
+	import verTelApiJson from "@/common/api/verTel.json";
+	import confirmChangeApiJson from "@/common/api/confirmChange.json";
 	export default {
 		props: {
 			second: {
@@ -34,6 +37,7 @@
 		},
 		data() {
 			return{
+				token: '',
 				smsText: '获取验证码',
 				seconds: 0,
 				timer: null,
@@ -41,61 +45,73 @@
 				verificationCode: '',
 			}
 		},
+		onShow: function() {
+			if (checkApi.checkToken()) {
+				this.token = uni.getStorageSync('token');
+			} else {
+				uni.showToast({
+					icon: 'none',
+					title: "您还没有登录，请先登录",
+					duration: 1000,
+				});
+				setTimeout(function() {
+					uni.navigateTo({
+						url: "../login/login"
+					})
+				}, 1000);
+			}
+		},
 		methods: {
 			smsVerification(e) {
 				if(this.smsText === '获取验证码'){
-					{
-						uni.request({
-							url: 'http://192.168.1.104/return1.php',
-							//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
-							data: {
-								"tel": this.tel0
-							},
-							success: (res) => {
-								let list=JSON.stringify(res.data);
-								console.log("返回数据状态:" + list);
-								try{
-									if(res.data.code === 1){
-										uni.showToast({
-											icon: 'none',
-											title: '验证码发送成功'
-										});
-										console.log("已发送验证码");
-										this.second = 12;
-										this.seconds = this.second
-										this.countDown()
-										this.timer = setInterval(() => {
-										  this.seconds--
-										  if (this.seconds < 1) {
-										    //this.timeUp()
-											this.smsText = '获取验证码'
-											clearInterval(this.timer)
-										    return
-										  }
-										  this.countDown()
-										}, 1000)
-									}
-									else if(res.data.code === 0){
-										uni.showToast({
-											icon: 'none',
-											title: '验证码发送失败，请重试'
-										});
-									}
-								}catch(e){
-									uni.showToast({
-										icon: 'none',
-										title: '请求失败'
-									});
-								}
-								
-							},fail: () => {
+					this.smsText = 'loading';
+					checkApi.checkNetwork();
+					uni.request({
+						url: 'http://www.baidu.com',
+						//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
+						data: {
+							"token": this.token,
+							"verCode": this.verificationCode
+						},
+						success: (res) => {
+							try{
+								let dataApi = verTelApiJson;
+								checkApi.isApi(dataApi);
 								uni.showToast({
 									icon: 'none',
-									title: '网络异常,请稍后重试'
+									title: '验证码发送成功'
 								});
-							},
-						})
-					}
+								console.log("已发送验证码");
+								this.second = 12;
+								this.seconds = this.second
+								this.countDown()
+								this.timer = setInterval(() => {
+								  this.seconds--
+								  if (this.seconds < 1) {
+								    //this.timeUp()
+									this.smsText = '获取验证码'
+									clearInterval(this.timer)
+								    return
+								  }
+								  this.countDown()
+								}, 1000)
+							}catch(e){
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
+								this.smsText = '获取验证码';
+							}
+						},fail: (e) => {
+							this.smsText = '获取验证码';
+							console.log(e.errMsg);
+							uni.showToast({
+								icon: 'none',
+								title: e.errMsg
+							});
+						},
+					})
 				}
 			},
 			countDown () {
@@ -111,61 +127,52 @@
 				this.smsText = second
 			},
 			changeTel(e){
-				/*
-				if(this.verCode.length == null)
-				{
+				if(this.verificationCode.length == 0){
 					uni.showToast({
 						icon: 'none',
 						title: '请输入验证码'
-					});
+					})
 				}
-				else*/
-				{
-					const userID = uni.getStorageSync('user_id');
+				else{
 					uni.request({
-						url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
+						//url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
+						url: "http://www.baidu.com",
 						method: 'POST',
 						data: {
-							"id": userID,
+							"token": this.token,
 							"tel": this.tel,
 							"verCode": this.verificationCode,
 						},
 						success: (res) => {
-							let list=JSON.stringify(res.data);
-							console.log("返回数据状态:" + list);
 							try{
-								if(res.data.code == 0){
-									uni.showToast({
-										icon: 'none',
-										title: '验证码错误'
-									});
-								}
-								else if(res.data.code == 1){
-									setTimeout(function() {  
-									        uni.showToast({
-												title: '手机号更换成功',
-									        	icon: 'none',
-									        }); 
-									    }, 300);
-									uni.navigateTo({
-										url: "../../tabbar/mine/mine"
-									});
-								}
-							}catch(e){
+								let dataApi = confirmChangeApiJson;
+								checkApi.isApi(dataApi);
 								uni.showToast({
-									title: '请求错误',
 									icon: 'none',
-								}); 
+									title: "手机更换成功",
+									duration: 1000,
+								});
+								uni.navigateTo({
+									url: "../information/information",
+								});
+							}catch(e){
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
 							}
 						},
-						fail: () => {
+						fail: (e) => {
+							console.log(e.errMsg);
 							uni.showToast({
 								icon: 'none',
-								title: '网络异常,请稍后重试'
+								title: e.errMsg
 							});
 						},
-					});
+					})
 				}
+				
 			}
 		}
 	}
@@ -195,6 +202,15 @@
 		font-size: 30upx;
 		padding: 0 20upx;
 	}
+	.sms-button{
+		width: 90%;
+		height: 80upx;
+		font-size: 35upx;
+		color: #FFFFFF;
+		background-color: rgb(95,99,104);
+		border-radius: 5px; 
+		margin-top: 60upx;
+	}
 	.finish-button{
 		width: 90%;
 		height: 80upx;
@@ -204,28 +220,12 @@
 		border-radius: 5px; 
 		margin-top: 60upx;
 	}
-	.verification-code{
-		height: 60upx;
-		font-size: 30upx;
-		color: #FFFFFF;
-		background-color: rgb(95,99,104);
-	}
-	.active1{
+	.active{
 		background-color: rgb(26,130,210);
-		font-size: 30upx;
 	}
 	.title{
 		float: left;
 		width: 120upx;
 		font-size: 30upx;
-	}
-	.triangle{
-		width: 0;
-		height: 0;
-		margin-top: 22upx;
-		margin-left: 20upx;
-		border-width: 5px 5px 0;
-		border-style: solid;
-		border-color: rgb(68,68,68) transparent transparent;
 	}
 </style>

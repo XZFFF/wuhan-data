@@ -41,31 +41,18 @@
 </template>
 
 <script>
+	import checkApi from '@/common/checkApi.js';
+	import feedbackApiJson from "@/common/api/feedback.json";
     export default {
         data() {
-			const userID = uni.getStorageSync('user_id');
             return {
                 imageList: [],
                 sendDate: {
-					id: userID,
                     score: 0,
                     text: "",
                     contact: ""
                 }
             }
-        },
-        onLoad() {
-            let deviceInfo = {
-                /*appid: plus.runtime.appid,
-                imei: plus.device.imei, //设备标识
-                p: plus.os.name === "Android" ? "a" : "i", //平台类型，i表示iOS平台，a表示Android平台。
-                md: plus.device.model, //设备型号
-                app_version: plus.runtime.version,
-                plus_version: plus.runtime.innerVersion, //基座版本号
-                os: plus.os.version,
-                net: "" + plus.networkinfo.getCurrentType()*/
-            }
-            this.sendDate = Object.assign(deviceInfo, this.sendDate);
         },
         methods: {
             close(e){
@@ -87,44 +74,93 @@
                 });
             },
             send(e) { //发送反馈
+				this.token = uni.getStorageSync('token');
                 console.log(JSON.stringify(this.sendDate));
-                let imgs = this.imageList.map((value, index) => {
-                    return {
-                        name: "image" + index,
-                        uri: value
-                    }
-                })
-                uni.uploadFile({
-                    url: "http://192.168.124.11:8080/wuhan_data1/ttt",
-                    files: imgs,
-                    formData: this.sendDate,
-                    success: (res) => {
-						console.log("success");
-                        if (res.data.code == 1) {
-                            uni.showToast({
-                                title: "反馈成功"
-                            });
-                            this.imageList = [];
-                            this.sendDate = {
-                                score: 0,
-                                text: "",
-                                contact: ""
-                            }
-                        }
-						else if(res.data.code == 0)
-						{
-							uni.showToast({
-							    title: "反馈失败，请稍后重试"
-							});
+				checkApi.checkNetwork();
+				if(!this.sendDate.text ){
+					uni.showToast({
+						icon: 'none',
+					    title: "请描述您的问题"
+					});
+				}
+				else if(!this.imageList){
+					let imgs = this.imageList.map((value, index) => {
+					    return {
+					        name: "image" + index,
+					        uri: value
+					    }
+					});
+					uni.uploadFile({
+					    //url: "http://192.168.124.11:8080/wuhan_data1/ttt",
+						url: 'http://www.baidu.com',
+					    files: imgs,
+					    formData: this.sendDate,
+					    success: (res) => {
+							try{
+								let dataApi = feedbackApiJson;
+								checkApi.isApi(dataApi);
+								uni.showToast({
+								    title: "反馈成功"
+								});
+								this.imageList = [];
+								this.sendDate = {
+								    score: 0,
+								    text: "",
+								    contact: ""
+								}
+							}
+							catch(e){
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
+							}
+					    },
+					    fail: (e) => {
+					        console.log(e.errMsg);
+					        uni.showToast({
+					        	icon: 'none',
+					        	title: e.errMsg
+					        });
+					    }
+					});
+				}
+				else{
+					uni.request({
+						url: 'http://www.baidu.com',
+						formData: this.sendDate,
+						success: (res) => {
+							try{
+								let dataApi = feedbackApiJson;
+								checkApi.isApi(dataApi);
+								uni.showToast({
+								    title: "反馈成功"
+								});
+								this.sendDate = {
+								    score: 0,
+								    text: "",
+								    contact: ""
+								}
+							}
+							catch(e){
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
+							}
+						},
+						fail: (e) => {
+						    console.log(e.errMsg);
+						    uni.showToast({
+						    	icon: 'none',
+						    	title: e.errMsg
+						    });
 						}
-                    },
-                    fail: () => {
-                        uni.showToast({
-                        	icon: 'none',
-                        	title: '网络异常,请稍后重试'
-                        });
-                    }
-                });
+					})
+				}
+                
             }
         }
     }

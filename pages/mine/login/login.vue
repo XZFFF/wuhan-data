@@ -15,13 +15,13 @@
 							</view>
 						</view>
 						<view class="list">
-							<input class="input" type="text" v-model="tel" placeholder="请输入手机号" />
+							<input class="input" type="number" v-model="tel" placeholder="请输入手机号" />
 						</view>
 					</view>
 					<view class="login-list">
 						<text class="title">验证码</text>
 						<view class="list" style="width: 35%;">
-							<input class="input" v-model="verCode" placeholder="请输入验证码" />
+							<input class="input" type="number" v-model="verCode" placeholder="请输入验证码" />
 						</view>
 						<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification">
 							{{smsText}}
@@ -85,8 +85,7 @@
 				return false;
 			},
 			lands() {
-				let regNumber = /\d+/;
-				if (!(regNumber.test(this.tel)) || this.tel.length != 11) {
+				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的手机号'
@@ -100,55 +99,59 @@
 					});
 					return;
 				}
-				checkApi.checkNetwork();
-				uni.request({
-					method: 'POST',
-					url: "http://www.baidu.com", //仅为示例，并非真实接口地址。
-					data: {
-						"tel": this.tel,
-						"password": this.passw
-					},
-					success: (res) => {
-						try {
-							let dataApi = loginApiJson;
-							checkApi.isApi(dataApi);
-							console.log(dataApi);
-							let tokenStr = JSON.stringify(dataApi.data.token);
-							let userStr = JSON.stringify(dataApi.data);
-							uni.setStorageSync('token', tokenStr);
-							uni.setStorageSync('user', userStr);
+				else{
+					this.smsText = 'loading';
+					checkApi.checkNetwork();
+					uni.request({
+						method: 'POST',
+						url: "http://www.baidu.com", //仅为示例，并非真实接口地址。
+						data: {
+							"tel": this.tel,
+							"password": this.passw
+						},
+						success: (res) => {
+							try {
+								let dataApi = loginApiJson;
+								checkApi.isApi(dataApi);
+								console.log(dataApi);
+								let tokenStr = JSON.stringify(dataApi.data.token);
+								let userStr = JSON.stringify(dataApi.data);
+								uni.setStorageSync('token', tokenStr);
+								uni.setStorageSync('user', userStr);
+								uni.showToast({
+									icon: 'none',
+									title: '登录成功',
+									duration: 1000
+								});
+								uni.switchTab({
+									url: '../../tabbar/mine/mine',
+								})
+							} catch (e) {
+								this.smsText = '获取验证码';
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
+							}
+						},
+						fail: (e) => {
+							this.smsText = '获取验证码';
+							console.log(e.errMsg);
 							uni.showToast({
 								icon: 'none',
-								title: '登录成功',
-								duration: 1000
+								title: e.errMsg
 							});
-							uni.switchTab({
-								url: '../../tabbar/mine/mine',
-							})
-						} catch (e) {
-							console.log(e.message);
-							uni.showToast({
-								icon: 'none',
-								title: e.message
-							});
-						}
-
-					},
-					fail: (e) => {
-						console.log(e.errMsg);
-						uni.showToast({
-							icon: 'none',
-							title: e.errMsg
-						});
-					},
-				})
+						},
+					})
+				}
+				
 			},
 			smsVerification(e) {
 				if (this.smsText != '获取验证码') {
 					return;
 				}
-				let regNumber = /\d+/;
-				if (!(regNumber.test(this.tel)) || this.tel.length != 11) {
+				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的手机号'
