@@ -14,7 +14,7 @@
 					<input class="input"  placeholder="请输入验证码" v-model="verificationCode" />
 				</view>
 			</view>
-			<button :class="['finish-button',smsText==='获取验证码' ? 'active1' : '']" style="font-size: 35upx;" @click="smsVerification" >
+			<button :class="['sms-button',smsText==='获取验证码' ? 'active' : '']" style="font-size: 35upx;" @click="smsVerification" >
 				{{smsText}}
 			</button>
 			<button class="finish-button" @click="changeTel">
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+	import checkApi from '@/common/checkApi.js';
 	export default {
 		props: {
 			second: {
@@ -44,58 +45,54 @@
 		methods: {
 			smsVerification(e) {
 				if(this.smsText === '获取验证码'){
-					{
-						uni.request({
-							url: 'http://192.168.1.104/return1.php',
-							//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
-							data: {
-								"tel": this.tel0
-							},
-							success: (res) => {
-								let list=JSON.stringify(res.data);
-								console.log("返回数据状态:" + list);
-								try{
-									if(res.data.code === 1){
-										uni.showToast({
-											icon: 'none',
-											title: '验证码发送成功'
-										});
-										console.log("已发送验证码");
-										this.second = 12;
-										this.seconds = this.second
-										this.countDown()
-										this.timer = setInterval(() => {
-										  this.seconds--
-										  if (this.seconds < 1) {
-										    //this.timeUp()
-											this.smsText = '获取验证码'
-											clearInterval(this.timer)
-										    return
-										  }
-										  this.countDown()
-										}, 1000)
-									}
-									else if(res.data.code === 0){
-										uni.showToast({
-											icon: 'none',
-											title: '验证码发送失败，请重试'
-										});
-									}
-								}catch(e){
-									uni.showToast({
-										icon: 'none',
-										title: '请求失败'
-									});
-								}
-								
-							},fail: () => {
+					this.smsText = 'loading';
+					checkApi.checkNetwork();
+					uni.request({
+						url: 'http://192.168.0.104/return1.php',
+						//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
+						data: {
+							"verCode": this.verificationCode
+						},
+						success: (res) => {
+							try{
+								let dataApi = getVercodeApiJson;
+								checkApi.isApi(dataApi);
 								uni.showToast({
 									icon: 'none',
-									title: '网络异常,请稍后重试'
+									title: '验证码发送成功'
 								});
-							},
-						})
-					}
+								console.log("已发送验证码");
+								this.second = 12;
+								this.seconds = this.second
+								this.countDown()
+								this.timer = setInterval(() => {
+								  this.seconds--
+								  if (this.seconds < 1) {
+								    //this.timeUp()
+									this.smsText = '获取验证码'
+									clearInterval(this.timer)
+								    return
+								  }
+								  this.countDown()
+								}, 1000)
+							}catch(e){
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
+								this.smsText = '获取验证码';
+							}
+							
+						},fail: (e) => {
+							this.smsText = '获取验证码';
+							console.log(e.errMsg);
+							uni.showToast({
+								icon: 'none',
+								title: e.errMsg
+							});
+						},
+					})
 				}
 			},
 			countDown () {
@@ -195,6 +192,15 @@
 		font-size: 30upx;
 		padding: 0 20upx;
 	}
+	.sms-button{
+		width: 90%;
+		height: 80upx;
+		font-size: 35upx;
+		color: #FFFFFF;
+		background-color: rgb(95,99,104);
+		border-radius: 5px; 
+		margin-top: 60upx;
+	}
 	.finish-button{
 		width: 90%;
 		height: 80upx;
@@ -204,28 +210,12 @@
 		border-radius: 5px; 
 		margin-top: 60upx;
 	}
-	.verification-code{
-		height: 60upx;
-		font-size: 30upx;
-		color: #FFFFFF;
-		background-color: rgb(95,99,104);
-	}
-	.active1{
+	.active{
 		background-color: rgb(26,130,210);
-		font-size: 30upx;
 	}
 	.title{
 		float: left;
 		width: 120upx;
 		font-size: 30upx;
-	}
-	.triangle{
-		width: 0;
-		height: 0;
-		margin-top: 22upx;
-		margin-left: 20upx;
-		border-width: 5px 5px 0;
-		border-style: solid;
-		border-color: rgb(68,68,68) transparent transparent;
 	}
 </style>
