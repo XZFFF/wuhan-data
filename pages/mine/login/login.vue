@@ -15,13 +15,13 @@
 							</view>
 						</view>
 						<view class="list">
-							<input class="input" type="text" v-model="tel" placeholder="请输入手机号" />
+							<input class="input" type="number" v-model="tel" placeholder="请输入手机号" />
 						</view>
 					</view>
 					<view class="login-list">
 						<text class="title">验证码</text>
 						<view class="list" style="width: 35%;">
-							<input class="input" v-model="verCode" placeholder="请输入验证码" />
+							<input class="input" type="number" v-model="verCode" placeholder="请输入验证码" />
 						</view>
 						<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification">
 							{{smsText}}
@@ -76,8 +76,7 @@
 				return false;
 			},
 			lands() {
-				let regNumber = /\d+/;
-				if (!(regNumber.test(this.tel)) || this.tel.length != 11) {
+				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的手机号'
@@ -143,8 +142,7 @@
 				if (this.smsText != '获取验证码') {
 					return;
 				}
-				let regNumber = /\d+/;
-				if (!(regNumber.test(this.tel)) || this.tel.length != 11) {
+				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的手机号'

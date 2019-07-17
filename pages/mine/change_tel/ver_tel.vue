@@ -11,7 +11,7 @@
 			<view class="change-list">
 				<text class="title">验证码</text>
 				<view class="list">
-					<input class="input"  placeholder="请输入验证码" v-model="verificationCode" />
+					<input class="input" type="number" placeholder="请输入验证码" v-model="verificationCode" />
 				</view>
 			</view>
 			<button :class="['sms-button',smsText==='获取验证码' ? 'active' : '']" style="font-size: 35upx;" @click="smsVerification" >
@@ -26,6 +26,8 @@
 
 <script>
 	import checkApi from '@/common/checkApi.js';
+	import verTelApiJson from "@/common/api/verTel.json";
+	import confirmChangeApiJson from "@/common/api/confirmChange.json";
 	export default {
 		props: {
 			second: {
@@ -35,11 +37,28 @@
 		},
 		data() {
 			return{
+				token: '',
 				smsText: '获取验证码',
 				seconds: 0,
 				timer: null,
 				tel: '',
 				verificationCode: '',
+			}
+		},
+		onShow: function() {
+			if (checkApi.checkToken()) {
+				this.token = uni.getStorageSync('token');
+			} else {
+				uni.showToast({
+					icon: 'none',
+					title: "您还没有登录，请先登录",
+					duration: 1000,
+				});
+				setTimeout(function() {
+					uni.navigateTo({
+						url: "../login/login"
+					})
+				}, 1000);
 			}
 		},
 		methods: {
@@ -48,14 +67,15 @@
 					this.smsText = 'loading';
 					checkApi.checkNetwork();
 					uni.request({
-						url: 'http://192.168.0.104/return1.php',
+						url: 'http://www.baidu.com',
 						//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
 						data: {
+							"token": this.token,
 							"verCode": this.verificationCode
 						},
 						success: (res) => {
 							try{
-								let dataApi = getVercodeApiJson;
+								let dataApi = verTelApiJson;
 								checkApi.isApi(dataApi);
 								uni.showToast({
 									icon: 'none',
@@ -83,7 +103,6 @@
 								});
 								this.smsText = '获取验证码';
 							}
-							
 						},fail: (e) => {
 							this.smsText = '获取验证码';
 							console.log(e.errMsg);
@@ -108,61 +127,52 @@
 				this.smsText = second
 			},
 			changeTel(e){
-				/*
-				if(this.verCode.length == null)
-				{
+				if(this.verificationCode.length == 0){
 					uni.showToast({
 						icon: 'none',
 						title: '请输入验证码'
-					});
+					})
 				}
-				else*/
-				{
-					const userID = uni.getStorageSync('user_id');
+				else{
 					uni.request({
-						url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
+						//url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
+						url: "http://www.baidu.com",
 						method: 'POST',
 						data: {
-							"id": userID,
+							"token": this.token,
 							"tel": this.tel,
 							"verCode": this.verificationCode,
 						},
 						success: (res) => {
-							let list=JSON.stringify(res.data);
-							console.log("返回数据状态:" + list);
 							try{
-								if(res.data.code == 0){
-									uni.showToast({
-										icon: 'none',
-										title: '验证码错误'
-									});
-								}
-								else if(res.data.code == 1){
-									setTimeout(function() {  
-									        uni.showToast({
-												title: '手机号更换成功',
-									        	icon: 'none',
-									        }); 
-									    }, 300);
-									uni.navigateTo({
-										url: "../../tabbar/mine/mine"
-									});
-								}
-							}catch(e){
+								let dataApi = confirmChangeApiJson;
+								checkApi.isApi(dataApi);
 								uni.showToast({
-									title: '请求错误',
 									icon: 'none',
-								}); 
+									title: "手机更换成功",
+									duration: 1000,
+								});
+								uni.navigateTo({
+									url: "../information/information",
+								});
+							}catch(e){
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
 							}
 						},
-						fail: () => {
+						fail: (e) => {
+							console.log(e.errMsg);
 							uni.showToast({
 								icon: 'none',
-								title: '网络异常,请稍后重试'
+								title: e.errMsg
 							});
 						},
-					});
+					})
 				}
+				
 			}
 		}
 	}

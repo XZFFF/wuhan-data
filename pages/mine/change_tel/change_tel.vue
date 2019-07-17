@@ -11,13 +11,13 @@
 			<view class="change-list">
 				<text class="title">原手机号</text>
 				<view class="list">
-					<input class="input"  placeholder="请输入原手机号" v-model="tel0" />
+					<input class="input" type="number" maxlength="11" placeholder="请输入原手机号" v-model="tel0" />
 				</view>
 			</view>
 			<view class="change-list">
 				<text class="title">新手机号</text>
 				<view class="list">
-					<input class="input"  placeholder="请输入新手机号" v-model="tel1" />
+					<input class="input" type="number" maxlength="11" placeholder="请输入新手机号" v-model="tel1" />
 				</view>
 			</view>
 			<button class="finish-button" @click="changeTel">
@@ -28,11 +28,30 @@
 </template>
 
 <script>
+	import checkApi from '@/common/checkApi.js';
+		import changeTelApiJson from "@/common/api/changeTel.json";
 	export default {
 		data() {
 			return{
 				tel0: '',
 				tel1: '',
+				token: ''
+			}
+		},
+		onShow: function() {
+			if (checkApi.checkToken()) {
+				this.token = uni.getStorageSync('token');
+			} else {
+				uni.showToast({
+					icon: 'none',
+					title: "您还没有登录，请先登录",
+					duration: 1000,
+				});
+				setTimeout(function() {
+					uni.navigateTo({
+						url: "../login/login"
+					})
+				}, 1000);
 			}
 		},
 		methods: {
@@ -44,62 +63,54 @@
 				return false;
 			},
 			changeTel(e){
-				/*let regNumber = /\d+/;
-				if (!(regNumber.test(this.tel)) || this.tel0.length != 11) {
+				if (this.tel0.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的原手机号'
 					});
-				else if(!(regNumber.test(this.tel1)) || this.tel1.length != 11)
+				}
+				if(this.tel1.length != 11)
 				{
 					uni.showToast({
 						icon: 'none',
 						title: '请输入正确的新手机号'
 					});
 				}
-				else*/
-				{
-					const userID = uni.getStorageSync('user_id');
+				else{
+					let userID = uni.getStorageSync('user_id');
+					checkApi.checkNetwork();
 					uni.request({
-						url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
+						//url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
+						url: "http://www.baidu.com",
 						method: 'POST',
 						data: {
-							"id": userID,
+							"token": this.token,
 							"oriTel": this.tel0,
 							"newTel": this.tel1,
 						},
 						success: (res) => {
-							let list=JSON.stringify(res.data);
-							console.log("返回数据状态:" + list);
 							try{
-								if(res.data.code == 0){
-									uni.showToast({
-										icon: 'none',
-										title: '原手机号输入错误'
-									});
-								}
-								else if(res.data.code == 1){
-									uni.navigateTo({
-										url: "ver_tel",
-									});
-								}
+								let dataApi = changeTelApiJson;
+								checkApi.isApi(dataApi);
+								uni.navigateTo({
+									url: "ver_tel",
+								});
 							}catch(e){
+								console.log(e.message);
 								uni.showToast({
 									icon: 'none',
-									title: '请求错误'
+									title: e.message
 								});
 							}
 						},
-						fail: () => {
+						fail: (e) => {
+							console.log(e.errMsg);
 							uni.showToast({
 								icon: 'none',
-								title: '网络异常,请稍后重试'
+								title: e.errMsg
 							});
 						},
 					});
-					uni.navigateTo({
-						url: "ver_tel",
-					})
 				}
 			}
 		}
