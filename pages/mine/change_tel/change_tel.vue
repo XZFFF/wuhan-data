@@ -9,25 +9,19 @@
 		</view>
 		<view style="margin-top: 80upx;">
 			<view class="change-list">
-				<view class="title" @click="goTelIndex" style="display: flex;">{{countryTel}}
-					<view class="triangle">
-					</view>
-				</view>
+				<text class="title">原手机号</text>
 				<view class="list">
-					<input class="input"  placeholder="请输入手机号" v-model="tel" />
+					<input class="input"  placeholder="请输入原手机号" v-model="tel0" />
 				</view>
 			</view>
 			<view class="change-list">
-				<text class="title">验证码</text>
-				<view class="list" style="width: 35%;">
-					<input class="input"  placeholder="请输入验证码" v-model="verificationCode" />
+				<text class="title">新手机号</text>
+				<view class="list">
+					<input class="input"  placeholder="请输入新手机号" v-model="tel1" />
 				</view>
-				<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification" >
-					{{smsText}}
-				</button>
 			</view>
 			<button class="finish-button" @click="changeTel">
-				更换手机
+				下一步
 			</button>
 		</view>
 	</view>
@@ -35,27 +29,11 @@
 
 <script>
 	export default {
-		props: {
-			second: {
-				type: Number,
-				default: 0
-			}
-		},
 		data() {
 			return{
-				smsText: '获取验证码',
-				seconds: 0,
-				timer: null,
-				tel: '',
-				verificationCode: '',
-				countryTel: "+86",
+				tel0: '',
+				tel1: '',
 			}
-		},
-		onShow() {
-			const changeTel = uni.getStorageSync('changeTel');
-			if(changeTel.flag)
-				this.countryTel = changeTel.tel;
-			uni.removeStorageSync('changeTel');
 		},
 		methods: {
 			goTelIndex(e) {
@@ -65,96 +43,18 @@
 				});
 				return false;
 			},
-			smsVerification(e) {
-				if(this.smsText === '获取验证码'){
-					/*let tel = this.tel0;
-					let code = this.verCode;
-					if (tel.length == 0) {
-						uni.showToast({
-							icon: 'none',
-							title: '手机号不能为空'
-						});
-						return;
-					}
-					else if (tel.length != 11) {
-						uni.showToast({
-							icon: 'none',
-							title: '请输入正确的手机号'
-						});
-						return;
-					}
-					else */
-					{
-						uni.request({
-							url: 'http://192.168.1.104/return1.php',
-							//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
-							data: {
-								"tel": this.tel0
-							},
-							success: (res) => {
-								let list=JSON.stringify(res.data);
-								console.log("返回数据状态:" + list);
-								if(res.data.code === 1){
-									uni.showToast({
-										icon: 'none',
-										title: '验证码发送成功'
-									});
-									console.log("已发送验证码");
-									this.second = 12;
-									this.seconds = this.second
-									this.countDown()
-									this.timer = setInterval(() => {
-									  this.seconds--
-									  if (this.seconds < 1) {
-									    //this.timeUp()
-										this.smsText = '获取验证码'
-										clearInterval(this.timer)
-									    return
-									  }
-									  this.countDown()
-									}, 1000)
-								}
-								else if(res.data.code === 0){
-									uni.showToast({
-										icon: 'none',
-										title: '验证码发送失败，请重试'
-									});
-								}
-							},fail: () => {
-								uni.showToast({
-									icon: 'none',
-									title: '网络异常,请稍后重试'
-								});
-							},
-						})
-					}
-				}
-			},
-			countDown () {
-				let seconds = this.seconds
-				let [second] = [1]
-				if (seconds > 1) {
-					second = Math.floor(seconds)
-				}
-				if (second < 10) {
-					second = '0' + second
-				}
-				second = '重新发送(' + second + 's)'
-				this.smsText = second
-			},
 			changeTel(e){
-				/*if(this.tel0.length != 11)
-				{
+				/*let regNumber = /\d+/;
+				if (!(regNumber.test(this.tel)) || this.tel0.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '请输入正确的手机号'
+						title: '请输入正确的原手机号'
 					});
-				}
-				else if(this.verCode.length == null)
+				else if(!(regNumber.test(this.tel1)) || this.tel1.length != 11)
 				{
 					uni.showToast({
 						icon: 'none',
-						title: '请输入验证码'
+						title: '请输入正确的新手机号'
 					});
 				}
 				else*/
@@ -165,27 +65,29 @@
 						method: 'POST',
 						data: {
 							"id": userID,
-							"tel": this.tel,
-							"verCode": this.verificationCode,
+							"oriTel": this.tel0,
+							"newTel": this.tel1,
 						},
 						success: (res) => {
 							let list=JSON.stringify(res.data);
 							console.log("返回数据状态:" + list);
-							if(res.data.code == 0){
+							try{
+								if(res.data.code == 0){
+									uni.showToast({
+										icon: 'none',
+										title: '原手机号输入错误'
+									});
+								}
+								else if(res.data.code == 1){
+									uni.navigateTo({
+										url: "ver_tel",
+									});
+								}
+							}catch(e){
 								uni.showToast({
 									icon: 'none',
-									title: '验证码错误'
+									title: '请求错误'
 								});
-							}
-							else if(res.data.code == 1){
-								setTimeout(function() {  
-								        uni.showToast({
-											title: '手机号更换成功',
-								        	icon: 'none',
-								        }); 
-								    }, 300);
-								uni.navigateBack()
-								return false;
 							}
 						},
 						fail: () => {
@@ -195,6 +97,9 @@
 							});
 						},
 					});
+					uni.navigateTo({
+						url: "ver_tel",
+					})
 				}
 			}
 		}
@@ -247,8 +152,8 @@
 	}
 	.title{
 		float: left;
-		width: 120upx;
-		font-size: 35upx;
+		width: 150upx;
+		font-size: 30upx;
 	}
 	.triangle{
 		width: 0;

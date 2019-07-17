@@ -197,6 +197,13 @@
 			}
 		},
 		{
+			"path": "pages/mine/change_tel/ver_tel",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "验证手机"
+			}
+		},
+		{
 			"path": "pages/mine/change_password/change_password",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
