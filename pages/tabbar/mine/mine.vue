@@ -240,31 +240,41 @@
 					})
 					//#endif
 				} else if (e.id == 1) {
-					try {
-						uni.removeStorageSync('home_slideshow');
-						uni.removeStorageSync('home_analysis');
-						uni.removeStorageSync('home_topic');
-						uni.removeStorageSync('analysis_list');
-						uni.removeStorageSync('topic_list');
-						uni.removeStorageSync('search_trend');
-						uni.removeStorageSync('user');
-						uni.removeStorageSync('collection_economy');
-						uni.removeStorageSync('collection_index');
-						uni.removeStorageSync('footprint_economy');
-						uni.removeStorageSync('footprint_index');
-						uni.removeStorageSync('changeTel');
-						uni.removeStorageSync('my_news');
-						uni.removeStorageSync('news_index');
-						uni.showModal({
-							title: "缓存清除成功",
-							icon: none,
-						})
-					} catch (e) {
-						uni.showModal({
-							title: "缓存清除失败",
-							icon: none,
-						})
-					}
+					uni.showModal({
+						title: '提示',
+						content: '是否清理全部缓存？',
+						success: res => {
+							if (res.confirm) {
+								try {
+									uni.removeStorageSync('home_slideshow');
+									uni.removeStorageSync('home_analysis');
+									uni.removeStorageSync('home_topic');
+									uni.removeStorageSync('analysis_list');
+									uni.removeStorageSync('topic_list');
+									uni.removeStorageSync('search_trend');
+									uni.removeStorageSync('user');
+									uni.removeStorageSync('collection_economy');
+									uni.removeStorageSync('collection_index');
+									uni.removeStorageSync('footprint_economy');
+									uni.removeStorageSync('footprint_index');
+									uni.removeStorageSync('changeTel');
+									uni.removeStorageSync('my_news');
+									uni.removeStorageSync('news_index');
+									uni.showToast({
+										icon: 'none',
+										title: "缓存清除成功",
+										duration: 500,
+									});
+								} catch (e) {
+									uni.showToast({
+										icon: 'none',
+										title: "缓存清除失败",
+										duration: 500,
+									});
+								}
+							}
+						}
+					});
 				} else if (e.id == 2) {
 					this.type = 'bottom-share';
 				} else {
