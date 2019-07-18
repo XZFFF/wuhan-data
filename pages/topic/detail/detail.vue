@@ -92,24 +92,8 @@
 			},
 			setHeight() {
 				let classHeight = 0;
-				let classInfo = _self.indexDetail;
-				for (let i = 0; i < classInfo.length; i++) {
-					let item = classInfo[i];
-					let h = 0;
-					if (item.classType == 'table') {
-						if (typeof item.classHeight === 'string') {
-							h = parseInt(item.classHeight);
-						} else {
-							h = 500;
-						}
-					} else if (item.classType == 'echarts') {
-						if (typeof item.classHeight === 'string') {
-							h = parseInt(item.classHeight);
-						} else {
-							h = 400;
-						}
-					}
-					classHeight += h;
+				if (_self.indexDetail) {
+					classHeight = checkApi.calClassInfoHeight(_self.indexDetail);
 				}
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = classHeight;

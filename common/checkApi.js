@@ -1,18 +1,18 @@
 module.exports = {
 	error: '',
 	isApi: function(apiData) {
-		if (apiData && apiData.errCode) {
-			if (apiData.errCode != 0 || apiData.errCode != '0') {
-				// TODO 记录到服务端日志表中
-				// 提示api获取错误
-				uni.showToast({
-					icon: 'none',
-					title: apiData.errMsg,
-					duration: 500
-				});
-				return false;
+		try {
+			if (apiData && apiData.errCode) {
+				if (apiData.errCode != 0 || apiData.errCode != '0') {
+					// TODO 记录到服务端日志表中
+					console.log(JSON.stringify(apiData));
+					return false;
+				}
+				return true;
 			}
-			return true;
+		} catch (e) {
+			console.log(JSON.stringify(apiData));
+			return false;
 		}
 	},
 	isJSON: function(str) {
@@ -64,6 +64,30 @@ module.exports = {
 			return false;
 		}
 		return true;
+	},
+	calClassInfoHeight: function(classInfo) {
+		let classHeight = 0;
+		try {
+			for (let i = 0; i < classInfo.length; i++) {
+				let item = classInfo[i];
+				let h = 0;
+				if (item.classType == 'table') {
+					let tableParam = item.tableBody[0].length;
+					h = (tableParam + 1) * 40;
+				} else if (item.classType == 'echarts') {
+					if (typeof item.classHeight === 'string') {
+						//h = parseInt(item.classHeight); // 不允许设置
+						h = 400;
+					}
+				} else if (item.classType == 'card') {
+					h = 200;
+				}
+				classHeight += h;
+			}
+		} catch (e) {
+			console.log(e.message);
+		}
+		return classHeight;
 	},
 	setFootprint: function(type, indexId, indexName, source) {
 		// 检查token令牌是否存在

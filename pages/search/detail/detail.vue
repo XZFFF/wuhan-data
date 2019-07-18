@@ -171,34 +171,17 @@
 				// #endif
 			},
 			setHeight() {
+				let timeConditionHeight = 200;
 				let classHeight = 0;
-				let classInfo = _self.indexDetail;
-
-				for (let i = 0; i < classInfo.length; i++) {
-					let item = classInfo[i];
-					let h = 0;
-					if (item.classType == 'table') {
-						if (typeof item.classHeight === 'string') {
-							h = parseInt(item.classHeight);
-						} else {
-							h = 500;
-						}
-					} else if (item.classType == 'echarts') {
-						if (typeof item.classHeight === 'string') {
-							h = parseInt(item.classHeight);
-						} else {
-							h = 400;
-						}
-					}
-					classHeight += h;
+				let relatedHeight = 0;
+				if (_self.indexDetail) {
+					classHeight = checkApi.calClassInfoHeight(_self.indexDetail);
+				}
+				if (_self.relatedData) {
+					relatedHeight = _self.relatedData.length == 0 ? 0 : (_self.relatedData.length + 1) * 40;
 				}
 				_self.classTotalHeight = classHeight;
-				let relatedHeight = 0;
-				if (_self.relatedData) {
-					let relatedInfo = _self.relatedData;
-					relatedHeight = relatedInfo.length == 0 ? 0 : (relatedInfo.length + 1) * 40;
-				}
-				_self.totalHeight = 200 + classHeight + relatedHeight;
+				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;
 			}
 		},
 	}
