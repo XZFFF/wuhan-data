@@ -44,7 +44,7 @@
 	// 引入公共样式
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import wdCardImage from '@/components/wd-card-image/wd-card-image.vue';
-	import  { isApi } from '@/common/checkApi.js';
+	import checkApi from '@/common/checkApi.js';
 	import homeApiJson from '@/common/api/home.json';
 
 	export default {
@@ -74,17 +74,17 @@
 		},
 		methods: {
 			initHomePage() {
-				this.checkNetwork();
+				checkApi.checkNetwork();
 				// 通过请求接口获取轮播图
 				uni.request({
-					url: 'http://localhost:8080/wuhan_data1/initHome',
+					url: 'http://www.baidu.com',
 					method: 'GET',
 					data: {},
 					success: res => {
 						// 获取homepage的数据
-						let dataApi = res.data;
+						let dataApi = homeApiJson;
 						// 检查json数据
-						isApi(dataApi);
+						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						this.slideshow = dataApi.data.slideshow;
 						this.analysis = dataApi.data.analysis;
@@ -97,19 +97,6 @@
 						this.getHomeStorage();
 					},
 					complete: () => {}
-				});
-			},
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						if (res.networkType == 'none') {
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
 				});
 			},
 			setHomeStorage() {

@@ -40,7 +40,7 @@
 				<view class="history-list-item" v-for="(item, index) in resultList" :key="index" @click="searchResultTap(item)">
 					<rich-text style="display: flex; align-items: center;" :nodes="item.nameNodes"></rich-text>
 					<view class="tag-view">
-						<uni-tag :text="item.source" size="small" :circle="true"></uni-tag>
+						<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
 					</view>
 				</view>
 			</view>
@@ -51,9 +51,9 @@
 
 <script>
 	import util from '@/components/wd-search/js/util.js';
-	import uniTag from '@/components/uni-tag/uni-tag.vue'
 	import uniList from '@/components/uni-list/uni-list.vue';
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
+	import wdTag from '@/components/wd-tag/wd-tag.vue';
 	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue';
 	import checkApi from '@/common/checkApi.js';
 	import searchApiJson from '@/common/api/search.json';
@@ -61,7 +61,7 @@
 
 	export default {
 		components: {
-			uniTag,
+			wdTag,
 			uniList,
 			uniListItem,
 			wdTrendListItem

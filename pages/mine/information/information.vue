@@ -157,11 +157,9 @@
 									uni.removeStorage({
 										key: "user"
 									});
-									setTimeout(function() {
-										uni.switchTab({
-											url: "../../tabbar/mine/mine"
-										});
-									}, 1000);
+									uni.switchTab({
+										url: "../../tabbar/mine/mine"
+									});
 									return;
 								}
 							}

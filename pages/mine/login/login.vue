@@ -98,8 +98,7 @@
 						title: '请输入验证码'
 					});
 					return;
-				}
-				else{
+				} else {
 					this.smsText = 'loading';
 					checkApi.checkNetwork();
 					uni.request({
@@ -123,9 +122,12 @@
 									title: '登录成功',
 									duration: 1000
 								});
-								uni.switchTab({
-									url: '../../tabbar/mine/mine',
-								})
+								setTimeout(function() {
+									uni.switchTab({
+										url: '../../tabbar/mine/mine',
+									})
+								}, 1000);
+
 							} catch (e) {
 								this.smsText = '获取验证码';
 								console.log(e.message);
@@ -145,7 +147,7 @@
 						},
 					})
 				}
-				
+
 			},
 			smsVerification(e) {
 				if (this.smsText != '获取验证码') {
