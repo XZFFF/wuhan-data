@@ -14,7 +14,7 @@
 					<input class="input" type="number" placeholder="请输入验证码" v-model="verificationCode" />
 				</view>
 			</view>
-			<button :class="['sms-button',smsText==='获取验证码' ? 'active' : '']" style="font-size: 35upx;" @click="smsVerification" >
+			<button :class="['sms-button',smsText==='获取验证码' ? 'active' : '']" style="font-size: 35upx;" @click="smsVerification">
 				{{smsText}}
 			</button>
 			<button class="finish-button" @click="changeTel">
@@ -36,7 +36,7 @@
 			}
 		},
 		data() {
-			return{
+			return {
 				token: '',
 				smsText: '获取验证码',
 				seconds: 0,
@@ -63,7 +63,7 @@
 		},
 		methods: {
 			smsVerification(e) {
-				if(this.smsText === '获取验证码'){
+				if (this.smsText === '获取验证码') {
 					this.smsText = 'loading';
 					checkApi.checkNetwork();
 					uni.request({
@@ -74,7 +74,7 @@
 							"verCode": this.verificationCode
 						},
 						success: (res) => {
-							try{
+							try {
 								let dataApi = verTelApiJson;
 								checkApi.isApi(dataApi);
 								uni.showToast({
@@ -86,16 +86,16 @@
 								this.seconds = this.second
 								this.countDown()
 								this.timer = setInterval(() => {
-								  this.seconds--
-								  if (this.seconds < 1) {
-								    //this.timeUp()
-									this.smsText = '获取验证码'
-									clearInterval(this.timer)
-								    return
-								  }
-								  this.countDown()
+									this.seconds--
+									if (this.seconds < 1) {
+										//this.timeUp()
+										this.smsText = '获取验证码'
+										clearInterval(this.timer)
+										return
+									}
+									this.countDown()
 								}, 1000)
-							}catch(e){
+							} catch (e) {
 								console.log(e.message);
 								uni.showToast({
 									icon: 'none',
@@ -103,7 +103,8 @@
 								});
 								this.smsText = '获取验证码';
 							}
-						},fail: (e) => {
+						},
+						fail: (e) => {
 							this.smsText = '获取验证码';
 							console.log(e.errMsg);
 							uni.showToast({
@@ -114,7 +115,7 @@
 					})
 				}
 			},
-			countDown () {
+			countDown() {
 				let seconds = this.seconds
 				let [second] = [1]
 				if (seconds > 1) {
@@ -126,104 +127,112 @@
 				second = '重新发送(' + second + 's)'
 				this.smsText = second
 			},
-			changeTel(e){
-				if(this.verificationCode.length == 0){
+			changeTel(e) {
+				if (this.verificationCode.length == 0) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入验证码'
-					})
+					});
+					return;
 				}
-				else{
-					uni.request({
-						//url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
-						url: "http://www.baidu.com",
-						method: 'POST',
-						data: {
-							"token": this.token,
-							"tel": this.tel,
-							"verCode": this.verificationCode,
-						},
-						success: (res) => {
-							try{
-								let dataApi = confirmChangeApiJson;
-								checkApi.isApi(dataApi);
-								uni.showToast({
-									icon: 'none',
-									title: "手机更换成功",
-									duration: 1000,
-								});
-								uni.navigateTo({
-									url: "../information/information",
-								});
-							}catch(e){
-								console.log(e.message);
-								uni.showToast({
-									icon: 'none',
-									title: e.message
-								});
-							}
-						},
-						fail: (e) => {
-							console.log(e.errMsg);
+				uni.request({
+					//url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
+					url: "http://www.baidu.com",
+					method: 'POST',
+					data: {
+						"token": this.token,
+						"tel": this.tel,
+						"verCode": this.verificationCode,
+					},
+					success: (res) => {
+						try {
+							let dataApi = confirmChangeApiJson;
+							checkApi.isApi(dataApi);
 							uni.showToast({
 								icon: 'none',
-								title: e.errMsg
+								title: "手机号更换成功",
+								duration: 1000,
 							});
-						},
-					})
-				}
-				
+							setTimeout(function() {
+								uni.navigateTo({
+									url: "../information/information",
+								})
+							}, 1000);
+
+						} catch (e) {
+							console.log(e.message);
+							uni.showToast({
+								icon: 'none',
+								title: e.message
+							});
+						}
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+						uni.showToast({
+							icon: 'none',
+							title: e.errMsg
+						});
+					},
+				})
 			}
 		}
 	}
 </script>
 
 <style>
-	.sure{
+	.sure {
 		height: 350upx;
 		width: 350upx;
-		display:block;
+		display: block;
 		margin-left: auto;
 		margin-right: auto;
 		padding-top: 100upx;
 	}
-	.change-list{
+
+	.change-list {
 		display: flex;
 		margin-top: 50upx;
 		margin-left: 50upx;
 	}
-	.list{
+
+	.list {
 		width: 70%;
 		float: left;
 	}
-	.input{
-		background-color: rgb(255,255,255);
+
+	.input {
+		background-color: rgb(255, 255, 255);
 		border-radius: 5px;
 		font-size: 30upx;
 		padding: 0 20upx;
 	}
-	.sms-button{
+
+	.sms-button {
 		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
 		color: #FFFFFF;
-		background-color: rgb(95,99,104);
-		border-radius: 5px; 
+		background-color: rgb(95, 99, 104);
+		border-radius: 5px;
 		margin-top: 60upx;
 	}
-	.finish-button{
+
+	.finish-button {
 		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
 		color: #FFFFFF;
-		background-color: rgb(26,130,210);
-		border-radius: 5px; 
+		background-color: rgb(26, 130, 210);
+		border-radius: 5px;
 		margin-top: 60upx;
 	}
-	.active{
-		background-color: rgb(26,130,210);
+
+	.active {
+		background-color: rgb(26, 130, 210);
 	}
-	.title{
+
+	.title {
 		float: left;
 		width: 120upx;
 		font-size: 30upx;

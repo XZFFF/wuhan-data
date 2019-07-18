@@ -88,7 +88,7 @@
 				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '请输入正确的手机号'
+						title: '手机格式错误'
 					});
 					return;
 				}
@@ -154,7 +154,7 @@
 				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '请输入正确的手机号'
+						title: '手机格式错误'
 					});
 					return;
 				}

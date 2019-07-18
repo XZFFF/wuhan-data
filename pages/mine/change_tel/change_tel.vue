@@ -29,10 +29,10 @@
 
 <script>
 	import checkApi from '@/common/checkApi.js';
-		import changeTelApiJson from "@/common/api/changeTel.json";
+	import changeTelApiJson from "@/common/api/changeTel.json";
 	export default {
 		data() {
-			return{
+			return {
 				tel0: '',
 				tel1: '',
 				token: ''
@@ -62,117 +62,134 @@
 				});
 				return false;
 			},
-			changeTel(e){
+			changeTel(e) {
 				if (this.tel0.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '请输入正确的原手机号'
+						title: '原手机号码格式错误',
+						duration: 500
 					});
+					return;
 				}
-				if(this.tel1.length != 11)
-				{
+				if (this.tel1.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '请输入正确的新手机号'
+						title: '新手机号码格式错误',
+						duration: 500
 					});
+					return;
 				}
-				else{
-					let userID = uni.getStorageSync('user_id');
-					checkApi.checkNetwork();
-					uni.request({
-						//url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
-						url: "http://www.baidu.com",
-						method: 'POST',
-						data: {
-							"token": this.token,
-							"oriTel": this.tel0,
-							"newTel": this.tel1,
-						},
-						success: (res) => {
-							try{
-								let dataApi = changeTelApiJson;
-								checkApi.isApi(dataApi);
-								uni.navigateTo({
-									url: "ver_tel",
-								});
-							}catch(e){
-								console.log(e.message);
-								uni.showToast({
-									icon: 'none',
-									title: e.message
-								});
-							}
-						},
-						fail: (e) => {
-							console.log(e.errMsg);
+				if (this.tel0 == this.tel1) {
+					uni.showToast({
+						icon: 'none',
+						title: '手机号不能相同',
+						duration: 500
+					});
+					return;
+				}
+				let token = uni.getStorageSync('token');
+				checkApi.checkNetwork();
+				uni.request({
+					//url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
+					url: "http://www.baidu.com",
+					method: 'POST',
+					data: {
+						"token": this.token,
+						"oriTel": this.tel0,
+						"newTel": this.tel1,
+					},
+					success: (res) => {
+						try {
+							let dataApi = changeTelApiJson;
+							checkApi.isApi(dataApi);
+							uni.navigateTo({
+								url: "ver_tel",
+							});
+						} catch (e) {
+							console.log(e.message);
 							uni.showToast({
 								icon: 'none',
-								title: e.errMsg
+								title: e.message
 							});
-						},
-					});
-				}
+						}
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+						uni.showToast({
+							icon: 'none',
+							title: e.errMsg
+						});
+					},
+				});
 			}
 		}
 	}
 </script>
 
 <style>
-	.sure{
+	.sure {
 		height: 350upx;
 		width: 350upx;
-		display:block;
+		display: block;
 		margin-left: auto;
 		margin-right: auto;
 		padding-top: 100upx;
 	}
-	.change-list{
+
+	.change-list {
 		display: flex;
 		margin-top: 50upx;
 		margin-left: 50upx;
 	}
-	.list{
+
+	.list {
 		width: 70%;
 		float: left;
 	}
-	.input{
-		background-color: rgb(255,255,255);
+
+	.input {
+		background-color: rgb(255, 255, 255);
 		border-radius: 5px;
 		font-size: 30upx;
 		padding: 0 20upx;
 	}
-	.finish-button{
+
+	.finish-button {
 		width: 90%;
 		height: 80upx;
 		font-size: 35upx;
 		color: #FFFFFF;
-		background-color: rgb(26,130,210);
-		border-radius: 5px; 
+		background-color: rgb(26, 130, 210);
+		border-radius: 5px;
 		margin-top: 60upx;
 	}
-	.verification-code{
+
+	.verification-code {
 		width: 35%;
 		height: 60upx;
 		font-size: 30upx;
 		color: #FFFFFF;
-		background-color: rgb(95,99,104);
+		background-color: rgb(95, 99, 104);
 	}
-	.active1{
-		background-color: rgb(26,130,210);
+
+	.active1 {
+		background-color: rgb(26, 130, 210);
 		font-size: 30upx;
 	}
-	.title{
+
+	.title {
 		float: left;
 		width: 150upx;
 		font-size: 30upx;
 	}
-	.triangle{
+
+	.triangle {
 		width: 0;
 		height: 0;
 		margin-top: 22upx;
 		margin-left: 20upx;
 		border-width: 5px 5px 0;
 		border-style: solid;
-		border-color: rgb(68,68,68) transparent transparent;
+		border-color: rgb(68, 68, 68) transparent transparent;
 	}
 </style>

@@ -7,18 +7,18 @@
 					<image class="head" :src="user.head"></image>
 					<view class="information">
 						<view class="name-rank" style="display: inline-flex;">
-							<view class="username" style="font-size: 35upx;float: left;margin-top: 15upx;">
+							<view v-if="user.realName" class="username" style="font-size: 35upx;float: left;margin-top: 15upx;">
 								{{user.realName}}
 							</view>
-							<view class="rank">
+							<view v-if="user.roleName" class="rank">
 								{{user.roleName}}
 							</view>
 						</view>
-						<view class="tel" style="font-size: 30upx;">
+						<view v-if="user.tel" class="tel" style="font-size: 30upx;">
 							{{user.tel}}
 						</view>
 					</view>
-					<view class="right-arrow"></view>
+					<view v-if="user.userId" class="right-arrow"></view>
 				</view>
 			</view>
 			<view class="loginPrompt" v-if="!token" @click="goLogin(e)">
@@ -190,6 +190,7 @@
 						title: "您还没有登录，请先登录",
 						duration: 500,
 					});
+					return;
 				} else {
 					uni.navigateTo({
 						url: "../../mine/information/information"
