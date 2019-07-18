@@ -51,6 +51,7 @@
 				_self.indexName = e.indexName;
 				_self.isFavorite = e.isFavorite;
 			}
+			console.log("进入经济分析栏目详情页;" + JSON.stringify(e));
 			this.initNav();
 			// 初始化页面数据
 			this.initAnalysisDetail();
@@ -69,6 +70,7 @@
 			this.initFavColor("ffffff");
 		},
 		methods: {
+			// 初始化数据，请求数据进行页面渲染
 			initAnalysisDetail() {
 				checkApi.checkNetwork();
 				let dataApi;
@@ -79,18 +81,17 @@
 						indexId: "2",
 					},
 					success: (res) => {
-						console.log("成功获取数据");
+						console.log("获取成功;" + JSON.stringify(res.data));
 						dataApi = res.data;
 						//dataApi = analysisDetailApiJson;
 					},
 					fail: (e) => {
-						console.log(e.errMsg);
+						console.log("获取失败;" + JSON.stringify(e));
 						dataApi = analysisDetailApiJson;
 					},
 					complete: () => {
 						// 检查json数据
 						checkApi.isApi(dataApi);
-						console.log(JSON.stringify(dataApi));
 						// 设置各部分数据
 						try {
 							//_self.indexId = dataApi.data.baseInfo.indexId;
@@ -102,12 +103,13 @@
 							// 计算classHeight及总Height
 							this.setHeight();
 						} catch (e) {
-							console.log(e.message);
+							console.log("发生异常;" + JSON.stringify(e));
 						}
 
 					}
 				});
 			},
+			// 点击确认按钮,根据筛选条件请求数据进行图例更新
 			onConfirm(val) {
 				checkApi.checkNetwork();
 				let dataApi;
@@ -128,9 +130,9 @@
 						"timeFreq": val.timeFreq
 					},
 					success: (res) => {
+						console.log("获取成功;" + JSON.stringify(res.data));
 						try {
 							dataApi = res.data;
-							console.log(JSON.stringify(dataApi));
 							// 检查json数据
 							checkApi.isApi(dataApi);
 							// 设置各部分数据
@@ -138,15 +140,16 @@
 							// 计算classHeight及总Height
 							this.setHeight();
 						} catch (e) {
-							console.log(e.message);
+							console.log("发生异常;" + JSON.stringify(e));
 						}
 					},
 					fail: (e) => {
-						console.log(e.errMsg);
+						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {}
 				});
 			},
+			// 渲染导航栏title及icon
 			initNav() {
 				// 渲染导航栏title
 				uni.setNavigationBarTitle({
@@ -161,6 +164,7 @@
 					this.initFavColor("#f9da74");
 				}
 			},
+			// 根据参数初始化导航栏中按钮的颜色
 			initFavColor(initColor) {
 				// 更新导航栏收藏按钮颜色
 				let pages = getCurrentPages();
@@ -177,6 +181,7 @@
 				});
 				// #endif
 			},
+			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
 			setHeight() {
 				let timeConditionHeight = 200;
 				let classHeight = 0;

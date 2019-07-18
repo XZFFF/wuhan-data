@@ -58,14 +58,17 @@
 			this.classTotalHeight = 400;
 		},
 		methods: {
+			// 初始化数据，请求数据进行页面渲染
 			initTopicDetail() {
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					url: 'http://wuhandata.applinzi.com/analysisDetail.php',
+					url: 'http://www.baidu.com',
 					method: 'GET',
 					data: {},
-					success: res => {
+					success: (res) => {
+						console.log("获取成功;" + JSON.stringify(res.data));
+						// 目前用的模拟数据
 						dataApi = topicDetailApiJson;
 					},
 					fail: (e) => {
@@ -73,23 +76,28 @@
 						dataApi = topicDetailApiJson;
 					},
 					complete: () => {
-						// 检查json数据
-						checkApi.isApi(dataApi);
-						// 设置各部分数据
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
-						_self.indexDetail = dataApi.data.classInfo;
-						// 计算classHeight及总Height
-						this.setHeight();
+						try {
+							// 检查json数据
+							checkApi.isApi(dataApi);
+							// 设置各部分数据
+							_self.indexId = dataApi.data.baseInfo.indexId;
+							_self.indexName = dataApi.data.baseInfo.indexName;
+							_self.indexDetail = dataApi.data.classInfo;
+							// 计算classHeight及总Height
+							this.setHeight();
+						} catch (e) {
+							console.log("发生异常;" + JSON.stringify(e));
+						}
 					}
 				});
 			},
+			// 渲染导航栏title
 			initNav() {
-				// 渲染导航栏title
 				uni.setNavigationBarTitle({
 					title: this.indexName
 				});
 			},
+			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
 			setHeight() {
 				let classHeight = 0;
 				if (_self.indexDetail) {
