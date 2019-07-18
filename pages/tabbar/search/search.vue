@@ -40,7 +40,7 @@
 				<view class="history-list-item" v-for="(item, index) in resultList" :key="index" @click="searchResultTap(item)">
 					<rich-text style="display: flex; align-items: center;" :nodes="item.nameNodes"></rich-text>
 					<view class="tag-view">
-						<uni-tag :text="item.source" :type="item.tagType" size="small" :circle="true"></uni-tag>
+						<uni-tag :text="item.source" size="small" :circle="true"></uni-tag>
 					</view>
 				</view>
 			</view>

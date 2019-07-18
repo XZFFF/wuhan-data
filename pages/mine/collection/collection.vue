@@ -11,20 +11,24 @@
 		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" style="height: 2000upx;">
 			<swiper-item>
 				<view class="uni-list">
-					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list1" :key="key" @click="goDetailPage(value)">
+					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list1" :key="key" @click="goDetailPage(item)">
 						<view class="list-body">
-							<view class="list-text" style="font-size: 35upx">{{value.title}}</view>
-							<view class="list-label">{{value.label}}</view>
+							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
+							<view class="tag-view">
+								<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+							</view>
 						</view>
 					</view>
 				</view>
 			</swiper-item>
 			<swiper-item>
 				<view class="uni-list">
-					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in menu_list2" :key="key" @click="goDetailPage(value)">
+					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list2" :key="key" @click="goDetailPage(item)">
 						<view class="list-body">
-							<view class="list-text" style="font-size: 35upx">{{value.title}}</view>
-							<view class="list-label">{{value.label}}</view>
+							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
+							<view class="tag-view">
+								<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -34,10 +38,17 @@
 </template>
 
 <script>
+	import wdTag from '@/components/wd-tag/wd-tag.vue';
+	import checkApi from '@/common/checkApi.js';
+	import getCollectApiJson from "@/common/api/getCollect.json";
+
 	export default {
+		components: {
+			wdTag,
+		},
 		data() {
 			return {
-				title: 'list',
+				token: "",
 				scrollLeft: 0,
 				isClickChange: false,
 				tabIndex: 0,
@@ -51,74 +62,47 @@
 			}
 		},
 		onShow: function() {
-			try {
-				const collectionEconomy = uni.getStorageSync('collection_economy');
-				if (collectionEconomy) {
-					this.menu_list1 = collectionEconomy
-				} else {
-					this.initCollectionEconomy();
-				}
-				const collectionIndex = uni.getStorageSync('collection_index');
-				if (collectionIndex) {
-					this.menu_list2 = collectionIndex
-				} else {
-					this.initCollectionEconomy();
-				}
-			} catch (e) {
-				console.log('无法从本地缓存获取相应数据');
+			if (checkApi.checkToken()) {
+				this.token = uni.getStorageSync('token');
+			} else {
+				uni.showToast({
+					icon: 'none',
+					title: "您还没有登录，请先登录",
+					duration: 1000,
+				});
+				setTimeout(function() {
+					uni.switchTab({
+						url: "../../tabbar/mine/mine"
+					});
+				}, 1000);
 			}
-			this.checkNetwork();
-			this.initCollectionEconomy();
+			this.initCollect();
+			const collectionEconomy = uni.getStorageSync('collection_economy');
+			const collectionIndex = uni.getStorageSync('collection_index');
 		},
 		methods: {
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						console.log(res.networkType);
-						if (res.networkType == 'none') {
-							console.log('network:' + res.networkType);
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
-				});
-			},
-			initCollectionEconomy() {
-				const userID = uni.getStorageSync('user_id');
+			initCollect() {
+				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.11:8080/wuhan_data1/getCollect',
-					method: 'GET',
+					url: 'http://www.baidu.com',
+					method: 'POST',
 					data: {
-						"id": userID,
+						"token": this.token,
 					},
-					success: res => {
-						let list=JSON.stringify(res.data);
-						console.log("返回数据状态:" + list);
-						this.menu_list1 = res.data.economyData;
-						this.menu_list2 = res.data.indexData;
-						uni.setStorageSync({
-							key: 'collection_economy',
-							data: this.menu_list1,
-							success: function() {
-								console.log('成功请求经济分析收藏数据并存入本地缓存');
-							}
-						});
-						uni.setStorageSync({
-							key: 'collection_index',
-							data: this.menu_list2,
-							success: function() {
-								console.log('成功请求指标数据收藏数据并存入本地缓存');
-							}
-						});
+					success: (res) => {
+						try {
+							let dataApi = getCollectApiJson;
+							checkApi.isApi(dataApi);
+							this.menu_list1 = dataApi.data.economyData;
+							this.menu_list2 = dataApi.data.indexData;
+							uni.setStorageSync('collection_economy', JSON.stringify(this.menu_list1));
+							uni.setStorageSync('collection_index', JSON.stringify(this.menu_list2));
+						} catch (e) {
+							console.log(e.errMsg);
+						}
 					},
 					fail: (e) => {
-						uni.showModal({
-							title: "网络错误,请稍后重试",
-							icon: none,
-						})
+						console.log(e.errMsg);
 					},
 				});
 			},
@@ -131,7 +115,7 @@
 				}
 				let tabBar = await this.getElSize("tab-bar"),
 					tabBarScrollLeft = tabBar.scrollLeft;
-				
+
 				this.isClickChange = false;
 				this.tabIndex = index; //一旦访问data就会出问题
 			},
@@ -161,43 +145,41 @@
 </script>
 
 <style>
-	.swiper-tab{
+	.swiper-tab {
 		width: 100%;
 		height: 100upx;
 		background-color: #3A82CC;
-		border-bottom: 1px solid rgb(229,229,229);
+		border-bottom: 1px solid rgb(229, 229, 229);
 	}
-	.swiper-tab-list{
+
+	.swiper-tab-list {
 		margin-top: 25upx;
 		width: 50%;
 		height: 70upx;
 		font-size: 32upx;
 		color: #FFFFFF;
 	}
-	.active{
+
+	.active {
 		border-bottom: 2px solid #FFFFFF;
 	}
-	.list-cell{
-		border-bottom: 2upx solid rgb(229,229,229);	
+
+	.list-cell {
+		border-bottom: 2upx solid rgb(229, 229, 229);
 	}
-	.list-body{
+
+	.list-body {
 		height: 80upx;
 		display: inline-flex;
 	}
-	.list-text{
+
+	.list-text {
 		margin-left: 50upx;
 		margin-top: 15upx;
 	}
-	.list-label{
-		margin-left: 40upx;
-		margin-top: 20upx;
-		padding: 0 30upx;
-		min-width: 0;
-		height: 45upx;
-		border-radius: 20px; 
-		background-color: #1A82D2;
-		font-size: 25upx;
-		color: #FFFFFF;
-		text-align: center;
+
+	.tag-view {
+		margin: 20upx 40upx;
+		display: inline-block;
 	}
 </style>

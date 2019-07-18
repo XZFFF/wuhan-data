@@ -22,24 +22,6 @@ const util = {
 		} else {
 			item.nameNodes = `<div style="font-size: 14px;color: #333;line-height: 1.5;">${item.name}</div>`;
 		}
-
-		if (item.source) {
-			switch (item.source) {
-				case "国统":
-					item.tagType = "primary";
-					break;
-				case "湖统":
-					item.tagType = "success";
-					break;
-				case "大数据":
-					item.tagType = "warning";
-					break;
-				default:
-					item.tagType = "default";
-					break;
-			}
-		}
-
 		return item;
 	},
 
