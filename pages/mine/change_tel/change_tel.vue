@@ -150,8 +150,9 @@
 	.input {
 		background-color: rgb(255, 255, 255);
 		border-radius: 5px;
-		font-size: 30upx;
+		font-size: 35upx;
 		padding: 0 20upx;
+		height: 60upx;
 	}
 
 	.finish-button {
@@ -180,7 +181,9 @@
 	.title {
 		float: left;
 		width: 150upx;
-		font-size: 30upx;
+		font-size: 35upx;
+		line-height: 60upx;
+		text-align: center;
 	}
 
 	.triangle {

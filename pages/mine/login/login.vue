@@ -20,7 +20,7 @@
 					</view>
 					<view class="login-list">
 						<text class="title">验证码</text>
-						<view class="list" style="width: 35%;">
+						<view class="list" style="width: 40%;">
 							<input class="input" type="number" v-model="verCode" placeholder="请输入验证码" />
 						</view>
 						<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification">
@@ -251,7 +251,7 @@
 	}
 
 	.login-list {
-		display: flex;
+		height: 60upx;
 		margin-top: 60upx;
 		margin-left: 50upx;
 	}
@@ -260,9 +260,12 @@
 		float: left;
 		width: 120upx;
 		font-size: 35upx;
+		line-height: 60upx;
+		text-align: center;
 	}
 
 	.list {
+		height: 60upx;
 		width: 70%;
 		float: left;
 	}
@@ -270,8 +273,9 @@
 	.input {
 		background-color: rgb(247, 247, 247);
 		border-radius: 5px;
-		font-size: 30upx;
+		font-size: 35upx;
 		padding: 0 20upx;
+		height: 60upx;
 	}
 
 	.verification-code {

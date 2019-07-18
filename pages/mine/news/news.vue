@@ -6,9 +6,9 @@
 					<view class="uni-list-cell-navigate">
 						<view class="list-cell-title">{{value.title}}</view>
 						<view class="list-cell-badge">{{value.label}}</view>
-						<view class="list-cell-datetime">{{value.datetime}}</view>
+						<view class="list-cell-datetime">{{value.dateTime}}</view>
 					</view>
-					<view class="list-cell-text uni-ellipsis">{{value.text}}</view>
+					<view class="list-cell-text uni-ellipsis">{{value.content}}</view>
 				</view>
 			</view>
 		</view>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+	import checkApi from '@/common/checkApi.js';
+	import getNewsApiJson from "@/common/api/getMessage.json";
 	export default {
 		data() {
 			return {
@@ -23,17 +25,20 @@
 			}
 		},
 		onShow: function() {
-			try {
-				const myNews = uni.getStorageSync('my_news');
-				if (myNews) {
-					this.menu_list = myNews
-				} else {
-					this.initMyNews();
-				}
-			} catch (e) {
-				console.log('无法从本地缓存获取相应数据');
+			if (checkApi.checkToken()) {
+				this.token = uni.getStorageSync('token');
+			} else {
+				uni.showToast({
+					icon: 'none',
+					title: "您还没有登录，请先登录",
+					duration: 1000,
+				});
+				setTimeout(function() {
+					uni.switchTab({
+						url: "../../tabbar/mine/mine"
+					});
+				}, 1000);
 			}
-			this.checkNetwork();
 			this.initMyNews();
 		},
 		methods: {
@@ -53,28 +58,39 @@
 				});
 			},
 			initMyNews() {
-				const userID = uni.getStorageSync('user_id');
+				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.11:8080/wuhan_data1/getMessage',
-					method: 'GET',
+					url: 'http://www.baidu.com',
+					method: 'POST',
 					data: {
-						"id": userID,
-						},
-					success: res => {
-						let list=JSON.stringify(res.data);
-						console.log("返回数据状态:" + list);
-						this.menu_list = res.data.data;
-						uni.setStorageSync({
-							key: 'my_news',
-							data: this.menu_list,
-							success: function() {
-								console.log('成功请求消息数据并存入本地缓存');
-							}
-						});
+						"token": this.token,
 					},
-					fail: (e) => {},
-					complete: () => {}
+					success: (res) => {
+						try {
+							let dataApi = getNewsApiJson;
+							checkApi.isApi(dataApi);
+							this.menu_list = dataApi.data.message;
+							uni.setStorageSync('my_news',this.menu_list);
+						} catch (e) {
+							console.log(e.errMsg);
+							this.getCollectStorage();
+						}
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+						this.getNewsStorage();
+					},
 				});
+			},
+			getCollectStorage() {
+				try {
+					let myNews = uni.getStorageSync('my_news');
+					if (myNews) {
+						this.menu_list = myNews;
+					}
+				} catch (e) {
+					console.log(e.message);
+				}
 			},
 			goDetailPage(index) {
 				uni.setStorageSync({

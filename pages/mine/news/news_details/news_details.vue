@@ -3,11 +3,11 @@
 		<view class='title'>
 			{{title}}
 		</view>
-		<view class='datetime'>
-			{{datetime}}
+		<view class='dateTime'>
+			{{dateTime}}
 		</view>
-		<view class='text' >
-			{{text}}
+		<view class='content' >
+			{{content}}
 		</view>
 	</view>
 </template>
@@ -17,17 +17,17 @@
 		data() {
 			return{
 				title: '',
-				datetime: '',
-				text: ""
+				dateTime: '',
+				content: ""
 			}
 		},
 		onShow: function() {
-			const index = uni.getStorageSync('news_index');
+			let index = uni.getStorageSync('news_index');
+			const myNews = uni.getStorageSync('my_news');
 			try{
-				const myNews = uni.getStorageSync('my_news');
 				this.title = myNews[index].title;
-				this.datetime = myNews[index].datetime;
-				this.text = myNews[index].text;
+				this.dateTime = myNews[index].dateTime;
+				this.content = myNews[index].content;
 			}
 			catch (e) {
 				console.log('无法从本地缓存获取相应数据');
@@ -42,13 +42,13 @@
 		font-size: 50upx;
 		text-align: center;
 	}
-	.datetime{
+	.dateTime{
 		text-align: right;
 		margin-right: 100upx;
 		margin-bottom: 15upx;
 		font-size: 25upx;
 	}
-	.text{
+	.content{
 		font-size: 35upx;
 		margin-left: 30upx;
 		margin-right: 30upx;
