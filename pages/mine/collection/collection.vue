@@ -11,7 +11,7 @@
 		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" style="height: 2000upx;">
 			<swiper-item>
 				<view class="uni-list">
-					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list1" :key="key" @click="goDetailPage(item)">
+					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list1" :key="key" @click="goAnalysisDetail(item)">
 						<view class="list-body">
 							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
 							<view class="tag-view">
@@ -23,7 +23,7 @@
 			</swiper-item>
 			<swiper-item>
 				<view class="uni-list">
-					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list2" :key="key" @click="goDetailPage(item)">
+					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list2" :key="key" @click="goSearchDetail(item)">
 						<view class="list-body">
 							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
 							<view class="tag-view">
@@ -119,6 +119,16 @@
 				} catch (e) {
 					console.log(e.message);
 				}
+			},
+			goAnalysisDetail(item) {
+				uni.navigateTo({
+					url: "../../analysis/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName
+				})
+			},
+			goSearchDetail(item) {
+				uni.navigateTo({
+					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source
+				})
 			},
 			async changeTab(e) {
 				let index = e.detail.current;

@@ -64,5 +64,38 @@ module.exports = {
 			return false;
 		}
 		return true;
+	},
+	setFootprint: function(type, indexId, indexName, source) {
+		// 检查token令牌是否存在
+		let token = uni.getStorageSync('token');
+		if (!token) {
+			return false;
+		}
+		let typeName = '';
+		if (type == 'analysis') {
+			typeName = "经济分析";
+		} else if (type == 'search') {
+			typeName = "指标数据";
+		} else {
+			typeName = "未知类型";
+		}
+		uni.request({
+			url: 'http://www.baidu.com',
+			method: 'POST',
+			data: {
+				"token": token,
+				"type": typeName,
+				"indexId": indexId,
+				"indexName": indexName,
+				"source": source
+			},
+			success: (res) => {
+				return true;
+			},
+			fail(e) {
+				return false;
+			}
+		});
+		return true;
 	}
 }

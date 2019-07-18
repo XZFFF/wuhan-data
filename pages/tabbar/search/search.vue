@@ -153,19 +153,6 @@
 					complete: () => {}
 				});
 			},
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						if (res.networkType == 'none') {
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
-				});
-			},
 			/**
 			 * 清理历史搜索数据
 			 */

@@ -120,6 +120,16 @@
 					console.log(e.message);
 				}
 			},
+			goAnalysisDetail(item) {
+				uni.navigateTo({
+					url: "../../analysis/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName
+				})
+			},
+			goSearchDetail(item) {
+				uni.navigateTo({
+					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source
+				})
+			},
 			async changeTab(e) {
 				let index = e.detail.current;
 				if (this.isClickChange) {
