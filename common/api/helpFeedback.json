@@ -4,13 +4,16 @@
 	"data": {
 		"help": [{
 			"id": "1",
-			"title": "如何绑定/换绑手机号？"
+			"title": "如何绑定/换绑手机号？",
+			"content": "在固定变量名模式下，inputs动态改变长度时，不会对已有值的项进行初始化\r\n所谓固定变量名模式就是inputsArray中的所有项都填写唯一的自定义变量名属性--variableName\r\n经测试，在自定义组件模式下，inputsArray使用unshift、splice等会改变长度的方法时，switch能够监听到inputsArray的长度改变，而(模板模式与H5)不能监听到长度的改变，只有对inputsArray重新赋值才能监听到长度的改变\r\n而若switch能监听到inputsArray长度改变时，可以去除一些无用的数据,故若使用模板模式编译则对inputsArray长度变化时，建议对inputsArray重新赋值"
 		}, {
 			"id": "2",
-			"title": "如何获得职位认证？"
+			"title": "如何获得职位认证？",
+			"content": ""
 		}, {
 			"id": "3",
-			"title": "数据下载失败？"
+			"title": "数据下载失败？",
+			"content": ""
 		}]
 	}
 }

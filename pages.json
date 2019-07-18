@@ -160,6 +160,13 @@
 			}
 		},
 		{
+			"path": "pages/mine/help_feedback/helpDetail",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "帮助详情页"
+			}
+		},
+		{
 			"path": "pages/mine/feedback/feedback",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",

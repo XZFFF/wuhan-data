@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="uni-list">
-			<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list" :key="key" @click="goHelpDetail(item.id)">
+			<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list" :key="key" @click="goHelpDetail(item)">
 				<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
 					<view class="uni-media-list-body" style="justify-content: center">
 						<view class="uni-media-list-text" style="font-size: 35upx">{{item.title}}</view>
@@ -60,9 +60,10 @@
 					console.log(e.message);
 				}
 			},
-			goHelpDetail(id) {
+			goHelpDetail(item) {
+				uni.setStorageSync('help_content', item.content);
 				uni.navigateTo({
-					url: "help?id=" + id
+					url: "helpDetail?title="+item.title
 				});
 			},
 			goFeedback() {
