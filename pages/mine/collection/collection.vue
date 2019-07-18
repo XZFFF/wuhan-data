@@ -77,8 +77,6 @@
 				}, 1000);
 			}
 			this.initCollect();
-			const collectionEconomy = uni.getStorageSync('collection_economy');
-			const collectionIndex = uni.getStorageSync('collection_index');
 		},
 		methods: {
 			initCollect() {
@@ -95,16 +93,32 @@
 							checkApi.isApi(dataApi);
 							this.menu_list1 = dataApi.data.economyData;
 							this.menu_list2 = dataApi.data.indexData;
-							uni.setStorageSync('collection_economy', JSON.stringify(this.menu_list1));
-							uni.setStorageSync('collection_index', JSON.stringify(this.menu_list2));
+							uni.setStorageSync('collect_economy', JSON.stringify(this.menu_list1));
+							uni.setStorageSync('collect_index', JSON.stringify(this.menu_list2));
 						} catch (e) {
 							console.log(e.errMsg);
+							this.getCollectStorage();
 						}
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
+						this.getCollectStorage();
 					},
 				});
+			},
+			getCollectStorage() {
+				try {
+					let collectEconomy = uni.getStorageSync('collect_economy');
+					if (collectEconomy) {
+						this.menu_list1 = collectEconomy;
+					}
+					let collectIndex = uni.getStorageSync('collect_index');
+					if (collectIndex) {
+						this.menu_list2 = collectIndex;
+					}
+				} catch (e) {
+					console.log(e.message);
+				}
 			},
 			async changeTab(e) {
 				let index = e.detail.current;
