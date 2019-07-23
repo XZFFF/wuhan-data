@@ -95,12 +95,15 @@
 			initUser() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://www.baidu.com',
+					//url: 'http://www.baidu.com',
+					url: 'http://192.168.124.11:8080/wuhan_data1/getUserApp',
+					method: 'POST',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
-						let dataApi = getUserApiJson;
+						//let dataApi = getUserApiJson;
+						let dataApi = res.data;
 						checkApi.isApi(dataApi);
 						this.user = dataApi.data;
 						let userStr = JSON.stringify(this.user);

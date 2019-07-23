@@ -103,17 +103,20 @@
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
-						url: "http://www.baidu.com", //仅为示例，并非真实接口地址。
+						url: "http://192.168.124.11:8080/wuhan_data1/loginaa", //仅为示例，并非真实接口地址。
+						//url: "http://www.baidu.com",
 						data: {
 							"tel": this.tel,
-							"password": this.passw
+							"verCode": this.verCode
 						},
 						success: (res) => {
 							try {
-								let dataApi = loginApiJson;
+								let dataApi = res.data;
 								checkApi.isApi(dataApi);
 								console.log(dataApi);
-								let tokenStr = JSON.stringify(dataApi.data.token);
+								//let tokenStr = JSON.stringify(dataApi.data.token);
+								let tokenStr = dataApi.data.token;
+								console.log("token:"+tokenStr);
 								let userStr = JSON.stringify(dataApi.data);
 								uni.setStorageSync('token', tokenStr);
 								uni.setStorageSync('user', userStr);
@@ -162,13 +165,14 @@
 				}
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://www.baidu.com',
+					url: 'http://192.168.124.11:8080/wuhan_data1/getVercodeApp',
+					method: 'POST',
 					data: {
 						"tel": this.tel
 					},
 					success: (res) => {
 						try {
-							let dataApi = getVercodeApiJson;
+							let dataApi = res.data;
 							checkApi.isApi(dataApi);
 							uni.showToast({
 								icon: 'none',
