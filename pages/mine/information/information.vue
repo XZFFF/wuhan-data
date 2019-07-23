@@ -95,12 +95,13 @@
 			initUser() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://www.baidu.com',
+					method: 'POST',
+					url: this.apiUrl + 'getUserApp',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
-						let dataApi = getUserApiJson;
+						let dataApi = res.data;
 						checkApi.isApi(dataApi);
 						this.user = dataApi.data;
 						let userStr = JSON.stringify(this.user);
@@ -117,9 +118,8 @@
 					count: 1,
 					success: (chooseImageRes) => {
 						const tempFilePaths = chooseImageRes.tempFilePaths;
-						/*uni.uploadFile({
-							//url: 'http://192.168.124.11:8080/wuhan_data1/UpImagesHead', //仅为示例，非真实的接口地址
-							url: 'http://192.168.1.104/personInfo.php',
+						uni.uploadFile({
+							url: this.apiUrl + 'setHeadApp',
 							filePath: tempFilePaths[0],
 							header:{"content-type": "multipart/form-data"},
 							formData: {
@@ -130,7 +130,7 @@
 								console.log("上传："+tempFilePaths[0]);
 								console.log(uploadFileRes.data);
 							}
-						});*/
+						});
 						this.user.head = '';
 						this.user.head = this.user.head.concat(chooseImageRes.tempFilePaths);
 					},

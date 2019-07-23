@@ -160,18 +160,24 @@
 					return;
 				}
 				checkApi.checkNetwork();
+				console.log("token:" + this.token);
 				uni.request({
-					url: 'http://www.baidu.com',
 					method: 'POST',
+					url: this.apiUrl + 'getUserApp',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
-						let dataApi = getUserApiJson;
+						let dataApi = res.data;
+						console.log(dataApi);
 						checkApi.isApi(dataApi);
-						this.user = dataApi.data;
-						let userStr = JSON.stringify(this.user);
-						uni.setStorageSync('user', userStr);
+						try {
+							this.user = dataApi.data;
+							let userStr = JSON.stringify(this.user);
+							uni.setStorageSync('user', userStr);
+						} catch (e) {
+							console.log(e.message);
+						}
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
@@ -222,14 +228,22 @@
 					};
 					checkApi.checkNetwork();
 					uni.request({
-						url: "http://100.64.206.197/checkUpdate.php",
+						method: "GET",
+						url: this.apiUrl + "getVersionApp",
 						data: req,
 						success: (res) => {
+							console.log(JSON.stringify(res.data));
 							console.log("返回值：" + res.data.code);
 							if (res.data.code === 1) {
 								this.type = 'middle-update';
-								this.updateText = res.data.text;
-								this.downloadUrl = res.data.url;
+								if (uni.getSystemInfoSync().platform == "ios") {
+									this.updateText = res.data.IOS.description;
+									this.downloadUrl = res.data.IOS.url;
+								}
+								if (uni.getSystemInfoSync().platform == "android") {
+									this.updateText = res.data.Android.description;
+									this.downloadUrl = res.data.Android.url;
+								}
 							} else if (res.data.code === 0) {
 								uni.showModal({
 									title: "已为最新版本，无需更新"

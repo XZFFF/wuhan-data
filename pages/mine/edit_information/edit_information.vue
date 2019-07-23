@@ -8,7 +8,7 @@
 			<view class="uni-list-cell">
 				<view class="title">性别</view>
 				<picker class="input" @change="bindPickerChange" :range="array">
-					<input disabled="true" :placeholder="user.gender" v-model="sex" />
+					<input disabled="true" :placeholder="user.gender" v-model="gender" />
 				</picker>
 			</view>
 			<view class="uni-list-cell">
@@ -96,23 +96,9 @@
 			this.initUser();
 		},
 		methods: {
+			// TODO 改为从缓存中取用户信息
 			initUser() {
-				checkApi.checkNetwork();
-				uni.request({
-					url: 'http://www.baidu.com',
-					data: {
-						"token": this.token,
-					},
-					success: (res) => {
-						let dataApi = getUserApiJson;
-						checkApi.isApi(dataApi);
-						this.user = dataApi.data;
-						let userStr = JSON.stringify(this.user);
-						uni.setStorageSync('user', userStr);
-					},
-					fail: (e) => {},
-					complete: () => {}
-				});
+				this.user = JSON.parse(uni.getStorageSync('user'));
 			},
 			bindPickerChange: function(e) {
 				this.index = e.target.value;
@@ -148,26 +134,28 @@
 			confirmRevision() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'editUserApp',
 					method: 'POST',
 					data: {
 						"token": this.token,
 						"realName": encodeURI(this.user.realName),
-						"sex": encodeURI(this.user.sex),
-						"birthday": encodeURI(this.user.birthdayday),
+						"gender": encodeURI(this.user.gender),
+						"birthday": encodeURI(this.user.birthday),
 						"city": encodeURI(this.user.city),
 						"description": encodeURI(this.user.description),
 					},
 					success: (res) => {
-						let dataApi = getUserApiJson;
-
+						let dataApi = res.data;
 						checkApi.isApi(dataApi);
-						setTimeout(function() {
-							uni.showToast({
-								title: '成功修改个人信息',
-								icon: 'none',
-							});
-						}, 300);
+						console.log(dataApi);
+						if (dataApi.errCode == 0 || dataApi.errCode == '0') {
+							setTimeout(function() {
+								uni.showToast({
+									title: '成功修改个人信息',
+									icon: 'none',
+								});
+							}, 300);
+						}
 						uni.navigateBack();
 					},
 					fail: () => {},

@@ -21,7 +21,7 @@
 					<view class="login-list">
 						<text class="title">验证码</text>
 						<view class="list" style="width: 40%;">
-							<input class="input" type="number" v-model="verCode" placeholder="请输入验证码" />
+							<input class="input" type="number" v-model="vercode" placeholder="请输入验证码" />
 						</view>
 						<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification">
 							{{smsText}}
@@ -55,7 +55,7 @@
 				seconds: 0,
 				timer: null,
 				tel: "",
-				verCode: "",
+				vercode: "",
 				codeButton: "获取验证码",
 				countryTel: "+86",
 			}
@@ -92,7 +92,7 @@
 					});
 					return;
 				}
-				if (this.verCode.length == 0) {
+				if (this.vercode.length == 0) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入验证码'
@@ -103,17 +103,17 @@
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
-						url: "http://www.baidu.com", //仅为示例，并非真实接口地址。
+						url: this.apiUrl + 'loginaa',
 						data: {
 							"tel": this.tel,
-							"password": this.passw
+							"vercode": this.vercode
 						},
 						success: (res) => {
+							let dataApi = res.data;
+							checkApi.isApi(dataApi);
+							console.log(dataApi);
 							try {
-								let dataApi = loginApiJson;
-								checkApi.isApi(dataApi);
-								console.log(dataApi);
-								let tokenStr = JSON.stringify(dataApi.data.token);
+								let tokenStr = dataApi.data.token;
 								let userStr = JSON.stringify(dataApi.data);
 								uni.setStorageSync('token', tokenStr);
 								uni.setStorageSync('user', userStr);
@@ -127,7 +127,6 @@
 										url: '../../tabbar/mine/mine',
 									})
 								}, 1000);
-
 							} catch (e) {
 								this.smsText = '获取验证码';
 								console.log(e.message);
@@ -140,10 +139,6 @@
 						fail: (e) => {
 							this.smsText = '获取验证码';
 							console.log(e.errMsg);
-							uni.showToast({
-								icon: 'none',
-								title: e.errMsg
-							});
 						},
 					})
 				}
@@ -162,14 +157,15 @@
 				}
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://www.baidu.com',
+					method: 'POST',
+					url: this.apiUrl + 'getVercodeApp',
 					data: {
 						"tel": this.tel
 					},
 					success: (res) => {
+						let dataApi = res.data;
+						checkApi.isApi(dataApi);
 						try {
-							let dataApi = getVercodeApiJson;
-							checkApi.isApi(dataApi);
 							uni.showToast({
 								icon: 'none',
 								title: '验证码发送成功'
@@ -188,10 +184,6 @@
 							}, 1000);
 						} catch (e) {
 							console.log(e.message);
-							uni.showToast({
-								icon: 'none',
-								title: e.message
-							});
 						}
 					},
 					fail: (e) => {

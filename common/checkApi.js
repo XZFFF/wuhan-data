@@ -2,14 +2,21 @@ module.exports = {
 	error: '',
 	isApi: function(apiData) {
 		try {
+			if (apiData && apiData.errMsg) {
+				if (apiData.errMsg == "token令牌错误") {
+					uni.removeStorageSync('token');
+					console.log(this.checkToken());
+					return false;
+				}
+			}
 			if (apiData && apiData.errCode) {
 				if (apiData.errCode != 0 || apiData.errCode != '0') {
 					// TODO 记录到服务端日志表中
 					console.log(JSON.stringify(apiData));
 					return false;
 				}
-				return true;
 			}
+			return true;
 		} catch (e) {
 			console.log(JSON.stringify(apiData));
 			return false;
