@@ -82,15 +82,16 @@
 			initCollect() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getCollectApp',
 					method: 'POST',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
 						try {
-							let dataApi = getCollectApiJson;
+							let dataApi = res.data;
 							checkApi.isApi(dataApi);
+							console.log(dataApi);
 							this.menu_list1 = dataApi.data.economyData;
 							this.menu_list2 = dataApi.data.indexData;
 							uni.setStorageSync('collect_economy', JSON.stringify(this.menu_list1));

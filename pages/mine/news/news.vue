@@ -1,7 +1,8 @@
 <template>
 	<view>
 		<view class="uni-list">
-			<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,index) in menu_list" :key="index" :data-current="index" @click="goDetailPage(index)">
+			<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,index) in menu_list" :key="index"
+			 :data-current="index" @click="goDetailPage(index)">
 				<view>
 					<view class="uni-list-cell-navigate">
 						<view class="list-cell-title">{{value.title}}</view>
@@ -60,17 +61,17 @@
 			initMyNews() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + "getMessageApp",
 					method: 'POST',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
 						try {
-							let dataApi = getNewsApiJson;
+							let dataApi = res.data;
 							checkApi.isApi(dataApi);
 							this.menu_list = dataApi.data.message;
-							uni.setStorageSync('my_news',this.menu_list);
+							uni.setStorageSync('my_news', this.menu_list);
 						} catch (e) {
 							console.log(e.errMsg);
 							this.getCollectStorage();
@@ -110,51 +111,57 @@
 </script>
 
 <style>
-	.list-cell{
-		border-bottom: 2upx solid rgb(229,229,229);
+	.list-cell {
+		border-bottom: 2upx solid rgb(229, 229, 229);
 		display: flex;
 	}
-	.active1{
+
+	.active1 {
 		width: 0;
 		height: 0;
-		background-color: rgb(204,62,62);
+		background-color: rgb(204, 62, 62);
 		border-radius: 50%;
 		margin-top: 60upx;
 		margin-left: 20upx;
 		padding: 15upx;
 	}
-	.active{
+
+	.active {
 		width: 0;
 		height: 0;
-		background-color: rgb(204,62,62);
+		background-color: rgb(204, 62, 62);
 		border-radius: 50%;
 		padding: 10upx;
 		position: absolute;
-		margin: auto; 
+		margin: auto;
 		top: 0;
 		left: 0;
 		bottom: 0;
 		right: 0;
 	}
-	.list-cell-title{
+
+	.list-cell-title {
 		font-size: 30upx;
 		width: 400upx;
 	}
-	.list-cell-badge{
+
+	.list-cell-badge {
 		width: 130upx;
 		height: 45upx;
-		border-radius: 20px; 
+		border-radius: 20px;
 		background-color: #1A82D2;
 		font-size: 23upx;
 		color: #FFFFFF;
 		text-align: center;
 	}
-	.list-cell-datetime{
-		color: rgb(159,159,159);
+
+	.list-cell-datetime {
+		color: rgb(159, 159, 159);
 		padding-left: 10upx;
 	}
-	.list-cell-text{
-		color: rgb(159,159,159);
+
+	.list-cell-text {
+		color: rgb(159, 159, 159);
 		width: 600upx;
 		padding-left: 30upx;
 	}
