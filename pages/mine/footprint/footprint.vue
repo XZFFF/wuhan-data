@@ -11,7 +11,7 @@
 		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" style="height: 2000upx;">
 			<swiper-item>
 				<view class="uni-list">
-					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list1" :key="key" @click="goDetailPage(item)">
+					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list1" :key="key" @click="goAnalysisDetail(item)">
 						<view class="list-body">
 							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
 							<view class="tag-view">
@@ -23,7 +23,7 @@
 			</swiper-item>
 			<swiper-item>
 				<view class="uni-list">
-					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list2" :key="key" @click="goDetailPage(item)">
+					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list2" :key="key" @click="goSearchDetail(item)">
 						<view class="list-body">
 							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
 							<view class="tag-view">
@@ -82,14 +82,15 @@
 			initCollect() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://www.baidu.com',
+					url: 'http://192.168.124.11:8080/wuhan_data1/getTrackApp',
 					method: 'POST',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
 						try {
-							let dataApi = getCollectApiJson;
+							//let dataApi = getCollectApiJson;
+							let dataApi = res.data;
 							checkApi.isApi(dataApi);
 							this.menu_list1 = dataApi.data.economyData;
 							this.menu_list2 = dataApi.data.indexData;

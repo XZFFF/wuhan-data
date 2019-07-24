@@ -48,6 +48,7 @@
 		},
 		data() {
 			return {
+				apiUrl: "http://192.168.124.11:8080/wuhan_data1/",
 				token: "",
 				scrollLeft: 0,
 				isClickChange: false,
@@ -83,6 +84,7 @@
 				checkApi.checkNetwork();
 				uni.request({
 					url: this.apiUrl + 'getCollectApp',
+					//url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -90,6 +92,7 @@
 					success: (res) => {
 						try {
 							let dataApi = res.data;
+							//let dataApi = getCollectApiJson;
 							checkApi.isApi(dataApi);
 							console.log(dataApi);
 							this.menu_list1 = dataApi.data.economyData;

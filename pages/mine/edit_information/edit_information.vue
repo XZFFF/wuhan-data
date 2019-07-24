@@ -3,27 +3,27 @@
 		<view class="uni-list">
 			<view class="uni-list-cell">
 				<view class="title">真实姓名</view>
-				<input class="input" :placeholder="user.realName" v-model="realName" maxlength="10" />
+				<input class="input" :placeholder="user.realName" v-model="user.realName" maxlength="10" />
 			</view>
 			<view class="uni-list-cell">
 				<view class="title">性别</view>
 				<picker class="input" @change="bindPickerChange" :range="array">
-					<input disabled="true" :placeholder="user.gender" v-model="sex" />
+					<input disabled="true" :placeholder="user.gender" v-model="user.gender" />
 				</picker>
 			</view>
 			<view class="uni-list-cell">
 				<view class="title">出生日期</view>
 				<picker class="input" mode="date" @change="bindDateChange">
-					<input disabled="true" :start="startDate" :end="endDate" :placeholder="user.birthday" v-model="birthday" />
+					<input disabled="true" :start="startDate" :end="endDate" :placeholder="user.birthday" v-model="user.birthday" />
 				</picker>
 			</view>
 			<view class="uni-list-cell">
 				<view class="title">所在地区</view>
-				<input class="input" disabled="true" :placeholder="user.city" @click="showMulLinkageTwoPicker" v-model="city" />
+				<input class="input" disabled="true" :placeholder="user.city" v-model="user.city" @click="showMulLinkageTwoPicker" />
 			</view>
 			<view class="uni-list-cell">
 				<view class="title">个人描述</view>
-				<input class="input" :placeholder="user.description" maxlength="20" v-model="description" />
+				<input class="input" :placeholder="user.description" v-model="user.description" maxlength="20" />
 			</view>
 		</view>
 		<input type="button" class="confirm-button" style="line-height:80upx" value="确认修改" @tap="confirmRevision" />
@@ -97,25 +97,7 @@
 		},
 		methods: {
 			initUser() {
-				checkApi.checkNetwork();
-				uni.request({
-					//url: 'http://www.baidu.com',
-					url: 'http://192.168.124.11:8080/wuhan_data1/getUserApp',
-					method: 'POST',
-					data: {
-						"token": this.token,
-					},
-					success: (res) => {
-						//let dataApi = getUserApiJson;
-						let dataApi = res.data;
-						checkApi.isApi(dataApi);
-						this.user = dataApi.data;
-						let userStr = JSON.stringify(this.user);
-						uni.setStorageSync('user', userStr);
-					},
-					fail: (e) => {},
-					complete: () => {}
-				});
+				this.user = JSON.parse(uni.getStorageSync('user'));
 			},
 			bindPickerChange: function(e) {
 				this.index = e.target.value;
@@ -149,29 +131,33 @@
 				return `${year}-${month}-${day}`;
 			},
 			confirmRevision() {
+				console.log("姓名："+this.user.realName);
 				checkApi.checkNetwork();
 				uni.request({
 					//url: 'http://www.baidu.com',
-					url: 'http://www.baidu.com',
+					url: 'http://192.168.124.11:8080/wuhan_data1/editUserApp',
 					method: 'POST',
 					data: {
 						"token": this.token,
 						"realName": encodeURI(this.user.realName),
-						"sex": encodeURI(this.user.sex),
-						"birthday": encodeURI(this.user.birthdayday),
+						"gender": encodeURI(this.user.gender),
+						"birthday": encodeURI(this.user.birthday),
 						"city": encodeURI(this.user.city),
 						"description": encodeURI(this.user.description),
 					},
 					success: (res) => {
-						let dataApi = getUserApiJson;
-
+						//let dataApi = getUserApiJson;
+						let dataApi = res.data;
 						checkApi.isApi(dataApi);
-						setTimeout(function() {
-							uni.showToast({
-								title: '成功修改个人信息',
-								icon: 'none',
-							});
-						}, 300);
+						if(dataApi.errCode == 0)
+						{
+							setTimeout(function() {
+								uni.showToast({
+									title: '成功修改个人信息',
+									icon: 'none',
+								});
+							}, 300);
+						}
 						uni.navigateBack();
 					},
 					fail: () => {},

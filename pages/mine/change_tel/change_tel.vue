@@ -9,19 +9,22 @@
 		</view>
 		<view style="margin-top: 80upx;">
 			<view class="change-list">
-				<text class="title">原手机号</text>
+				<text class="title">手机号</text>
 				<view class="list">
-					<input class="input" type="number" maxlength="11" placeholder="请输入原手机号" v-model="tel0" />
+					<input class="input" type="number" maxlength="11" placeholder="请输入新手机号" v-model="tel" />
 				</view>
 			</view>
 			<view class="change-list">
-				<text class="title">新手机号</text>
+				<text class="title">验证码</text>
 				<view class="list">
-					<input class="input" type="number" maxlength="11" placeholder="请输入新手机号" v-model="tel1" />
+					<input class="input" type="number" placeholder="请输入验证码" v-model="verificationCode" />
 				</view>
 			</view>
+			<button :class="['sms-button',smsText==='获取验证码' ? 'active' : '']" style="font-size: 35upx;" @click="smsVerification">
+				{{smsText}}
+			</button>
 			<button class="finish-button" @click="changeTel">
-				下一步
+				提交
 			</button>
 		</view>
 	</view>
@@ -29,13 +32,24 @@
 
 <script>
 	import checkApi from '@/common/checkApi.js';
-	import changeTelApiJson from "@/common/api/changeTel.json";
+	import verTelApiJson from "@/common/api/verTel.json";
+	import confirmChangeApiJson from "@/common/api/confirmChange.json";
 	export default {
+		props: {
+			second: {
+				type: Number,
+				default: 0
+			}
+		},
 		data() {
 			return {
-				tel0: '',
-				tel1: '',
-				token: ''
+				token: '',
+				smsText: '获取验证码',
+				seconds: 0,
+				timer: null,
+				tel: '',
+				token: '',
+				verificationCode: '',
 			}
 		},
 		onShow: function() {
@@ -55,23 +69,8 @@
 			}
 		},
 		methods: {
-			goTelIndex(e) {
-				let url = '../login/telIndex/telIndex';
-				uni.navigateTo({
-					url: url
-				});
-				return false;
-			},
-			changeTel(e) {
-				if (this.tel0.length != 11) {
-					uni.showToast({
-						icon: 'none',
-						title: '原手机号码格式错误',
-						duration: 500
-					});
-					return;
-				}
-				if (this.tel1.length != 11) {
+			smsVerification(e) {
+				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '新手机号码格式错误',
@@ -79,32 +78,102 @@
 					});
 					return;
 				}
-				if (this.tel0 == this.tel1) {
+				if (this.smsText === '获取验证码') {
+					this.smsText = 'loading';
+					let token = uni.getStorageSync('token');
+					checkApi.checkNetwork();
+					uni.request({
+						url: 'http://192.168.124.11:8080/wuhan_data1/getVercodeApp',
+						//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
+						method: 'POST',
+						data: {
+							"tel": this.tel
+						},
+						success: (res) => {
+							try {
+								let dataApi = res.data;
+								checkApi.isApi(dataApi);
+								uni.showToast({
+									icon: 'none',
+									title: '验证码发送成功'
+								});
+								console.log("已发送验证码");
+								this.second = 12;
+								this.seconds = this.second
+								this.countDown()
+								this.timer = setInterval(() => {
+									this.seconds--
+									if (this.seconds < 1) {
+										//this.timeUp()
+										this.smsText = '获取验证码'
+										clearInterval(this.timer)
+										return
+									}
+									this.countDown()
+								}, 1000)
+							} catch (e) {
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
+								this.smsText = '获取验证码';
+							}
+						},
+						fail: (e) => {
+							this.smsText = '获取验证码';
+							console.log(e.errMsg);
+							uni.showToast({
+								icon: 'none',
+								title: e.errMsg
+							});
+						},
+					})
+				}
+			},
+			countDown() {
+				let seconds = this.seconds
+				let [second] = [1]
+				if (seconds > 1) {
+					second = Math.floor(seconds)
+				}
+				if (second < 10) {
+					second = '0' + second
+				}
+				second = '重新发送(' + second + 's)'
+				this.smsText = second
+			},
+			changeTel(e) {
+				if (this.verificationCode.length == 0) {
 					uni.showToast({
 						icon: 'none',
-						title: '手机号不能相同',
-						duration: 500
+						title: '请输入验证码'
 					});
 					return;
 				}
-				let token = uni.getStorageSync('token');
-				checkApi.checkNetwork();
 				uni.request({
-					//url: 'http://192.168.1.101:8080/wuhan_data1/changeTel',
-					url: "http://www.baidu.com",
+					url: "http://192.168.124.11:8080/wuhan_data1/changeTelApp",
 					method: 'POST',
 					data: {
 						"token": this.token,
-						"oriTel": this.tel0,
-						"newTel": this.tel1,
+						"newTel": this.tel,
+						"verCode": this.verificationCode,
 					},
 					success: (res) => {
 						try {
-							let dataApi = changeTelApiJson;
+							let dataApi = confirmChangeApiJson;
 							checkApi.isApi(dataApi);
-							uni.navigateTo({
-								url: "ver_tel",
+							uni.showToast({
+								icon: 'none',
+								title: "手机号更换成功",
+								duration: 1000,
 							});
+							setTimeout(function() {
+								uni.navigateTo({
+									url: "../../tabbar/mine/mine",
+								})
+							}, 1000);
+
 						} catch (e) {
 							console.log(e.message);
 							uni.showToast({
@@ -120,7 +189,7 @@
 							title: e.errMsg
 						});
 					},
-				});
+				})
 			}
 		}
 	}
@@ -138,7 +207,7 @@
 
 	.change-list {
 		display: flex;
-		margin-top: 50upx;
+		margin-top: 40upx;
 		margin-left: 50upx;
 	}
 
@@ -155,6 +224,16 @@
 		height: 60upx;
 	}
 
+	.sms-button {
+		width: 90%;
+		height: 80upx;
+		font-size: 35upx;
+		color: #FFFFFF;
+		background-color: rgb(95, 99, 104);
+		border-radius: 5px;
+		margin-top: 40upx;
+	}
+
 	.finish-button {
 		width: 90%;
 		height: 80upx;
@@ -162,37 +241,18 @@
 		color: #FFFFFF;
 		background-color: rgb(26, 130, 210);
 		border-radius: 5px;
-		margin-top: 60upx;
+		margin-top: 40upx;
 	}
 
-	.verification-code {
-		width: 35%;
-		height: 60upx;
-		font-size: 30upx;
-		color: #FFFFFF;
-		background-color: rgb(95, 99, 104);
-	}
-
-	.active1 {
+	.active {
 		background-color: rgb(26, 130, 210);
-		font-size: 30upx;
 	}
 
 	.title {
 		float: left;
-		width: 150upx;
+		width: 120upx;
 		font-size: 35upx;
 		line-height: 60upx;
 		text-align: center;
-	}
-
-	.triangle {
-		width: 0;
-		height: 0;
-		margin-top: 22upx;
-		margin-left: 20upx;
-		border-width: 5px 5px 0;
-		border-style: solid;
-		border-color: rgb(68, 68, 68) transparent transparent;
 	}
 </style>

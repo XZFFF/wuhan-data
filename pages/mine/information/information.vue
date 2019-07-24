@@ -120,9 +120,9 @@
 					count: 1,
 					success: (chooseImageRes) => {
 						const tempFilePaths = chooseImageRes.tempFilePaths;
-						/*uni.uploadFile({
+						uni.uploadFile({
 							//url: 'http://192.168.124.11:8080/wuhan_data1/UpImagesHead', //仅为示例，非真实的接口地址
-							url: 'http://192.168.1.104/personInfo.php',
+							url: 'http://192.168.124.11:8080/wuhan_data1/setHeadApp',
 							filePath: tempFilePaths[0],
 							header:{"content-type": "multipart/form-data"},
 							formData: {
@@ -133,7 +133,7 @@
 								console.log("上传："+tempFilePaths[0]);
 								console.log(uploadFileRes.data);
 							}
-						});*/
+						});
 						this.user.head = '';
 						this.user.head = this.user.head.concat(chooseImageRes.tempFilePaths);
 					},

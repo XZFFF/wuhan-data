@@ -32,7 +32,7 @@
 		<view class="personal-browse">
 			<view class="icon-single-layout" v-for="(value,index) in browse_icon" :key="index" @click="goDetailPage(value)">
 				<view style="display: table">
-					<span :class="['red-point',index == 2 ? 'active' : '']"></span>
+					<span :class="['red-point',index == 2 && newsPoint == 1 ? 'active' : '']"></span>
 					<image style="width: 50upx; height: 50upx; display:flex" :src="value.img"></image>
 					<view class="text" style="font-size:30upx; color:#1E90FF">{{value.title}}</view>
 				</view>
@@ -64,7 +64,7 @@
 				<view style="height: 200upx;width: 400upx;">
 					<view>下载进度</view>
 					<view class="progress-box">
-						<progress :percent="downProgress" show-info stroke-width="3" />
+						<progress :percent="versionUpdate.downProgress" show-info stroke-width="3" />
 					</view>
 					<input type="button" class="pop-button" style="float: right;" value="取消" @click="togglePopup('')" />
 				</view>
@@ -114,6 +114,9 @@
 					"department": "",
 					"roleName": ""
 				}, // 用户信息
+				updateText: "",
+				newsPoint: 0,//消息红点提示
+				newsList: "",
 				showImg: true,
 				type: '', // 弹窗类型
 				versionUpdate: {
@@ -127,7 +130,8 @@
 				menu_list: mineConfig.menu_list,
 			};
 		},
-		onLoad() {},
+		onLoad() {
+		},
 		onShow: function() {
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
@@ -146,7 +150,9 @@
 					"roleName": ""
 				};
 			}
+			this.newsPoint = 0;
 			this.initUser();
+			this.newsRead();
 		},
 		onBackPress() {
 			if (this.type !== '') {
@@ -171,12 +177,44 @@
 						//let dataApi = getUserApiJson;
 						let dataApi = res.data;
 						checkApi.isApi(dataApi);
-						this.user = dataApi.data;
-						let userStr = JSON.stringify(this.user);
-						uni.setStorageSync('user', userStr);
+						try{
+							this.user = dataApi.data;
+							let userStr = JSON.stringify(this.user);
+							uni.setStorageSync('user', userStr);
+						}catch(e){
+							console.log(e.message);
+						}
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
+					},
+				});
+			},
+			newsRead() {
+				uni.request({
+					url: "http://192.168.124.11:8080/wuhan_data1/getMessageApp",
+					method: 'POST',
+					data: {
+						"token": this.token,
+					},
+					success: (res) => {
+						try {
+							let dataApi = res.data;
+							//let dataApi = getNewsApiJson;
+							checkApi.isApi(dataApi);
+							this.newsList = dataApi.data.message;
+							let myNews = uni.getStorageSync('my_news');
+							if(this.newsList.length != myNews.length){
+								this.newsPoint = 1;
+							}
+						} catch (e) {
+							console.log(e.errMsg);
+							this.getCollectStorage();
+						}
+					},
+					fail: (e) => {
+						console.log(e.errMsg);
+						this.getNewsStorage();
 					},
 				});
 			},
@@ -224,15 +262,25 @@
 					};
 					checkApi.checkNetwork();
 					uni.request({
-						url: "http://100.64.206.197/checkUpdate.php",
+						url: "http://192.168.124.11:8080/wuhan_data1/getVersionApp",
+						method: 'GET',
 						data: req,
 						success: (res) => {
-							console.log("返回值：" + res.data.code);
-							if (res.data.code === 1) {
+							console.log("返回值：" + res.data.errCode);
+							if (res.data.errCode == "0") {
 								this.type = 'middle-update';
-								this.updateText = res.data.text;
-								this.downloadUrl = res.data.url;
-							} else if (res.data.code === 0) {
+								if(uni.getSystemInfoSync().platform == "ios")
+								{
+									this.updateText = res.data.IOS.description;
+									this.downloadUrl = res.data.IOS.url;
+								}
+								if(uni.getSystemInfoSync().platform == "android")
+								{
+									this.updateText = res.data.Android.description;
+									this.downloadUrl = res.data.Android.url;
+								}
+							}
+							if (res.data.errCode == "-1") {
 								uni.showModal({
 									title: "已为最新版本，无需更新"
 								})
@@ -293,6 +341,7 @@
 				this.type = 'middle-download';
 				//#ifdef APP-PLUS
 				let updateUrl = this.downloadUrl;
+				console.log("下载地址："+updateUrl);
 				const downloadTask = uni.downloadFile({
 					url: updateUrl, //仅为示例，并非真实的资源
 					success: (res) => {
@@ -307,10 +356,10 @@
 					}
 				});
 				downloadTask.onProgressUpdate((res) => {
-					this.downProgress = res.progress;
-					//console.log('下载进度' + res.progress);
-					//console.log('已经下载的数据长度' + res.totalBytesWritten);
-					//console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+					this.versionUpdate.downProgress = res.progress;
+					console.log('下载进度' + res.progress);
+					console.log('已经下载的数据长度' + res.totalBytesWritten);
+					console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
 				});
 				//#endif
 			},
@@ -340,18 +389,33 @@
 				if (e.text === "微信") {
 					pro = "weixin";
 					sce = "WXSceneSession";
-				} else if (e.text === "朋友圈") {
+				}if (e.text === "朋友圈") {
 					pro = "weixin";
 					sce = "WXSenceTimeline";
-				} else if (e.text === "QQ") {
+				}if (e.text === "QQ") {
 					pro = "qq";
 					type = 1;
-				} else if (e.text === "微博") {
+				}if (e.text === "微博") {
 					pro = "sinaweibo";
 				}
+				if (e.text === "复制") {
+					uni.setClipboardData({
+						data: 'https://www.baidu.com',
+						success: function () {
+							console.log('success');
+							uni.showToast({
+								icon: 'none',
+								title: "成功复制链接到剪贴板",
+								duration: 500,
+							});
+						},
+						fail: function(err) {
+							console.log("fail:" + JSON.stringify(err));
+						}
+					});
+					return;
+				}
 				uni.share({
-					//provider: "weixin",
-					//scene: "WXSceneSession",
 					provider: pro,
 					scene: sce,
 					type: type,

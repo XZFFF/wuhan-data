@@ -85,10 +85,18 @@
 				return false;
 			},
 			lands() {
+				let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
 				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '手机格式错误'
+						title: '手机号格式错误'
+					});
+					return;
+				}
+				if (!myreg.test(this.tel)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入有效的手机号'
 					});
 					return;
 				}
@@ -98,7 +106,7 @@
 						title: '请输入验证码'
 					});
 					return;
-				} else {
+				}{
 					this.smsText = 'loading';
 					checkApi.checkNetwork();
 					uni.request({
@@ -110,13 +118,12 @@
 							"verCode": this.verCode
 						},
 						success: (res) => {
+							let dataApi = res.data;
+							//let dataApi = loginApiJson;
+							checkApi.isApi(dataApi);
 							try {
-								let dataApi = res.data;
-								checkApi.isApi(dataApi);
-								console.log(dataApi);
 								//let tokenStr = JSON.stringify(dataApi.data.token);
 								let tokenStr = dataApi.data.token;
-								console.log("token:"+tokenStr);
 								let userStr = JSON.stringify(dataApi.data);
 								uni.setStorageSync('token', tokenStr);
 								uni.setStorageSync('user', userStr);
@@ -143,10 +150,6 @@
 						fail: (e) => {
 							this.smsText = '获取验证码';
 							console.log(e.errMsg);
-							uni.showToast({
-								icon: 'none',
-								title: e.errMsg
-							});
 						},
 					})
 				}
@@ -156,24 +159,34 @@
 				if (this.smsText != '获取验证码') {
 					return;
 				}
+				let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
 				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '手机格式错误'
+						title: '手机号格式错误'
+					});
+					return;
+				}
+				if (!myreg.test(this.tel)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入有效的手机号'
 					});
 					return;
 				}
 				checkApi.checkNetwork();
 				uni.request({
 					url: 'http://192.168.124.11:8080/wuhan_data1/getVercodeApp',
+					//url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						"tel": this.tel
 					},
 					success: (res) => {
+						let dataApi = res.data;
+						//let dataApi = getVercodeApiJson;
+						checkApi.isApi(dataApi);
 						try {
-							let dataApi = res.data;
-							checkApi.isApi(dataApi);
 							uni.showToast({
 								icon: 'none',
 								title: '验证码发送成功'
@@ -192,10 +205,6 @@
 							}, 1000);
 						} catch (e) {
 							console.log(e.message);
-							uni.showToast({
-								icon: 'none',
-								title: e.message
-							});
 						}
 					},
 					fail: (e) => {

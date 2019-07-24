@@ -48,9 +48,9 @@
             return {
                 imageList: [],
                 sendDate: {
-                    score: 0,
                     text: "",
-                    contact: ""
+                    contact: "",
+					token: ""
                 }
             }
         },
@@ -74,71 +74,38 @@
                 });
             },
             send(e) { //发送反馈
-				this.token = uni.getStorageSync('token');
+				this.sendDate.token = uni.getStorageSync('token');
                 console.log(JSON.stringify(this.sendDate));
 				checkApi.checkNetwork();
-				if(!this.sendDate.text ){
+				if(this.sendDate.text.length == 0){
 					uni.showToast({
 						icon: 'none',
 					    title: "请描述您的问题"
 					});
+					return;
 				}
-				else if(!this.imageList){
-					let imgs = this.imageList.map((value, index) => {
-					    return {
-					        name: "image" + index,
-					        uri: value
-					    }
-					});
-					uni.uploadFile({
-					    //url: "http://192.168.124.11:8080/wuhan_data1/ttt",
-						url: 'http://www.baidu.com',
-					    files: imgs,
-					    formData: this.sendDate,
-					    success: (res) => {
+				let imgs = this.imageList.map((value, index) => {
+				    return {
+				        name: "image" + index,
+				        uri: value
+				    }
+				});
+				if(this.imageList.length == 0)
+				{
+					uni.request({
+						url: 'http://192.168.124.11:8080/wuhan_data1/uploadFeedback1',
+						method: 'POST',
+						data: this.sendDate,
+						success: (res) => {
 							try{
-								let dataApi = feedbackApiJson;
+								//let dataApi = feedbackApiJson;
+								let dataApi = res.data;
 								checkApi.isApi(dataApi);
 								uni.showToast({
 								    title: "反馈成功"
 								});
 								this.imageList = [];
 								this.sendDate = {
-								    score: 0,
-								    text: "",
-								    contact: ""
-								}
-							}
-							catch(e){
-								console.log(e.message);
-								uni.showToast({
-									icon: 'none',
-									title: e.message
-								});
-							}
-					    },
-					    fail: (e) => {
-					        console.log(e.errMsg);
-					        uni.showToast({
-					        	icon: 'none',
-					        	title: e.errMsg
-					        });
-					    }
-					});
-				}
-				else{
-					uni.request({
-						url: 'http://www.baidu.com',
-						formData: this.sendDate,
-						success: (res) => {
-							try{
-								let dataApi = feedbackApiJson;
-								checkApi.isApi(dataApi);
-								uni.showToast({
-								    title: "反馈成功"
-								});
-								this.sendDate = {
-								    score: 0,
 								    text: "",
 								    contact: ""
 								}
@@ -160,7 +127,49 @@
 						}
 					})
 				}
-                
+				else
+				{
+					let imgs = this.imageList.map((value, index) => {
+					    return {
+					        name: "image" + index,
+					        uri: value
+					    }
+					});
+					uni.uploadFile({
+						url: 'http://192.168.124.11:8080/wuhan_data1/uploadFeedback',
+					    files: imgs,
+					    formData: this.sendDate,
+					    success: (res) => {
+							try{
+								//let dataApi = feedbackApiJson;
+								let dataApi = res.data;
+								checkApi.isApi(dataApi);
+								uni.showToast({
+								    title: "反馈成功"
+								});
+								this.imageList = [];
+								this.sendDate = {
+								    text: "",
+								    contact: ""
+								}
+							}
+							catch(e){
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
+							}
+					    },
+					    fail: (e) => {
+					        console.log(e.errMsg);
+					        uni.showToast({
+					        	icon: 'none',
+					        	title: e.errMsg
+					        });
+					    }
+					});
+				}
             }
         }
     }
