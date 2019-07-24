@@ -6,7 +6,7 @@
 				 v-for="(item,index) in categoryList">
 					<view :class="index==categoryActive?'active-block':''" class="'orgin-block'"></view>
 					<view style="flex: 1; text-align: center;">
-						{{item.name}}
+						{{item.listName}}
 					</view>
 				</view>
 			</scroll-view>
@@ -24,7 +24,7 @@
 <script>
 	// 引入公共样式
 	import wdIndiItem from '@/components/wd-indi-item/wd-indi-item.vue';
-	import  { isApi } from '@/common/checkApi.js';
+	import checkApi from '@/common/checkApi.js';
 	import analysisListApiJson from '@/common/api/analysisList.json';
 
 	export default {
@@ -51,16 +51,17 @@
 		methods: {
 			initAnalysisList() {
 				uni.request({
-					url: "http://wuhandata.applinzi.com/analysisList.php",
-					method: 'GET',
+					url: "http://localhost:8080/wuhan_data1/getAnalysisList",
+					method: 'POST',
 					data: {},
-					success: res => {
+					success: (res) => {
 						// 获取homepage的数据
-						let analysisListApi = analysisListApiJson;
+						let dataApi = res.data;
 						// 检查json数据
-						isApi(analysisListApi);
+						checkApi.isApi(dataApi);
 						// 设置各部分数据
-						this.categoryList = analysisListApi.data.list
+						console.log(dataApi.data);
+						this.categoryList = dataApi.data.list;
 						// 数据存入缓存
 						uni.setStorage({
 							key: 'analysis_list',

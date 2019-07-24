@@ -63,13 +63,13 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					url: 'http://www.baidu.com',
-					method: 'GET',
+					url: 'http://192.168.124.20:8089/wuhan_data1/topic1',
+					method: 'POST',
 					data: {},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						// 目前用的模拟数据
-						dataApi = topicDetailApiJson;
+						dataApi = res.data;
 					},
 					fail: (e) => {
 						console.log(e.errMsg);

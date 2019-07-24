@@ -5,15 +5,15 @@
 		<view class="index-item-name" @tap="openDetail(indexId, indexName, isFavorite)">
 			<text>{{tranIndexName}}</text>
 		</view>
-		<!-- 指标描述 -->
-		<view class="index-item-desc" @tap="openDetail(indexId, indexName, isFavorite)">
+		<!-- <wd-tag :text="item.source" size="small" :circle="true"></wd-tag> -->
+		<!-- 指标描述 蓝#4F90F8 红#CE7670 #C45C56 -->
+		<!-- <view class="index-item-desc" @tap="openDetail(indexId, indexName, isFavorite)">
 			<view class="index-item-desc-item" v-for="(item, i) in desc" :key="i">
 				<text>{{item.descName}}:</text>
-				<!-- 蓝#4F90F8 红#CE7670 #C45C56 -->
 				<text style="margin-left: 5upx; color: #C45C56;">{{item.descNum}}</text>
 				<text style="margin-left: 10upx;">{{item.descUnit}}</text>
 			</view>
-		</view>
+		</view> -->
 		<view class="index-item-end-bar"></view>
 		<view class="index-item-fav" @tap="changeFav">
 			<image class="" :src="'../../../static/icon/fav/'+favIcon"></image>
@@ -22,7 +22,11 @@
 </template>
 
 <script>
+	import wdTag from '@/components/wd-tag/wd-tag.vue';
 	export default {
+		components: {
+			wdTag,
+		},
 		props: {
 			item: {
 				type: Object
@@ -56,7 +60,7 @@
 		computed: {
 			tranIndexName() {
 				if (this.indexName.length > 10) {
-					let newstr = this.indexName.substring(0, 9) + '..';
+					let newstr = this.indexName.substring(0, 13) + '..';
 					return newstr;
 				} else {
 					return this.indexName
@@ -121,14 +125,14 @@
 	.index-item-name {
 		position: relative;
 		margin: 20upx 10upx 20upx 20upx;
-		width: 30%;
-		max-width: 30%;
+		width: 50%;
+		max-width: 50%;
 	}
 
 	.index-item-name text {
 		font-size: 13px;
 		position: absolute;
-		left: 50%;
+		left: 55%;
 		top: 50%;
 		transform: translate(-50%, -50%);
 		width: 100%;
