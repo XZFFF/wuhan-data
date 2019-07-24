@@ -190,31 +190,10 @@
 			}
 		},
 		{
-			"path": "pages/mine/forget_password/forget_password",
-			"style": {
-				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "忘记密码"
-			}
-		},
-		{
 			"path": "pages/mine/change_tel/change_tel",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "更换手机"
-			}
-		},
-		{
-			"path": "pages/mine/change_tel/ver_tel",
-			"style": {
-				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "验证手机"
-			}
-		},
-		{
-			"path": "pages/mine/change_password/change_password",
-			"style": {
-				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "修改密码"
 			}
 		},
 		{

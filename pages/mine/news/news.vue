@@ -1,15 +1,14 @@
 <template>
 	<view>
-		<view class="uni-list">
-			<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(value,index) in menu_list" :key="index"
-			 :data-current="index" @click="goDetailPage(index)">
+		<view>
+			<view class="list-cell" v-for="(value,index) in menu_list" :key="index" :data-current="index" @click="goDetailPage(index)">
 				<view>
 					<view class="uni-list-cell-navigate">
 						<view class="list-cell-title">{{value.title}}</view>
 						<view class="list-cell-badge">{{value.label}}</view>
 						<view class="list-cell-datetime">{{value.dateTime}}</view>
 					</view>
-					<view class="list-cell-text uni-ellipsis">{{value.content}}</view>
+					<view class="list-cell-text">{{value.content}}</view>
 				</view>
 			</view>
 		</view>
@@ -61,7 +60,8 @@
 			initMyNews() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: this.apiUrl + "getMessageApp",
+					url: "http://192.168.124.11:8080/wuhan_data1/getMessageApp",
+					//url: "http://www.baidu.com",
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -69,6 +69,7 @@
 					success: (res) => {
 						try {
 							let dataApi = res.data;
+							//let dataApi = getNewsApiJson;
 							checkApi.isApi(dataApi);
 							this.menu_list = dataApi.data.message;
 							uni.setStorageSync('my_news', this.menu_list);
@@ -94,13 +95,7 @@
 				}
 			},
 			goDetailPage(index) {
-				uni.setStorageSync({
-					key: 'news_index',
-					data: index,
-					success: function() {
-						console.log('消息索引存入本地缓存');
-					}
-				});
+				uni.setStorageSync('news_index', index);
 				uni.navigateTo({
 					url: 'news_details/news_details'
 				});
@@ -116,37 +111,18 @@
 		display: flex;
 	}
 
-	.active1 {
-		width: 0;
-		height: 0;
-		background-color: rgb(204, 62, 62);
-		border-radius: 50%;
-		margin-top: 60upx;
-		margin-left: 20upx;
-		padding: 15upx;
+	.uni-list-cell-navigate{
+		display: flex;
+		justify-content: space-between;
 	}
-
-	.active {
-		width: 0;
-		height: 0;
-		background-color: rgb(204, 62, 62);
-		border-radius: 50%;
-		padding: 10upx;
-		position: absolute;
-		margin: auto;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		right: 0;
-	}
-
+	
 	.list-cell-title {
-		font-size: 30upx;
-		width: 400upx;
+		font-size: 35upx;
+		width: 460upx;
 	}
 
 	.list-cell-badge {
-		width: 130upx;
+		width: 140upx;
 		height: 45upx;
 		border-radius: 20px;
 		background-color: #1A82D2;
@@ -157,12 +133,17 @@
 
 	.list-cell-datetime {
 		color: rgb(159, 159, 159);
-		padding-left: 10upx;
+		padding-left: 30upx;
 	}
 
 	.list-cell-text {
 		color: rgb(159, 159, 159);
 		width: 600upx;
 		padding-left: 30upx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp:2;
+		-webkit-box-orient:vertical;
 	}
 </style>

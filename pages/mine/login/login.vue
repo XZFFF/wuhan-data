@@ -21,7 +21,7 @@
 					<view class="login-list">
 						<text class="title">验证码</text>
 						<view class="list" style="width: 40%;">
-							<input class="input" type="number" v-model="vercode" placeholder="请输入验证码" />
+							<input class="input" type="number" v-model="verCode" placeholder="请输入验证码" />
 						</view>
 						<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification">
 							{{smsText}}
@@ -55,7 +55,7 @@
 				seconds: 0,
 				timer: null,
 				tel: "",
-				vercode: "",
+				verCode: "",
 				codeButton: "获取验证码",
 				countryTel: "+86",
 			}
@@ -85,34 +85,44 @@
 				return false;
 			},
 			lands() {
+				let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
 				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '手机格式错误'
+						title: '手机号格式错误'
 					});
 					return;
 				}
-				if (this.vercode.length == 0) {
+				if (!myreg.test(this.tel)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入有效的手机号'
+					});
+					return;
+				}
+				if (this.verCode.length == 0) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入验证码'
 					});
 					return;
-				} else {
+				}{
 					this.smsText = 'loading';
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
-						url: this.apiUrl + 'loginaa',
+						url: "http://192.168.124.11:8080/wuhan_data1/loginaa", //仅为示例，并非真实接口地址。
+						//url: "http://www.baidu.com",
 						data: {
 							"tel": this.tel,
-							"vercode": this.vercode
+							"verCode": this.verCode
 						},
 						success: (res) => {
 							let dataApi = res.data;
+							//let dataApi = loginApiJson;
 							checkApi.isApi(dataApi);
-							console.log(dataApi);
 							try {
+								//let tokenStr = JSON.stringify(dataApi.data.token);
 								let tokenStr = dataApi.data.token;
 								let userStr = JSON.stringify(dataApi.data);
 								uni.setStorageSync('token', tokenStr);
@@ -127,6 +137,7 @@
 										url: '../../tabbar/mine/mine',
 									})
 								}, 1000);
+
 							} catch (e) {
 								this.smsText = '获取验证码';
 								console.log(e.message);
@@ -148,22 +159,32 @@
 				if (this.smsText != '获取验证码') {
 					return;
 				}
+				let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
 				if (this.tel.length != 11) {
 					uni.showToast({
 						icon: 'none',
-						title: '手机格式错误'
+						title: '手机号格式错误'
+					});
+					return;
+				}
+				if (!myreg.test(this.tel)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入有效的手机号'
 					});
 					return;
 				}
 				checkApi.checkNetwork();
 				uni.request({
+					url: 'http://192.168.124.11:8080/wuhan_data1/getVercodeApp',
+					//url: 'http://www.baidu.com',
 					method: 'POST',
-					url: this.apiUrl + 'getVercodeApp',
 					data: {
 						"tel": this.tel
 					},
 					success: (res) => {
 						let dataApi = res.data;
+						//let dataApi = getVercodeApiJson;
 						checkApi.isApi(dataApi);
 						try {
 							uni.showToast({
