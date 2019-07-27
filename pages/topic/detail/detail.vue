@@ -20,6 +20,7 @@
 	import wdCardText from '@/components/wd-card-text/wd-card-text.vue';
 	import checkApi from '@/common/checkApi.js';
 	import topicDetailApiJson from "@/common/api/topicDetail.json";
+	import demoToic from "@/common/api/demoTopic.json";
 
 	var _self;
 	export default {
@@ -32,12 +33,17 @@
 		},
 		data() {
 			return {
-				indexId: "1000",
+				indexId: "1",
 				indexName: "专题详情页",
 				indexDetail: [],
 				totalHeight: 1000,
 				classTotalHeight: 400
 			};
+		},
+		onShow() {
+			uni.showLoading({
+				title: "加载中",
+			});
 		},
 		onLoad: function(e) {
 			_self = this;
@@ -45,13 +51,13 @@
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
 			}
-			this.initNav();
 			this.initTopicDetail();
-			this.initNav();
+			_self.initNav();
+			uni.hideLoading();
 		},
 		onUnload() {
 			// 退出界面时重新初始化数据
-			this.indexId = "1000";
+			this.indexId = "1";
 			this.indexName = "专题详情页";
 			this.indexDetail = [];
 			this.totalHeight = 1000;
@@ -63,12 +69,12 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					url: 'http://192.168.124.20:8089/wuhan_data1/topic1',
+					url: 'http://192.168.124.20:8089/wuhan_data1/topic' + this.indexId,
+					// url: this.apiUrl + 'topic' + this.indexId,
 					method: 'POST',
 					data: {},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
-						// 目前用的模拟数据
 						dataApi = res.data;
 					},
 					fail: (e) => {
@@ -76,6 +82,7 @@
 						dataApi = topicDetailApiJson;
 					},
 					complete: () => {
+						uni.hideLoading();
 						try {
 							// 检查json数据
 							checkApi.isApi(dataApi);
@@ -94,7 +101,7 @@
 			// 渲染导航栏title
 			initNav() {
 				uni.setNavigationBarTitle({
-					title: this.indexName
+					title: _self.indexName
 				});
 			},
 			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
@@ -120,7 +127,7 @@
 
 	view {
 		/* 设置flex会导致classHeight无效，但不设置会导致classTitle错位 */
-		display: flex;
+		/* display: flex; */
 	}
 
 	.container {

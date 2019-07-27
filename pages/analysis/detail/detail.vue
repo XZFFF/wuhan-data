@@ -20,9 +20,10 @@
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
 	import checkApi from '@/common/checkApi.js';
-	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
+	//import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
 
+	//import analysisDetailApiJson from "@/common/api/anaDemo.json";
 	var _self;
 	export default {
 		components: {
@@ -74,16 +75,19 @@
 			initAnalysisDetail() {
 				checkApi.checkNetwork();
 				let dataApi;
+				uni.showLoading({
+					title: "正在加载 栏目ID:" + this.indexId,
+				});
 				uni.request({
-					url: 'http://192.168.124.12:8080/wuhan_data1/ee',
+					url: 'http://localhost:8080/wuhan_data1/getAnalysisDetail',
 					method: 'POST',
 					data: {
-						indexId: "2",
+						indexId: this.indexId,
 					},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						dataApi = res.data;
-						//dataApi = analysisDetailApiJson;
+						// dataApi = analysisDetailApiJson;
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
@@ -105,7 +109,7 @@
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
-
+						uni.hideLoading();
 					}
 				});
 			},
@@ -113,22 +117,20 @@
 			onConfirm(val) {
 				checkApi.checkNetwork();
 				let dataApi;
+				uni.showLoading({
+					title: "正在加载 栏目ID:" + this.indexId,
+				});
 				let requestData = {
-					"indexId": "2",
+					"indexId": _self.indexId,
 					"startTime": val.startTime,
 					"endTime": val.endTime,
-					"timeFreq": val.timeFreq
+					"freqName": val.timeFreq
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({
-					url: 'http://192.168.124.12:8080/wuhan_data1/ff',
+					url: 'http://localhost:8080/wuhan_data1/getAnalysisDetailByTime',
 					method: 'POST',
-					data: {
-						"indexId": "2",
-						"startTime": val.startTime,
-						"endTime": val.endTime,
-						"timeFreq": val.timeFreq
-					},
+					data: requestData,
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						try {
@@ -146,7 +148,9 @@
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
 					},
-					complete: () => {}
+					complete: () => {
+						uni.hideLoading();
+					}
 				});
 			},
 			// 渲染导航栏title及icon
@@ -209,7 +213,7 @@
 
 	view {
 		/* 设置flex会导致classHeight无效，但不设置会导致classTitle错位 */
-		display: flex;
+		/* display: flex; */
 	}
 
 	.container {

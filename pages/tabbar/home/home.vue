@@ -33,7 +33,7 @@
 			<view class="topic-image">
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="openTopicList"></image>
 			</view>
-			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail">
+			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail(item)">
 				<wd-card-image :image="item.image" :title="item.title"></wd-card-image>
 			</view>
 		</view>
@@ -77,18 +77,19 @@
 				checkApi.checkNetwork();
 				// 通过请求接口获取轮播图
 				uni.request({
-					url: 'http://www.baidu.com',
+					url: 'https://www.baidu.com',
 					method: 'GET',
 					data: {},
 					success: res => {
 						// 获取homepage的数据
-						let dataApi = homeApiJson;
+						let dataApi = homeApiJson
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						this.slideshow = dataApi.data.slideshow;
 						this.analysis = dataApi.data.analysis;
 						this.topic = this.randTopic(dataApi.data.topic);
+						this.topic = dataApi.data.topic;
 						// 数据存入缓存
 						this.setHomeStorage();
 					},
@@ -172,9 +173,9 @@
 					url: '../../topic/list/list'
 				});
 			},
-			openTopicDetail(e) {
+			openTopicDetail(item) {
 				uni.navigateTo({
-					url: '../../topic/detail/detail'
+					url: '../../topic/detail/detail?indexId=' + item.id + '&indexName=' + item.title
 				})
 			},
 			openSearch(e) {

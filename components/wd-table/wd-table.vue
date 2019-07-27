@@ -50,6 +50,7 @@
 	}
 
 	.table-nav {
+		display: flex;
 		width: 100%;
 		height: 90upx;
 		background-color: #FFFFFF;

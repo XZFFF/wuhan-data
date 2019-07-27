@@ -1,0 +1,77 @@
+{
+	"errCode": "0",
+	"errMsg": "success",
+	"data": {
+		"baseInfo": {
+			"indexId": "1",
+			"indexName": "高质量发展"
+		},
+		"classInfo": [{
+			"id": "2",
+			"classTitle": "折线图",
+			"classType": "echarts",
+			"classHeight": "650",
+			"echartOption": {
+				"grid": {
+					"height": "330",
+					"bottom": "50",
+					"containLabel": true
+				},
+				"legend": {
+					"bottom": "430",
+					"orient": "vertical",
+					"data": ["规模以上工业主营业务收入", "规模以上工业主营业务收入-累计增速", "规模以上服务业企业营业收入", "规模以上服务业企业营业收入-累计增速", "规模以上工业企业利润率",
+						"规模以上服务业企业利润率"
+					]
+				},
+				"series": [{
+					"data": [13551.8, 10009.02, 6239.55, 42358.06, 39244.29, 36015.34],
+					"name": "规模以上工业主营业务收入",
+					"type": "bar",
+					"yAxisIndex": 1
+				}, {
+					"data": [8, 8.4, 5.4, 8.2, 8.3, 6.7],
+					"name": "规模以上工业主营业务收入-累计增速",
+					"type": "line"
+				}, {
+					"data": [1995.88, 1532.96, 969.42, 5092.47, 4489.94, 3944.88],
+					"name": "规模以上服务业企业营业收入",
+					"type": "bar",
+					"yAxisIndex": 1
+				}, {
+					"data": [17.1, 20.5, 21.7, 15.8, 15.09, 15.3],
+					"name": "规模以上服务业企业营业收入-累计增速",
+					"type": "line"
+				}, {
+					"data": [6.1, 5.74, 5.52, 6.51, 6.32, 6.2],
+					"name": "规模以上工业企业利润率",
+					"type": "line"
+				}, {
+					"data": [8.29, 8.43, 8.46, 9.68, 9.45, 10.11],
+					"name": "规模以上服务业企业利润率",
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"trigger": "axis",
+					"snap": true,
+					"axisPointer": {
+						"type": "cross"
+					}
+				},
+				"xAxis": [{
+					"data": ["2019-04", "2019-03", "2019-02", "2018-12", "2018-11", "2018-10"],
+					"name": "x轴",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "y0轴",
+					"type": "value"
+				}, {
+					"name": "y1轴",
+					"type": "value"
+				}]
+			}
+		}]
+	}
+}

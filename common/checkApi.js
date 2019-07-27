@@ -83,7 +83,8 @@ module.exports = {
 					h = (tableParam + 1) * 40;
 				} else if (item.classType == 'echarts') {
 					if (typeof item.classHeight === 'string') {
-						//h = parseInt(item.classHeight); // 不允许设置
+						h = parseInt(item.classHeight); // 不允许设置
+					} else {
 						h = 400;
 					}
 				} else if (item.classType == 'card') {
