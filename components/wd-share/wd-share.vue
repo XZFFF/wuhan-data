@@ -5,6 +5,7 @@
 </template>
 
 <script>
+	import checkApi from '@/common/checkApi.js'
 	// #ifdef APP-PLUS
 	// 如下为分享内容定义，可根据业务需求自行定义
 	var strShareUrl = "https://uniapp.dcloud.io"
@@ -320,6 +321,9 @@
 	// #endif
 	export default {
 		props: {
+			type: {
+				type: String
+			},
 			indexId: {
 				type: String
 			},
@@ -329,6 +333,9 @@
 			isFavorite: {
 				type: Boolean,
 				default: false
+			},
+			source: {
+				type: String
 			}
 		},
 		data() {
@@ -355,21 +362,15 @@
 				case "favorite":
 					let favColor = "#ffffff";
 					if (this.isFavorite == false || this.isFavorite == "false") {
-						this.isFavorite = true;
-						favColor = "#f9da74";
-						uni.showToast({
-							title: "收藏成功",
-							icon: "none",
-							duration: 1000,
-						});
+						if (checkApi.setCollect(this.type, this.indexId, this.indexName, this.source)) {
+							this.isFavorite = true;
+							favColor = "#f9da74";
+						}
 					} else {
-						this.isFavorite = false;
-						favColor = "#ffffff";
-						uni.showToast({
-							title: "已取消收藏",
-							icon: "none",
-							duration: 1000,
-						});
+						if (checkApi.delCollect(this.type, this.indexId, this.indexName, this.source)) {
+							this.isFavorite = false;
+							favColor = "#ffffff";
+						}
 					}
 					// 更新导航栏收藏按钮颜色
 					let pages = getCurrentPages();
@@ -385,7 +386,6 @@
 						titleNView: titleObj
 					});
 					// #endif
-					// TODO 发送收藏/取消收藏请求
 					break;
 				default:
 					uni.showToast({

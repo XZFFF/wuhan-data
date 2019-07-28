@@ -5,7 +5,8 @@
 		"baseInfo": {
 			"indexId": "1",
 			"indexName": "地区生产总值",
-			"isFavorite": true
+			"isFavorite": true,
+			"source": "综合"
 		},
 		"timeCondition": [{
 				"freqName": "月度",

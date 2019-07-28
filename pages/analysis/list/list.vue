@@ -14,7 +14,7 @@
 			 scroll-with-animation>
 				<view v-for="(item,index) in subCategoryList" :key="index">
 					<wd-indi-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"
-					 :item="item"></wd-indi-item>
+					 :source="source" :item="item"></wd-indi-item>
 				</view>
 			</scroll-view>
 		</view>
@@ -39,7 +39,8 @@
 				scrollTop: 0,
 				scrollHeight: 0,
 				categoryList: [],
-				subCategoryList: []
+				subCategoryList: [],
+				source: "未知来源"
 			};
 		},
 		onLoad: function(e) {
@@ -78,29 +79,18 @@
 					complete: () => {
 						// 设置初始化的左右侧子栏数据(默认为第一个)
 						this.categoryActive = this.analysisId;
-						this.subCategoryList = this.categoryList[this.analysisId].subList;
+						this.source = this.categoryList[this.categoryActive].name;
+						this.subCategoryList = this.categoryList[this.categoryActive].subList;
 					}
 				});
 				this.height = uni.getSystemInfoSync().windowHeight;
-			},
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						if (res.networkType == 'none') {
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
-					}
-				});
 			},
 			scroll(e) {
 				this.scrollHeight = e.detail.scrollHeight;
 			},
 			categoryClickMain(categroy, index) {
 				this.categoryActive = index;
+				this.source = this.categoryList[this.categoryActive].name;
 				// 右侧栏数据根据左侧栏变更做出变化
 				this.subCategoryList = categroy.subList;
 				this.scrollTop = -this.scrollHeight * index;

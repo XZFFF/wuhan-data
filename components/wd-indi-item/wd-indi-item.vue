@@ -2,7 +2,7 @@
 	<view class="index-item">
 		<!-- 指标起始竖条 -->
 		<view class="index-item-start-bar"></view>
-		<view class="index-item-name" @tap="openDetail(indexId, indexName, isFavorite)">
+		<view class="index-item-name" @tap="openDetail(indexId, indexName, isFavorite, source)">
 			<text>{{tranIndexName}}</text>
 		</view>
 		<!-- <wd-tag :text="item.source" size="small" :circle="true"></wd-tag> -->
@@ -23,6 +23,7 @@
 
 <script>
 	import wdTag from '@/components/wd-tag/wd-tag.vue';
+	import checkApi from '@/common/checkApi.js'
 	export default {
 		components: {
 			wdTag,
@@ -55,6 +56,10 @@
 			isFavorite: {
 				type: Boolean,
 				default: false
+			},
+			source: {
+				type: String,
+				default: '未知来源'
 			}
 		},
 		computed: {
@@ -81,25 +86,21 @@
 		},
 		methods: {
 			// 跳转到指标详情页
-			openDetail(indexId, indexName, isFavorite) {
+			openDetail(indexId, indexName, isFavorite, source) {
 				uni.navigateTo({
-					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName + '&isFavorite=' + isFavorite
+					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName + '&isFavorite=' + isFavorite +
+						'&source=' + source
 				});
 			},
 			changeFav() {
-				this.isFavorite = !this.isFavorite;
-				if (this.isFavorite == false) {
-					uni.showToast({
-						title: "已取消收藏",
-						icon: "none",
-						duration: 1000,
-					})
+				if (this.isFavorite == false || this.isFavorite == "false") {
+					if (checkApi.delCollect("analysis", this.indexId, this.indexName, this.source)) {
+						this.isFavorite = true;
+					}
 				} else {
-					uni.showToast({
-						title: "收藏成功",
-						icon: "none",
-						duration: 1000,
-					})
+					if (checkApi.setCollect("analysis", this.indexId, this.indexName, this.source)) {
+						this.isFavorite = false;
+					}
 				}
 			}
 		}

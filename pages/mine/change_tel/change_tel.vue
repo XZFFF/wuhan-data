@@ -84,7 +84,6 @@
 					checkApi.checkNetwork();
 					uni.request({
 						url: this.apiUrl + 'getVercodeApp',
-						//url: "http://192.168.1.101:8080/wuhan_data1/sendSMS",
 						method: 'POST',
 						data: {
 							"tel": this.tel
@@ -152,7 +151,7 @@
 					return;
 				}
 				uni.request({
-					url: "http://192.168.124.11:8080/wuhan_data1/changeTelApp",
+					url: this.apiUrl + "changeTelApp",
 					method: 'POST',
 					data: {
 						"token": this.token,

@@ -31,7 +31,7 @@
 		<!-- 专题 -->
 		<view class="topic">
 			<view class="topic-image">
-				<image class="topic-image-src" src="../../../static/home/title/topic_title.png" @click="openTopicList"></image>
+				<image class="topic-image-src" src="../../../static/home/title/topic_title.png"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail(item)">
 				<wd-card-image :image="item.image" :title="item.title"></wd-card-image>
