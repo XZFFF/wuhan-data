@@ -74,7 +74,7 @@
 							uni.setStorageSync('my_news', this.menu_list);
 						} catch (e) {
 							console.log(e.errMsg);
-							this.getCollectStorage();
+							this.getNewsStorage();
 						}
 					},
 					fail: (e) => {
@@ -83,7 +83,7 @@
 					},
 				});
 			},
-			getCollectStorage() {
+			getNewsStorage() {
 				try {
 					let myNews = uni.getStorageSync('my_news');
 					if (myNews) {

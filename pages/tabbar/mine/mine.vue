@@ -205,12 +205,10 @@
 							}
 						} catch (e) {
 							console.log(e.errMsg);
-							this.getCollectStorage();
 						}
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						this.getNewsStorage();
 					},
 				});
 			},

@@ -101,16 +101,34 @@
 						"token": this.token,
 					},
 					success: (res) => {
-						//let dataApi = getUserApiJson;
-						let dataApi = res.data;
-						checkApi.isApi(dataApi);
-						this.user = dataApi.data;
-						let userStr = JSON.stringify(this.user);
-						uni.setStorageSync('user', userStr);
+						try{
+							//let dataApi = getUserApiJson;
+							let dataApi = res.data;
+							checkApi.isApi(dataApi);
+							this.user = dataApi.data;
+							let userStr = JSON.stringify(this.user);
+							uni.setStorageSync('user', userStr);
+						}catch(e){
+							console.log(e.errMsg);
+							this.getUserStorage();
+						}
 					},
-					fail: (e) => {},
-					complete: () => {}
+					fail: (e) => {
+						console.log(e.errMsg);
+						this.getUserStorage();
+					},
 				});
+			},
+			getUserStorage() {
+				try {
+					let user = uni.getStorageSync('user');
+					if (user) {
+						this.user = user;
+						console.log("读取用户信息缓存");
+					}
+				} catch (e) {
+					console.log(e.message);
+				}
 			},
 			chooseImg() { //选择图片
 				uni.chooseImage({
