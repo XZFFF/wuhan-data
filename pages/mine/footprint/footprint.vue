@@ -82,7 +82,7 @@
 			initCollect() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.11:8080/wuhan_data1/getTrackApp',
+					url: this.apiUrl + 'getTrackApp',
 					method: 'POST',
 					data: {
 						"token": this.token,

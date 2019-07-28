@@ -134,8 +134,7 @@
 				console.log("姓名："+this.user.realName);
 				checkApi.checkNetwork();
 				uni.request({
-					//url: 'http://www.baidu.com',
-					url: 'http://192.168.124.11:8080/wuhan_data1/editUserApp',
+					url: this.apiUrl + 'editUserApp',
 					method: 'POST',
 					data: {
 						"token": this.token,

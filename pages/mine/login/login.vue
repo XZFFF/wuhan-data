@@ -106,23 +106,20 @@
 						title: '请输入验证码'
 					});
 					return;
-				}{
+				} {
 					this.smsText = 'loading';
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
-						url: "http://192.168.124.11:8080/wuhan_data1/loginaa", //仅为示例，并非真实接口地址。
-						//url: "http://www.baidu.com",
+						url: this.apiUrl + "loginaa", //仅为示例，并非真实接口地址。
 						data: {
 							"tel": this.tel,
 							"verCode": this.verCode
 						},
 						success: (res) => {
 							let dataApi = res.data;
-							//let dataApi = loginApiJson;
 							checkApi.isApi(dataApi);
 							try {
-								//let tokenStr = JSON.stringify(dataApi.data.token);
 								let tokenStr = dataApi.data.token;
 								let userStr = JSON.stringify(dataApi.data);
 								uni.setStorageSync('token', tokenStr);

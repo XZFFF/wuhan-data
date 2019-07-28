@@ -104,7 +104,7 @@
 				}
 				// 获取搜索趋势数据
 				uni.request({
-					url: 'http://192.168.124.4:8080/wuhan_data1/searchTrend',
+					url: this.apiUrl + 'searchTrend',
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -133,7 +133,7 @@
 			getInputtips(val) {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.4:8080/wuhan_data1/searchIndi',
+					url: this.apiUrl + 'searchIndi',
 					method: 'POST',
 					data: {
 						keyword: val,

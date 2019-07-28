@@ -69,13 +69,14 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					url: 'http://192.168.124.20:8089/wuhan_data1/topic' + this.indexId,
-					// url: this.apiUrl + 'topic' + this.indexId,
+					// url: 'http://192.168.124.20:8089/wuhan_data1/topic' + this.indexId,
+					url: this.apiUrl + 'topic' + this.indexId,
 					method: 'POST',
 					data: {},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						dataApi = res.data;
+						// dataApi = demoToic;
 					},
 					fail: (e) => {
 						console.log(e.errMsg);

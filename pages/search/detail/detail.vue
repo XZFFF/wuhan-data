@@ -65,7 +65,7 @@
 				let dataApi = {};
 				console.log(this.indexId + this.indexName + this.source);
 				uni.request({
-					url: 'http://192.168.124.4:8080/wuhan_data1/searchDetail',
+					url: this.apiUrl + 'searchDetail',
 					method: 'POST',
 					data: {
 						"indexId": this.indexId,
@@ -107,7 +107,7 @@
 			onConfirm(val) {
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.4:8080/wuhan_data1/searchConfirm',
+					url: this.apiUrl + 'searchConfirm',
 					method: 'POST',
 					data: {
 						"indexId": this.indexId,

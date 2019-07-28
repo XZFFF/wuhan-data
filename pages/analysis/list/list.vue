@@ -51,7 +51,7 @@
 		methods: {
 			initAnalysisList() {
 				uni.request({
-					url: "http://localhost:8080/wuhan_data1/getAnalysisList",
+					url: this.apiUrl + "getAnalysisList",
 					method: 'POST',
 					data: {},
 					success: (res) => {

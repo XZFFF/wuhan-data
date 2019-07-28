@@ -12,7 +12,9 @@
 <script>
 	// 引入公共样式
 	import wdCardImage from '@/components/wd-card-image/wd-card-image.vue';
-	import  { isApi } from '@/common/checkApi.js';
+	import {
+		isApi
+	} from '@/common/checkApi.js';
 	import topicListApiJson from '@/common/api/topicList.json';
 	export default {
 		components: {
@@ -54,7 +56,7 @@
 			initTopicList() {
 				this.checkNetwork();
 				uni.request({
-					url: 'http://wuhandata.applinzi.com/topicList.php',
+					url: this.apiUrl + 'topicList.php',
 					method: 'GET',
 					data: {},
 					success: res => {

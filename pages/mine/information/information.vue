@@ -95,8 +95,7 @@
 			initUser() {
 				checkApi.checkNetwork();
 				uni.request({
-					//url: 'http://www.baidu.com',
-					url: 'http://192.168.124.11:8080/wuhan_data1/getUserApp',
+					url: this.apiUrl + 'getUserApp',
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -121,16 +120,17 @@
 					success: (chooseImageRes) => {
 						const tempFilePaths = chooseImageRes.tempFilePaths;
 						uni.uploadFile({
-							//url: 'http://192.168.124.11:8080/wuhan_data1/UpImagesHead', //仅为示例，非真实的接口地址
-							url: 'http://192.168.124.11:8080/wuhan_data1/setHeadApp',
+							url: this.apiUrl + 'setHeadApp',
 							filePath: tempFilePaths[0],
-							header:{"content-type": "multipart/form-data"},
+							header: {
+								"content-type": "multipart/form-data"
+							},
 							formData: {
 								"token": this.token,
-								},
+							},
 							name: 'file',
 							success: (uploadFileRes) => {
-								console.log("上传："+tempFilePaths[0]);
+								console.log("上传：" + tempFilePaths[0]);
 								console.log(uploadFileRes.data);
 							}
 						});

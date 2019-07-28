@@ -79,7 +79,7 @@
 					title: "正在加载 栏目ID:" + this.indexId,
 				});
 				uni.request({
-					url: 'http://localhost:8080/wuhan_data1/getAnalysisDetail',
+					url: this.apiUrl + 'getAnalysisDetail',
 					method: 'POST',
 					data: {
 						indexId: this.indexId,
@@ -87,7 +87,6 @@
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						dataApi = res.data;
-						// dataApi = analysisDetailApiJson;
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));

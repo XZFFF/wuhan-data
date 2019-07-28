@@ -77,7 +77,7 @@
 				checkApi.checkNetwork();
 				// 通过请求接口获取轮播图
 				uni.request({
-					url: 'https://www.baidu.com',
+					url: this.apiUrl + 'initHome',
 					method: 'GET',
 					data: {},
 					success: res => {

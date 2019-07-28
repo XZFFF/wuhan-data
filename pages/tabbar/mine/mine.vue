@@ -115,7 +115,7 @@
 					"roleName": ""
 				}, // 用户信息
 				updateText: "",
-				newsPoint: 0,//消息红点提示
+				newsPoint: 0, //消息红点提示
 				newsList: "",
 				showImg: true,
 				type: '', // 弹窗类型
@@ -130,8 +130,7 @@
 				menu_list: mineConfig.menu_list,
 			};
 		},
-		onLoad() {
-		},
+		onLoad() {},
 		onShow: function() {
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
@@ -167,8 +166,7 @@
 				}
 				checkApi.checkNetwork();
 				uni.request({
-					//url: 'http://www.baidu.com',
-					url: 'http://192.168.124.11:8080/wuhan_data1/getUserApp',
+					url: this.apiUrl + 'getUserApp',
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -177,11 +175,11 @@
 						//let dataApi = getUserApiJson;
 						let dataApi = res.data;
 						checkApi.isApi(dataApi);
-						try{
+						try {
 							this.user = dataApi.data;
 							let userStr = JSON.stringify(this.user);
 							uni.setStorageSync('user', userStr);
-						}catch(e){
+						} catch (e) {
 							console.log(e.message);
 						}
 					},
@@ -192,7 +190,7 @@
 			},
 			newsRead() {
 				uni.request({
-					url: "http://192.168.124.11:8080/wuhan_data1/getMessageApp",
+					url: this.apiUrl + "getMessageApp",
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -200,11 +198,10 @@
 					success: (res) => {
 						try {
 							let dataApi = res.data;
-							//let dataApi = getNewsApiJson;
 							checkApi.isApi(dataApi);
 							this.newsList = dataApi.data.message;
 							let myNews = uni.getStorageSync('my_news');
-							if(this.newsList.length != myNews.length){
+							if (this.newsList.length != myNews.length) {
 								this.newsPoint = 1;
 							}
 						} catch (e) {
@@ -262,20 +259,18 @@
 					};
 					checkApi.checkNetwork();
 					uni.request({
-						url: "http://192.168.124.11:8080/wuhan_data1/getVersionApp",
+						url: this.apiUrl + "getVersionApp",
 						method: 'GET',
 						data: req,
 						success: (res) => {
 							console.log("返回值：" + res.data.errCode);
 							if (res.data.errCode == "0") {
 								this.type = 'middle-update';
-								if(uni.getSystemInfoSync().platform == "ios")
-								{
+								if (uni.getSystemInfoSync().platform == "ios") {
 									this.updateText = res.data.IOS.description;
 									this.downloadUrl = res.data.IOS.url;
 								}
-								if(uni.getSystemInfoSync().platform == "android")
-								{
+								if (uni.getSystemInfoSync().platform == "android") {
 									this.updateText = res.data.Android.description;
 									this.downloadUrl = res.data.Android.url;
 								}
@@ -341,7 +336,7 @@
 				this.type = 'middle-download';
 				//#ifdef APP-PLUS
 				let updateUrl = this.downloadUrl;
-				console.log("下载地址："+updateUrl);
+				console.log("下载地址：" + updateUrl);
 				const downloadTask = uni.downloadFile({
 					url: updateUrl, //仅为示例，并非真实的资源
 					success: (res) => {
@@ -389,19 +384,22 @@
 				if (e.text === "微信") {
 					pro = "weixin";
 					sce = "WXSceneSession";
-				}if (e.text === "朋友圈") {
+				}
+				if (e.text === "朋友圈") {
 					pro = "weixin";
 					sce = "WXSenceTimeline";
-				}if (e.text === "QQ") {
+				}
+				if (e.text === "QQ") {
 					pro = "qq";
 					type = 1;
-				}if (e.text === "微博") {
+				}
+				if (e.text === "微博") {
 					pro = "sinaweibo";
 				}
 				if (e.text === "复制") {
 					uni.setClipboardData({
 						data: 'https://www.baidu.com',
-						success: function () {
+						success: function() {
 							console.log('success');
 							uni.showToast({
 								icon: 'none',

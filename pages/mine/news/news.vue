@@ -60,8 +60,7 @@
 			initMyNews() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: "http://192.168.124.11:8080/wuhan_data1/getMessageApp",
-					//url: "http://www.baidu.com",
+					url: this.apiUrl + "getMessageApp",
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -111,11 +110,11 @@
 		display: flex;
 	}
 
-	.uni-list-cell-navigate{
+	.uni-list-cell-navigate {
 		display: flex;
 		justify-content: space-between;
 	}
-	
+
 	.list-cell-title {
 		font-size: 35upx;
 		width: 460upx;
@@ -143,7 +142,7 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
-		-webkit-line-clamp:2;
-		-webkit-box-orient:vertical;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	}
 </style>
