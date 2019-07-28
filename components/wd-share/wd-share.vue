@@ -323,7 +323,7 @@
 		props: {
 			type: {
 				type: String
-			}
+			},
 			indexId: {
 				type: String
 			},
@@ -362,23 +362,15 @@
 				case "favorite":
 					let favColor = "#ffffff";
 					if (this.isFavorite == false || this.isFavorite == "false") {
-						checkApi.setCollect(this.type, this.indexId, this.indexName, this.source);
-						this.isFavorite = true;
-						favColor = "#f9da74";
-						uni.showToast({
-							title: "收藏成功",
-							icon: "none",
-							duration: 1000,
-						});
+						if (checkApi.setCollect(this.type, this.indexId, this.indexName, this.source)) {
+							this.isFavorite = true;
+							favColor = "#f9da74";
+						}
 					} else {
-						checkApi.delCollect(this.type, this.indexId, this.indexName, this.source);
-						this.isFavorite = false;
-						favColor = "#ffffff";
-						uni.showToast({
-							title: "已取消收藏",
-							icon: "none",
-							duration: 1000,
-						});
+						if (checkApi.delCollect(this.type, this.indexId, this.indexName, this.source)) {
+							this.isFavorite = false;
+							favColor = "#ffffff";
+						}
 					}
 					// 更新导航栏收藏按钮颜色
 					let pages = getCurrentPages();

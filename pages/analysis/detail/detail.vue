@@ -104,7 +104,7 @@
 							//_self.indexId = dataApi.data.baseInfo.indexId;
 							//_self.indexName = dataApi.data.baseInfo.indexName;
 							//_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-							// _self.source = dataApi.data.baseInfo.source;
+							//_self.source = dataApi.data.baseInfo.source;
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
 							_self.relatedData = dataApi.data.relatedData;
@@ -122,7 +122,7 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.showLoading({
-					title: "正在加载 栏目ID:" + this.indexId,
+					title: "加载栏目:" + this.indexId,
 				});
 				let requestData = {
 					"indexId": _self.indexId,

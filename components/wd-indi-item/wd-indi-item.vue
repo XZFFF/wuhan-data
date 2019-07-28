@@ -23,6 +23,7 @@
 
 <script>
 	import wdTag from '@/components/wd-tag/wd-tag.vue';
+	import checkApi from '@/common/checkApi.js'
 	export default {
 		components: {
 			wdTag,
@@ -92,19 +93,14 @@
 				});
 			},
 			changeFav() {
-				this.isFavorite = !this.isFavorite;
-				if (this.isFavorite == false) {
-					uni.showToast({
-						title: "已取消收藏",
-						icon: "none",
-						duration: 1000,
-					})
+				if (this.isFavorite == false || this.isFavorite == "false") {
+					if (checkApi.delCollect("analysis", this.indexId, this.indexName, this.source)) {
+						this.isFavorite = true;
+					}
 				} else {
-					uni.showToast({
-						title: "收藏成功",
-						icon: "none",
-						duration: 1000,
-					})
+					if (checkApi.setCollect("analysis", this.indexId, this.indexName, this.source)) {
+						this.isFavorite = false;
+					}
 				}
 			}
 		}

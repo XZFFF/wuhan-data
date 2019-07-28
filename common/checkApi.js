@@ -15,6 +15,13 @@ module.exports = {
 					console.log(JSON.stringify(apiData));
 					return false;
 				}
+				if (apiData.errCode == -2 || apiData.errCode == '-2') {
+					uni.showToast({
+						title: apiData.errMsg,
+						duration: 1000,
+						icon: 'none'
+					});
+				}
 			}
 			return true;
 		} catch (e) {
@@ -130,41 +137,15 @@ module.exports = {
 		});
 		return true;
 	},
-	delCollect: function(type, indexId) {
-		// 检查token令牌是否存在
-		let token = uni.getStorageSync('token');
-		if (!token) {
-			return false;
-		}
-		let typeName = '';
-		if (type == 'analysis') {
-			typeName = "经济分析";
-		} else if (type == 'search') {
-			typeName = "指标数据";
-		} else {
-			typeName = "未知类型";
-		}
-		uni.request({
-			url: this.apiUrl + 'delCollectApp',
-			method: 'POST',
-			data: {
-				"token": token,
-				"type": typeName,
-				"indexId": indexId
-			},
-			success: (res) => {
-				return true;
-			},
-			fail(e) {
-				return false;
-			}
-		});
-		return true;
-	},
 	setCollect: function(type, indexId, indexName, source) {
 		// 检查token令牌是否存在
 		let token = uni.getStorageSync('token');
 		if (!token) {
+			uni.showToast({
+				title: "请先登录",
+				icon: "none",
+				duration: 1000,
+			});
 			return false;
 		}
 		let typeName = '';
@@ -186,12 +167,73 @@ module.exports = {
 				"source": source
 			},
 			success: (res) => {
+				console.log(res);
+				uni.showToast({
+					title: "收藏成功",
+					icon: "none",
+					duration: 1000,
+				});
 				return true;
 			},
 			fail(e) {
+				console.log(3);
+				uni.showToast({
+					title: "收藏失败",
+					icon: "none",
+					duration: 1000,
+				});
 				return false;
 			}
 		});
 		return true;
 	},
+	delCollect: function(type, indexId) {
+		// 检查token令牌是否存在
+		let token = uni.getStorageSync('token');
+		if (!token) {
+			uni.showToast({
+				title: "请先登录",
+				icon: "none",
+				duration: 1000,
+			});
+			return false;
+		}
+		let typeName = '';
+		if (type == 'analysis') {
+			typeName = "经济分析";
+		} else if (type == 'search') {
+			typeName = "指标数据";
+		} else {
+			typeName = "未知类型";
+		}
+		uni.request({
+			url: this.apiUrl + 'delCollectApp',
+			method: 'POST',
+			data: {
+				"token": token,
+				"type": typeName,
+				"indexId": indexId
+			},
+			success: (res) => {
+				console.log(res);
+				uni.showToast({
+					title: "已取消收藏",
+					icon: "none",
+					duration: 1000,
+				});
+				return true;
+			},
+			fail(e) {
+				console.log(e);
+				uni.showToast({
+					title: "取消收藏失败",
+					icon: "none",
+					duration: 1000,
+				});
+				return false;
+			}
+		});
+		return true;
+	},
+
 }
