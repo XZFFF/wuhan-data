@@ -250,35 +250,69 @@
 			goDetailPage1(e) {
 				if (e.id == 0) {
 					//#ifdef APP-PLUS
-					var req = { //升级检测数据  
-						"appid": plus.runtime.appid,
-						"version": plus.runtime.version
-					};
 					checkApi.checkNetwork();
 					uni.request({
 						url: this.apiUrl + "getVersionApp",
 						method: 'GET',
-						data: req,
+						data: {},
 						success: (res) => {
-							console.log("返回值：" + res.data.errCode);
-							if (res.data.errCode == "0") {
-								this.type = 'middle-update';
+							let updateApi = res.data;
+							let appid = plus.runtime.appid;
+							let version = plus.runtime.version;
+							let resData = JSON.stringify(updateApi);
+							console.log("appid："+appid);
+							console.log("当前版本："+version);
+							console.log("返回数据："+resData);
+							try{
 								if (uni.getSystemInfoSync().platform == "ios") {
-									this.updateText = res.data.IOS.description;
-									this.downloadUrl = res.data.IOS.url;
+									if(appid == updateApi.IOS.appid){
+										if(version === updateApi.IOS.version)
+										{
+											uni.showToast({
+												icon: 'none',
+												title: '已为最新版本，无需更新'
+											});
+										}
+										else{
+											this.type = 'middle-update';
+											this.updateText = res.data.IOS.description;
+											this.downloadUrl = res.data.IOS.url;
+										}
+									}
+									uni.showToast({
+										icon: 'none',
+										title: '应用appid匹配失败'
+									});
 								}
 								if (uni.getSystemInfoSync().platform == "android") {
-									this.updateText = res.data.Android.description;
-									this.downloadUrl = res.data.Android.url;
+									if(appid == updateApi.Android.appid){
+										if(version === updateApi.Android.version)
+										{
+											uni.showToast({
+												icon: 'none',
+												title: '已为最新版本，无需更新'
+											});
+										}
+										else{
+											this.type = 'middle-update';
+											this.updateText = res.data.Android.description;
+											this.downloadUrl = res.data.Android.url;
+										}
+									}
+									else{
+										uni.showToast({
+											icon: 'none',
+											title: '应用appid匹配失败'
+										});
+									}
 								}
-							}
-							if (res.data.errCode == "-1") {
-								uni.showModal({
-									title: "已为最新版本，无需更新"
-								})
+							}catch(e){
+								console.log(e.errMsg);
 							}
 						},
-						fail: () => {}
+						fail: (e) => {
+							console.log(e.errMsg);
+						},
 					})
 					//#endif
 				} else if (e.id == 1) {

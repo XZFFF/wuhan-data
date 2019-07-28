@@ -107,7 +107,6 @@
 					});
 					return;
 				} {
-					this.smsText = 'loading';
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
@@ -171,9 +170,11 @@
 					});
 					return;
 				}
+				this.smsText = 'loading';
 				checkApi.checkNetwork();
 				uni.request({
-					url: this.apiUrl + 'getVercodeApp',
+					url: 'http://192.168.124.11:8080/wuhan_data1/getVercodeApp',
+					//url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						"tel": this.tel
@@ -187,23 +188,28 @@
 								icon: 'none',
 								title: '验证码发送成功'
 							});
-							this.second = 12;
-							this.seconds = this.second
-							this.countDown()
-							this.timer = setInterval(() => {
-								this.seconds--
-								if (this.seconds < 1) {
-									this.smsText = '获取验证码'
-									clearInterval(this.timer)
-									return
-								}
+							if (dataApi.errCode == 0)
+							{
+								this.second = 12;
+								this.seconds = this.second
 								this.countDown()
-							}, 1000);
+								this.timer = setInterval(() => {
+									this.seconds--
+									if (this.seconds < 1) {
+										this.smsText = '获取验证码'
+										clearInterval(this.timer)
+										return
+									}
+									this.countDown()
+								}, 1000);
+							}
 						} catch (e) {
 							console.log(e.message);
+							this.smsText = '获取验证码';
 						}
 					},
 					fail: (e) => {
+						this.smsText = '获取验证码';
 						console.log(e.errMsg);
 						uni.showToast({
 							icon: 'none',
