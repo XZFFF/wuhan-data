@@ -76,7 +76,7 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.showLoading({
-					title: "正在加载 栏目ID:" + this.indexId,
+					title: "加载栏目:" + this.indexId,
 				});
 				uni.request({
 					url: this.apiUrl + 'getAnalysisDetail',
