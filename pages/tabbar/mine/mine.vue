@@ -172,7 +172,6 @@
 						"token": this.token,
 					},
 					success: (res) => {
-						//let dataApi = getUserApiJson;
 						let dataApi = res.data;
 						checkApi.isApi(dataApi);
 						try {
@@ -254,8 +253,8 @@
 				if (e.id == 0) {
 					//#ifdef APP-PLUS
 					var req = { //升级检测数据  
-						"appid": "__UNI__123456",
-						"version": "1.0.0"
+						"appid": plus.runtime.appid,
+						"version": plus.runtime.version
 					};
 					checkApi.checkNetwork();
 					uni.request({

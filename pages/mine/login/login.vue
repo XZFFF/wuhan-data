@@ -173,8 +173,7 @@
 				}
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.11:8080/wuhan_data1/getVercodeApp',
-					//url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getVercodeApp',
 					method: 'POST',
 					data: {
 						"tel": this.tel
