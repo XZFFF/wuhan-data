@@ -9,7 +9,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite"></wd-share>
+		<wd-share type="analysis" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share>
 	</view>
 </template>
 
@@ -37,6 +37,7 @@
 			return {
 				indexId: "1000",
 				indexName: "指标详情页",
+				source: "未知来源",
 				isFavorite: false,
 				timeCondition: [],
 				indexDetail: [],
@@ -50,9 +51,11 @@
 			if (JSON.stringify(e) != '{}') {
 				_self.indexId = e.indexId;
 				_self.indexName = e.indexName;
+				_self.source = e.source;
 				_self.isFavorite = e.isFavorite;
 			}
 			console.log("进入经济分析栏目详情页;" + JSON.stringify(e));
+			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.source);
 			this.initNav();
 			// 初始化页面数据
 			this.initAnalysisDetail();
@@ -62,6 +65,7 @@
 			// 退出界面时重新初始化数据
 			this.indexId = "1000";
 			this.indexName = "指标详情页";
+			this.source = "未知来源";
 			this.isFavorite = false;
 			this.timeCondition = [];
 			this.indexDetail = [];
@@ -100,6 +104,7 @@
 							//_self.indexId = dataApi.data.baseInfo.indexId;
 							//_self.indexName = dataApi.data.baseInfo.indexName;
 							//_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+							// _self.source = dataApi.data.baseInfo.source;
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
 							_self.relatedData = dataApi.data.relatedData;
@@ -127,7 +132,7 @@
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({
-					url: 'http://localhost:8080/wuhan_data1/getAnalysisDetailByTime',
+					url: this.apiUrl + 'getAnalysisDetailByTime',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {

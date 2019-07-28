@@ -5,7 +5,7 @@
 		</view>
 		<view class="feedback-body">
 			<textarea placeholder="请详细描述您的问题和意见" v-model="sendDate.text" class="feedback-textare" />
-		</view>
+			</view>
         <view class='feedback-title'>
             <text>图片(选填,提供问题截图,总大小10M以下)</text>
         </view>
@@ -93,12 +93,11 @@
 				if(this.imageList.length == 0)
 				{
 					uni.request({
-						url: 'http://192.168.124.11:8080/wuhan_data1/uploadFeedback1',
+						url: this.apiUrl+'uploadFeedback1',
 						method: 'POST',
 						data: this.sendDate,
 						success: (res) => {
 							try{
-								//let dataApi = feedbackApiJson;
 								let dataApi = res.data;
 								checkApi.isApi(dataApi);
 								uni.showToast({
@@ -136,12 +135,11 @@
 					    }
 					});
 					uni.uploadFile({
-						url: 'http://192.168.124.11:8080/wuhan_data1/uploadFeedback',
+						url: this.apiUrl+'uploadFeedback',
 					    files: imgs,
 					    formData: this.sendDate,
 					    success: (res) => {
 							try{
-								//let dataApi = feedbackApiJson;
 								let dataApi = res.data;
 								checkApi.isApi(dataApi);
 								uni.showToast({

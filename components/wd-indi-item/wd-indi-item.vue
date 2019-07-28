@@ -2,7 +2,7 @@
 	<view class="index-item">
 		<!-- 指标起始竖条 -->
 		<view class="index-item-start-bar"></view>
-		<view class="index-item-name" @tap="openDetail(indexId, indexName, isFavorite)">
+		<view class="index-item-name" @tap="openDetail(indexId, indexName, isFavorite, source)">
 			<text>{{tranIndexName}}</text>
 		</view>
 		<!-- <wd-tag :text="item.source" size="small" :circle="true"></wd-tag> -->
@@ -55,6 +55,10 @@
 			isFavorite: {
 				type: Boolean,
 				default: false
+			},
+			source: {
+				type: String,
+				default: '未知来源'
 			}
 		},
 		computed: {
@@ -81,9 +85,10 @@
 		},
 		methods: {
 			// 跳转到指标详情页
-			openDetail(indexId, indexName, isFavorite) {
+			openDetail(indexId, indexName, isFavorite, source) {
 				uni.navigateTo({
-					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName + '&isFavorite=' + isFavorite
+					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName + '&isFavorite=' + isFavorite +
+						'&source=' + source
 				});
 			},
 			changeFav() {
