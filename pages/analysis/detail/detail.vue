@@ -77,11 +77,16 @@
 		methods: {
 			// 初始化数据，请求数据进行页面渲染
 			initAnalysisDetail() {
+				let analysis_detail = uni.getStorageSync('analysis_detail' + this.indexId);
+				if (analysis_detail) {
+					dataApi = analysis_detail;
+				}
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.showLoading({
 					title: "加载栏目:" + this.indexId,
 				});
+				var timestamp = Date.parse(new Date());
 				uni.request({
 					url: this.apiUrl + 'getAnalysisDetail',
 					method: 'POST',
@@ -90,21 +95,28 @@
 					},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
+						var timestamp2 = Date.parse(new Date());
+						uni.showToast({
+							title: "请求时间:" + (timestamp2 - timestamp)
+						});
 						dataApi = res.data;
+						uni.setStorage({
+							key: 'analysis_detail' + this.indexId,
+							data: dataApi
+						});
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
-						dataApi = analysisDetailApiJson;
 					},
 					complete: () => {
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						try {
-							//_self.indexId = dataApi.data.baseInfo.indexId;
-							//_self.indexName = dataApi.data.baseInfo.indexName;
-							//_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-							//_self.source = dataApi.data.baseInfo.source;
+							_self.indexId = dataApi.data.baseInfo.indexId;
+							_self.indexName = dataApi.data.baseInfo.indexName;
+							_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+							_self.source = dataApi.data.baseInfo.source;
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
 							_self.relatedData = dataApi.data.relatedData;

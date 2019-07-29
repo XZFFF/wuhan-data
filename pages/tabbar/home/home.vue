@@ -90,6 +90,7 @@
 						this.analysis = dataApi.data.analysis;
 						this.topic = this.randTopic(dataApi.data.topic);
 						this.topic = dataApi.data.topic;
+						console.log(this.topic);
 						// 数据存入缓存
 						this.setHomeStorage();
 					},

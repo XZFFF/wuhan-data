@@ -47,9 +47,11 @@
 			if (JSON.stringify(e) != '{}') {
 				this.analysisId = e.analysis_id;
 			}
+			this.showStorage();
 			this.initAnalysisList();
 		},
 		methods: {
+
 			initAnalysisList() {
 				uni.request({
 					url: this.apiUrl + "getAnalysisList",
@@ -84,6 +86,15 @@
 					}
 				});
 				this.height = uni.getSystemInfoSync().windowHeight;
+			},
+			showStorage() {
+				let analysisList = uni.getStorageSync('analysis_list');
+				if (analysisList) {
+					this.categoryList = analysisList
+				}
+				this.categoryActive = this.analysisId;
+				this.source = this.categoryList[this.categoryActive].name;
+				this.subCategoryList = this.categoryList[this.categoryActive].subList;
 			},
 			scroll(e) {
 				this.scrollHeight = e.detail.scrollHeight;

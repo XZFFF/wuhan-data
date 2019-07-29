@@ -86,22 +86,22 @@
 		],
 		"topic": [{
 				"id": "1",
-				"title": "湖北高质量发展",
+				"title": "高质量发展",
 				"image": "http://wuhandata.applinzi.com/topic/topic1.png"
 			},
 			{
 				"id": "2",
-				"title": "宏观形势分析",
+				"title": "宏观经济",
 				"image": "http://wuhandata.applinzi.com/topic/topic2.png"
 			},
 			{
 				"id": "3",
-				"title": "武汉供给测结构",
+				"title": "产业经济",
 				"image": "http://wuhandata.applinzi.com/topic/topic3.png"
 			},
 			{
 				"id": "4",
-				"title": "武汉工业经济发展",
+				"title": "固定资产投资",
 				"image": "http://wuhandata.applinzi.com/topic/topic4.png"
 			}
 		]
