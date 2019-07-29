@@ -116,6 +116,22 @@
                     "xxhdpi" : "static/splash.png"
                 }
             }
+        },
+        "nativePlugins" : {
+            "Html5App-openFile" : {
+                "__plugin_info__" : {
+                    "name" : "Android 办公文件doc,docx,ppt等等浏览器",
+                    "description" : "支持格式：doc,docx,ppt,pptx,xls,xlsx,txt,pdf,epub",
+                    "platforms" : "Android",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=477",
+                    "android_package_name" : "io.dcloud.UNI8BAA13B",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "477",
+                    "parameters" : {}
+                }
+            }
         }
     },
     /* SDK配置 */
