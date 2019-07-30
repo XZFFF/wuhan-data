@@ -1,28 +1,31 @@
-<!-- <template>
+<template>
 	<view>
-		<view>
-			<view class="list-cell" v-for="(value,index) in menu_list" :key="index" :data-current="index" @click="open(index)">
-				<view>
-					<view class="uni-list-cell-navigate">
-						<view class="list-cell-title">{{value.title}}</view>
-						<view class="list-cell-badge">{{value.label}}</view>
-						<view class="list-cell-datetime">{{value.dateTime}}</view>
-					</view>
-					<view class="list-cell-text">{{value.content}}</view>
-				</view>
+		<view style="margin-bottom: 20px;"></view>
+		<view v-for="(item,index) in messageList" :key="index" @click="open(index)">
+			<view style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+				<wd-tag type="time" :text="item.tranTime"></wd-tag>
 			</view>
+			<wd-message-card :title="item.title" :content="item.content" :thumbnail="item.icon" :extra="item.label">
+			</wd-message-card>
+			<view style="margin-top: 20px;"></view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import wdTag from '@/components/wd-tag/wd-tag.vue';
+	import wdMessageCard from '@/components/wd-message-card/wd-message-card.vue';
 	import checkApi from '@/common/checkApi.js';
 	import getNewsApiJson from "@/common/api/getMessage.json";
-	const open=uni.requireNativePlugin("Html5App-openFile");
+	//const open=uni.requireNativePlugin("Html5App-openFile");
 	export default {
+		components: {
+			wdTag,
+			wdMessageCard
+		},
 		data() {
 			return {
-				menu_list: []
+				message: [],
 			}
 		},
 		onShow: function() {
@@ -42,21 +45,46 @@
 			}
 			this.initMyNews();
 		},
-		methods: {
-			checkNetwork() {
-				uni.getNetworkType({
-					success: function(res) {
-						console.log(res.networkType);
-						if (res.networkType == 'none') {
-							console.log('network:' + res.networkType);
-							uni.showToast({
-								title: '无网络连接',
-								duration: 1000,
-								icon: 'loading'
-							});
-						}
+		computed: {
+			messageList: function() {
+				let messageList = this.message;
+				for (let i = 0; i < messageList.length; i++) {
+					messageList[i].tranTime = this.tranTime(messageList[i].dateTime);
+					let iconPath = '../../../static/icon/message/';
+					switch (messageList[i].type) {
+						case "pdf":
+							messageList[i].icon = iconPath + 'file.png';
+							break;
+						case "excel":
+							messageList[i].icon = iconPath + 'file.png';
+							break;
+						case "link":
+							messageList[i].icon = iconPath + 'link.png';
+							break;
+						case "message":
+							messageList[i].icon = iconPath + 'message.png';
+							break;
+						default:
+							messageList[i].icon = iconPath + 'message.png';
+							break;
 					}
-				});
+				}
+				return messageList;
+			}
+		},
+		methods: {
+			tranTime(time) {
+				var timestamp = Math.round(new Date(time) / 1000);
+				var mistiming = Math.round(new Date() / 1000) - timestamp;
+				console.log(mistiming);
+				var arrr = ['年', '个月', '星期', '天', '小时', '分钟', '秒'];
+				var arrn = [31536000, 2592000, 604800, 86400, 3600, 60, 1];
+				for (var i = 0; i <= 6; i++) {
+					var inm = Math.floor(mistiming / arrn[i]);
+					if (inm != 0) {
+						return inm + arrr[i] + '前';
+					}
+				}
 			},
 			initMyNews() {
 				checkApi.checkNetwork();
@@ -72,8 +100,8 @@
 							//let dataApi = res.data;
 							let dataApi = getNewsApiJson;
 							checkApi.isApi(dataApi);
-							this.menu_list = dataApi.data.message;
-							uni.setStorageSync('my_news', this.menu_list);
+							this.message = dataApi.data.message;
+							uni.setStorageSync('my_news', this.message);
 						} catch (e) {
 							console.log(e.errMsg);
 							this.getNewsStorage();
@@ -89,125 +117,82 @@
 				try {
 					let myNews = uni.getStorageSync('my_news');
 					if (myNews) {
-						this.menu_list = myNews;
+						this.message = myNews;
 					}
 				} catch (e) {
 					console.log(e.message);
 				}
 			},
-			 open:function(index) {
+			open: function(index) {
 				let myNews = uni.getStorageSync('my_news');
 				let type = myNews[index].type;
-				if(type == '富文本'){
+				if (type == '富文本') {
 					uni.setStorageSync('news_index', index);
 					uni.navigateTo({
 						url: 'news_details/news_details'
 					});
 					return false;
 				}
-				if(type == 'pdf' || type == 'excle'){
+				if (type == 'pdf' || type == 'excle') {
 					let path = myNews[index].path;
-					this.downloader(path);
+					//this.downloader(path);
 					return;
 				}
-				if(type == '链接'){
+				if (type == '链接') {
 					let path = myNews[index].path;
 					plus.runtime.openURL(path);
 					return;
 				}
 			},
-			downloader:function(path){
-			
-			
-			        var filename=path.substring(path.lastIndexOf("/")+1);  //分割文件名出来
-				  
-			       //判断文件是否存在
-					plus.io.resolveLocalFileSystemURL("_downloads/"+filename, function(entry) {
-			
+			downloader: function(path) {
+				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
+				//判断文件是否存在
+				plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
 					//如果文件存在直接打开。
-					open.openFile({filename:entry.fullPath});
-			
-					}, function (e)
-					{
-					
+					open.openFile({
+						filename: entry.fullPath
+					});
+				}, function(e) {
 					//如果文件不存在，则下载文件到本地
 					uni.showLoading({
-					title:"文件下载中..."
-					});	
-					
-					
-					 // 创建下载任务					
-				  const dtask = plus.downloader.createDownload(path,{filename:"_downloads/"+filename}, function (d, status) {
-														  					
-							uni.hideLoading(); 
-														  					
-							if(status==200)  
-							{ 
+						title: "文件下载中..."
+					});
+					// 创建下载任务					
+					const dtask = plus.downloader.createDownload(path, {
+						filename: "_downloads/" + filename
+					}, function(d, status) {
+						uni.hideLoading();
+						if (status == 200) {
 							uni.showToast({
-							title:"下载完成"
+								title: "下载完成"
 							});
-			
-							let filepath=plus.io.convertLocalFileSystemURL(d.filename);
-			
-							open.openFile({filename:filepath});
-			
-			
-							} else 
-							{
+							let filepath = plus.io.convertLocalFileSystemURL(d.filename);
+							open.openFile({
+								filename: filepath
+							});
+						} else {
 							uni.showToas({
-							title:"下载失败"
+								title: "下载失败"
 							});
-							}
+						}
+					});
+					dtask.start(); //开始下载
 				});
-														  
-				dtask.start();//开始下载   
-				
-			});					 
 			}
 		}
 	}
 </script>
 
 <style>
-	.list-cell {
-		border-bottom: 2upx solid rgb(229, 229, 229);
+	page {
 		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+		background-color: #fff
 	}
 
-	.uni-list-cell-navigate {
-		display: flex;
-		justify-content: space-between;
-	}
-
-	.list-cell-title {
-		font-size: 35upx;
-		width: 460upx;
-	}
-
-	.list-cell-badge {
-		width: 140upx;
-		height: 45upx;
-		border-radius: 20px;
-		background-color: #1A82D2;
-		font-size: 23upx;
-		color: #FFFFFF;
-		text-align: center;
-	}
-
-	.list-cell-datetime {
-		color: rgb(159, 159, 159);
-		padding-left: 30upx;
-	}
-
-	.list-cell-text {
-		color: rgb(159, 159, 159);
-		width: 600upx;
-		padding-left: 30upx;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
+	view {
+		font-size: 28upx;
+		line-height: inherit
 	}
 </style>
- -->

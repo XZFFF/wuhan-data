@@ -38,8 +38,8 @@
 
 <style>
 	.title{
-		margin-top: 30upx;
 		font-size: 50upx;
+		padding: 30upx;
 		text-align: center;
 	}
 	.dateTime{

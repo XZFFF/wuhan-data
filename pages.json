@@ -304,8 +304,8 @@
 				"query": ""
 			},
 			{
-				"name": "message",
-				"path": "pages/message/message",
+				"name": "news",
+				"path": "pages/mine/news/news",
 				"query": ""
 			}
 		]

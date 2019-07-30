@@ -4,11 +4,11 @@
 	"data": {
 		"message": [{
 				"messageId": "3",
-				"title": "反正是一条消息的标题",
+				"title": "反正是一条消息的标题反正是一条消息的标题",
 				"label": "系统推送",
 				"content": "消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容",
-				"dateTime": "2019-07-17 14:30:21",
-				"type": "pdf",
+				"dateTime": "2019-07-17",
+				"type": "富文本",
 				"path": "http://www.html5-app.com/file/1.pdf"
 			},
 			{
@@ -16,9 +16,9 @@
 				"title": "反正是一条消息的标题",
 				"label": "系统推送",
 				"content": "消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容",
-				"dateTime": "2019-07-13 14:30:21",
-				"type": "excel",
-				"path": "http://www.html5-app.com/file/1.xlsx"
+				"dateTime": "2019-07-13",
+				"type": "link",
+				"path": "http://www.baidu.com"
 			}
 		]
 	}
