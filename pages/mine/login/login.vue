@@ -110,13 +110,15 @@
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
-						url: this.apiUrl + "loginaa", //仅为示例，并非真实接口地址。
+						//url: this.apiUrl + "loginaa", 
+						url: 'http://www.baidu.com',
 						data: {
 							"tel": this.tel,
 							"verCode": this.verCode
 						},
 						success: (res) => {
-							let dataApi = res.data;
+							//let dataApi = res.data;
+							let dataApi = loginApiJson;
 							checkApi.isApi(dataApi);
 							try {
 								let tokenStr = dataApi.data.token;
