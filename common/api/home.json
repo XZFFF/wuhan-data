@@ -5,104 +5,104 @@
 		"slideshow": [{
 				"id": "1",
 				"title": "全国经济进入新常态",
-				"image": "http://wuhandata.applinzi.com/home/slideshow/image1.png"
+				"image": "../../../static/home/slideshow/image1.png"
 			},
 			{
 				"id": "2",
 				"title": "大数据专题分析报告",
-				"image": "http://wuhandata.applinzi.com/home/slideshow/image2.png"
+				"image": "../../../static/home/slideshow/image2.png"
 			},
 			{
 				"id": "3",
 				"title": "新时代下的互联网经济形势",
-				"image": "http://wuhandata.applinzi.com/home/slideshow/image3.png"
+				"image": "../../../static/home/slideshow/image3.png"
 			},
 			{
 				"id": "4",
 				"title": "湖北省区域经济发展新格局",
-				"image": "http://wuhandata.applinzi.com/home/slideshow/image4.png"
+				"image": "../../../static/home/slideshow/image4.png"
 			}
 		],
 		"analysis": [{
 				"id": "0",
 				"background": "#72ACF6",
 				"icon_name": "综合",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an0.png"
+				"icon_url": "../../../static/icon/analysis/an0.png"
 			},
 			{
 				"id": "1",
 				"background": "#61C4E6",
 				"icon_name": "工业",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an1.png"
+				"icon_url": "../../../static/icon/analysis/an1.png"
 			},
 			{
 				"id": "2",
 				"background": "#76C1A1",
 				"icon_name": "农业",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an2.png"
+				"icon_url": "../../../static/icon/analysis/an2.png"
 			},
 			{
 				"id": "3",
 				"background": "#F3B861",
 				"icon_name": "服务业",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an3.png"
+				"icon_url": "../../../static/icon/analysis/an3.png"
 			},
 			{
 				"id": "4",
 				"background": "#EB8873",
 				"icon_name": "消费",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an4.png"
+				"icon_url": "../../../static/icon/analysis/an4.png"
 			},
 			{
 				"id": "5",
 				"background": "#C869A5",
 				"icon_name": "投资",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an5.png"
+				"icon_url": "../../../static/icon/analysis/an5.png"
 			},
 			{
 				"id": "6",
 				"background": "#8F8BE1",
 				"icon_name": "对外开放",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an6.png"
+				"icon_url": "../../../static/icon/analysis/an6.png"
 			},
 			{
 				"id": "7",
 				"background": "#757EDA",
 				"icon_name": "新经济",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an7.png"
+				"icon_url": "../../../static/icon/analysis/an7.png"
 			},
 			{
 				"id": "8",
 				"background": "#6C8DCF",
 				"icon_name": "绿色发展",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an8.png"
+				"icon_url": "../../../static/icon/analysis/an8.png"
 			},
 			{
 				"id": "9",
 				"background": "#8AA4D8",
 				"icon_name": "民生",
-				"icon_url": "http://wuhandata.applinzi.com/analysis/an9.png"
+				"icon_url": "../../../static/icon/analysis/an9.png"
 			}
 		],
 		"topic": [{
 				"id": "1",
 				"title": "高质量发展",
-				"image": "http://wuhandata.applinzi.com/topic/topic1.png"
+				"image": "../../../static/topic/topic1.png"
 			},
 			{
 				"id": "2",
 				"title": "宏观经济",
-				"image": "http://wuhandata.applinzi.com/topic/topic2.png"
+				"image": "../../../static/topic/topic2.png"
 			},
 			{
 				"id": "3",
 				"title": "产业经济",
-				"image": "http://wuhandata.applinzi.com/topic/topic3.png"
+				"image": "../../../static/topic/topic3.png"
 			},
 			{
 				"id": "4",
 				"title": "固定资产投资",
-				"image": "http://wuhandata.applinzi.com/topic/topic4.png"
+				"image": "../../../static/topic/topic4.png"
 			}
 		]
 	}
