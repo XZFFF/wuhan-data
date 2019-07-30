@@ -172,17 +172,21 @@
 				let analysis_detail_key = 'analysis_detail' + _self.indexId;
 				let analysis_detail = uni.getStorageSync(analysis_detail_key);
 				if (analysis_detail) {
-					dataApi = analysis_detail;
-					_self.indexId = dataApi.data.baseInfo.indexId;
-					_self.indexName = dataApi.data.baseInfo.indexName;
-					_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-					_self.source = dataApi.data.baseInfo.source;
-					_self.timeCondition = dataApi.data.timeCondition;
-					_self.indexDetail = dataApi.data.classInfo;
-					_self.relatedData = dataApi.data.relatedData;
-					// 计算classHeight及总Height
-					this.setHeight();
-					uni.hideLoading();
+					try {
+						dataApi = analysis_detail;
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+						_self.source = dataApi.data.baseInfo.source;
+						_self.timeCondition = dataApi.data.timeCondition;
+						_self.indexDetail = dataApi.data.classInfo;
+						_self.relatedData = dataApi.data.relatedData;
+						// 计算classHeight及总Height
+						this.setHeight();
+						uni.hideLoading();
+					} catch (e) {
+						console.log("缓存数据加载失败"+e.message);
+					}
 				}
 			},
 			// 渲染导航栏title及icon

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<view>
 		<view>
 			<view class="list-cell" v-for="(value,index) in menu_list" :key="index" :data-current="index" @click="open(index)">
@@ -210,3 +210,4 @@
 		-webkit-box-orient: vertical;
 	}
 </style>
+ -->

@@ -12,6 +12,7 @@
 				// 支持 zonghe/gongye/nongye/fuwuye/xiaofei
 				// 支持 touzi/duiwaikaifang/xinjingji/lvsefazhan/minsheng
 				// 支持 guotong/hutong/dashuju
+				// 支持 time
 				type: String,
 				default: 'default'
 			},
@@ -264,4 +265,5 @@
 		background-color: #757EDA;
 		border: 1px solid #757EDA
 	}
+
 </style>

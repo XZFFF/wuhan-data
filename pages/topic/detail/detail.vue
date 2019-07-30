@@ -40,20 +40,18 @@
 				classTotalHeight: 400
 			};
 		},
-		onShow() {
-			uni.showLoading({
-				title: "加载中",
-			});
-		},
 		onLoad: function(e) {
 			_self = this;
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
 			}
+			uni.showLoading({
+				title: "加载中",
+			});
+			this.showStorage();
 			this.initTopicDetail();
 			_self.initNav();
-			uni.hideLoading();
 		},
 		onUnload() {
 			// 退出界面时重新初始化数据
@@ -69,21 +67,25 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					// url: 'http://192.168.124.20:8089/wuhan_data1/topic' + this.indexId,
-					url: this.apiUrl + 'topic' + this.indexId,
+					url: 'http://192.168.124.20:8089/wuhan_data1/topic' + this.indexId,
+					// url: this.apiUrl + 'topic' + _self.indexId,
 					method: 'POST',
 					data: {},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						dataApi = res.data;
 						// dataApi = demoToic;
+						let topic_detail_key = 'topic_detail' + this.indexId;
+						uni.setStorage({
+							key: topic_detail_key,
+							data: dataApi
+						});
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						dataApi = topicDetailApiJson;
+						// dataApi = topicDetailApiJson;
 					},
 					complete: () => {
-						uni.hideLoading();
 						try {
 							// 检查json数据
 							checkApi.isApi(dataApi);
@@ -96,8 +98,31 @@
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
+						uni.hideLoading();
 					}
 				});
+			},
+			showStorage() {
+				let dataApi;
+				let topic_detail_key = 'topic_detail' + this.indexId;
+				let topic_detail = uni.getStorageSync(topic_detail_key);
+				if (topic_detail) {
+					try {
+						// console.log("缓存数据" + JSON.stringify(topic_detail));
+						dataApi = topic_detail;
+						// 检查json数据
+						checkApi.isApi(dataApi);
+						// 设置各部分数据
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.indexDetail = dataApi.data.classInfo;
+						// 计算classHeight及总Height
+						this.setHeight();
+						uni.hideLoading();
+					} catch (e) {
+						console.log("缓存数据加载失败"+e.message);
+					}
+				}
 			},
 			// 渲染导航栏title
 			initNav() {

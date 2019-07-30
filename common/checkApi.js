@@ -87,15 +87,17 @@ module.exports = {
 				let h = 0;
 				if (item.classType == 'table') {
 					let tableParam = item.tableBody[0].length;
-					h = (tableParam + 1) * 40;
+					h = (tableParam + 1) * 70;
 				} else if (item.classType == 'echarts') {
 					if (typeof item.classHeight === 'string') {
-						h = parseInt(item.classHeight); // 不允许设置
+						h = parseInt(item.classHeight); // 允许设置
+						console.log("版块" + i + "高度" + h);
 					} else {
+						console.log("版块" + i + "未设置高度");
 						h = 400;
 					}
 				} else if (item.classType == 'card') {
-					h = 200;
+					h = 250;
 				}
 				classHeight += h;
 			}

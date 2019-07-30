@@ -1,5 +1,5 @@
 <template>
-	<view style="height: 100%;background-image: url(../../../static/icon/mine/loginBackground.png);background-size: cover;">
+	<view style="height: 100%;background-image: url(../../../static/splash.png);background-size: cover;">
 		<view style="padding-top: 250upx;">
 			<view class="login-box">
 				<view style="padding-top: 60upx;">

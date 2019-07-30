@@ -216,6 +216,9 @@
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "uchart图例"
 			}
+		}, {
+			"path": "pages/message/message",
+			"style": {}
 		}
 	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
@@ -298,6 +301,11 @@
 			{
 				"name": "mine",
 				"path": "pages/tabbar/mine/mine",
+				"query": ""
+			},
+			{
+				"name": "message",
+				"path": "pages/message/message",
 				"query": ""
 			}
 		]

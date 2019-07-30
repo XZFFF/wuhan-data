@@ -64,7 +64,7 @@
 	.card-text-page {
 		display: inline-block;
 		width: 750upx;
-		max-height: 200upx;
+		max-height: 250upx;
 		padding: 15upx;
 		font-size: 26upx;
 		word-wrap: break-word;

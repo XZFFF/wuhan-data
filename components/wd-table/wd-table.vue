@@ -8,7 +8,7 @@
 
 		<view class="page">
 			<scroll-view scroll-x="true" scroll-y="true" class="table">
-				<view v-for="(cloumnItem,cloumnIndex) in tableBody" :key="cloumnIndex" class="columnItem" :class="cloumnIndex == 0 ? 'columnFirst' : ''">
+				<view v-for="(cloumnItem,cloumnIndex) in tableBodyTran" :key="cloumnIndex" class="columnItem" :class="cloumnIndex == 0 ? 'columnFirst' : ''">
 					<view v-for="(rowItem,rowIndex) in cloumnItem" :key="rowIndex" class="rowItem" :class="rowIndex == 0 ? 'rowFirst' : ''">{{rowItem}}</view>
 				</view>
 			</scroll-view>
@@ -32,6 +32,32 @@
 				type: String,
 				default: '表格展示',
 			},
+		},
+		computed: {
+			classHeight: function() {
+				let classHeight = 0;
+				let _self = this;
+				try {
+					let tableParam = tableBody[0].length;
+					classHeight = (tableParam + 1) * 40;
+				} catch (e) {
+					//TODO handle the exception
+				}
+				return classHeight;
+			},
+			tableBodyTran: function() {
+				let _self = this;
+				let tableBodyTran = _self.tableBody;
+				for (let i = 0; i < tableBodyTran.length; i++) {
+					for (let j = 0; j < tableBodyTran[i].length; j++) {
+						if (tableBodyTran[i][j] == "null" || tableBodyTran[i][j] == "" ||
+							tableBodyTran[i][j] == null) {
+							tableBodyTran[i][j] = '-';
+						}
+					}
+				}
+				return tableBodyTran;
+			}
 		},
 		data() {
 			return {};
