@@ -58,6 +58,10 @@
 			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.source);
 			this.initNav();
 			// 初始化页面数据
+			uni.showLoading({
+				title: "加载栏目:" + this.indexId,
+			});
+			this.showStorage();
 			this.initAnalysisDetail();
 			this.initNav();
 		},
@@ -77,15 +81,8 @@
 		methods: {
 			// 初始化数据，请求数据进行页面渲染
 			initAnalysisDetail() {
-				let analysis_detail = uni.getStorageSync('analysis_detail' + this.indexId);
-				if (analysis_detail) {
-					dataApi = analysis_detail;
-				}
 				checkApi.checkNetwork();
 				let dataApi;
-				uni.showLoading({
-					title: "加载栏目:" + this.indexId,
-				});
 				var timestamp = Date.parse(new Date());
 				uni.request({
 					url: this.apiUrl + 'getAnalysisDetail',
@@ -100,8 +97,9 @@
 							title: "请求时间:" + (timestamp2 - timestamp)
 						});
 						dataApi = res.data;
+						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorage({
-							key: 'analysis_detail' + this.indexId,
+							key: analysis_detail_key,
 							data: dataApi
 						});
 					},
@@ -168,6 +166,24 @@
 						uni.hideLoading();
 					}
 				});
+			},
+			showStorage() {
+				let dataApi;
+				let analysis_detail_key = 'analysis_detail' + _self.indexId;
+				let analysis_detail = uni.getStorageSync(analysis_detail_key);
+				if (analysis_detail) {
+					dataApi = analysis_detail;
+					_self.indexId = dataApi.data.baseInfo.indexId;
+					_self.indexName = dataApi.data.baseInfo.indexName;
+					_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+					_self.source = dataApi.data.baseInfo.source;
+					_self.timeCondition = dataApi.data.timeCondition;
+					_self.indexDetail = dataApi.data.classInfo;
+					_self.relatedData = dataApi.data.relatedData;
+					// 计算classHeight及总Height
+					this.setHeight();
+					uni.hideLoading();
+				}
 			},
 			// 渲染导航栏title及icon
 			initNav() {

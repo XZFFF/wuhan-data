@@ -47,11 +47,13 @@
 			if (JSON.stringify(e) != '{}') {
 				this.analysisId = e.analysis_id;
 			}
+			uni.showLoading({
+				title: "加载栏目列表中",
+			});
 			this.showStorage();
 			this.initAnalysisList();
 		},
 		methods: {
-
 			initAnalysisList() {
 				uni.request({
 					url: this.apiUrl + "getAnalysisList",
@@ -83,6 +85,7 @@
 						this.categoryActive = this.analysisId;
 						this.source = this.categoryList[this.categoryActive].name;
 						this.subCategoryList = this.categoryList[this.categoryActive].subList;
+						uni.hideLoading();
 					}
 				});
 				this.height = uni.getSystemInfoSync().windowHeight;
@@ -90,11 +93,12 @@
 			showStorage() {
 				let analysisList = uni.getStorageSync('analysis_list');
 				if (analysisList) {
-					this.categoryList = analysisList
+					this.categoryList = analysisList;
+					this.categoryActive = this.analysisId;
+					this.source = this.categoryList[this.categoryActive].name;
+					this.subCategoryList = this.categoryList[this.categoryActive].subList;
+					uni.hideLoading();
 				}
-				this.categoryActive = this.analysisId;
-				this.source = this.categoryList[this.categoryActive].name;
-				this.subCategoryList = this.categoryList[this.categoryActive].subList;
 			},
 			scroll(e) {
 				this.scrollHeight = e.detail.scrollHeight;
