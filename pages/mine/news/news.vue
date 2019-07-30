@@ -126,7 +126,7 @@
 			open: function(index) {
 				let myNews = uni.getStorageSync('my_news');
 				let type = myNews[index].type;
-				if (type == '富文本') {
+				if (type == 'message') {
 					uni.setStorageSync('news_index', index);
 					uni.navigateTo({
 						url: 'news_details/news_details'
@@ -138,7 +138,7 @@
 					//this.downloader(path);
 					return;
 				}
-				if (type == '链接') {
+				if (type == 'link') {
 					let path = myNews[index].path;
 					plus.runtime.openURL(path);
 					return;

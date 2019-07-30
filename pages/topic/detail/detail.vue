@@ -67,8 +67,8 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					url: 'http://192.168.124.20:8089/wuhan_data1/topic' + this.indexId,
-					// url: this.apiUrl + 'topic' + _self.indexId,
+					// url: 'http://192.168.124.20:8089/wuhan_data1/topic' + this.indexId,
+					url: this.apiUrl + 'topic' + _self.indexId,
 					method: 'POST',
 					data: {},
 					success: (res) => {

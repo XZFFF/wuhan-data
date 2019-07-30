@@ -7,18 +7,27 @@
 				"title": "反正是一条消息的标题反正是一条消息的标题",
 				"label": "系统推送",
 				"content": "消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容",
-				"dateTime": "2019-07-17",
-				"type": "富文本",
+				"dateTime": "2019-07-30 17:42:12",
+				"type": "message",
 				"path": "http://www.html5-app.com/file/1.pdf"
 			},
 			{
 				"messageId": "2",
-				"title": "反正是一条消息的标题",
+				"title": "这是一个报告推送",
 				"label": "系统推送",
 				"content": "消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容",
 				"dateTime": "2019-07-13",
+				"type": "pdf",
+				"path": "http://www.html5-app.com/file/1.pdf"
+			},
+			{
+				"messageId": "1",
+				"title": "反正是一条消息的标题反正是一条消息的标题",
+				"label": "系统推送",
+				"content": "消息的缩略内容消息的缩略内容消息的缩略内容消息的缩略内容",
+				"dateTime": "2019-07-10",
 				"type": "link",
-				"path": "http://www.baidu.com"
+				"path": "http://www.html5-app.com/file/1.pdf"
 			}
 		]
 	}

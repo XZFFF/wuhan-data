@@ -87,7 +87,11 @@ module.exports = {
 				let h = 0;
 				if (item.classType == 'table') {
 					let tableParam = item.tableBody[0].length;
-					h = (tableParam + 1) * 70;
+					if (tableParam < 7) {
+						h = (tableParam + 1) * 70;
+					} else {
+						h = 500;
+					}
 				} else if (item.classType == 'echarts') {
 					if (typeof item.classHeight === 'string') {
 						h = parseInt(item.classHeight); // 允许设置
