@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view>
-			<view class="list-cell" v-for="(value,index) in menu_list" :key="index" :data-current="index" @click="goDetailPage(index)">
+			<view class="list-cell" v-for="(value,index) in menu_list" :key="index" :data-current="index" @click="open(index)">
 				<view>
 					<view class="uni-list-cell-navigate">
 						<view class="list-cell-title">{{value.title}}</view>
@@ -18,6 +18,7 @@
 <script>
 	import checkApi from '@/common/checkApi.js';
 	import getNewsApiJson from "@/common/api/getMessage.json";
+	const open=uni.requireNativePlugin("Html5App-openFile");
 	export default {
 		data() {
 			return {
@@ -60,15 +61,16 @@
 			initMyNews() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: this.apiUrl + "getMessageApp",
+					//url: this.apiUrl + "getMessageApp",
+					url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
 						try {
-							let dataApi = res.data;
-							//let dataApi = getNewsApiJson;
+							//let dataApi = res.data;
+							let dataApi = getNewsApiJson;
 							checkApi.isApi(dataApi);
 							this.menu_list = dataApi.data.message;
 							uni.setStorageSync('my_news', this.menu_list);
@@ -93,13 +95,75 @@
 					console.log(e.message);
 				}
 			},
-			goDetailPage(index) {
-				uni.setStorageSync('news_index', index);
-				uni.navigateTo({
-					url: 'news_details/news_details'
-				});
-				return false;
+			 open:function(index) {
+				let myNews = uni.getStorageSync('my_news');
+				let type = myNews[index].type;
+				if(type == '富文本'){
+					uni.setStorageSync('news_index', index);
+					uni.navigateTo({
+						url: 'news_details/news_details'
+					});
+					return false;
+				}
+				if(type == 'pdf' || type == 'excle'){
+					let path = myNews[index].path;
+					this.downloader(path);
+					return;
+				}
+				if(type == '链接'){
+					let path = myNews[index].path;
+					plus.runtime.openURL(path);
+					return;
+				}
 			},
+			downloader:function(path){
+			
+			
+			        var filename=path.substring(path.lastIndexOf("/")+1);  //分割文件名出来
+				  
+			       //判断文件是否存在
+					plus.io.resolveLocalFileSystemURL("_downloads/"+filename, function(entry) {
+			
+					//如果文件存在直接打开。
+					open.openFile({filename:entry.fullPath});
+			
+					}, function (e)
+					{
+					
+					//如果文件不存在，则下载文件到本地
+					uni.showLoading({
+					title:"文件下载中..."
+					});	
+					
+					
+					 // 创建下载任务					
+				  const dtask = plus.downloader.createDownload(path,{filename:"_downloads/"+filename}, function (d, status) {
+														  					
+							uni.hideLoading(); 
+														  					
+							if(status==200)  
+							{ 
+							uni.showToast({
+							title:"下载完成"
+							});
+			
+							let filepath=plus.io.convertLocalFileSystemURL(d.filename);
+			
+							open.openFile({filename:filepath});
+			
+			
+							} else 
+							{
+							uni.showToas({
+							title:"下载失败"
+							});
+							}
+				});
+														  
+				dtask.start();//开始下载   
+				
+			});					 
+			}
 		}
 	}
 </script>

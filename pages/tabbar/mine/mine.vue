@@ -151,7 +151,7 @@
 			}
 			this.newsPoint = 0;
 			this.initUser();
-			this.newsRead();
+			//this.newsRead();
 		},
 		onBackPress() {
 			if (this.type !== '') {
@@ -166,13 +166,15 @@
 				}
 				checkApi.checkNetwork();
 				uni.request({
-					url: this.apiUrl + 'getUserApp',
+					//url: this.apiUrl + 'getUserApp',
+					url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
-						let dataApi = res.data;
+						//let dataApi = res.data;
+						let dataApi = getUserApiJson;
 						checkApi.isApi(dataApi);
 						try {
 							this.user = dataApi.data;
@@ -250,7 +252,7 @@
 			goDetailPage1(e) {
 				if (e.id == 0) {
 					//#ifdef APP-PLUS
-					checkApi.checkNetwork();
+					//checkApi.checkNetwork();
 					uni.request({
 						url: this.apiUrl + "getVersionApp",
 						method: 'GET',
