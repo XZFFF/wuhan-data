@@ -166,15 +166,14 @@
 				}
 				checkApi.checkNetwork();
 				uni.request({
-					//url: this.apiUrl + 'getUserApp',
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getUserApp',
 					method: 'POST',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
-						//let dataApi = res.data;
-						let dataApi = getUserApiJson;
+						let dataApi = res.data;
+						// let dataApi = getUserApiJson;
 						checkApi.isApi(dataApi);
 						try {
 							this.user = dataApi.data;
@@ -262,20 +261,18 @@
 							let appid = plus.runtime.appid;
 							let version = plus.runtime.version;
 							let resData = JSON.stringify(updateApi);
-							console.log("appid："+appid);
-							console.log("当前版本："+version);
-							console.log("返回数据："+resData);
-							try{
+							console.log("appid：" + appid);
+							console.log("当前版本：" + version);
+							console.log("返回数据：" + resData);
+							try {
 								if (uni.getSystemInfoSync().platform == "ios") {
-									if(appid == updateApi.IOS.appid){
-										if(version === updateApi.IOS.version)
-										{
+									if (appid == updateApi.IOS.appid) {
+										if (version === updateApi.IOS.version) {
 											uni.showToast({
 												icon: 'none',
 												title: '已为最新版本，无需更新'
 											});
-										}
-										else{
+										} else {
 											this.type = 'middle-update';
 											this.updateText = res.data.IOS.description;
 											this.downloadUrl = res.data.IOS.url;
@@ -287,28 +284,25 @@
 									});
 								}
 								if (uni.getSystemInfoSync().platform == "android") {
-									if(appid == updateApi.Android.appid){
-										if(version === updateApi.Android.version)
-										{
+									if (appid == updateApi.Android.appid) {
+										if (version === updateApi.Android.version) {
 											uni.showToast({
 												icon: 'none',
 												title: '已为最新版本，无需更新'
 											});
-										}
-										else{
+										} else {
 											this.type = 'middle-update';
 											this.updateText = res.data.Android.description;
 											this.downloadUrl = res.data.Android.url;
 										}
-									}
-									else{
+									} else {
 										uni.showToast({
 											icon: 'none',
 											title: '应用appid匹配失败'
 										});
 									}
 								}
-							}catch(e){
+							} catch (e) {
 								console.log(e.errMsg);
 							}
 						},
@@ -324,20 +318,9 @@
 						success: res => {
 							if (res.confirm) {
 								try {
-									uni.removeStorageSync('home_slideshow');
-									uni.removeStorageSync('home_analysis');
-									uni.removeStorageSync('home_topic');
-									uni.removeStorageSync('analysis_list');
-									uni.removeStorageSync('topic_list');
-									uni.removeStorageSync('search_trend');
-									uni.removeStorageSync('user');
-									uni.removeStorageSync('collection_economy');
-									uni.removeStorageSync('collection_index');
-									uni.removeStorageSync('footprint_economy');
-									uni.removeStorageSync('footprint_index');
-									uni.removeStorageSync('changeTel');
-									uni.removeStorageSync('my_news');
-									uni.removeStorageSync('news_index');
+									let token = uni.getStorageSync('token');
+									uni.clearStorageSync();
+									uni.setStorageSync('token', token);
 									uni.showToast({
 										icon: 'none',
 										title: "缓存清除成功",

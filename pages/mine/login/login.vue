@@ -110,15 +110,13 @@
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
-						//url: this.apiUrl + "loginaa", 
-						url: 'http://www.baidu.com',
+						url: this.apiUrl + "loginaa",
 						data: {
 							"tel": this.tel,
 							"verCode": this.verCode
 						},
 						success: (res) => {
-							//let dataApi = res.data;
-							let dataApi = loginApiJson;
+							let dataApi = res.data;
 							checkApi.isApi(dataApi);
 							try {
 								let tokenStr = dataApi.data.token;
@@ -175,23 +173,20 @@
 				this.smsText = 'loading';
 				checkApi.checkNetwork();
 				uni.request({
-					url: 'http://192.168.124.11:8080/wuhan_data1/getVercodeApp',
-					//url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getVercodeApp',
 					method: 'POST',
 					data: {
 						"tel": this.tel
 					},
 					success: (res) => {
 						let dataApi = res.data;
-						//let dataApi = getVercodeApiJson;
 						checkApi.isApi(dataApi);
 						try {
 							uni.showToast({
 								icon: 'none',
 								title: '验证码发送成功'
 							});
-							if (dataApi.errCode == 0)
-							{
+							if (dataApi.errCode == 0) {
 								this.second = 12;
 								this.seconds = this.second
 								this.countDown()
