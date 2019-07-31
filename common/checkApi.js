@@ -1,5 +1,6 @@
 module.exports = {
 	error: '',
+	apiUrl: 'http://59.208.244.108:8080/wuhan-data-panel/',
 	isApi: function(apiData) {
 		try {
 			if (apiData && apiData.errMsg) {

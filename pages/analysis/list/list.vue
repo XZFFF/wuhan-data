@@ -40,7 +40,7 @@
 				scrollHeight: 0,
 				categoryList: [],
 				subCategoryList: [],
-				source: "未知来源"
+				source: ""
 			};
 		},
 		onLoad: function(e) {
@@ -83,7 +83,7 @@
 					complete: () => {
 						// 设置初始化的左右侧子栏数据(默认为第一个)
 						this.categoryActive = this.analysisId;
-						this.source = this.categoryList[this.categoryActive].name;
+						this.source = this.categoryList[this.categoryActive].listName;
 						this.subCategoryList = this.categoryList[this.categoryActive].subList;
 						uni.hideLoading();
 					}
@@ -95,7 +95,7 @@
 				if (analysisList) {
 					this.categoryList = analysisList;
 					this.categoryActive = this.analysisId;
-					this.source = this.categoryList[this.categoryActive].name;
+					this.source = this.categoryList[this.categoryActive].listName;
 					this.subCategoryList = this.categoryList[this.categoryActive].subList;
 					uni.hideLoading();
 				}
@@ -105,7 +105,7 @@
 			},
 			categoryClickMain(categroy, index) {
 				this.categoryActive = index;
-				this.source = this.categoryList[this.categoryActive].name;
+				this.source = this.categoryList[this.categoryActive].listName;
 				// 右侧栏数据根据左侧栏变更做出变化
 				this.subCategoryList = categroy.subList;
 				this.scrollTop = -this.scrollHeight * index;
