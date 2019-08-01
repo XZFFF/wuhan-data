@@ -151,7 +151,7 @@
 			}
 			this.newsPoint = 0;
 			this.initUser();
-			//this.newsRead();
+			this.newsRead();
 		},
 		onBackPress() {
 			if (this.type !== '') {
@@ -177,6 +177,9 @@
 						checkApi.isApi(dataApi);
 						try {
 							this.user = dataApi.data;
+							if(!this.user.head){
+								this.user.head = '../../../static/icon/mine/default.jpg';
+							}
 							let userStr = JSON.stringify(this.user);
 							uni.setStorageSync('user', userStr);
 						} catch (e) {
