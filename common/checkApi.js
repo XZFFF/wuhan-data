@@ -126,7 +126,7 @@ module.exports = {
 			typeName = "未知类型";
 		}
 		uni.request({
-			url: this.apiUrl + 'TrackApp',
+			url: this.apiUrl + 'setTrackApp',
 			method: 'POST',
 			data: {
 				"token": token,
@@ -136,9 +136,11 @@ module.exports = {
 				"source": source
 			},
 			success: (res) => {
+				console.log(res.data);
 				return true;
 			},
 			fail(e) {
+				console.log(e.message);
 				return false;
 			}
 		});
@@ -183,7 +185,7 @@ module.exports = {
 				return true;
 			},
 			fail(e) {
-				console.log(3);
+				console.log(e);
 				uni.showToast({
 					title: "收藏失败",
 					icon: "none",
@@ -241,6 +243,5 @@ module.exports = {
 			}
 		});
 		return true;
-	},
-
+	}
 }

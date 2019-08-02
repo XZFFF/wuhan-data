@@ -68,10 +68,7 @@
 						console.log(dataApi.data);
 						this.categoryList = dataApi.data.list;
 						// 数据存入缓存
-						uni.setStorage({
-							key: 'analysis_list',
-							data: this.categoryList,
-						});
+						uni.setStorageSync('analysis_list', this.categoryList);
 					},
 					fail: (e) => {
 						// 调用缓存数据
