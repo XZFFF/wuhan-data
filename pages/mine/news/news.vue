@@ -89,8 +89,8 @@
 			initMyNews() {
 				checkApi.checkNetwork();
 				uni.request({
-					//url: this.apiUrl + "getMessageApp",
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + "getMessageApp",
+					//url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -133,9 +133,9 @@
 					});
 					return false;
 				}
-				if (type == 'pdf' || type == 'excle') {
+				if (type == 'pdf' || type == 'excel') {
 					let path = myNews[index].path;
-					//this.downloader(path);
+					this.downloader(path);
 					return;
 				}
 				if (type == 'link') {

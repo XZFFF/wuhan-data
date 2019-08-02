@@ -106,6 +106,9 @@
 							let dataApi = res.data;
 							checkApi.isApi(dataApi);
 							this.user = dataApi.data;
+							if(!this.user.head){
+								this.user.head = '../../../static/icon/mine/default.jpg';
+							}
 							let userStr = JSON.stringify(this.user);
 							uni.setStorageSync('user', userStr);
 						}catch(e){
