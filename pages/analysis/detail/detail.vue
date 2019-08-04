@@ -126,7 +126,9 @@
 			},
 			// 点击确认按钮,根据筛选条件请求数据进行图例更新
 			onConfirm(val) {
-				requestTask.abort();
+				uni.showLoading({
+					title: "数据加载中...",
+				});
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.showLoading({

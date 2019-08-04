@@ -123,12 +123,14 @@
 			},
 			goAnalysisDetail(item) {
 				uni.navigateTo({
-					url: "../../analysis/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName
+					url: "../../analysis/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item
+						.source + "&isFavorite=true"
 				})
 			},
 			goSearchDetail(item) {
 				uni.navigateTo({
-					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source
+					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source +
+						"&isFavorite=true"
 				})
 			},
 			async changeTab(e) {
