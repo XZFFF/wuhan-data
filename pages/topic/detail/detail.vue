@@ -83,7 +83,6 @@
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
-						// dataApi = topicDetailApiJson;
 					},
 					complete: () => {
 						try {
@@ -95,6 +94,13 @@
 							_self.indexDetail = dataApi.data.classInfo;
 							// 计算classHeight及总Height
 							this.setHeight();
+							// 							let str = encodeURI('<ul>' + '<li>' + '2019年06月，全省金融机构存贷比为' + '<span>' +
+							// 								'81.63%' + '</span>' + '，较上年同期提高' + '<span style="color: #3A82CC">' + '4.78' + '</span>' + '个百分点' + '</li>' +
+							// 								'<li>' + '第二条' + '</li>' + '</ul>'
+							// 							);
+							// 							let newStr = decodeURI(str);
+							// 							_self.indexDetail[1].cardText = newStr;
+							// 							console.log(JSON.stringify(_self.indexDetail[1]));
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -120,7 +126,7 @@
 						this.setHeight();
 						uni.hideLoading();
 					} catch (e) {
-						console.log("缓存数据加载失败"+e.message);
+						console.log("缓存数据加载失败" + e.message);
 					}
 				}
 			},

@@ -30,7 +30,7 @@
 		</view>
 		<!-- 专题 -->
 		<view class="topic">
-			<view class="topic-image">
+			<view class="topic-image" @click="openTopicList()">
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail(item)">
@@ -81,15 +81,16 @@
 					method: 'GET',
 					data: {},
 					success: res => {
+						console.log("获取成功;" + JSON.stringify(res.data));
 						// 获取homepage的数据
-						let dataApi = homeApiJson
+						let dataApi = res.data
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						this.slideshow = dataApi.data.slideshow;
 						this.analysis = dataApi.data.analysis;
 						this.topic = this.randTopic(dataApi.data.topic);
-						this.topic = dataApi.data.topic;
+						//this.topic = dataApi.data.topic;
 						console.log(this.topic);
 						// 数据存入缓存
 						this.setHomeStorage();

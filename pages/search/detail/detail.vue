@@ -80,7 +80,6 @@
 						dataApi = res.data;
 						let search_detail_key = 'search_detail' + _self.indexId;
 						uni.setStorageSync(search_detail_key, dataApi);
-						// dataAPi = searchDetailApiJson;
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
@@ -222,7 +221,7 @@
 
 	view {
 		/* 设置flex会导致classHeight无效，但不设置会导致classTitle错位 */
-		display: flex;
+		/* display: flex; */
 	}
 
 	.container {

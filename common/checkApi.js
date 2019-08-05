@@ -102,7 +102,7 @@ module.exports = {
 						h = 400;
 					}
 				} else if (item.classType == 'card') {
-					h = 140;
+					h = 200;
 				}
 				classHeight += h;
 			}
