@@ -6,7 +6,7 @@
 		</view>
 
 		<scroll-view scroll-x="false" scroll-y="true" class="card-text-page">
-			<rich-text :nodes="cardText"></rich-text>
+			<rich-text :nodes="cardTextStr"></rich-text>
 		</scroll-view>
 	</view>
 </template>
@@ -21,6 +21,16 @@
 			cardText: {
 				type: String,
 				default: '专题描述的内容',
+			}
+		},
+		computed: {
+			cardTextStr: function() {
+				var _self = this;
+				try {
+					return decodeURI(_self.cardText);
+				} catch (e) {
+					return _self.cardText;
+				}
 			}
 		},
 		data() {
