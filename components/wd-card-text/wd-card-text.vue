@@ -27,7 +27,7 @@
 			cardTextStr: function() {
 				var _self = this;
 				try {
-					return decodeURI(_self.cardText);
+					return '<ul>' + _self.cardText + '</ul>';
 				} catch (e) {
 					return _self.cardText;
 				}
