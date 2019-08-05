@@ -76,6 +76,7 @@
 		methods: {
 			initHomePage() {
 				checkApi.checkNetwork();
+				let dataApi;
 				// 通过请求接口获取轮播图
 				uni.request({
 					// url: 'http://192.168.124.20:8089/wuhan_data1/initHome',
@@ -85,7 +86,7 @@
 					success: res => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						// 获取homepage的数据
-						let dataApi = res.data;
+						dataApi = res.data;
 					},
 					fail: (e) => {
 						//取出缓存数据并绑定到data
@@ -98,9 +99,8 @@
 							// 设置各部分数据
 							this.slideshow = dataApi.data.slideshow;
 							this.analysis = dataApi.data.analysis;
-							this.topic = this.randTopic(dataApi.data.topic);
-							//this.topic = dataApi.data.topic;
-							console.log(this.topic);
+							// this.topic = this.randTopic(dataApi.data.topic);
+							this.topic = dataApi.data.topic;
 							// 数据存入缓存
 							this.setHomeStorage();
 						} catch (e) {
@@ -110,18 +110,9 @@
 				});
 			},
 			setHomeStorage() {
-				uni.setStorage({
-					key: 'home_slideshow',
-					data: this.slideshow,
-				});
-				uni.setStorage({
-					key: 'home_analysis',
-					data: this.analysis
-				});
-				uni.setStorage({
-					key: 'home_topic',
-					data: this.topic
-				});
+				uni.setStorageSync('home_slideshow', this.slideshow);
+				uni.setStorageSync('home_analysis', this.analysis);
+				uni.setStorageSync('home_topic', this.topic);
 			},
 			showStorage() {
 				let homeSlideshow = uni.getStorageSync('home_slideshow');
@@ -138,17 +129,11 @@
 				}
 			},
 			removeHomeStorage() {
-				uni.removeStorage({
-					key: 'home_slideshow',
-				});
+				uni.removeStorageSync('home_slideshow');
 				this.slideshow = [];
-				uni.removeStorage({
-					key: 'home_analysis',
-				});
+				uni.removeStorageSync('home_analysis');
 				this.analysis = [];
-				uni.removeStorage({
-					key: 'home_topic',
-				});
+				uni.removeStorageSync('home_topic');
 				this.topic = [];
 			},
 			randTopic(resTopic) {
