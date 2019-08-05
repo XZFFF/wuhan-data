@@ -64,7 +64,7 @@
 
 <style>
 	.canvas-view {
-		flex: 1;
+		/* flex: 1; */
 		flex-direction: column;
 		background-color: #FFFFFF;
 		width: 100%;

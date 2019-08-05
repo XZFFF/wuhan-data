@@ -104,7 +104,7 @@
 	.table {
 		width: 100%;
 		overflow: hidden;
-		max-height: 500upx;
+		max-height: 350px;
 	}
 
 	.columnItem {
