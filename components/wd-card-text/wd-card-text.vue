@@ -6,7 +6,7 @@
 		</view>
 
 		<scroll-view scroll-x="false" scroll-y="true" class="card-text-page">
-			{{cardText}}
+			<rich-text :nodes="cardText"></rich-text>
 		</scroll-view>
 	</view>
 </template>
@@ -63,9 +63,9 @@
 
 	.card-text-page {
 		display: inline-block;
-		width: 750upx;
-		max-height: 250upx;
-		padding: 15upx;
+		width: 90%;
+		max-height: 100px;
+		padding: 17upx 34upx;
 		font-size: 26upx;
 		word-wrap: break-word;
 		word-break: normal;

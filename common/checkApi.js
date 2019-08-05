@@ -102,7 +102,7 @@ module.exports = {
 						h = 400;
 					}
 				} else if (item.classType == 'card') {
-					h = 250;
+					h = 140;
 				}
 				classHeight += h;
 			}
@@ -165,6 +165,7 @@ module.exports = {
 		} else {
 			typeName = "未知类型";
 		}
+		console.log(token + typeName + indexId + indexName + source);
 		uni.request({
 			url: this.apiUrl + 'setCollectApp',
 			method: 'POST',
@@ -176,7 +177,7 @@ module.exports = {
 				"source": source
 			},
 			success: (res) => {
-				console.log(res);
+				console.log(JSON.stringify(res.data));
 				uni.showToast({
 					title: "收藏成功",
 					icon: "none",
@@ -185,7 +186,7 @@ module.exports = {
 				return true;
 			},
 			fail(e) {
-				console.log(e);
+				console.log(JSON.stringify(e));
 				uni.showToast({
 					title: "收藏失败",
 					icon: "none",
@@ -215,6 +216,7 @@ module.exports = {
 		} else {
 			typeName = "未知类型";
 		}
+		console.log(token + typeName + indexId);
 		uni.request({
 			url: this.apiUrl + 'delCollectApp',
 			method: 'POST',
@@ -224,7 +226,7 @@ module.exports = {
 				"indexId": indexId
 			},
 			success: (res) => {
-				console.log(res);
+				console.log(JSON.stringify(res));
 				uni.showToast({
 					title: "已取消收藏",
 					icon: "none",
@@ -233,7 +235,7 @@ module.exports = {
 				return true;
 			},
 			fail(e) {
-				console.log(e);
+				console.log(JSON.stringify(e));
 				uni.showToast({
 					title: "取消收藏失败",
 					icon: "none",

@@ -72,7 +72,6 @@
 		flex-direction: column;
 		width: 100%;
 		background-color: #FFFFFF;
-		flex-direction: column;
 	}
 
 	.table-nav {
