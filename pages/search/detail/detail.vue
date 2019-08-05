@@ -48,7 +48,7 @@
 		},
 		onLoad: function(e) {
 			_self = this;
-			console.log(e.toString());
+			console.log("进入页面;" + JSON.stringify(e));
 			if (JSON.stringify(e) != '{}') {
 				_self.indexId = e.indexId;
 				_self.indexName = e.indexName;
@@ -58,7 +58,7 @@
 			this.initNav();
 			// 初始化页面数据
 			uni.showLoading({
-				title: "加载栏目:" + this.indexId,
+				title: "加载栏目:" + _self.indexId,
 			});
 			this.showStorage();
 			this.initSearchDetail();
@@ -68,18 +68,17 @@
 			initSearchDetail() {
 				checkApi.checkNetwork();
 				let dataApi = {};
-				console.log(this.indexId + this.indexName + this.source);
 				uni.request({
 					url: this.apiUrl + 'searchDetail',
 					method: 'POST',
 					data: {
-						"indexId": this.indexId,
-						"source": this.source
+						"indexId": _self.indexId,
+						"source": _self.source
 					},
 					success: res => {
 						console.log(JSON.stringify(res.data));
 						dataApi = res.data;
-						let search_detail_key = 'search_detail' + this.indexId;
+						let search_detail_key = 'search_detail' + _self.indexId;
 						uni.setStorageSync(search_detail_key, dataApi);
 						// dataAPi = searchDetailApiJson;
 					},
@@ -116,8 +115,8 @@
 					url: this.apiUrl + 'searchConfirm',
 					method: 'POST',
 					data: {
-						"indexId": this.indexId,
-						"source": this.source,
+						"indexId": _self.indexId,
+						"source": _self.source,
 						"timeFreq": val.timeFreq,
 						"startTime": val.startTime,
 						"endTime": val.endTime,
@@ -146,7 +145,7 @@
 			},
 			showStorage() {
 				let dataApi;
-				let search_detail_key = 'search_detail' + this.indexId;
+				let search_detail_key = 'search_detail' + _self.indexId;
 				let search_detail = uni.getStorageSync(search_detail_key);
 				if (search_detail) {
 					try {

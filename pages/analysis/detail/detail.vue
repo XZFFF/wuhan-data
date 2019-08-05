@@ -136,9 +136,9 @@
 				});
 				let requestData = {
 					"indexId": _self.indexId,
+					"timeFreq": val.timeFreq,
 					"startTime": val.startTime,
-					"endTime": val.endTime,
-					"freqName": val.timeFreq
+					"endTime": val.endTime
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({

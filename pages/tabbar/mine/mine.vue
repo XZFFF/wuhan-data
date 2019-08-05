@@ -84,7 +84,7 @@
 		</view>
 		<!-- 底部 -->
 		<view class="bottom-text">
-			武汉市发展与改革委员会<br />
+			湖北省发展与改革委员会<br />
 			All rights reserved ©2019
 		</view>
 	</view>

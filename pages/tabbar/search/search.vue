@@ -107,14 +107,15 @@
 					url: this.apiUrl + 'searchTrend',
 					method: 'GET',
 					data: {},
-					success: res => {
+					success: (res) => {
+						console.log(JSON.stringify(res.data));
 						try {
 							let searchApi = res.data;
 							// 检查json数据
 							checkApi.isApi(searchApi);
 							// 设置各部分数据
-							//this.trendList = res.data.data.trend;
-							this.trendList = searchApi.data.trend;
+							this.trendList = res.data.data.trend;
+							// this.trendList = searchApi.data.trend;
 							uni.setStorage({
 								key: 'search_trend',
 								data: this.trendList,
@@ -172,6 +173,7 @@
 			 */
 			searchTrendTap(item) {
 				util.setHistory(item.name);
+				console.log(JSON.stringify(item));
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + "&source=" + item.source
 				})
