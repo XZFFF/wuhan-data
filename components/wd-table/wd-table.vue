@@ -72,7 +72,6 @@
 		flex-direction: column;
 		width: 100%;
 		background-color: #FFFFFF;
-		flex-direction: column;
 	}
 
 	.table-nav {
@@ -105,7 +104,7 @@
 	.table {
 		width: 100%;
 		overflow: hidden;
-		max-height: 500upx;
+		max-height: 350px;
 	}
 
 	.columnItem {

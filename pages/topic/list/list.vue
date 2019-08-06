@@ -56,16 +56,18 @@
 			initTopicList() {
 				this.checkNetwork();
 				uni.request({
-					url: this.apiUrl + 'topicList.php',
+					// url: 'http://192.168.124.20:8089/wuhan_data1/initIndexTopic',
+					url: this.apiUrl + 'initIndexTopic',
 					method: 'GET',
 					data: {},
 					success: res => {
+						console.log("获取成功;" + JSON.stringify(res.data));
 						// 获取topicList的数据
-						let topicListApi = topicListApiJson;
+						let dataApi = res.data;
 						// 检查json数据
-						isApi(topicListApi);
+						isApi(dataApi);
 						// 设置各部分数据
-						this.topic = topicListApi.data.topic;
+						this.topic = dataApi.data.topic;
 						// 数据存入缓存
 						uni.setStorage({
 							key: 'topic_list',
@@ -83,7 +85,7 @@
 			},
 			open_topic_detail(item) {
 				uni.navigateTo({
-					url: '../detail/detail?topicId=' + item.id + '&topicName=' + item.title
+					url: '../detail/detail?indexId=' + item.id + '&indexName=' + item.title
 				})
 			}
 		}

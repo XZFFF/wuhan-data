@@ -82,8 +82,7 @@
 						});
 					},
 					fail: (e) => {
-						console.log(e.errMsg);
-						// dataApi = topicDetailApiJson;
+						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
 						try {
@@ -108,7 +107,7 @@
 				let topic_detail = uni.getStorageSync(topic_detail_key);
 				if (topic_detail) {
 					try {
-						// console.log("缓存数据" + JSON.stringify(topic_detail));
+						console.log("缓存数据" + JSON.stringify(topic_detail));
 						dataApi = topic_detail;
 						// 检查json数据
 						checkApi.isApi(dataApi);
@@ -120,7 +119,7 @@
 						this.setHeight();
 						uni.hideLoading();
 					} catch (e) {
-						console.log("缓存数据加载失败"+e.message);
+						console.log("缓存数据加载失败" + e.message);
 					}
 				}
 			},

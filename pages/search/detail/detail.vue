@@ -9,7 +9,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite"></wd-share>
+		<wd-share type="search" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share>
 	</view>
 </template>
 
@@ -48,14 +48,19 @@
 		},
 		onLoad: function(e) {
 			_self = this;
-			console.log(e.toString());
+			console.log("进入页面;" + JSON.stringify(e));
 			if (JSON.stringify(e) != '{}') {
-				this.indexId = e.indexId;
-				this.indexName = e.indexName;
-				this.source = e.source;
+				_self.indexId = e.indexId;
+				_self.indexName = e.indexName;
+				_self.isFavorite = e.isFavorite;
+				_self.source = e.source;
 			}
 			this.initNav();
-			// 初始化指标数据
+			// 初始化页面数据
+			uni.showLoading({
+				title: "加载栏目:" + _self.indexId,
+			});
+			this.showStorage();
 			this.initSearchDetail();
 			this.initNav();
 		},
@@ -63,22 +68,21 @@
 			initSearchDetail() {
 				checkApi.checkNetwork();
 				let dataApi = {};
-				console.log(this.indexId + this.indexName + this.source);
 				uni.request({
 					url: this.apiUrl + 'searchDetail',
 					method: 'POST',
 					data: {
-						"indexId": this.indexId,
-						"source": this.source
+						"indexId": _self.indexId,
+						"source": _self.source
 					},
 					success: res => {
 						console.log(JSON.stringify(res.data));
 						dataApi = res.data;
-						// dataAPi = searchDetailApiJson;
+						let search_detail_key = 'search_detail' + _self.indexId;
+						uni.setStorageSync(search_detail_key, dataApi);
 					},
 					fail: (e) => {
-						console.log(e.errMsg);
-						dataApi = searchDetailApiJson;
+						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
 						// 检查json数据
@@ -88,35 +92,36 @@
 							_self.indexId = dataApi.data.baseInfo.indexId;
 							_self.indexName = dataApi.data.baseInfo.indexName;
 							_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+							_self.source = dataApi.data.baseInfo.source;
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
 							_self.relatedData = dataApi.data.relatedData;
 							// 计算classHeight及总Height
 							this.setHeight();
 						} catch (e) {
-							console.log(e.message);
-							uni.showToast({
-								icon: 'none',
-								title: e.message,
-								duration: 500
-							});
+							console.log("发生异常;" + JSON.stringify(e));
 						}
+						uni.hideLoading();
 					}
 				});
 			},
 			onConfirm(val) {
+				uni.showLoading({
+					title: "数据加载中...",
+				});
 				checkApi.checkNetwork();
 				uni.request({
 					url: this.apiUrl + 'searchConfirm',
 					method: 'POST',
 					data: {
-						"indexId": this.indexId,
-						"source": this.source,
+						"indexId": _self.indexId,
+						"source": _self.source,
+						"timeFreq": val.timeFreq,
 						"startTime": val.startTime,
 						"endTime": val.endTime,
-						"timeFreq": val.timeFreq
 					},
-					success: res => {
+					success: (res) => {
+						console.log("获取成功;" + JSON.stringify(res.data));
 						try {
 							let dataApi = res.data;
 							// 检查json数据
@@ -126,19 +131,38 @@
 							// 计算classHeight及总Height
 							this.setHeight();
 						} catch (e) {
-							console.log(e.message);
+							console.log("发生异常;" + JSON.stringify(e));
 						}
 					},
 					fail: (e) => {
-						console.log(e.message);
-						uni.showToast({
-							icon: 'none',
-							title: e.message,
-							duration: 500
-						});
+						console.log("获取失败;" + JSON.stringify(e));
 					},
-					complete: () => {}
+					complete: () => {
+						uni.hideLoading();
+					}
 				});
+			},
+			showStorage() {
+				let dataApi;
+				let search_detail_key = 'search_detail' + _self.indexId;
+				let search_detail = uni.getStorageSync(search_detail_key);
+				if (search_detail) {
+					try {
+						dataApi = search_detail;
+						_self.indexId = dataApi.data.baseInfo.indexId;
+						_self.indexName = dataApi.data.baseInfo.indexName;
+						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
+						_self.source = dataApi.data.baseInfo.source;
+						_self.timeCondition = dataApi.data.timeCondition;
+						_self.indexDetail = dataApi.data.classInfo;
+						_self.relatedData = dataApi.data.relatedData;
+						// 计算classHeight及总Height
+						this.setHeight();
+						uni.hideLoading();
+					} catch (e) {
+						console.log("缓存数据加载失败" + e.message);
+					}
+				}
 			},
 			initNav() {
 				// 渲染导航栏title
@@ -197,7 +221,7 @@
 
 	view {
 		/* 设置flex会导致classHeight无效，但不设置会导致classTitle错位 */
-		display: flex;
+		/* display: flex; */
 	}
 
 	.container {

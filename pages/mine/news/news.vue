@@ -144,6 +144,9 @@
 					return;
 				}
 			},
+			downloader(){}
+			
+			/*
 			downloader: function(path) {
 				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
 				//判断文件是否存在
@@ -179,6 +182,7 @@
 					dtask.start(); //开始下载
 				});
 			}
+			*/
 		}
 	}
 </script>

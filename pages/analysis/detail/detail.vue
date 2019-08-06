@@ -83,7 +83,7 @@
 			initAnalysisDetail() {
 				checkApi.checkNetwork();
 				let dataApi;
-				var timestamp = Date.parse(new Date());
+				let timestamp = Date.parse(new Date());
 				uni.request({
 					url: this.apiUrl + 'getAnalysisDetail',
 					method: 'POST',
@@ -92,16 +92,13 @@
 					},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
-						var timestamp2 = Date.parse(new Date());
+						let timestamp2 = Date.parse(new Date());
 						uni.showToast({
 							title: "请求时间:" + (timestamp2 - timestamp)
 						});
 						dataApi = res.data;
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
-						uni.setStorage({
-							key: analysis_detail_key,
-							data: dataApi
-						});
+						uni.setStorageSync(analysis_detail_key, dataApi);
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
@@ -129,6 +126,9 @@
 			},
 			// 点击确认按钮,根据筛选条件请求数据进行图例更新
 			onConfirm(val) {
+				uni.showLoading({
+					title: "数据加载中...",
+				});
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.showLoading({
@@ -136,9 +136,9 @@
 				});
 				let requestData = {
 					"indexId": _self.indexId,
+					"timeFreq": val.timeFreq,
 					"startTime": val.startTime,
-					"endTime": val.endTime,
-					"freqName": val.timeFreq
+					"endTime": val.endTime
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({
@@ -185,7 +185,7 @@
 						this.setHeight();
 						uni.hideLoading();
 					} catch (e) {
-						console.log("缓存数据加载失败"+e.message);
+						console.log("缓存数据加载失败" + e.message);
 					}
 				}
 			},

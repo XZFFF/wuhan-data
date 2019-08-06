@@ -30,7 +30,7 @@
 		</view>
 		<!-- 专题 -->
 		<view class="topic">
-			<view class="topic-image">
+			<view class="topic-image" @click="openTopicList()">
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail(item)">
@@ -65,6 +65,7 @@
 		},
 		onShow: function() {
 			console.log(this.apiUrl);
+			this.showStorage();
 			this.initHomePage();
 		},
 		onPullDownRefresh: function() {
@@ -75,47 +76,45 @@
 		methods: {
 			initHomePage() {
 				checkApi.checkNetwork();
+				let dataApi;
 				// 通过请求接口获取轮播图
 				uni.request({
+					// url: 'http://192.168.124.20:8089/wuhan_data1/initHome',
 					url: this.apiUrl + 'initHome',
 					method: 'GET',
 					data: {},
 					success: res => {
+						console.log("获取成功;" + JSON.stringify(res.data));
 						// 获取homepage的数据
-						let dataApi = homeApiJson
-						// 检查json数据
-						checkApi.isApi(dataApi);
-						// 设置各部分数据
-						this.slideshow = dataApi.data.slideshow;
-						this.analysis = dataApi.data.analysis;
-						this.topic = this.randTopic(dataApi.data.topic);
-						this.topic = dataApi.data.topic;
-						console.log(this.topic);
-						// 数据存入缓存
-						this.setHomeStorage();
+						dataApi = res.data;
 					},
 					fail: (e) => {
 						//取出缓存数据并绑定到data
-						this.getHomeStorage();
+						console.log("获取失败;" + JSON.stringify(e));
 					},
-					complete: () => {}
+					complete: () => {
+						try {
+							// 检查json数据
+							checkApi.isApi(dataApi);
+							// 设置各部分数据
+							this.slideshow = dataApi.data.slideshow;
+							this.analysis = dataApi.data.analysis;
+							// this.topic = this.randTopic(dataApi.data.topic);
+							this.topic = dataApi.data.topic;
+							// 数据存入缓存
+							this.setHomeStorage();
+						} catch (e) {
+							console.log("发生异常;" + JSON.stringify(e));
+						}
+					}
 				});
 			},
 			setHomeStorage() {
-				uni.setStorage({
-					key: 'home_slideshow',
-					data: this.slideshow,
-				});
-				uni.setStorage({
-					key: 'home_analysis',
-					data: this.analysis
-				});
-				uni.setStorage({
-					key: 'home_topic',
-					data: this.topic
-				});
+				uni.setStorageSync('home_slideshow', this.slideshow);
+				uni.setStorageSync('home_analysis', this.analysis);
+				uni.setStorageSync('home_topic', this.topic);
 			},
-			getHomeStorage() {
+			showStorage() {
 				let homeSlideshow = uni.getStorageSync('home_slideshow');
 				if (homeSlideshow) {
 					this.slideshow = homeSlideshow;
@@ -130,17 +129,11 @@
 				}
 			},
 			removeHomeStorage() {
-				uni.removeStorage({
-					key: 'home_slideshow',
-				});
+				uni.removeStorageSync('home_slideshow');
 				this.slideshow = [];
-				uni.removeStorage({
-					key: 'home_analysis',
-				});
+				uni.removeStorageSync('home_analysis');
 				this.analysis = [];
-				uni.removeStorage({
-					key: 'home_topic',
-				});
+				uni.removeStorageSync('home_topic');
 				this.topic = [];
 			},
 			randTopic(resTopic) {

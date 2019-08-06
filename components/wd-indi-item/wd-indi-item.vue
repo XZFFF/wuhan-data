@@ -59,7 +59,7 @@
 			},
 			source: {
 				type: String,
-				default: '未知来源'
+				// default: '未知来源'
 			}
 		},
 		computed: {
@@ -87,20 +87,38 @@
 		methods: {
 			// 跳转到指标详情页
 			openDetail(indexId, indexName, isFavorite, source) {
+				console.log(source);
 				uni.navigateTo({
 					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName + '&isFavorite=' + isFavorite +
 						'&source=' + source
 				});
 			},
 			changeFav() {
+				console.log(this.source);
 				if (this.isFavorite == false || this.isFavorite == "false") {
-					if (checkApi.delCollect("analysis", this.indexId, this.indexName, this.source)) {
+					if (checkApi.setCollect("analysis", this.indexId, this.indexName, this.source)) {
 						this.isFavorite = true;
+						this.updateAnaylsisListStorage(this.indexId, this.isFavorite);
 					}
 				} else {
-					if (checkApi.setCollect("analysis", this.indexId, this.indexName, this.source)) {
+					if (checkApi.delCollect("analysis", this.indexId, this.indexName, this.source)) {
 						this.isFavorite = false;
+						this.updateAnaylsisListStorage(this.indexId, this.isFavorite);
 					}
+				}
+			},
+			updateAnaylsisListStorage(indexId, isFavorite) {
+				let analysisList = uni.getStorageSync('analysis_list');
+				if (analysisList) {
+					for (let i = 0; i < analysisList.length; i++) {
+						let subList = analysisList[i].subList;
+						for (let j = 0; j < subList.length; j++) {
+							if (subList[j].indexId == indexId) {
+								analysisList[i].subList[j].isFavorite = isFavorite;
+							}
+						}
+					}
+					uni.setStorageSync('analysis_list', analysisList);
 				}
 			}
 		}

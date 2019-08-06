@@ -6,7 +6,7 @@
 		</view>
 
 		<scroll-view scroll-x="false" scroll-y="true" class="card-text-page">
-			{{cardText}}
+			<rich-text :nodes="cardTextStr"></rich-text>
 		</scroll-view>
 	</view>
 </template>
@@ -21,6 +21,16 @@
 			cardText: {
 				type: String,
 				default: '专题描述的内容',
+			}
+		},
+		computed: {
+			cardTextStr: function() {
+				var _self = this;
+				try {
+					return '<ul>' + _self.cardText + '</ul>';
+				} catch (e) {
+					return _self.cardText;
+				}
 			}
 		},
 		data() {
@@ -63,9 +73,9 @@
 
 	.card-text-page {
 		display: inline-block;
-		width: 750upx;
-		max-height: 250upx;
-		padding: 15upx;
+		width: 90%;
+		max-height: 100px;
+		padding: 17upx 34upx;
 		font-size: 26upx;
 		word-wrap: break-word;
 		word-break: normal;

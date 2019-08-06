@@ -1,5 +1,6 @@
 module.exports = {
 	error: '',
+	apiUrl: 'http://59.208.244.108:8080/wuhan-data-panel/',
 	isApi: function(apiData) {
 		try {
 			if (apiData && apiData.errMsg) {
@@ -87,10 +88,10 @@ module.exports = {
 				let h = 0;
 				if (item.classType == 'table') {
 					let tableParam = item.tableBody[0].length;
-					if (tableParam < 7) {
+					if (tableParam < 6) {
 						h = (tableParam + 1) * 70;
 					} else {
-						h = 500;
+						h = 450;
 					}
 				} else if (item.classType == 'echarts') {
 					if (typeof item.classHeight === 'string') {
@@ -101,7 +102,7 @@ module.exports = {
 						h = 400;
 					}
 				} else if (item.classType == 'card') {
-					h = 250;
+					h = 200;
 				}
 				classHeight += h;
 			}
@@ -125,7 +126,7 @@ module.exports = {
 			typeName = "未知类型";
 		}
 		uni.request({
-			url: this.apiUrl + 'TrackApp',
+			url: this.apiUrl + 'setTrackApp',
 			method: 'POST',
 			data: {
 				"token": token,
@@ -135,9 +136,11 @@ module.exports = {
 				"source": source
 			},
 			success: (res) => {
+				console.log(res.data);
 				return true;
 			},
 			fail(e) {
+				console.log(e.message);
 				return false;
 			}
 		});
@@ -162,6 +165,7 @@ module.exports = {
 		} else {
 			typeName = "未知类型";
 		}
+		console.log(token + typeName + indexId + indexName + source);
 		uni.request({
 			url: this.apiUrl + 'setCollectApp',
 			method: 'POST',
@@ -173,7 +177,7 @@ module.exports = {
 				"source": source
 			},
 			success: (res) => {
-				console.log(res);
+				console.log(JSON.stringify(res.data));
 				uni.showToast({
 					title: "收藏成功",
 					icon: "none",
@@ -182,7 +186,7 @@ module.exports = {
 				return true;
 			},
 			fail(e) {
-				console.log(3);
+				console.log(JSON.stringify(e));
 				uni.showToast({
 					title: "收藏失败",
 					icon: "none",
@@ -212,6 +216,7 @@ module.exports = {
 		} else {
 			typeName = "未知类型";
 		}
+		console.log(token + typeName + indexId);
 		uni.request({
 			url: this.apiUrl + 'delCollectApp',
 			method: 'POST',
@@ -221,7 +226,7 @@ module.exports = {
 				"indexId": indexId
 			},
 			success: (res) => {
-				console.log(res);
+				console.log(JSON.stringify(res));
 				uni.showToast({
 					title: "已取消收藏",
 					icon: "none",
@@ -230,7 +235,7 @@ module.exports = {
 				return true;
 			},
 			fail(e) {
-				console.log(e);
+				console.log(JSON.stringify(e));
 				uni.showToast({
 					title: "取消收藏失败",
 					icon: "none",
@@ -240,6 +245,5 @@ module.exports = {
 			}
 		});
 		return true;
-	},
-
+	}
 }
