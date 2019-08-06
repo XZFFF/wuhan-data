@@ -1,0 +1,12 @@
+{
+	"errCode": "0",
+	"errMsg": "获取消息成功",
+	"data": {
+		"Android": {
+			"appid": "HBuilder",
+			"version": "v4.0.0",
+			"description": "新版本4.0发布\n新版本4.0发布\n新版本4.0发布",
+			"url": "https://pdds.ucweb.com/download/newest/UCBrowser/zh-cn/145/999/www_website?spm=ucweb.home.navbar.4.38ca3d561ATOBn"
+		}
+	}
+}

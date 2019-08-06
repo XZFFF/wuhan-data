@@ -52,21 +52,23 @@
 					</view>
 				</view>
 			</view>
-			<uni-popup :show="type === 'middle-update'" position="middle" mode="fixed" @hidePopup="togglePopup('')">
-				<view style="height: 330upx;width: 450upx;">
+			<uni-popup :show="type === 'middle-update'" mode="fixed" position="middle" @hidePopup="togglePopup('')">
+				<view style="width: 450upx;">
 					<view style="font-size: 35upx;">更新提示</view>
-					<view style="margin-top: 20upx;margin-bottom: 20upx;height: 150upx;">{{updateText}}</view>
+					<view style="font-size: 30upx;">当前版本：{{currentVersion}}</view>
+					<view style="font-size: 30upx;">最新版本：{{newVersion}}</view>
+					<view style="margin-top: 20upx;margin-bottom: 20upx;white-space: pre-wrap;">{{updateText}}</view>
 					<input type="button" class="pop-button" value="下载" @click="Update()" />
 					<input type="button" class="pop-button" style="float: right;" value="取消" @click="togglePopup('')" />
 				</view>
 			</uni-popup>
-			<uni-popup :show="type === 'middle-download'" position="middle" mode="fixed" @hidePopup="togglePopup('')">
-				<view style="height: 200upx;width: 400upx;">
+			<uni-popup :show="type === 'middle-download'" position="middle" mode="fixed">
+				<view style="width: 400upx;">
 					<view>下载进度</view>
-					<view class="progress-box">
+					<view class="progress-box" style="margin-bottom: 40upx;">
 						<progress :percent="versionUpdate.downProgress" show-info stroke-width="3" />
 					</view>
-					<input type="button" class="pop-button" style="float: right;" value="取消" @click="togglePopup('')" />
+					<input type="button" class="pop-button" style="float: right;" value="取消" @click="cancelDownload('')" />
 				</view>
 			</uni-popup>
 			<uni-popup :show="type === 'bottom-share'" position="bottom" @hidePopup="togglePopup('')">
@@ -84,7 +86,7 @@
 		</view>
 		<!-- 底部 -->
 		<view class="bottom-text">
-			武汉市发展与改革委员会<br />
+			湖北省发展与改革委员会<br />
 			All rights reserved ©2019
 		</view>
 	</view>
@@ -95,6 +97,7 @@
 	import checkApi from '@/common/checkApi.js';
 	import mineConfig from "@/common/config/mine.json";
 	import getUserApiJson from "@/common/api/getUser.json";
+	import getUpdateApiJson from "@/common/api/getUpdate.json";
 	export default {
 		components: {
 			uniPopup
@@ -125,6 +128,9 @@
 					"download": "",
 					"downProgress": ""
 				},
+				currentVersion: "",
+				newVersion: "",
+				downloadTask: "",
 				bottomData: mineConfig.bottomData,
 				browse_icon: mineConfig.browse_icon,
 				menu_list: mineConfig.menu_list,
@@ -260,9 +266,11 @@
 						method: 'GET',
 						data: {},
 						success: (res) => {
+							//let updateApi = getUpdateApiJson.data;
 							let updateApi = res.data;
 							let appid = plus.runtime.appid;
 							let version = plus.runtime.version;
+							this.currentVersion = version;
 							let resData = JSON.stringify(updateApi);
 							console.log("appid：" + appid);
 							console.log("当前版本：" + version);
@@ -277,8 +285,9 @@
 											});
 										} else {
 											this.type = 'middle-update';
-											this.updateText = res.data.IOS.description;
-											this.downloadUrl = res.data.IOS.url;
+											this.newVersion = updateApi.IOS.version;
+											this.updateText = updateApi.IOS.description;
+											this.downloadUrl = updateApi.IOS.url;
 										}
 									}
 									uni.showToast({
@@ -294,9 +303,10 @@
 												title: '已为最新版本，无需更新'
 											});
 										} else {
+											this.newVersion = updateApi.Android.version;
 											this.type = 'middle-update';
-											this.updateText = res.data.Android.description;
-											this.downloadUrl = res.data.Android.url;
+											this.updateText = updateApi.Android.description;
+											this.downloadUrl = updateApi.Android.url;
 										}
 									} else {
 										uni.showToast({
@@ -356,7 +366,7 @@
 				//#ifdef APP-PLUS
 				let updateUrl = this.downloadUrl;
 				console.log("下载地址：" + updateUrl);
-				const downloadTask = uni.downloadFile({
+				this.downloadTask = uni.downloadFile({
 					url: updateUrl, //仅为示例，并非真实的资源
 					success: (res) => {
 						console.log("正在下载");
@@ -369,11 +379,11 @@
 						}
 					}
 				});
-				downloadTask.onProgressUpdate((res) => {
+				this.downloadTask.onProgressUpdate((res) => {
 					this.versionUpdate.downProgress = res.progress;
 					console.log('下载进度' + res.progress);
-					console.log('已经下载的数据长度' + res.totalBytesWritten);
-					console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+					//console.log('已经下载的数据长度' + res.totalBytesWritten);
+					//console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
 				});
 				//#endif
 			},
@@ -395,6 +405,11 @@
 			},
 			togglePopup(type) {
 				this.type = type;
+			},
+			cancelDownload(type) {
+				this.type = type;
+				this.downloadTask.abort();
+				this.versionUpdate.downProgress = 0;
 			},
 			share(e) {
 				let pro = "";
