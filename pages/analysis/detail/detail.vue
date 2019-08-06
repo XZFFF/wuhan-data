@@ -1,5 +1,5 @@
 <template>
-	<view class="container" :style="{height:totalHeight + 'px'}">
+	<view class="container">
 		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
