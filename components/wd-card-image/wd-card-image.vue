@@ -26,16 +26,19 @@
 
 <style>
 	.uni-card {
-		margin-left: 30upx;
-		margin-right: 30upx;
+		margin-left: 40upx;
+		margin-right: 40upx;
+		border-radius:15px 15px 0 0;
 	}
 
 	.image-view {
 		height: 350upx;
+		border-radius:15px 15px 0 0;
 		overflow: hidden;
 	}
 	
 	.image {
-	    width: 690upx;
+	    width: 670upx;
+		border-radius:15px 15px 0 0;
 	}
 </style>
