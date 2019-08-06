@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :style="{height:totalHeight + 'px'}">
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-card-text v-if="item.classType === 'card'" :title="item.classTitle" :cardText="item.cardText"></wd-card-text>
