@@ -136,11 +136,11 @@ module.exports = {
 				"source": source
 			},
 			success: (res) => {
-				console.log(res.data);
+				console.log(JSON.stringify(res.data));
 				return true;
 			},
 			fail(e) {
-				console.log(e.message);
+				console.log(JSON.stringify(e));
 				return false;
 			}
 		});

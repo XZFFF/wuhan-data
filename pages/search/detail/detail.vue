@@ -55,7 +55,6 @@
 				_self.isFavorite = e.isFavorite;
 				_self.source = e.source;
 			}
-			this.initNav();
 			// 初始化页面数据
 			uni.showLoading({
 				title: "加载栏目:" + _self.indexId,
@@ -72,8 +71,8 @@
 					url: this.apiUrl + 'searchDetail',
 					method: 'POST',
 					data: {
-						"indexId": _self.indexId,
-						"source": _self.source
+						"indexId": this.indexId,
+						"source": this.source
 					},
 					success: res => {
 						console.log(JSON.stringify(res.data));
@@ -165,33 +164,38 @@
 				}
 			},
 			initNav() {
-				// 渲染导航栏title
-				uni.setNavigationBarTitle({
-					title: this.indexName
-				});
+				let favColor = "#ffffff";
 				// 渲染收藏icon
 				if (this.isFavorite == false || this.isFavorite == "false") {
 					this.isFavorite == false;
-					this.initFavColor("#ffffff");
+					favColor = "#ffffff";
 				} else {
 					this.isFavorite == true;
-					this.initFavColor("#f9da74");
+					favColor = "#f9da74";
 				}
-			},
-			initFavColor(initColor) {
-				// 更新导航栏收藏按钮颜色
 				let pages = getCurrentPages();
 				let page = pages[pages.length - 1];
 				// #ifdef APP-PLUS
 				let currentWebview = page.$getAppWebview();
 				let titleObj = currentWebview.getStyle().titleNView;
-				if (!titleObj.buttons) {
-					return;
+				console.log(this.indexName);
+				try {
+					if (!titleObj.titleText) {
+						return;
+					}
+					if (!titleObj.buttons) {
+						return;
+					}
+					titleObj.titleText = this.indexName;
+					titleObj.buttons[1].color = favColor;
+					currentWebview.setStyle({
+						navigationBarTitleText: this.indexName,
+						titleNView: titleObj
+					});
+				} catch (e) {
+					console.log(JSON.stringify(e));
 				}
-				titleObj.buttons[1].color = initColor;
-				currentWebview.setStyle({
-					titleNView: titleObj
-				});
+				console.log(JSON.stringify(currentWebview));
 				// #endif
 			},
 			setHeight() {
