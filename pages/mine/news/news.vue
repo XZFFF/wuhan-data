@@ -50,28 +50,33 @@
 			messageList: function() {
 				let messageList = this.message;
 				// console.log(messageList.length);
-				for (let i = 0; i < messageList.length; i++) {
-					messageList[i].tranTime = this.tranTime(messageList[i].dateTime);
-					let iconPath = '../../../static/icon/message/';
-					switch (messageList[i].type) {
-						case "pdf":
-							messageList[i].icon = iconPath + 'file.png';
-							break;
-						case "excel":
-							messageList[i].icon = iconPath + 'file.png';
-							break;
-						case "link":
-							messageList[i].icon = iconPath + 'link.png';
-							break;
-						case "message":
-							messageList[i].icon = iconPath + 'message.png';
-							break;
-						default:
-							messageList[i].icon = iconPath + 'message.png';
-							break;
+				try {
+					for (let i = 0; i < messageList.length; i++) {
+						messageList[i].tranTime = this.tranTime(messageList[i].dateTime);
+						let iconPath = '../../../static/icon/message/';
+						switch (messageList[i].type) {
+							case "pdf":
+								messageList[i].icon = iconPath + 'file.png';
+								break;
+							case "excel":
+								messageList[i].icon = iconPath + 'file.png';
+								break;
+							case "link":
+								messageList[i].icon = iconPath + 'link.png';
+								break;
+							case "message":
+								messageList[i].icon = iconPath + 'message.png';
+								break;
+							default:
+								messageList[i].icon = iconPath + 'message.png';
+								break;
+						}
 					}
+					return messageList;
+				} catch (e) {
+					console.log(JSON.stringify(e));
 				}
-				return messageList;
+
 			}
 		},
 		methods: {
@@ -146,8 +151,8 @@
 					return;
 				}
 			},
-			downloader(){}
-			
+			downloader() {}
+
 			/*
 			downloader: function(path) {
 				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
@@ -201,7 +206,7 @@
 		font-size: 28upx;
 		line-height: inherit
 	}
-	
+
 	.no-data {
 		text-align: center;
 		color: #999;

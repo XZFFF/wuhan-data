@@ -120,10 +120,7 @@
 							// 设置各部分数据
 							this.trendList = res.data.data.trend;
 							// this.trendList = searchApi.data.trend;
-							uni.setStorage({
-								key: 'search_trend',
-								data: this.trendList,
-							});
+							uni.setStorage('search_trend', this.trendList);
 						} catch (e) {
 							console.log(e.message);
 						}
