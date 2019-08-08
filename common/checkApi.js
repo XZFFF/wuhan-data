@@ -89,7 +89,7 @@ module.exports = {
 				if (item.classType == 'table') {
 					let tableParam = item.tableBody[0].length;
 					if (tableParam < 6) {
-						h = (tableParam + 1) * 70;
+						h = (tableParam + 1) * 60;
 					} else {
 						h = 450;
 					}
@@ -102,7 +102,7 @@ module.exports = {
 						h = 400;
 					}
 				} else if (item.classType == 'card') {
-					h = 200;
+					h = 180;
 				}
 				classHeight += h;
 			}
