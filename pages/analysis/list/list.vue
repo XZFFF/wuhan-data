@@ -87,11 +87,10 @@
 					},
 					complete: () => {
 						// 设置初始化的左右侧子栏数据(默认为第一个)
-						this.categoryActive = this.itemKey;
 						this.source = this.categoryList[this.categoryActive].listName;
 						this.subCategoryList = this.categoryList[this.categoryActive].subList;
 						uni.hideLoading();
-						uni.setStorageSync('analysis_list_scroll_index', this.categoryActive);
+						this.setScroll();
 					}
 				});
 				this.height = uni.getSystemInfoSync().windowHeight;
