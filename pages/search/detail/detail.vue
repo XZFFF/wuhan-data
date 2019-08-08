@@ -59,6 +59,7 @@
 			uni.showLoading({
 				title: "加载栏目:" + _self.indexId,
 			});
+			checkApi.setFootprint("search", this.indexId, this.indexName, this.source);
 			this.showStorage();
 			this.initSearchDetail();
 			this.initNav();
