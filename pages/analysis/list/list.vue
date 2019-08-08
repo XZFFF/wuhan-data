@@ -33,7 +33,7 @@
 		},
 		data() {
 			return {
-				analysisId: 0,
+				itemKey: 0,
 				height: 0,
 				categoryActive: 0,
 				scrollTop: 0,
@@ -45,7 +45,7 @@
 		},
 		onLoad: function(e) {
 			if (JSON.stringify(e) != '{}') {
-				this.analysisId = e.analysis_id;
+				this.itemKey = e.itemKey;
 			}
 			uni.showLoading({
 				title: "加载栏目列表中",
@@ -79,7 +79,7 @@
 					},
 					complete: () => {
 						// 设置初始化的左右侧子栏数据(默认为第一个)
-						this.categoryActive = this.analysisId;
+						this.categoryActive = this.itemKey;
 						this.source = this.categoryList[this.categoryActive].listName;
 						this.subCategoryList = this.categoryList[this.categoryActive].subList;
 						uni.hideLoading();
@@ -91,7 +91,7 @@
 				let analysisList = uni.getStorageSync('analysis_list');
 				if (analysisList) {
 					this.categoryList = analysisList;
-					this.categoryActive = this.analysisId;
+					this.categoryActive = this.itemKey;
 					this.source = this.categoryList[this.categoryActive].listName;
 					this.subCategoryList = this.categoryList[this.categoryActive].subList;
 					uni.hideLoading();

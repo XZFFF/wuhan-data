@@ -93,7 +93,7 @@
 					// url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
-						indexId: this.indexId,
+						indexId: analysisId,
 					},
 					success: res => {
 						uni.showToast({

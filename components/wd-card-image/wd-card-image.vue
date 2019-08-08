@@ -4,7 +4,7 @@
 			<image :src="image" class="image"></image>
 		</view>
 		<view class="uni-card-footer">
-			<view class="uni-card-media-text-bottom" style="color: #2B2B2C;">{{title}}</view>
+			<view class="uni-card-media-text-bottom" style="color: #2B2B2C; font-size: 18px; font-weight: bold;">{{title}}</view>
 		</view>
 	</view>
 </template>
@@ -28,17 +28,17 @@
 	.uni-card {
 		margin-left: 40upx;
 		margin-right: 40upx;
-		border-radius:15px 15px 0 0;
+		border-radius:15px 15px 0px 0px;
 	}
 
 	.image-view {
 		height: 350upx;
-		border-radius:15px 15px 0 0;
+		border-radius:15px 15px 0px 0px;
 		overflow: hidden;
 	}
 	
 	.image {
 	    width: 670upx;
-		border-radius:15px 15px 0 0;
+		border-radius:15px 15px 0px 0px;
 	}
 </style>

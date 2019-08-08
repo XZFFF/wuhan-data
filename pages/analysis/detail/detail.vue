@@ -56,28 +56,39 @@
 			}
 			console.log("进入经济分析栏目详情页;" + JSON.stringify(e));
 			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.source);
-			this.initNav();
+			// 渲染导航栏title
+			uni.setNavigationBarTitle({
+				title: _self.indexName
+			});
+			// 渲染收藏icon
+			if (_self.isFavorite == false || _self.isFavorite == "false") {
+				_self.isFavorite == false;
+				_self.initFavColor("#ffffff");
+			} else {
+				_self.isFavorite == true;
+				_self.initFavColor("#f9da74");
+			}
 			// 初始化页面数据
 			uni.showLoading({
 				title: "加载栏目:" + this.indexId,
 			});
 			this.showStorage();
 			this.initAnalysisDetail();
-			this.initNav();
+			_self.initNav(_self.indexName, _self.isFavorite);
 		},
-		onUnload() {
-			// 退出界面时重新初始化数据
-			this.indexId = "1000";
-			this.indexName = "指标详情页";
-			this.source = "未知来源";
-			this.isFavorite = false;
-			this.timeCondition = [];
-			this.indexDetail = [];
-			this.relatedData = [];
-			this.totalHeight = 1000;
-			this.classTotalHeight = 400;
-			this.initFavColor("ffffff");
-		},
+		// onUnload() {
+		// 	// 退出界面时重新初始化数据
+		// 	this.indexId = "1000";
+		// 	this.indexName = "指标详情页";
+		// 	this.source = "未知来源";
+		// 	this.isFavorite = false;
+		// 	this.timeCondition = [];
+		// 	this.indexDetail = [];
+		// 	this.relatedData = [];
+		// 	this.totalHeight = 1000;
+		// 	this.classTotalHeight = 400;
+		// 	this.initFavColor("ffffff");
+		// },
 		methods: {
 			// 初始化数据，请求数据进行页面渲染
 			initAnalysisDetail() {
@@ -190,10 +201,11 @@
 				}
 			},
 			// 渲染导航栏title及icon
-			initNav() {
+			initNav(c1, c2) {
+				console.log("初始化导航栏中"+c1+c2)
 				// 渲染导航栏title
 				uni.setNavigationBarTitle({
-					title: this.indexName
+					title: c1
 				});
 				// 渲染收藏icon
 				if (this.isFavorite == false || this.isFavorite == "false") {

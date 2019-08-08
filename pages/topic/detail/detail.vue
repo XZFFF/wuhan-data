@@ -76,10 +76,7 @@
 						dataApi = res.data;
 						// dataApi = demoToic;
 						let topic_detail_key = 'topic_detail' + this.indexId;
-						uni.setStorage({
-							key: topic_detail_key,
-							data: dataApi
-						});
+						uni.setStorageSync(topic_detail_key, dataApi);
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));

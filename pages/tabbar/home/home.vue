@@ -21,8 +21,7 @@
 		<!-- 经济分析 -->
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis" :key="index">
-				<view class="icon-single-background" :style="'background: '+item.background" @click="openAnalysisList"
-				 :data-analysisid=item.id>
+				<view class="icon-single-background" :style="'background: '+item.background" @click="openAnalysisList(index)">
 					<image class="icon-single-backicon" :src="item.icon_url"></image>
 				</view>
 				<text class="icon-single-text">{{item.icon_name}}</text>
@@ -156,10 +155,10 @@
 					return t;
 				}
 			},
-			openAnalysisList(e) {
-				var analysisId = e.currentTarget.dataset.analysisid;
+			openAnalysisList(index) {
+				// var analysisId = e.currentTarget.dataset.analysisid;
 				uni.navigateTo({
-					url: '../../analysis/list/list?analysis_id=' + analysisId
+					url: '../../analysis/list/list?itemKey=' + index
 				});
 			},
 			openTopicList(e) {
