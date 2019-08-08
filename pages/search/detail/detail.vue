@@ -65,14 +65,16 @@
 		},
 		methods: {
 			initSearchDetail() {
+				let token = uni.getStorageSync('token');
 				checkApi.checkNetwork();
 				let dataApi = {};
 				uni.request({
 					url: this.apiUrl + 'searchDetail',
 					method: 'POST',
 					data: {
-						"indexId": this.indexId,
-						"source": this.source
+						token: token,
+						indexId: this.indexId,
+						source: this.source
 					},
 					success: res => {
 						console.log(JSON.stringify(res.data));

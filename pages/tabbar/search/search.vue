@@ -70,7 +70,11 @@
 			// 搜索结果指标名称过长则截断
 			tranName: function() {
 				let result = this.historyList;
+				if (result.length > 9) {
+					result.slice(0, 9);
+				}
 				for (var i = 0; i < result.length; i++) {
+
 					if (result[i].name.length > 6) {
 						result[i].name = result[i].name.substring(0, 4) + '..';
 					}
