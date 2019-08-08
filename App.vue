@@ -1,13 +1,22 @@
 <script>
-	import request from '@/components/request/index.js';
 	export default {
 		onLaunch: function() {
 			try {
-				let isFirst = uni.getStorageSync('isFirst');
-				if (isFirst != 1) {
+				let versionStorage = uni.getStorageSync('version');
+				let versionApp = plus.runtime.version;
+				if (versionStorage != versionApp) {
+					uni.showToast({
+						title: '检测到版本更新，正在初始化数据',
+						icon: 'none',
+						duration: 2000
+					});
+					// 版本不一致，可能是版本更新
+					// 更新了版本需要清除原有所有缓存
+					uni.clearStorageSync();
+					uni.setStorageSync('version', versionApp);
+					// 初始化请求一些数据
 					this.callback1(1);
 					this.callback2(1);
-					uni.setStorageSync('isFirst', 1);
 				}
 			} catch (e) {
 				console.log(JSON.stringify(e));
@@ -48,9 +57,12 @@
 		},
 		methods: {
 			callback1(topicId) {
-				let r = request.get({
+				uni.request({
 					url: this.apiUrl + 'topic' + topicId,
-					success: res => {
+					// url: 'https://www.baidu.com',
+					method: 'POST',
+					data: {},
+					success: (res) => {
 						uni.showToast({
 							title: '专题' + topicId + '加载成功',
 							icon: 'none'
@@ -74,16 +86,14 @@
 						}
 					}
 				});
-				// request.stop(r);
 			},
 			callback2(analysisId) {
-				let r = request.post({
+				uni.request({
 					url: this.apiUrl + 'getAnalysisDetail',
-					header: {
-						"content-type": "application/json"
-					},
+					// url: 'https://www.baidu.com',
+					method: 'POST',
 					data: {
-						indexId: analysisId,
+						indexId: this.indexId,
 					},
 					success: res => {
 						uni.showToast({
@@ -109,8 +119,8 @@
 						}
 					}
 				});
-				// request.stop(r);
 			},
+
 			sleep(numberMillis) {
 				var now = new Date();
 				var exitTime = now.getTime() + numberMillis;

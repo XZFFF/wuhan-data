@@ -183,7 +183,7 @@
 						checkApi.isApi(dataApi);
 						try {
 							this.user = dataApi.data;
-							if(!this.user.head){
+							if (!this.user.head) {
 								this.user.head = '../../../static/icon/mine/default.jpg';
 							}
 							let userStr = JSON.stringify(this.user);
@@ -289,11 +289,12 @@
 											this.updateText = updateApi.IOS.description;
 											this.downloadUrl = updateApi.IOS.url;
 										}
+									} else {
+										uni.showToast({
+											icon: 'none',
+											title: '应用appid匹配失败'
+										});
 									}
-									uni.showToast({
-										icon: 'none',
-										title: '应用appid匹配失败'
-									});
 								}
 								if (uni.getSystemInfoSync().platform == "android") {
 									if (appid == updateApi.Android.appid) {
@@ -332,8 +333,10 @@
 							if (res.confirm) {
 								try {
 									let token = uni.getStorageSync('token');
+									let versionStorage = uni.getStorageSync('version');
 									uni.clearStorageSync();
 									uni.setStorageSync('token', token);
+									uni.setStorageSync('version', versionStorage);
 									uni.showToast({
 										icon: 'none',
 										title: "缓存清除成功",
