@@ -9,6 +9,7 @@
 			</wd-message-card>
 			<view style="margin-top: 20px;"></view>
 		</view>
+		<view v-if="message.length == 0" class="no-data">您还没有任何消息</view>
 	</view>
 </template>
 
@@ -48,6 +49,7 @@
 		computed: {
 			messageList: function() {
 				let messageList = this.message;
+				// console.log(messageList.length);
 				for (let i = 0; i < messageList.length; i++) {
 					messageList[i].tranTime = this.tranTime(messageList[i].dateTime);
 					let iconPath = '../../../static/icon/message/';
@@ -97,8 +99,8 @@
 					},
 					success: (res) => {
 						try {
-							//let dataApi = res.data;
-							let dataApi = getNewsApiJson;
+							let dataApi = res.data;
+							//let dataApi = getNewsApiJson;
 							checkApi.isApi(dataApi);
 							this.message = dataApi.data.message;
 							uni.setStorageSync('my_news', this.message);
@@ -198,5 +200,11 @@
 	view {
 		font-size: 28upx;
 		line-height: inherit
+	}
+	
+	.no-data {
+		text-align: center;
+		color: #999;
+		margin: 100upx;
 	}
 </style>

@@ -55,6 +55,7 @@
 				_self.isFavorite = e.isFavorite;
 				_self.source = e.source;
 			}
+			console.log("收藏状态：" + this.isFavorite);
 			// 初始化页面数据
 			uni.showLoading({
 				title: "加载栏目:" + _self.indexId,
@@ -100,6 +101,8 @@
 							_self.relatedData = dataApi.data.relatedData;
 							// 计算classHeight及总Height
 							this.setHeight();
+							// this.isFavorite = true;
+							this.initNav();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -176,6 +179,7 @@
 					this.isFavorite == true;
 					favColor = "#f9da74";
 				}
+				console.log("设置收藏按钮颜色：" + favColor);
 				let pages = getCurrentPages();
 				let page = pages[pages.length - 1];
 				// #ifdef APP-PLUS
