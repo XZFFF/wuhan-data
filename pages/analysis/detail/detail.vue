@@ -49,56 +49,37 @@
 		onLoad: function(e) {
 			_self = this;
 			if (JSON.stringify(e) != '{}') {
-				_self.indexId = e.indexId;
-				_self.indexName = e.indexName;
-				_self.source = e.source;
-				_self.isFavorite = e.isFavorite;
+				console.log("初始化数据" + e.indexId)
+				this.indexId = e.indexId;
+				this.indexName = e.indexName;
+				this.source = e.source;
+				this.isFavorite = e.isFavorite;
 			}
-			console.log("进入经济分析栏目详情页;" + JSON.stringify(e));
+			this.initNav();
+			console.log("onload 进入经济分析栏目详情页;" + JSON.stringify(e));
 			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.source);
-			// 渲染导航栏title
-			uni.setNavigationBarTitle({
-				title: _self.indexName
-			});
-			// 渲染收藏icon
-			if (_self.isFavorite == false || _self.isFavorite == "false") {
-				_self.isFavorite == false;
-				_self.initFavColor("#ffffff");
-			} else {
-				_self.isFavorite == true;
-				_self.initFavColor("#f9da74");
-			}
 			// 初始化页面数据
 			uni.showLoading({
 				title: "加载栏目:" + this.indexId,
 			});
-			this.showStorage();
-			this.initAnalysisDetail();
-			_self.initNav(_self.indexName, _self.isFavorite);
+			this.showStorage(this.indexId);
+			console.log("0请求的indexId=" + this.indexId);
+			this.initAnalysisDetail(this.indexId);
 		},
-		// onUnload() {
-		// 	// 退出界面时重新初始化数据
-		// 	this.indexId = "1000";
-		// 	this.indexName = "指标详情页";
-		// 	this.source = "未知来源";
-		// 	this.isFavorite = false;
-		// 	this.timeCondition = [];
-		// 	this.indexDetail = [];
-		// 	this.relatedData = [];
-		// 	this.totalHeight = 1000;
-		// 	this.classTotalHeight = 400;
-		// 	this.initFavColor("ffffff");
-		// },
 		methods: {
 			// 初始化数据，请求数据进行页面渲染
-			initAnalysisDetail() {
+			initAnalysisDetail(indexId) {
+				let token = uni.getStorageSync('token');
 				checkApi.checkNetwork();
 				let dataApi;
 				let timestamp = Date.parse(new Date());
+				console.log("1请求的indexId" + indexId);
+				console.log("2请求的indexId=" + this.indexId);
 				uni.request({
 					url: this.apiUrl + 'getAnalysisDetail',
 					method: 'POST',
 					data: {
+						token: token,
 						indexId: this.indexId,
 					},
 					success: (res) => {
@@ -119,13 +100,13 @@
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						try {
-							_self.indexId = dataApi.data.baseInfo.indexId;
-							_self.indexName = dataApi.data.baseInfo.indexName;
-							_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-							_self.source = dataApi.data.baseInfo.source;
-							_self.timeCondition = dataApi.data.timeCondition;
-							_self.indexDetail = dataApi.data.classInfo;
-							_self.relatedData = dataApi.data.relatedData;
+							this.indexId = dataApi.data.baseInfo.indexId;
+							this.indexName = dataApi.data.baseInfo.indexName;
+							this.isFavorite = dataApi.data.baseInfo.isFavorite;
+							this.source = dataApi.data.baseInfo.source;
+							this.timeCondition = dataApi.data.timeCondition;
+							this.indexDetail = dataApi.data.classInfo;
+							this.relatedData = dataApi.data.relatedData;
 							// 计算classHeight及总Height
 							this.setHeight();
 						} catch (e) {
@@ -178,20 +159,19 @@
 					}
 				});
 			},
-			showStorage() {
+			showStorage(indexId) {
 				let dataApi;
-				let analysis_detail_key = 'analysis_detail' + _self.indexId;
+				let analysis_detail_key = 'analysis_detail' + indexId;
 				let analysis_detail = uni.getStorageSync(analysis_detail_key);
 				if (analysis_detail) {
 					try {
 						dataApi = analysis_detail;
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
-						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-						_self.source = dataApi.data.baseInfo.source;
-						_self.timeCondition = dataApi.data.timeCondition;
-						_self.indexDetail = dataApi.data.classInfo;
-						_self.relatedData = dataApi.data.relatedData;
+						this.indexName = dataApi.data.baseInfo.indexName;
+						this.isFavorite = dataApi.data.baseInfo.isFavorite;
+						this.source = dataApi.data.baseInfo.source;
+						this.timeCondition = dataApi.data.timeCondition;
+						this.indexDetail = dataApi.data.classInfo;
+						this.relatedData = dataApi.data.relatedData;
 						// 计算classHeight及总Height
 						this.setHeight();
 						uni.hideLoading();
@@ -201,20 +181,61 @@
 				}
 			},
 			// 渲染导航栏title及icon
-			initNav(c1, c2) {
-				console.log("初始化导航栏中"+c1+c2)
-				// 渲染导航栏title
-				uni.setNavigationBarTitle({
-					title: c1
-				});
+			initNav() {
+				let favColor = "#ffffff";
 				// 渲染收藏icon
 				if (this.isFavorite == false || this.isFavorite == "false") {
 					this.isFavorite == false;
-					this.initFavColor("#ffffff");
+					favColor = "#ffffff";
 				} else {
 					this.isFavorite == true;
-					this.initFavColor("#f9da74");
+					favColor = "#f9da74";
 				}
+				let pages = getCurrentPages();
+				let page = pages[pages.length - 1];
+				// #ifdef APP-PLUS
+				let currentWebview = page.$getAppWebview();
+				let titleObj = currentWebview.getStyle().titleNView;
+				console.log(this.indexName);
+				try {
+					if (!titleObj.titleText) {
+						return;
+					}
+					if (!titleObj.buttons) {
+						return;
+					}
+					titleObj.titleText = this.indexName;
+					titleObj.buttons[1].color = favColor;
+					currentWebview.setStyle({
+						navigationBarTitleText: this.indexName,
+						titleNView: titleObj
+					});
+				} catch (e) {
+					console.log(JSON.stringify(e));
+				}
+				console.log(JSON.stringify(currentWebview));
+				// #endif
+			},
+			initNavTitle() {
+				// 更新导航栏收藏按钮颜色
+				let pages = getCurrentPages();
+				let page = pages[pages.length - 1];
+				// #ifdef APP-PLUS
+				let currentWebview = page.$getAppWebview();
+				let titleObj = currentWebview.getStyle().titleNView;
+				try {
+					if (!titleObj.titleText) {
+						return;
+					}
+					titleObj.titleText = this.indexName;
+					currentWebview.setStyle({
+
+						titleNView: titleObj
+					});
+				} catch (e) {
+					console.log(JSON.stringify(e));
+				}
+				// #endif
 			},
 			// 根据参数初始化导航栏中按钮的颜色
 			initFavColor(initColor) {
@@ -224,13 +245,17 @@
 				// #ifdef APP-PLUS
 				let currentWebview = page.$getAppWebview();
 				let titleObj = currentWebview.getStyle().titleNView;
-				if (!titleObj.buttons) {
-					return;
+				try {
+					if (!titleObj.buttons) {
+						return;
+					}
+					titleObj.buttons[1].color = initColor;
+					currentWebview.setStyle({
+						titleNView: titleObj
+					});
+				} catch (e) {
+					console.log(JSON.stringify(e));
 				}
-				titleObj.buttons[1].color = initColor;
-				currentWebview.setStyle({
-					titleNView: titleObj
-				});
 				// #endif
 			},
 			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
@@ -246,7 +271,7 @@
 				}
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;
-			},
+			}
 		}
 	}
 </script>

@@ -43,10 +43,15 @@
 				source: ""
 			};
 		},
+		onShow() {
+			this.showStorage();
+			this.setScroll();
+		},
 		onLoad: function(e) {
 			if (JSON.stringify(e) != '{}') {
 				this.itemKey = e.itemKey;
 			}
+			console.log("进入经济分析栏目详情页;" + JSON.stringify(e));
 			uni.showLoading({
 				title: "加载栏目列表中",
 			});
@@ -55,17 +60,20 @@
 		},
 		methods: {
 			initAnalysisList() {
+				let token = uni.getStorageSync('token');
 				uni.request({
 					url: this.apiUrl + "getAnalysisList",
 					method: 'POST',
-					data: {},
+					data: {
+						token: token
+					},
 					success: (res) => {
 						// 获取homepage的数据
 						let dataApi = res.data;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
-						console.log(dataApi.data);
+						console.log(JSON.stringify(dataApi));
 						this.categoryList = dataApi.data.list;
 						// 数据存入缓存
 						uni.setStorageSync('analysis_list', this.categoryList);
@@ -83,11 +91,13 @@
 						this.source = this.categoryList[this.categoryActive].listName;
 						this.subCategoryList = this.categoryList[this.categoryActive].subList;
 						uni.hideLoading();
+						uni.setStorageSync('analysis_list_scroll_index', this.categoryActive);
 					}
 				});
 				this.height = uni.getSystemInfoSync().windowHeight;
 			},
 			showStorage() {
+				console.log("show storage list");
 				let analysisList = uni.getStorageSync('analysis_list');
 				if (analysisList) {
 					this.categoryList = analysisList;
@@ -98,7 +108,9 @@
 				}
 			},
 			scroll(e) {
+				console.log(JSON.stringify(e));
 				this.scrollHeight = e.detail.scrollHeight;
+				uni.setStorageSync('analysis_list_scroll_top', e.detail.scrollTop);
 			},
 			categoryClickMain(categroy, index) {
 				this.categoryActive = index;
@@ -106,7 +118,21 @@
 				// 右侧栏数据根据左侧栏变更做出变化
 				this.subCategoryList = categroy.subList;
 				this.scrollTop = -this.scrollHeight * index;
+				uni.setStorageSync('analysis_list_scroll_index', this.categoryActive);
+			},
+			setScroll() {
+				try {
+					let analysisListScrollIndex = uni.getStorageSync('analysis_list_scroll_index');
+					let analysisListScrollTop = uni.getStorageSync('analysis_list_scroll_top');
+					this.categoryActive = analysisListScrollIndex;
+					this.subCategoryList = this.categoryList[this.categoryActive].subList;
+					this.scrollTop = analysisListScrollTop;
+				} catch (e) {
+					console.log("发生异常;" + JSON.stringify(e));
+				}
+
 			}
+
 		},
 	}
 </script>

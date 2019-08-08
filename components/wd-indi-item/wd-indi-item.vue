@@ -88,6 +88,7 @@
 			// 跳转到指标详情页
 			openDetail(indexId, indexName, isFavorite, source) {
 				console.log(source);
+				
 				uni.navigateTo({
 					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName + '&isFavorite=' + isFavorite +
 						'&source=' + source
@@ -99,11 +100,13 @@
 					if (checkApi.setCollect("analysis", this.indexId, this.indexName, this.source)) {
 						this.isFavorite = true;
 						this.updateAnaylsisListStorage(this.indexId, this.isFavorite);
+						this.updateAnaylsisDetailStorage(this.indexId, this.isFavorite);
 					}
 				} else {
 					if (checkApi.delCollect("analysis", this.indexId, this.indexName, this.source)) {
 						this.isFavorite = false;
 						this.updateAnaylsisListStorage(this.indexId, this.isFavorite);
+						this.updateAnaylsisDetailStorage(this.indexId, this.isFavorite);
 					}
 				}
 			},
@@ -119,6 +122,14 @@
 						}
 					}
 					uni.setStorageSync('analysis_list', analysisList);
+				}
+			},
+			updateAnaylsisDetailStorage(indexId, isFavorite) {
+				let analysis_detail_key = 'analysis_detail' + indexId;
+				let analysis_detail = uni.getStorageSync(analysis_detail_key);
+				if (analysis_detail) {
+					analysis_detail.data.baseInfo.isFavorite = isFavorite;
+					uni.setStorageSync(analysis_detail_key, analysis_detail);
 				}
 			}
 		}

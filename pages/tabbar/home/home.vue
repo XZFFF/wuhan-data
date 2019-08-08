@@ -157,6 +157,8 @@
 			},
 			openAnalysisList(index) {
 				// var analysisId = e.currentTarget.dataset.analysisid;
+				uni.setStorageSync('analysis_list_scroll_top', 0);
+				uni.setStorageSync('analysis_list_scroll_index', index);
 				uni.navigateTo({
 					url: '../../analysis/list/list?itemKey=' + index
 				});

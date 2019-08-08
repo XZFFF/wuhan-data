@@ -343,14 +343,14 @@
 				title: ''
 			};
 		},
-		onBackPress() {
-			//监听back键，关闭弹出菜单
-			if (nvImageMenu.isVisible()) {
-				nvImageMenu.hide()
-				nvMask.hide()
-				return true
-			}
-		},
+		// onBackPress() {
+		// 	//监听back键，关闭弹出菜单
+		// 	if (nvImageMenu.isVisible()) {
+		// 		nvImageMenu.hide()
+		// 		nvMask.hide()
+		// 		return true
+		// 	}
+		// },
 		onNavigationBarButtonTap(e) {
 			switch (e.type) {
 				case "share": //点击分享按钮
@@ -364,13 +364,17 @@
 					if (this.isFavorite == false || this.isFavorite == "false") {
 						if (checkApi.setCollect(this.type, this.indexId, this.indexName, this.source)) {
 							this.isFavorite = true;
+							this.updateAnaylsisListStorage(this.indexId, this.isFavorite);
 							favColor = "#f9da74";
 						}
-					} else {
+					} else if (this.isFavorite == true || this.isFavorite == "true") {
 						if (checkApi.delCollect(this.type, this.indexId, this.indexName, this.source)) {
 							this.isFavorite = false;
+							this.updateAnaylsisListStorage(this.indexId, this.isFavorite);
 							favColor = "#ffffff";
 						}
+					} else {
+						console.log("收藏状态异常"+this.isFavorite);
 					}
 					// 更新导航栏收藏按钮颜色
 					let pages = getCurrentPages();
@@ -394,6 +398,22 @@
 					});
 			}
 		},
+		methods: {
+			updateAnaylsisListStorage(indexId, isFavorite) {
+				let analysisList = uni.getStorageSync('analysis_list');
+				if (analysisList) {
+					for (let i = 0; i < analysisList.length; i++) {
+						let subList = analysisList[i].subList;
+						for (let j = 0; j < subList.length; j++) {
+							if (subList[j].indexId == indexId) {
+								analysisList[i].subList[j].isFavorite = isFavorite;
+							}
+						}
+					}
+					uni.setStorageSync('analysis_list', analysisList);
+				}
+			}
+		}
 	}
 </script>
 
