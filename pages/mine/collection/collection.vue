@@ -20,6 +20,7 @@
 						</view>
 					</view>
 				</view>
+				<view v-if="menu_list1.length == 0" class="no-data">您还没有收藏任何经济分析</view>
 			</swiper-item>
 			<swiper-item>
 				<view class="uni-list">
@@ -32,6 +33,7 @@
 						</view>
 					</view>
 				</view>
+				<view v-if="menu_list2.length == 0" class="no-data">您还没有收藏任何指标数据</view>
 			</swiper-item>
 		</swiper>
 	</view>
@@ -203,10 +205,20 @@
 	.list-text {
 		margin-left: 50upx;
 		margin-top: 15upx;
+		max-width: 500upx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.tag-view {
 		margin: 20upx 40upx;
 		display: inline-block;
+	}
+	
+	.no-data {
+		text-align: center;
+		color: #999;
+		margin: 100upx;
 	}
 </style>
