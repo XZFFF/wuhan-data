@@ -30,7 +30,7 @@
 	}, {
 		"id": 4,
 		"title": "问题反馈",
-		"url": "help_feedback",
+		"url": "feedback",
 		"img": "../../../static/icon/mine/feedback.png"
 	}],
 	"bottomData": [{

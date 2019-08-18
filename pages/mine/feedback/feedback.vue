@@ -34,7 +34,7 @@
             <text>QQ/邮箱</text>
         </view>
         <view class="feedback-body">
-            <input class="feedback-input" v-model="sendDate.contact" placeholder="填写您的联系方式以便我们后续联系您" />
+            <input class="feedback-input" v-model="sendDate.contact" placeholder="填写您的联系方式以便我们后续联系您" :value="contact" />
         </view>
         <button type="default" class="feedback-submit" @tap="send">提交</button>
     </view>
@@ -51,9 +51,21 @@
                     text: "",
                     contact: "",
 					token: ""
-                }
+                },
+				contact:""
             }
         },
+		onShow() {
+			try {
+				let user = uni.getStorageSync('user');
+				if (user) {
+					let userJson = JSON.parse(user);
+					this.contact = userJson.tel;
+				}
+			} catch (e) {
+				console.log(e.message);
+			}
+		},
         methods: {
             close(e){
                 this.imageList.splice(e,1);
@@ -101,13 +113,19 @@
 								let dataApi = res.data;
 								checkApi.isApi(dataApi);
 								uni.showToast({
-								    title: "反馈成功"
+								    title: "谢谢你的反馈，我们会及时处理",
+									duration:1000
 								});
+								setTimeout(function() {
+									uni.switchTab({
+										url: '../../tabbar/mine/mine',
+									})
+								}, 1000);
 								this.imageList = [];
 								this.sendDate = {
 								    text: "",
 								    contact: ""
-								}
+								};
 							}
 							catch(e){
 								console.log(e.message);
@@ -143,13 +161,19 @@
 								let dataApi = res.data;
 								checkApi.isApi(dataApi);
 								uni.showToast({
-								    title: "反馈成功"
+								    title: "谢谢你的反馈，我们会及时处理",
+									duration:1000
 								});
+								setTimeout(function() {
+									uni.switchTab({
+										url: '../../tabbar/mine/mine',
+									})
+								}, 1000);
 								this.imageList = [];
 								this.sendDate = {
 								    text: "",
 								    contact: ""
-								}
+								};
 							}
 							catch(e){
 								console.log(e.message);
