@@ -154,9 +154,6 @@
 				if (search_detail) {
 					try {
 						dataApi = search_detail;
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
-						_self.isFavorite = dataApi.data.baseInfo.isFavorite;
 						_self.source = dataApi.data.baseInfo.source;
 						_self.timeCondition = dataApi.data.timeCondition;
 						_self.indexDetail = dataApi.data.classInfo;
