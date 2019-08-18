@@ -8,9 +8,9 @@
 	import checkApi from '@/common/checkApi.js'
 	// #ifdef APP-PLUS
 	// 如下为分享内容定义，可根据业务需求自行定义
-	var strShareUrl = "https://uniapp.dcloud.io"
-	var strShareTitle = "跨端神器uni-app，开发一次，App、小程序、H5全覆盖"
-	var strShareSummary = "iOS、Android、H5、微信/支付宝/百度小程序，一套代码全覆盖"
+	var strShareUrl = "http://fgw.hubei.gov.cn/"
+	var strShareTitle = "数说湖北"
+	var strShareSummary = "湖北省发展和改革委员会宏观经济移动应用"
 	var strShareImageUrl = "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png"
 
 	//以下为计算菜单的nview绘制布局，为固定算法，使用者无关关心
@@ -133,81 +133,6 @@
 				top: top1 + iconWidth + icontextSpace,
 				left: left2 - 2.5,
 				width: iconWidth + 5,
-				height: textHeight
-			}
-		},
-		{
-			tag: 'img',
-			id: 'imgweibo',
-			src: '/static/sharemenu/weibo.png',
-			position: {
-				top: top1,
-				left: left3,
-				width: iconWidth,
-				height: iconWidth
-			}
-		},
-		{
-			tag: 'font',
-			id: 'fontweibo',
-			text: '微博',
-			textStyles: {
-				size: textHeight
-			},
-			position: {
-				top: top1 + iconWidth + icontextSpace,
-				left: left3,
-				width: iconWidth,
-				height: textHeight
-			}
-		},
-		{
-			tag: 'img',
-			id: 'imgqq',
-			src: '/static/sharemenu/qq.png',
-			position: {
-				top: top1,
-				left: left4,
-				width: iconWidth,
-				height: iconWidth
-			}
-		},
-		{
-			tag: 'font',
-			id: 'fontqq',
-			text: 'QQ',
-			textStyles: {
-				size: textHeight
-			},
-			position: {
-				top: top1 + iconWidth + icontextSpace,
-				left: left4,
-				width: iconWidth,
-				height: textHeight
-			}
-		},
-		{
-			tag: 'img',
-			id: 'imgcopyurl',
-			src: '/static/sharemenu/copyurl.png',
-			position: {
-				top: top2,
-				left: left1,
-				width: iconWidth,
-				height: iconWidth
-			}
-		},
-		{
-			tag: 'font',
-			id: 'fontcopyurl',
-			text: '复制',
-			textStyles: {
-				size: textHeight
-			},
-			position: {
-				top: top2 + iconWidth + icontextSpace,
-				left: left1,
-				width: iconWidth,
 				height: textHeight
 			}
 		},
@@ -374,7 +299,7 @@
 							favColor = "#ffffff";
 						}
 					} else {
-						console.log("收藏状态异常"+this.isFavorite);
+						console.log("收藏状态异常" + this.isFavorite);
 					}
 					// 更新导航栏收藏按钮颜色
 					let pages = getCurrentPages();
