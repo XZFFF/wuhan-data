@@ -49,17 +49,10 @@
 			uni.showLoading({
 				title: "加载中",
 			});
+			console.log("topicId" + this.indexId);
 			this.showStorage();
 			this.initTopicDetail();
 			_self.initNav();
-		},
-		onUnload() {
-			// 退出界面时重新初始化数据
-			this.indexId = "1";
-			this.indexName = "专题详情页";
-			this.indexDetail = [];
-			this.totalHeight = 1000;
-			this.classTotalHeight = 400;
 		},
 		methods: {
 			// 初始化数据，请求数据进行页面渲染
@@ -67,7 +60,7 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					// url: 'http://192.168.124.20:8089/wuhan_data1/topic' + this.indexId,
+					// url: 'http://192.168.124.14:8089/wuhan_data1/topic' + this.indexId,
 					url: this.apiUrl + 'topic' + _self.indexId,
 					method: 'POST',
 					data: {},
@@ -108,9 +101,6 @@
 						dataApi = topic_detail;
 						// 检查json数据
 						checkApi.isApi(dataApi);
-						// 设置各部分数据
-						_self.indexId = dataApi.data.baseInfo.indexId;
-						_self.indexName = dataApi.data.baseInfo.indexName;
 						_self.indexDetail = dataApi.data.classInfo;
 						// 计算classHeight及总Height
 						this.setHeight();
