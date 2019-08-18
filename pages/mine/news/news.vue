@@ -9,6 +9,7 @@
 			</wd-message-card>
 			<view style="margin-top: 20px;"></view>
 		</view>
+		<view v-if="message.length == 0" class="no-data">您还没有任何消息</view>
 	</view>
 </template>
 
@@ -48,28 +49,34 @@
 		computed: {
 			messageList: function() {
 				let messageList = this.message;
-				for (let i = 0; i < messageList.length; i++) {
-					messageList[i].tranTime = this.tranTime(messageList[i].dateTime);
-					let iconPath = '../../../static/icon/message/';
-					switch (messageList[i].type) {
-						case "pdf":
-							messageList[i].icon = iconPath + 'file.png';
-							break;
-						case "excel":
-							messageList[i].icon = iconPath + 'file.png';
-							break;
-						case "link":
-							messageList[i].icon = iconPath + 'link.png';
-							break;
-						case "message":
-							messageList[i].icon = iconPath + 'message.png';
-							break;
-						default:
-							messageList[i].icon = iconPath + 'message.png';
-							break;
+				// console.log(messageList.length);
+				try {
+					for (let i = 0; i < messageList.length; i++) {
+						messageList[i].tranTime = this.tranTime(messageList[i].dateTime);
+						let iconPath = '../../../static/icon/message/';
+						switch (messageList[i].type) {
+							case "pdf":
+								messageList[i].icon = iconPath + 'file.png';
+								break;
+							case "excel":
+								messageList[i].icon = iconPath + 'file.png';
+								break;
+							case "link":
+								messageList[i].icon = iconPath + 'link.png';
+								break;
+							case "message":
+								messageList[i].icon = iconPath + 'message.png';
+								break;
+							default:
+								messageList[i].icon = iconPath + 'message.png';
+								break;
+						}
 					}
+					return messageList;
+				} catch (e) {
+					console.log(JSON.stringify(e));
 				}
-				return messageList;
+
 			}
 		},
 		methods: {
@@ -97,8 +104,8 @@
 					},
 					success: (res) => {
 						try {
-							//let dataApi = res.data;
-							let dataApi = getNewsApiJson;
+							let dataApi = res.data;
+							//let dataApi = getNewsApiJson;
 							checkApi.isApi(dataApi);
 							this.message = dataApi.data.message;
 							uni.setStorageSync('my_news', this.message);
@@ -144,8 +151,8 @@
 					return;
 				}
 			},
-			downloader(){}
-			
+			downloader() {}
+
 			/*
 			downloader: function(path) {
 				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
@@ -198,5 +205,11 @@
 	view {
 		font-size: 28upx;
 		line-height: inherit
+	}
+
+	.no-data {
+		text-align: center;
+		color: #999;
+		margin: 100upx;
 	}
 </style>

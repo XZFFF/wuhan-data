@@ -120,10 +120,7 @@
 							// 设置各部分数据
 							this.trendList = res.data.data.trend;
 							// this.trendList = searchApi.data.trend;
-							uni.setStorage({
-								key: 'search_trend',
-								data: this.trendList,
-							});
+							uni.setStorage('search_trend', this.trendList);
 						} catch (e) {
 							console.log(e.message);
 						}
@@ -179,7 +176,8 @@
 				util.setHistory(item.name);
 				console.log(JSON.stringify(item));
 				uni.navigateTo({
-					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + "&source=" + item.source
+					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + '&isFavorite=false' +
+						"&source=" + item.source
 				})
 			},
 			/**
@@ -199,7 +197,8 @@
 					// 跳转到对应的界面,这里先做的是返回上一个界面
 					console.log("source" + item.source);
 					uni.navigateTo({
-						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + "&source=" + item.source
+						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + '&isFavorite=false' +
+							"&source=" + item.source
 					})
 				}
 			},
