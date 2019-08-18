@@ -66,6 +66,7 @@
 			console.log(this.apiUrl);
 			this.showStorage();
 			this.initHomePage();
+			this.initAnalysisList();
 		},
 		onPullDownRefresh: function() {
 			this.removeHomeStorage();
@@ -105,6 +106,22 @@
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
+					}
+				});
+			},
+			initAnalysisList() {
+				// 预加载经济分析列表
+				let token = uni.getStorageSync('token');
+				uni.request({
+					url: this.apiUrl + "getAnalysisList",
+					method: 'POST',
+					data: {
+						token: token
+					},
+					success: (res) => {
+						let dataApi = res.data;
+						checkApi.isApi(dataApi);
+						uni.setStorageSync('analysis_list', dataApi.data.list);
 					}
 				});
 			},
