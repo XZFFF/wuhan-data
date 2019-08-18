@@ -85,9 +85,9 @@
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						let timestamp2 = Date.parse(new Date());
-						uni.showToast({
-							title: "请求时间:" + (timestamp2 - timestamp)
-						});
+						// uni.showToast({
+						// 	title: "请求时间:" + (timestamp2 - timestamp)
+						// });
 						dataApi = res.data;
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
