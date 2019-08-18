@@ -5,18 +5,18 @@
 				let versionStorage = uni.getStorageSync('version');
 				let versionApp = plus.runtime.version;
 				if (versionStorage != versionApp) {
-					uni.showToast({
-						title: '检测到版本更新，正在初始化数据',
-						icon: 'none',
-						duration: 2000
-					});
+					// uni.showToast({
+					// 	title: '检测到版本更新，正在初始化数据',
+					// 	icon: 'none',
+					// 	duration: 2000
+					// });
 					// 版本不一致，可能是版本更新
 					// 更新了版本需要清除原有所有缓存
 					uni.clearStorageSync();
 					uni.setStorageSync('version', versionApp);
 					// 初始化请求一些数据
-					this.callback1(1);
-					this.callback2(1);
+					// this.callback1(1);
+					// this.callback2(1);
 				}
 			} catch (e) {
 				console.log(JSON.stringify(e));
@@ -113,7 +113,7 @@
 						console.log(JSON.stringify(err));
 					},
 					complete: res => {
-						if (analysisId < 200) {
+						if (analysisId < 10) {
 							this.sleep(1000);
 							this.callback2(analysisId + 1)
 						}

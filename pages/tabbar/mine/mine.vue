@@ -536,7 +536,7 @@
 	}
 
 	.menu {
-		/* margin-top: 50upx; */
+		margin-top: 50upx;
 	}
 
 	.uni-list-cell {
