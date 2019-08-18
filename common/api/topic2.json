@@ -1,0 +1,616 @@
+{
+	"data": {
+		"baseInfo": {
+			"indexId": 2,
+			"indexName": "宏观经济"
+		},
+		"classInfo": [{
+			"classHeight": "375",
+			"classTitle": "湖北省宏观预警指数变化趋势",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["综合景气评分指数"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["58.57", "44.29", "62.86", "55.71", "52.14", "57.14", "60.71", "57.14", "53.57", "60.71"],
+					"name": "综合景气评分指数",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08", "2019-09",
+						"2019-10"
+					],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "1"
+		}, {
+			"cardText": "<li>2018年GDP达到<span style=\"color: #3A82CC\">39366.55</span>亿元，同比增长<span style=\"color: #3A82CC\">7.8</span>%，增速与上年持平</li>",
+			"classTitle": "宏观经济分析",
+			"classType": "card",
+			"id": "2"
+		}, {
+			"classHeight": "410",
+			"classTitle": "地区生产总值运行趋势",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["地区生产总值-湖北省", "地区生产总值-全国"],
+					"bottom": "330",
+					"selected": {
+						"地区生产总值-湖北省": true,
+						"地区生产总值-全国": true
+					},
+					"height": "70"
+				},
+				"series": [{
+					"data": ["13.8", "11.3", "10.1", "9.7", "8.9", "8.1", "7.8"],
+					"name": "地区生产总值-湖北省",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}, {
+					"data": ["9.2", "7.8", "7.7", "7.4", "6.9", "6.7", "6.9"],
+					"name": "地区生产总值-全国",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2011", "2012", "2013", "2014", "2015", "2016", "2017"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "3"
+		}, {
+			"cardText": "<li>从经济运行综合效益看，2018年税收收入占地方一般公共预算收入比重达到<span style=\"color: #3A82CC\">74.49</span>%，同比提高<span style=\"color: #3A82CC\">5.3</span>个百分点</li><li>一般公共预算收入占GDP比重为<span style=\"color: #3A82CC\">8.4</span>%，同比下降<span style=\"color: #3A82CC\">0.49</span>个百分点</li>",
+			"classTitle": "经济发展质量分析",
+			"classType": "card",
+			"id": "4"
+		}, {
+			"classHeight": "375",
+			"classTitle": "税收收入占地方一般公共预算收入比重变化",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["税收收入占地方一般公共预算收入比重"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["72.57", "72.65", "73.28", "72.33", "69.43", "68.44", "69.19"],
+					"name": "税收收入占地方一般公共预算收入比重",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2011", "2012", "2013", "2014", "2015", "2016", "2017"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "5"
+		}, {
+			"cardText": "<li>从土地集约利用水平看，一季度全省单位GDP建设用地面积为<span style=\"color: #3A82CC\">405.28</span>平方米/万元，较上年同期降低<span style=\"color: #3A82CC\">45.59</span>平方米/万元</li><li>从消费动力看,2018年,全省社会消费品零售总额达到<span style=\"color: #3A82CC\">19290.06</span>亿元，同比增长<span style=\"color: #3A82CC\">10.9</span>%</li><li>从外需动力看,2018年,出口达到<span style=\"color: #3A82CC\">340.78</span>亿美元，同比增长<span style=\"color: #3A82CC\">11.7</span>%</li>",
+			"classTitle": "经济发展质量分析",
+			"classType": "card",
+			"id": "6"
+		}, {
+			"classHeight": "445",
+			"classTitle": "湖北省三大需求增速走势变动",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["固定资产投资（不含农户）完成额", "社会消费品零售总额", "出口总额"],
+					"bottom": "330",
+					"selected": {
+						"出口总额": false,
+						"固定资产投资（不含农户）完成额": true,
+						"社会消费品零售总额": true
+					},
+					"height": "105"
+				},
+				"series": [{
+					"data": ["19.74", "27.59", "25.75", "20.47", "16.76", "1.07", "8.03"],
+					"name": "固定资产投资（不含农户）完成额",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}, {
+					"data": ["19.23", "15.77", "13.98", "12.81", "12.48", "11.75", "11.15"],
+					"name": "社会消费品零售总额",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line"
+				}, {
+					"data": ["35.26", "-0.69", "17.73", "16.67", "9.64", "-10.75", "16.98"],
+					"name": "出口总额",
+					"itemStyle": {},
+					"z": 5,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2011", "2012", "2013", "2014", "2015", "2016", "2017"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "7"
+		}, {
+			"cardText": "<li>从三产结构看，二季度服务业增加值占地区生产总值比重为<span style=\"color: #3A82CC\">51.25</span>%，较上年同期提高<span style=\"color: #3A82CC\">1.53</span>百分点</li><li>从消费贡献看，2017年消费对GDP贡献率达到<span style=\"color: #3A82CC\">57.4</span>%，同比提高<span style=\"color: #3A82CC\">5.9</span>个百分点</li>",
+			"classTitle": "需求对经济的拉动作用分析",
+			"classType": "card",
+			"id": "8"
+		}, {
+			"classHeight": "410",
+			"classTitle": "湖北省三大需求增速走势变动",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["投资贡献率", "消费贡献率"],
+					"bottom": "330",
+					"selected": {
+						"投资贡献率": true,
+						"消费贡献率": true
+					},
+					"height": "70"
+				},
+				"series": [{
+					"data": ["73.2", "83", "61.1", "74.7", "74.6", "61.6", "40.2"],
+					"name": "投资贡献率",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}, {
+					"data": ["43.6", "45.7", "34.8", "39.7", "47.4", "42.2", "51.5"],
+					"name": "消费贡献率",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2010", "2011", "2012", "2013", "2014", "2015", "2016"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "9"
+		}, {
+			"cardText": "<li>从工业拉动效果看，2017年，全省第二产业增加值达到<span style=\"color: #3A82CC\">15441.75</span>亿元，同比增长<span style=\"color: #3A82CC\">7.10</span>%，拉动GDP提高<span style=\"color: #3A82CC\">3.3</span>个百分点</li><li>从服务业拉动效果看，2017年，全省第二产业增加值达到<span style=\"color: #3A82CC\">16507.38</span>亿元，同比增长<span style=\"color: #3A82CC\">9.50</span>%，拉动GDP提高<span style=\"color: #3A82CC\">4.1</span>个百分点</li>",
+			"classTitle": "需求对经济的拉动作用分析",
+			"classType": "card",
+			"id": "10"
+		}, {
+			"classHeight": "410",
+			"classTitle": "湖北省三大产业对GDP的拉动",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["第二产业拉动百分点", "第三产业拉动百分点"],
+					"bottom": "330",
+					"selected": {
+						"第二产业拉动百分点": true,
+						"第三产业拉动百分点": true
+					},
+					"height": "70"
+				},
+				"series": [{
+					"data": ["9.8", "8.7", "6.7", "5.6", "5.1", "4.2", "3.6"],
+					"name": "第二产业拉动百分点",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}, {
+					"data": ["4.5", "4.5", "4", "4", "4.1", "4.2", "4.1"],
+					"name": "第三产业拉动百分点",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2010", "2011", "2012", "2013", "2014", "2015", "2016"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "11"
+		}, {
+			"cardText": "<li>从居民部门看,2018年，全省城乡居民人均可支配收入达到<span style=\"color: #3A82CC\">26541.13</span>元，同比增长<span style=\"color: #3A82CC\">8.19</span>%</li>",
+			"classTitle": "经济效益分析1",
+			"classType": "card",
+			"id": "12"
+		}, {
+			"classHeight": "410",
+			"classTitle": "湖北省居民部门经济效益",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["居民人均可支配收入-累计值", "居民人均可支配收入-增速"],
+					"bottom": "330",
+					"height": "70"
+				},
+				"series": [{
+					"data": ["12845.82", "14800.24", "16519.84", "18644.74", "20489.41", "22404.93", "24531.71"],
+					"name": "居民人均可支配收入-累计值",
+					"itemStyle": {},
+					"type": "bar",
+					"yAxisIndex": "0"
+				}, {
+					"data": ["17.70", "15.21", "11.62", "12.86", "9.89", "9.35", "9.49"],
+					"name": "居民人均可支配收入-增速",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line",
+					"yAxisIndex": "1"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2011", "2012", "2013", "2014", "2015", "2016", "2017"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}, {
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "13"
+		}, {
+			"cardText": "<li>从企业部门看,2018年，规模以上工业企业利润总额达到<span style=\"color: #3A82CC\">2755.</span>亿元，同比增长<span style=\"color: #3A82CC\">19</span>%</li>",
+			"classTitle": "经济效益分析2",
+			"classType": "card",
+			"id": "14"
+		}, {
+			"classHeight": "410",
+			"classTitle": "湖北省企业部门经济效益",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["规模以上工业企业利润-累计值", "规模以上工业企业利润-增速"],
+					"bottom": "330",
+					"height": "70"
+				},
+				"series": [{
+					"data": ["1209.01", "1497.", "1602.01", "2080.01", "2174.01", "2233.", "2470.01"],
+					"name": "规模以上工业企业利润-累计值",
+					"itemStyle": {},
+					"type": "bar",
+					"yAxisIndex": "0"
+				}, {
+					"data": ["74.5", "29.3", "10.6", "26.4", "5.9", "2.1", "10"],
+					"name": "规模以上工业企业利润-增速",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line",
+					"yAxisIndex": "1"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2010", "2011", "2012", "2013", "2014", "2015", "2017"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}, {
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "15"
+		}, {
+			"cardText": "<li>从政府部门看,2018年，全省地方一般公共预算收入为<span style=\"color: #3A82CC\">3307.03</span>亿元，同比增长<span style=\"color: #3A82CC\">8.5</span>%</li>",
+			"classTitle": "经济效益分析3",
+			"classType": "card",
+			"id": "16"
+		}, {
+			"classHeight": "410",
+			"classTitle": "湖北省政府部门经济效益",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["地方一般公共预算收入-累计值", "地方一般公共预算收入-增速"],
+					"bottom": "330",
+					"height": "70"
+				},
+				"series": [{
+					"data": ["1470.5", "1823.05", "2190", "2566.9", "3005.39", "3102.02", "3248.44"],
+					"name": "地方一般公共预算收入-累计值",
+					"itemStyle": {},
+					"type": "bar",
+					"yAxisIndex": "0"
+				}, {
+					"data": ["45.4", "19.4", "20.1", "17.1", "17.1", "7.3", "8.4"],
+					"name": "地方一般公共预算收入-增速",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line",
+					"yAxisIndex": "1"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2011", "2012", "2013", "2014", "2015", "2016", "2017"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}, {
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "17"
+		}]
+	},
+	"errCode": "0",
+	"errMsg": "success"
+}

@@ -80,13 +80,15 @@
 				// 通过请求接口获取轮播图
 				uni.request({
 					// url: 'http://192.168.124.20:8089/wuhan_data1/initHome',
-					url: this.apiUrl + 'initHome',
+					// url: this.apiUrl + 'initHome',
+					url: 'https://www.baidu.com',
 					method: 'GET',
 					data: {},
 					success: res => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						// 获取homepage的数据
-						dataApi = res.data;
+						// dataApi = res.data;
+						dataApi = homeApiJson;
 					},
 					fail: (e) => {
 						//取出缓存数据并绑定到data

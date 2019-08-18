@@ -1,0 +1,347 @@
+{
+	"data": {
+		"baseInfo": {
+			"indexId": 3,
+			"indexName": "产业经济"
+		},
+		"classInfo": [{
+			"classHeight": "375",
+			"classTitle": "湖北省工业预警指数变化趋势",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["工业综合景气评分"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["36", "36", "25", "36", "39", "36", "34", "38", "38"],
+					"name": "工业综合景气评分",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2018-12", "2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "1"
+		}, {
+			"cardText": "<li>2019年6月湖北省规模以上工业增加值同比增长<span style=\"color: #3A82CC\">8.9</span>%,增速同比减少<span style=\"color: #3A82CC\">0.2</span>个百分点。从重点领域看，汽车制造业增加值同比增长<span style=\"color: #3A82CC\">8.9</span>%；通信设备、计算机及其他电子设备制造业增加值同比增长<span style=\"color: #3A82CC\">5.78</span>%；装备制造产业增加值同比增长<span style=\"color: #3A82CC\">9.5</span>%，增速较上月分别放缓<span style=\"color: #3A82CC\">-8.9</span>、放缓<span style=\"color: #3A82CC\">18.4</span>、放缓<span style=\"color: #3A82CC\">0.1</span>个百分点</li>",
+			"classTitle": "产业规模分析",
+			"classType": "card",
+			"id": "2"
+		}, {
+			"classHeight": "375",
+			"classTitle": "湖北省产业规模变化趋势",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["规模以上工业增加值"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["7.6", "7.8", "7.8", "7.4", "7.1", "7.1", "10", "9.9", "9.8"],
+					"name": "规模以上工业增加值",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2018-07", "2018-08", "2018-09", "2018-10", "2018-11", "2018-12", "2019-02", "2019-03", "2019-04"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "3"
+		}, {
+			"cardText": "<li>从工业经济效益变化看，2019年4月湖北省规模以上工业主营业务收入达到<span style=\"color: #3A82CC\">13551.8</span>亿元，同比增长<span style=\"color: #3A82CC\">8</span>%；利润率达到<span style=\"color: #3A82CC\">6.03</span>%，同比上升<span style=\"color: #3A82CC\">-0.36</span>个百分点</li><li>从服务经济效益变化看，2019年5月湖北省限额以上服务业营业务收入达到<span style=\"color: #3A82CC\">2554.39</span>亿元，同比增长<span style=\"color: #3A82CC\">17</span>%；利润率达到<span style=\"color: #3A82CC\">8.59</span>%，同比下降<span style=\"color: #3A82CC\">0</span>个百分点</li>",
+			"classTitle": "重点产业效益分析",
+			"classType": "card",
+			"id": "4"
+		}, {
+			"classHeight": "515",
+			"classTitle": "重点产业经济效益",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["规模以上工业主营业务收入", "规模以上工业主营业务收入-累计增速", "规模以上服务业企业营业收入", "规模以上服务业企业营业收入-累计增速", "规模以上工业企业利润率",
+						"规模以上服务业企业利润率"
+					],
+					"bottom": "330",
+					"type": "scroll",
+					"selected": {
+						"规模以上服务业企业利润率": false,
+						"规模以上工业企业利润率": false,
+						"规模以上服务业企业营业收入-累计增速": false,
+						"规模以上服务业企业营业收入": true,
+						"规模以上工业主营业务收入": true,
+						"规模以上工业主营业务收入-累计增速": true
+					},
+					"height": "175"
+				},
+				"series": [{
+					"data": ["36015.34", "39244.29", "42358.06", "6239.55", "10009.02"],
+					"name": "规模以上工业主营业务收入",
+					"itemStyle": {},
+					"type": "bar",
+					"yAxisIndex": "0"
+				}, {
+					"data": ["6.7", "8.3", "8.2", "5.4", "8.4"],
+					"name": "规模以上工业主营业务收入-累计增速",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line",
+					"yAxisIndex": "1"
+				}, {
+					"data": ["3944.88", "4489.94", "5092.47", "969.42", "1532.96"],
+					"name": "规模以上服务业企业营业收入",
+					"itemStyle": {},
+					"type": "bar",
+					"yAxisIndex": "0"
+				}, {
+					"data": ["15.3", "15.09", "15.8", "21.7", "20.5"],
+					"name": "规模以上服务业企业营业收入-累计增速",
+					"itemStyle": {},
+					"z": 6,
+					"type": "line",
+					"yAxisIndex": "1"
+				}, {
+					"data": ["6.20", "6.32", "6.51", "5.52", "5.74"],
+					"name": "规模以上工业企业利润率",
+					"itemStyle": {},
+					"z": 7,
+					"type": "line",
+					"yAxisIndex": "1"
+				}, {
+					"data": ["10.11", "9.45", "9.68", "8.46", "8.43"],
+					"name": "规模以上服务业企业利润率",
+					"itemStyle": {},
+					"z": 8,
+					"type": "line",
+					"yAxisIndex": "1"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2018-10", "2018-11", "2018-12", "2019-02", "2019-03"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}, {
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "5"
+		}, {
+			"cardText": "<li>从信息环境看2017年全省互联网宽带接入用户<span style=\"color: #3A82CC\">1242.01</span>万户，同比提高<span style=\"color: #3A82CC\">9.8</span>%。</li>",
+			"classTitle": "产业环境分析（信息）",
+			"classType": "card",
+			"id": "6"
+		}, {
+			"classHeight": "375",
+			"classTitle": "互联网宽带接入用户数",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["互联网宽带接入用户数"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["580.1", "707.91", "813.3", "869.7", "1014.", "1131.01"],
+					"name": "互联网宽带接入用户数",
+					"itemStyle": {},
+					"type": "bar"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2011", "2012", "2013", "2014", "2015", "2016"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "7"
+		}, {
+			"cardText": "<li>从资金环境看2019年5月全省人民币贷款余额达到<span style=\"color: #3A82CC\">49606.01</span>亿元，同比提高<span style=\"color: #3A82CC\">0.9</span>%</li>",
+			"classTitle": "产业环境分析（资金）",
+			"classType": "card",
+			"id": "8"
+		}, {
+			"classHeight": "375",
+			"classTitle": "金融机构本外币贷款余额",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["金融机构本外币贷款余额"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["45477.34", "45805.66", "47427.32", "47811.9", "48711.76", "49142.08"],
+					"name": "金融机构本外币贷款余额",
+					"itemStyle": {},
+					"type": "bar"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2018-11", "2018-12", "2019-01", "2019-02", "2019-03", "2019-04"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "9"
+		}]
+	},
+	"errCode": "0",
+	"errMsg": "success"
+}

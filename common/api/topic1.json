@@ -1,0 +1,390 @@
+{
+	"data": {
+		"baseInfo": {
+			"indexId": 1,
+			"indexName": "高质量发展"
+		},
+		"classInfo": [{
+			"classHeight": "375",
+			"classTitle": "湖北省高质量发展指数变化趋势",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["高质量发展指数"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["105.07 ", "107.24 ", "108.50 ", "103.75 ", "106.40 ", "106.02 ", "103.69 ", "106.99 "],
+					"name": "高质量发展指数",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2017-Q1", "2017-Q2", "2017-Q3", "2017-Q4", "2018-Q1", "2018-Q2", "2018-Q3", "2018-Q4"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "1"
+		}, {
+			"cardText": "<li>1从财政收入看，二季度全省税收收入占地方一般公共预算收入比重达到<span style=\"color: #3A82CC\">76.5</span>%，较上年同期提高<span style=\"color: #3A82CC\">1.11</span>个百分点</li><li>从金融对实体经济支持程度看，二季度全省金融机构存贷比达到<span style=\"color: #3A82CC\">81.63</span>%，较上年同期提高<span style=\"color: #3A82CC\">4.78</span>个百分点</li><li>从企业生产效益看，一季度全省规模以上工业企业利润率达到<span style=\"color: #3A82CC\">5.74</span>%，较上年同期下降<span style=\"color: #3A82CC\">0.3</span>个百分点</li><li>从人民生活水平看，一季度全省全体居民人均可支配收入达到<span style=\"color: #3A82CC\">7965</span>元，较上年同期提高<span style=\"color: #3A82CC\">661</span>元</li>",
+			"classTitle": "发展质效分析",
+			"classType": "card",
+			"id": "2"
+		}, {
+			"classHeight": "480",
+			"classTitle": "湖北省规模以上工业企业利润率变化趋势",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["税收收入占地方一般公共预算收入比重", "金融机构存贷比", "规模以上工业企业利润率", "居民人均可支配收入"],
+					"bottom": "330",
+					"selected": {
+						"规模以上工业企业利润率": true,
+						"金融机构存贷比": true,
+						"居民人均可支配收入": false,
+						"税收收入占地方一般公共预算收入比重": true
+					},
+					"height": "140"
+				},
+				"series": [{
+					"data": ["69.01", "69.99", "69.19", "76.65", "75.39", "75.15", "74.49"],
+					"name": "税收收入占地方一般公共预算收入比重",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line",
+					"yAxisIndex": "1"
+				}, {
+					"data": ["73.97", "75.39", "75.59", "74.51", "76.85", "78.45", "80.08"],
+					"name": "金融机构存贷比",
+					"itemStyle": {},
+					"z": 4,
+					"type": "line",
+					"yAxisIndex": "1"
+				}, {
+					"data": ["5.51", "5.50", "5.68", "6.04", "6.34", "6.13", "6.51"],
+					"name": "规模以上工业企业利润率",
+					"itemStyle": {},
+					"z": 5,
+					"type": "line",
+					"yAxisIndex": "1"
+				}, {
+					"data": ["11537.11", "17338.3", "23757.17", "7304", "12541", "18830", "25815"],
+					"name": "居民人均可支配收入",
+					"itemStyle": {},
+					"type": "bar",
+					"yAxisIndex": "0"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2017-Q2", "2017-Q3", "2017-Q4", "2018-Q1", "2018-Q2", "2018-Q3", "2018-Q4"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}, {
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "3"
+		}, {
+			"cardText": "<li>从产业风险防控看，三季度规模以上工业企业资产负债率为<span style=\"color: #3A82CC\">51.76</span>%，较上年同期下降<span style=\"color: #3A82CC\">1.25</span>个百分点</li>",
+			"classTitle": "风险防控",
+			"classType": "card",
+			"id": "4"
+		}, {
+			"classHeight": "375",
+			"classTitle": "湖北省企业资产负债率趋势",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["规模以上工业企业资产负债率"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["53.22", "53.73", "53.68", "53.01", "52.90", "52.30", "52.22"],
+					"name": "规模以上工业企业资产负债率",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2016-Q4", "2017-Q1", "2017-Q2", "2017-Q3", "2017-Q4", "2018-Q1", "2018-Q2"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "5"
+		}, {
+			"cardText": "<li>从土地集约利用水平看，一季度全省单位GDP建设用地面积为<span style=\"color: #3A82CC\">405.28</span>平方米/万元，较上年同期降低<span style=\"color: #3A82CC\">45.59</span>平方米/万元</li>",
+			"classTitle": "风险防控",
+			"classType": "card",
+			"id": "6"
+		}, {
+			"classHeight": "375",
+			"classTitle": "湖北省企业资产负债率趋势",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["单位GDP建设用地面积"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["232.63", "147.24", "101.09", "450.87", "205.59", "133.61", "93.79"],
+					"name": "单位GDP建设用地面积",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2017-Q2", "2017-Q3", "2017-Q4", "2018-Q1", "2018-Q2", "2018-Q3", "2018-Q4"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "7"
+		}, {
+			"cardText": "<li>从三产结构看，二季度服务业增加值占地区生产总值比重为<span style=\"color: #3A82CC\">51.25</span>%，较上年同期提高<span style=\"color: #3A82CC\">1.53</span>百分点</li>",
+			"classTitle": "产业转型升级分析",
+			"classType": "card",
+			"id": "8"
+		}, {
+			"classHeight": "375",
+			"classTitle": "湖北产业转型升级",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["服务业增加值占地区生产总值比重"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["46.39", "44.36", "45.19", "50.95", "49.72", "46.58", "47.58"],
+					"name": "服务业增加值占地区生产总值比重",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2017-Q2", "2017-Q3", "2017-Q4", "2018-Q1", "2018-Q2", "2018-Q3", "2018-Q4"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "9"
+		}, {
+			"cardText": "<li>二季度,高新技术产业增加值达到<span style=\"color: #3A82CC\">3938.49</span>亿元，同比增长<span style=\"color: #3A82CC\">38</span>个百分点</li>",
+			"classTitle": "新经济发展分析",
+			"classType": "card",
+			"id": "10"
+		}, {
+			"classHeight": "375",
+			"classTitle": "湖北省新经济发展变化情况",
+			"classType": "echarts",
+			"echartOption": {
+				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
+					"#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"
+				],
+				"grid": {
+					"bottom": "60",
+					"containLabel": true,
+					"height": "250"
+				},
+				"legend": {
+					"orient": "vertical",
+					"data": ["高新技术产业增加值"],
+					"bottom": "330",
+					"height": "35"
+				},
+				"series": [{
+					"data": ["2660.4", "4230.26", "5841.29", "1234.1", "2846.51", "4399.64", "6542.9"],
+					"name": "高新技术产业增加值",
+					"itemStyle": {},
+					"z": 3,
+					"type": "line"
+				}],
+				"tooltip": {
+					"show": true,
+					"axisPointer": {
+						"label": {
+							"show": true
+						},
+						"type": "line",
+						"axis": "x"
+					},
+					"trigger": "axis",
+					"position": ["10%", "50%"],
+					"snap": true
+				},
+				"xAxis": [{
+					"axisLabel": {
+						"rotate": "50",
+						"interval": "0"
+					},
+					"data": ["2017-Q2", "2017-Q3", "2017-Q4", "2018-Q1", "2018-Q2", "2018-Q3", "2018-Q4"],
+					"name": "",
+					"type": "category"
+				}],
+				"yAxis": [{
+					"name": "",
+					"type": "value"
+				}]
+			},
+			"id": "11"
+		}]
+	},
+	"errCode": "0",
+	"errMsg": "success"
+}

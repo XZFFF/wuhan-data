@@ -20,7 +20,10 @@
 	import wdCardText from '@/components/wd-card-text/wd-card-text.vue';
 	import checkApi from '@/common/checkApi.js';
 	import topicDetailApiJson from "@/common/api/topicDetail.json";
-	import demoToic from "@/common/api/demoTopic.json";
+	import topic1 from "@/common/api/topic1.json";
+	import topic2 from "@/common/api/topic2.json";
+	import topic3 from "@/common/api/topic3.json";
+	import topic4 from "@/common/api/topic4.json";
 
 	var _self;
 	export default {
@@ -50,7 +53,7 @@
 				title: "加载中",
 			});
 			console.log("topicId" + this.indexId);
-			this.showStorage();
+			// this.showStorage();
 			this.initTopicDetail();
 			_self.initNav();
 		},
@@ -60,16 +63,33 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
+					url: 'https://www.baidu.com',
 					// url: 'http://192.168.124.14:8089/wuhan_data1/topic' + this.indexId,
-					url: this.apiUrl + 'topic' + _self.indexId,
+					// url: this.apiUrl + 'topic' + _self.indexId,
 					method: 'POST',
 					data: {},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
-						dataApi = res.data;
-						// dataApi = demoToic;
-						let topic_detail_key = 'topic_detail' + this.indexId;
-						uni.setStorageSync(topic_detail_key, dataApi);
+						// dataApi = res.data;
+						switch (this.indexId) {
+							case "1":
+								dataApi = topic1;
+								break;
+							case "2":
+								dataApi = topic2;
+								break;
+							case "3":
+								dataApi = topic3;
+								break;
+							case "4":
+								dataApi = topic4;
+								break;
+							default:
+								dataApi = topic1;
+								break;
+						}
+						// let topic_detail_key = 'topic_detail' + this.indexId;
+						// uni.setStorageSync(topic_detail_key, dataApi);
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));

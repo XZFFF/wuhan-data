@@ -49,15 +49,15 @@
 			},
 			{
 				"id": "4",
-				"background": "#EB8873",
-				"icon_name": "消费",
-				"icon_url": "../../../static/icon/analysis/an4.png"
-			},
-			{
-				"id": "5",
 				"background": "#C869A5",
 				"icon_name": "投资",
 				"icon_url": "../../../static/icon/analysis/an5.png"
+			},
+			{
+				"id": "5",
+				"background": "#EB8873",
+				"icon_name": "消费",
+				"icon_url": "../../../static/icon/analysis/an4.png"
 			},
 			{
 				"id": "6",
