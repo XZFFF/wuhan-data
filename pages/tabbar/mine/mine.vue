@@ -86,8 +86,10 @@
 		</view>
 		<!-- 底部 -->
 		<view class="bottom-text">
-			湖北省发展与改革委员会<br />
-			All rights reserved ©2019
+			<span style="display:inline-block; width:700upx;">
+				湖北省发展与改革委员会<br />
+				All rights reserved ©2019
+			</span>
 		</view>
 	</view>
 </template>
@@ -534,7 +536,7 @@
 	}
 
 	.menu {
-		margin-top: 50upx;
+		/* margin-top: 50upx; */
 	}
 
 	.uni-list-cell {
@@ -543,7 +545,8 @@
 	}
 
 	.bottom-text {
-		margin-top: 100upx;
+		position: absolute;
+		bottom: 20px;
 		font-size: 25upx;
 		text-align: center;
 		color: #CDCDCD;

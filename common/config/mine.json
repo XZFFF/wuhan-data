@@ -28,11 +28,6 @@
 		"url": "share_app",
 		"img": "../../../static/icon/mine/share.png"
 	}, {
-		"id": 3,
-		"title": "关于我们",
-		"url": "about_us",
-		"img": "../../../static/icon/mine/about.png"
-	}, {
 		"id": 4,
 		"title": "问题反馈",
 		"url": "help_feedback",
@@ -47,16 +42,6 @@
 			"text": "朋友圈",
 			"img": "../../../static/icon/mine/wechatmoments.png",
 			"name": "wx"
-		},
-		{
-			"text": "QQ",
-			"img": "../../../static/icon/mine/qq.png",
-			"name": "qq"
-		},
-		{
-			"text": "微博",
-			"img": "../../../static/icon/mine/weibo.png",
-			"name": "weibo"
 		},
 		{
 			"text": "复制",
