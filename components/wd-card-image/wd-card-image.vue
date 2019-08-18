@@ -33,12 +33,12 @@
 
 	.image-view {
 		height: 350upx;
-		border-radius:15px 15px 0px 0px;
+		border-radius:15px 15px 15px 15px;
 		overflow: hidden;
 	}
 	
 	.image {
 	    width: 670upx;
-		border-radius:15px 15px 0px 0px;
+		border-radius:15px 15px 15px 15px;
 	}
 </style>
