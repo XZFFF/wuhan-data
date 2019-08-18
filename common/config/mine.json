@@ -44,11 +44,6 @@
 			"name": "wx"
 		},
 		{
-			"text": "复制",
-			"img": "../../../static/icon/mine/copyurl.png",
-			"name": "copy"
-		},
-		{
 			"text": "更多",
 			"img": "../../../static/icon/mine/more.png",
 			"name": "more"

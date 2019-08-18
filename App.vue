@@ -63,20 +63,20 @@
 					method: 'POST',
 					data: {},
 					success: (res) => {
-						uni.showToast({
-							title: '专题' + topicId + '加载成功',
-							icon: 'none'
-						});
+						// uni.showToast({
+						// 	title: '专题' + topicId + '加载成功',
+						// 	icon: 'none'
+						// });
 						console.log(JSON.stringify(res.data));
 						let dataApi = res.data;
 						let topic_detail_key = 'topic_detail' + topicId;
 						uni.setStorageSync(topic_detail_key, dataApi);
 					},
 					fail: err => {
-						uni.showToast({
-							title: '专题' + topicId + '加载失败',
-							icon: 'none'
-						});
+						// uni.showToast({
+						// 	title: '专题' + topicId + '加载失败',
+						// 	icon: 'none'
+						// });
 						console.log(JSON.stringify(err));
 					},
 					complete: res => {
@@ -96,24 +96,24 @@
 						indexId: analysisId,
 					},
 					success: res => {
-						uni.showToast({
-							title: '栏目' + analysisId + '加载成功',
-							icon: 'none'
-						});
+						// uni.showToast({
+						// 	title: '栏目' + analysisId + '加载成功',
+						// 	icon: 'none'
+						// });
 						console.log(JSON.stringify(res.data));
 						let dataApi = res.data;
 						let analysis_detail_key = 'analysis_detail' + analysisId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
 					},
 					fail: err => {
-						uni.showToast({
-							title: '栏目' + analysisId + '加载失败',
-							icon: 'none'
-						});
+						// uni.showToast({
+						// 	title: '栏目' + analysisId + '加载失败',
+						// 	icon: 'none'
+						// });
 						console.log(JSON.stringify(err));
 					},
 					complete: res => {
-						if (analysisId < 10) {
+						if (analysisId < 200) {
 							this.sleep(1000);
 							this.callback2(analysisId + 1)
 						}
