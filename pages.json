@@ -146,13 +146,6 @@
 			}
 		},
 		{
-			"path": "pages/mine/news/news",
-			"style": {
-				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "消息"
-			}
-		},
-		{
 			"path": "pages/mine/help_feedback/help_feedback",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
@@ -194,6 +187,13 @@
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "更换手机"
+			}
+		},
+		{
+			"path": "pages/mine/news/news",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "消息"
 			}
 		},
 		{
