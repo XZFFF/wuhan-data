@@ -2,7 +2,7 @@
 	<view class="container" :style="{height:totalHeight + 'px'}">
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
-				<wd-card-text v-if="item.classType === 'card'" :title="item.classTitle" :cardText="item.cardText"></wd-card-text>
+				<wd-card v-if="item.classType === 'card'" :title="item.classTitle" :cardText="item.cardText"></wd-card>
 				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
 				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
 				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
@@ -17,7 +17,7 @@
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
-	import wdCardText from '@/components/wd-card-text/wd-card-text.vue';
+	import wdCard from '@/components/wd-card/wd-card.vue';
 	import checkApi from '@/common/checkApi.js';
 	import topicDetailApiJson from "@/common/api/topicDetail.json";
 	import topic1 from "@/common/api/topic1.json";
@@ -32,7 +32,7 @@
 			wdEcharts,
 			wdTable,
 			wdShare,
-			wdCardText
+			wdCard
 		},
 		data() {
 			return {

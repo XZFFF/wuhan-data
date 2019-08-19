@@ -11,14 +11,14 @@
 
 <script>
 	// 引入公共样式
-	import wdCardImage from '@/components/wd-card-image/wd-card-image.vue';
+	import wdTopicCard from '@/components/wd-topic-card/wd-topic-card.vue';
 	import {
 		isApi
 	} from '@/common/checkApi.js';
 	import topicListApiJson from '@/common/api/topicList.json';
 	export default {
 		components: {
-			wdCardImage
+			wdTopicCard
 		},
 		data() {
 			return {

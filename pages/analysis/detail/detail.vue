@@ -166,7 +166,6 @@
 				if (analysis_detail) {
 					try {
 						dataApi = analysis_detail;
-						this.indexName = dataApi.data.baseInfo.indexName;
 						this.isFavorite = dataApi.data.baseInfo.isFavorite;
 						this.source = dataApi.data.baseInfo.source;
 						this.timeCondition = dataApi.data.timeCondition;

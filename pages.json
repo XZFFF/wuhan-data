@@ -202,20 +202,6 @@
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "消息详情"
 			}
-		},
-		{
-			"path": "pages/analysis/detail/echarts",
-			"style": {
-				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "echart图例"
-			}
-		},
-		{
-			"path": "pages/analysis/detail/ucharts",
-			"style": {
-				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "uchart图例"
-			}
 		}
 	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色

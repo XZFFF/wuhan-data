@@ -33,7 +33,7 @@
 				<image class="topic-image-src" src="../../../static/home/title/topic_title.png"></image>
 			</view>
 			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail(item)">
-				<wd-card-image :image="item.image" :title="item.title"></wd-card-image>
+				<wd-topic-card :image="item.image" :title="item.title"></wd-topic-card>
 			</view>
 		</view>
 	</view>
@@ -42,14 +42,14 @@
 <script>
 	// 引入公共样式
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
-	import wdCardImage from '@/components/wd-card-image/wd-card-image.vue';
+	import wdTopicCard from '@/components/wd-topic-card/wd-topic-card.vue';
 	import checkApi from '@/common/checkApi.js';
 	import homeApiJson from '@/common/api/home.json';
 
 	export default {
 		components: {
 			uniIcon,
-			wdCardImage
+			wdTopicCard
 		},
 		data() {
 			return {
@@ -183,9 +183,9 @@
 				});
 			},
 			openTopicList(e) {
-				uni.navigateTo({
-					url: '../../topic/list/list'
-				});
+				// uni.navigateTo({
+				// 	url: '../../topic/list/list'
+				// });
 			},
 			openTopicDetail(item) {
 				uni.navigateTo({

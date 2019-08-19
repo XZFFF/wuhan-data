@@ -89,9 +89,9 @@ module.exports = {
 				if (item.classType == 'table') {
 					let tableParam = item.tableBody[0].length;
 					if (tableParam < 6) {
-						h = (tableParam + 1) * 60;
+						h = (tableParam + 1) * 70;
 					} else {
-						h = 450;
+						h = 490;
 					}
 				} else if (item.classType == 'echarts') {
 					if (typeof item.classHeight === 'string') {

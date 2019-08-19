@@ -29,7 +29,7 @@
 				</view>
 				<uni-list style="background-color: #FFFFFF;">
 					<view v-for="(item, index) in trendList" :key="index" @click="searchTrendTap(item)">
-						<wd-trend-list-item :trendId="item.id" :title="item.name" :trendArrow="item.arrow" :trendRate="item.rate"></wd-trend-list-item>
+						<wd-trend-list :trendId="item.id" :title="item.name" :trendArrow="item.arrow" :trendRate="item.rate"></wd-trend-list>
 					</view>
 				</uni-list>
 			</view>
@@ -54,7 +54,7 @@
 	import uniList from '@/components/uni-list/uni-list.vue';
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
 	import wdTag from '@/components/wd-tag/wd-tag.vue';
-	import wdTrendListItem from '@/components/wd-trend-list-item/wd-trend-list-item.vue';
+	import wdTrendList from '@/components/wd-trend-list/wd-trend-list.vue';
 	import checkApi from '@/common/checkApi.js';
 	import searchApiJson from '@/common/api/search.json';
 	import searchResultApiJson from '@/common/api/searchResult.json';
@@ -64,7 +64,7 @@
 			wdTag,
 			uniList,
 			uniListItem,
-			wdTrendListItem
+			wdTrendList
 		},
 		computed: {
 			// 搜索结果指标名称过长则截断
@@ -120,7 +120,7 @@
 							// 设置各部分数据
 							this.trendList = res.data.data.trend;
 							// this.trendList = searchApi.data.trend;
-							uni.setStorage('search_trend', this.trendList);
+							uni.setStorageSync('search_trend', this.trendList);
 						} catch (e) {
 							console.log(e.message);
 						}
