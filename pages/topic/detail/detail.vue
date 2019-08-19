@@ -63,9 +63,9 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					url: 'https://www.baidu.com',
+					// url: 'https://www.baidu.com',
 					// url: 'http://192.168.124.14:8089/wuhan_data1/topic' + this.indexId,
-					// url: this.apiUrl + 'topic' + _self.indexId,
+					url: this.apiUrl + 'topic' + _self.indexId,
 					method: 'POST',
 					data: {},
 					success: (res) => {

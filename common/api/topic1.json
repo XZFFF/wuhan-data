@@ -213,7 +213,7 @@
 			"id": "6"
 		}, {
 			"classHeight": "375",
-			"classTitle": "湖北省企业资产负债率趋势",
+			"classTitle": "湖北省单位GDP建设用地面积趋势",
 			"classType": "echarts",
 			"echartOption": {
 				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8",
