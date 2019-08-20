@@ -140,6 +140,7 @@
 		},
 		onLoad() {},
 		onShow: function() {
+			this.getUserStorage();
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
 			} else {
@@ -188,16 +189,27 @@
 							if (!this.user.head) {
 								this.user.head = '../../../static/icon/mine/default.jpg';
 							}
-							let userStr = JSON.stringify(this.user);
-							uni.setStorageSync('user', userStr);
+							uni.setStorageSync('user', this.user);
 						} catch (e) {
 							console.log(e.message);
+							this.getUserStorage();
 						}
 					},
 					fail: (e) => {
 						console.log(e.errMsg);
+						this.getUserStorage();
 					},
 				});
+			},
+			getUserStorage() {
+				try {
+					let user = uni.getStorageSync('user');
+					if (user) {
+						this.user = user;
+					}
+				} catch (e) {
+					console.log(e.message);
+				}
 			},
 			newsRead() {
 				uni.request({

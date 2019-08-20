@@ -8,7 +8,7 @@
 			</view>
 		</view>
 		<!-- 内容 -->
-		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" style="height: 2000upx;">
+		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" :style="swiperHeight">
 			<swiper-item>
 				<view class="uni-list">
 					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list1" :key="key" @click="goAnalysisDetail(item)">
@@ -43,13 +43,14 @@
 	import wdTag from '@/components/wd-tag/wd-tag.vue';
 	import checkApi from '@/common/checkApi.js';
 	import getCollectApiJson from "@/common/api/getCollect.json";
-
+	
 	export default {
 		components: {
 			wdTag,
 		},
 		data() {
 			return {
+				swiperHeight: "",
 				token: "",
 				scrollLeft: 0,
 				isClickChange: false,
@@ -64,6 +65,7 @@
 			}
 		},
 		onShow: function() {
+			this.getCollectStorage();
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
 			} else {
@@ -96,8 +98,14 @@
 							console.log(dataApi);
 							this.menu_list1 = dataApi.data.economyData;
 							this.menu_list2 = dataApi.data.indexData;
-							uni.setStorageSync('collect_economy', JSON.stringify(this.menu_list1));
-							uni.setStorageSync('collect_index', JSON.stringify(this.menu_list2));
+							this.menu_list1.sort(function(a,b) {
+								return Date.parse(b.createTime) - Date.parse(a.createTime);
+							});
+							this.menu_list1.sort(function(a,b) {
+								return Date.parse(b.createTime) - Date.parse(a.createTime);
+							});
+							uni.setStorageSync('collect_economy', this.menu_list1);
+							uni.setStorageSync('collect_index', this.menu_list2);
 						} catch (e) {
 							console.log(e.errMsg);
 							this.getCollectStorage();
@@ -108,6 +116,22 @@
 						this.getCollectStorage();
 					},
 				});
+			},
+			changeSwiperHeight() {
+				if(this.tabIndex === 0) {
+					var swiperHeight = this.menu_list1.length*81+10;
+					if(swiperHeight<1000) {
+						swiperHeight=1000;
+					}
+					this.swiperHeight = "height:"+swiperHeight+"upx;";
+				}
+				if(this.tabIndex === 1) {
+					var swiperHeight = this.menu_list2.length*81+10;
+					if(swiperHeight<1000) {
+						swiperHeight=1000;
+					}
+					this.swiperHeight = "height:"+swiperHeight+"upx;";
+				}
 			},
 			getCollectStorage() {
 				try {
@@ -169,6 +193,9 @@
 					this.tabIndex = index;
 				}
 			},
+		},
+		updated() {
+			this.changeSwiperHeight();
 		}
 	}
 </script>
@@ -195,10 +222,11 @@
 
 	.list-cell {
 		border-bottom: 2upx solid rgb(229, 229, 229);
+		height: 80upx;
 	}
 
 	.list-body {
-		height: 80upx;
+		
 		display: inline-flex;
 	}
 

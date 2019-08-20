@@ -75,6 +75,7 @@
 			}
 		},
 		onShow: function() {
+			this.getUserStorage();
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
 			} else {

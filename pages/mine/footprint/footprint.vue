@@ -8,7 +8,7 @@
 			</view>
 		</view>
 		<!-- 内容 -->
-		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" style="height: 2000upx;">
+		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" :style="swiperHeight">
 			<swiper-item>
 				<view class="uni-list">
 					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list1" :key="key" @click="goAnalysisDetail(item)">
@@ -43,13 +43,13 @@
 	import wdTag from '@/components/wd-tag/wd-tag.vue';
 	import checkApi from '@/common/checkApi.js';
 	import getCollectApiJson from "@/common/api/getCollect.json";
-
 	export default {
 		components: {
 			wdTag,
 		},
 		data() {
 			return {
+				swiperHeight: "",
 				token: "",
 				scrollLeft: 0,
 				isClickChange: false,
@@ -64,6 +64,7 @@
 			}
 		},
 		onShow: function() {
+			this.getFootprintStorage();
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
 			} else {
@@ -91,13 +92,26 @@
 					},
 					success: (res) => {
 						try {
-							//let dataApi = getCollectApiJson;
 							let dataApi = res.data;
 							checkApi.isApi(dataApi);
-							this.menu_list1 = dataApi.data.economyData;
-							this.menu_list2 = dataApi.data.indexData;
-							uni.setStorageSync('footprint_economy', JSON.stringify(this.menu_list1));
-							uni.setStorageSync('footprint_index', JSON.stringify(this.menu_list2));
+							var menu1 = dataApi.data.economyData;
+							var menu2 = dataApi.data.indexData;
+							menu1.sort(function(a,b) {
+								return Date.parse(b.createTime) - Date.parse(a.createTime);
+							});
+							menu2.sort(function(a,b) {
+								return Date.parse(b.createTime) - Date.parse(a.createTime);
+							});
+							if(menu1.length>50) {
+								menu1.splice(50,menu1.length-1);
+							}
+							if(menu2.length>50) {
+								menu2.splice(50,menu1.length-1);
+							}
+							this.menu_list1 = menu1;
+							this.menu_list2 = menu2;
+							uni.setStorageSync('footprint_economy', this.menu_list1);
+							uni.setStorageSync('footprint_index', this.menu_list2);
 						} catch (e) {
 							console.log(e.errMsg);
 							this.getFootprintStorage();
@@ -108,6 +122,22 @@
 						this.getFootprintStorage();
 					},
 				});
+			},
+			changeSwiperHeight() {
+				if(this.tabIndex === 0) {
+					var swiperHeight = this.menu_list1.length*81+10;
+					if(swiperHeight<1000) {
+						swiperHeight=1000;
+					}
+					this.swiperHeight = "height:"+swiperHeight+"upx;";
+				}
+				if(this.tabIndex === 1) {
+					var swiperHeight = this.menu_list2.length*81+10;
+					if(swiperHeight<1000) {
+						swiperHeight=1000;
+					}
+					this.swiperHeight = "height:"+swiperHeight+"upx;";
+				}
 			},
 			getFootprintStorage() {
 				try {
@@ -167,6 +197,9 @@
 					this.tabIndex = index;
 				}
 			},
+		},
+		updated() {
+			this.changeSwiperHeight();
 		}
 	}
 </script>
@@ -193,17 +226,17 @@
 
 	.list-cell {
 		border-bottom: 2upx solid rgb(229, 229, 229);
+		height: 80upx;
 	}
 
 	.list-body {
-		height: 80upx;
 		display: inline-flex;
 	}
 
 	.list-text {
 		margin-left: 50upx;
 		margin-top: 15upx;
-		max-width: 500upx;
+		max-width: 480upx;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
