@@ -30,6 +30,7 @@
 			}
 		},
 		onShow: function() {
+			this.getNewsStorage();
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
 			} else {
