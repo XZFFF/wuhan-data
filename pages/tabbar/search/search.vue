@@ -85,6 +85,7 @@
 		data() {
 			return {
 				source: '全部',
+				keyword: '',
 				isHistory: true,
 				historyList: [],
 				trendList: [],
@@ -93,9 +94,22 @@
 			};
 		},
 		onShow() {
-			this.isHistory = true;
-			this.initSearch();
+			// 判断是否有关键词，若无则置true，否则展示搜索结果列表页
+			// this.isHistory = true;
+			let text = this.keyword;
+			let self = this;
+			if (text != '') {
+				self.isHistory = false;
+				uni.hideTabBar({});
+				console.log("重置搜索状态：" + text + this.source);
+				self.getInputtips(text);
+			} else {
+				self.isHistory = true;
+				uni.showTabBar({});
+				this.initSearch();
+			}
 		},
+
 		methods: {
 			initSearch() {
 				checkApi.checkNetwork();
@@ -134,7 +148,9 @@
 			},
 			//关键字搜索
 			getInputtips(val) {
-				this.noResultText = "搜索中...";
+				uni.showLoading({
+					title: "正在搜索...",
+				});
 				checkApi.checkNetwork();
 				uni.request({
 					url: this.apiUrl + 'searchIndi',
@@ -154,9 +170,10 @@
 						this.resultList = dataObj;
 					},
 					fail: (e) => {},
-					complete: () => {}
+					complete: () => {
+						uni.hideLoading();
+					}
 				});
-				this.noResultText = "没有搜索到相关内容";
 			},
 			/**
 			 * 清理历史搜索数据
@@ -206,18 +223,30 @@
 				}
 			},
 		},
+		// 监听搜索栏点击事件
+		onNavigationBarSearchInputClicked(e) {
+			uni.showToast({
+				title: JSON.stringify(e)
+			});
+			console.log(JSON.stringify(e));
+		},
 		/**
 		 * 当 searchInput 输入时触发
 		 */
 		onNavigationBarSearchInputChanged(e) {
 			let text = e.text;
+			uni.hideLoading();
 			if (!text) {
+				this.keyword = '';
 				this.isHistory = true;
 				this.historyList = [];
 				this.historyList = uni.getStorageSync('search_history');
+				uni.showTabBar({});
 				return;
 			} else {
+				this.keyword = text;
 				this.isHistory = false;
+				uni.hideTabBar({});
 				this.getInputtips(text);
 			}
 		},
@@ -265,6 +294,11 @@
 						titleNView: titleObj
 					});
 					// #endif
+
+					// 如果已经有关键词，则直接搜索出结果(用户切换来源)
+					if (self.keyword != '') {
+						self.getInputtips(self.keyword);
+					}
 				},
 				fail: function(res) {
 					console.log(res.errMsg);
