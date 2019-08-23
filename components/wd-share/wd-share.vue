@@ -6,19 +6,20 @@
 
 <script>
 	import checkApi from '@/common/checkApi.js'
+	const open = uni.requireNativePlugin("Html5App-openFile");
 	// #ifdef APP-PLUS
 	// 如下为分享内容定义，可根据业务需求自行定义
-	var strShareUrl = "http://fgw.hubei.gov.cn/"
+	var strShareUrl = "hubeidata://pages/analysis/detail/detail??indexId=1&indexName=PMI(全国)&isFavorite=false"
 	var strShareTitle = "数说湖北"
 	var strShareSummary = "湖北省发展和改革委员会宏观经济移动应用"
-	var strShareImageUrl = "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png"
+	var strShareImageUrl = "" //https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png
 
 	//以下为计算菜单的nview绘制布局，为固定算法，使用者无关关心
 	var screenWidth = plus.screen.resolutionWidth
 	//以360px宽度屏幕为例，上下左右边距及2排按钮边距留25像素，图标宽度55像素，同行图标间的间距在360宽的屏幕是30px，但需要动态计算，以此原则计算4列图标分别的left位置
 	//图标下的按钮文字距离图标5像素，文字大小12像素
 	//底部取消按钮高度固定为44px
-	//TODO 未处理横屏和pad，这些情况6个图标应该一排即可
+	//TODO 未处理横屏和pad，这些情况6个图标应该一排即可 25+55+5+12+25(+55+5+12+25+)+44
 	var margin = 25,
 		iconWidth = 55,
 		icontextSpace = 5,
@@ -53,7 +54,7 @@
 	var nvImageMenu = new plus.nativeObj.View("nvImageMenu", { //创建底部图标菜单
 		bottom: '0px',
 		left: '0px',
-		height: '264px',
+		height: '166px',
 		width: '100%',
 		backgroundColor: 'rgb(255,255,255)'
 	});
@@ -141,10 +142,11 @@
 			id: 'imgmore',
 			src: '/static/sharemenu/more.png',
 			position: {
-				top: top2,
-				left: left2,
+				top: top1,
+				left: left3,
 				width: iconWidth,
 				height: iconWidth
+
 			}
 		},
 		{
@@ -155,10 +157,11 @@
 				size: textHeight
 			},
 			position: {
-				top: top2 + iconWidth + icontextSpace,
-				left: left2,
+				top: top1 + iconWidth + icontextSpace,
+				left: left3,
 				width: iconWidth,
 				height: textHeight
+
 			}
 		},
 		//如果想要增加更多按钮，请在这里继续添加，第二列还有2个空位
@@ -202,22 +205,6 @@
 						strScene = "WXSenceTimeline"
 						break;
 					case 2:
-						strProvider = "sinaweibo"
-						break;
-					case 3:
-						strProvider = "qq"
-						break;
-					case 4:
-						uni.setClipboardData({
-							data: strShareUrl,
-							complete() {
-								uni.showToast({
-									title: "已复制到剪贴板"
-								})
-							}
-						})
-						break;
-					case 5:
 						plus.share.sendWithSystem({
 							content: strShareUrl,
 						})
@@ -316,6 +303,46 @@
 					});
 					// #endif
 					break;
+				case "none":
+					// #ifdef APP-PLUS
+					if (e.text == '导出') {
+						let path = "";
+						switch (this.indexId) {
+							case "1":
+							case 1:
+								path =
+									"http://1.wuhandata.applinzi.com/%E6%96%87%E4%BB%B6/topic/1908/%E6%B9%96%E5%8C%97%E7%9C%81%E9%AB%98%E8%B4%A8%E9%87%8F%E5%8F%91%E5%B1%95%E7%9B%91%E6%B5%8B%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A2019%E5%B9%B48%E6%9C%88%20.pdf";
+								this.downloader(path);
+								break;
+							case "2":
+							case 2:
+								path =
+									"http://1.wuhandata.applinzi.com/%E6%96%87%E4%BB%B6/topic/1908/%E6%B9%96%E5%8C%97%E7%9C%81%E5%AE%8F%E8%A7%82%E7%BB%8F%E6%B5%8E%E7%9B%91%E6%B5%8B%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A2019%E5%B9%B48%E6%9C%88.pdf";
+								this.downloader(path);
+								break;
+							case "3":
+							case 3:
+								path =
+									"http://1.wuhandata.applinzi.com/%E6%96%87%E4%BB%B6/topic/1908/%E6%B9%96%E5%8C%97%E7%9C%81%E4%BA%A7%E4%B8%9A%E7%BB%8F%E6%B5%8E%E7%9B%91%E6%B5%8B%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A2019%E5%B9%B48%E6%9C%88.pdf";
+								this.downloader(path);
+								break;
+							case "4":
+							case 4:
+								path =
+									"http://1.wuhandata.applinzi.com/%E6%96%87%E4%BB%B6/topic/1908/%E6%B9%96%E5%8C%97%E7%9C%81%E5%9B%BA%E5%AE%9A%E8%B5%84%E4%BA%A7%E6%8A%95%E8%B5%84%E7%9B%91%E6%B5%8B%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A2019%E5%B9%B48%E6%9C%88.pdf";
+								this.downloader(path);
+								break;
+							default:
+								uni.showToast({
+									title: "专题" + this.indexId + "导出失败",
+									duration: 1000
+								});
+								break;
+						}
+
+					}
+					// #endif
+					break;
 				default:
 					uni.showToast({
 						title: e.type,
@@ -337,6 +364,41 @@
 					}
 					uni.setStorageSync('analysis_list', analysisList);
 				}
+			},
+			downloader: function(path) {
+				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
+				//判断文件是否存在
+				plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
+					//如果文件存在直接打开。
+					open.openFile({
+						filename: entry.fullPath
+					});
+				}, function(e) {
+					//如果文件不存在，则下载文件到本地
+					uni.showLoading({
+						title: "文件下载中..."
+					});
+					// 创建下载任务					
+					const dtask = plus.downloader.createDownload(path, {
+						filename: "_downloads/" + filename
+					}, function(d, status) {
+						uni.hideLoading();
+						if (status == 200) {
+							uni.showToast({
+								title: "下载完成"
+							});
+							let filepath = plus.io.convertLocalFileSystemURL(d.filename);
+							open.openFile({
+								filename: filepath
+							});
+						} else {
+							uni.showToas({
+								title: "下载失败"
+							});
+						}
+					});
+					dtask.start(); //开始下载
+				});
 			}
 		}
 	}

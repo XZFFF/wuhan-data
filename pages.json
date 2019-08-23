@@ -96,7 +96,18 @@
 			"path": "pages/topic/detail/detail",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
-				"navigationBarTitleText": "具体专题页"
+				"navigationBarTitleText": "具体专题页",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "none",
+							"text": "导出",
+							"float": "right",
+							"fontSize": "14px",
+							"width": "auto"
+						}]
+					}
+				}
 			}
 		},
 		{

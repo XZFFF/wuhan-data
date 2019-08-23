@@ -44,7 +44,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-else class="no-data">没有搜索到相关内容</view>
+			<view v-else class="no-data">{{noResultText}}</view>
 		</view>
 	</view>
 </template>
@@ -88,7 +88,8 @@
 				isHistory: true,
 				historyList: [],
 				trendList: [],
-				resultList: []
+				resultList: [],
+				noResultText: "没有搜索到相关内容",
 			};
 		},
 		onShow() {
@@ -133,6 +134,7 @@
 			},
 			//关键字搜索
 			getInputtips(val) {
+				this.noResultText = "搜索中...";
 				checkApi.checkNetwork();
 				uni.request({
 					url: this.apiUrl + 'searchIndi',
@@ -154,6 +156,7 @@
 					fail: (e) => {},
 					complete: () => {}
 				});
+				this.noResultText = "没有搜索到相关内容";
 			},
 			/**
 			 * 清理历史搜索数据

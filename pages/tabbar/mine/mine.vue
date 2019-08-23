@@ -208,13 +208,13 @@
 					},
 					success: (res) => {
 						try {
-							let dataApi = res.data;
-							checkApi.isApi(dataApi);
-							this.newsList = dataApi.data.message;
-							let myNews = uni.getStorageSync('my_news');
-							if (this.newsList.length != myNews.length) {
-								this.newsPoint = 1;
-							}
+							// let dataApi = res.data;
+							// checkApi.isApi(dataApi);
+							// this.newsList = dataApi.data.message;
+							// let myNews = uni.getStorageSync('my_news');
+							// if (this.newsList.length != myNews.length) {
+							// 	this.newsPoint = 1;
+							// }
 						} catch (e) {
 							console.log(e.errMsg);
 						}

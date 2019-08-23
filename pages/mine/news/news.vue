@@ -104,10 +104,11 @@
 					},
 					success: (res) => {
 						try {
-							let dataApi = res.data;
-							//let dataApi = getNewsApiJson;
+							// let dataApi = res.data;
+							let dataApi = getNewsApiJson;
 							checkApi.isApi(dataApi);
 							this.message = dataApi.data.message;
+							console.log(JSON.stringify(this.message));
 							uni.setStorageSync('my_news', this.message);
 						} catch (e) {
 							console.log(e.errMsg);

@@ -24,7 +24,7 @@
 	import topic2 from "@/common/api/topic2.json";
 	import topic3 from "@/common/api/topic3.json";
 	import topic4 from "@/common/api/topic4.json";
-
+	
 	var _self;
 	export default {
 		components: {
@@ -70,24 +70,24 @@
 					data: {},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
-						// dataApi = res.data;
-						switch (this.indexId) {
-							case "1":
-								dataApi = topic1;
-								break;
-							case "2":
-								dataApi = topic2;
-								break;
-							case "3":
-								dataApi = topic3;
-								break;
-							case "4":
-								dataApi = topic4;
-								break;
-							default:
-								dataApi = topic1;
-								break;
-						}
+						dataApi = res.data;
+						// switch (this.indexId) {
+						// 	case "1":
+						// 		dataApi = topic1;
+						// 		break;
+						// 	case "2":
+						// 		dataApi = topic2;
+						// 		break;
+						// 	case "3":
+						// 		dataApi = topic3;
+						// 		break;
+						// 	case "4":
+						// 		dataApi = topic4;
+						// 		break;
+						// 	default:
+						// 		dataApi = topic1;
+						// 		break;
+						// }
 						// let topic_detail_key = 'topic_detail' + this.indexId;
 						// uni.setStorageSync(topic_detail_key, dataApi);
 					},
@@ -99,7 +99,7 @@
 							// 检查json数据
 							checkApi.isApi(dataApi);
 							// 设置各部分数据
-							_self.indexId = dataApi.data.baseInfo.indexId;
+							// _self.indexId = dataApi.data.baseInfo.indexId;
 							_self.indexName = dataApi.data.baseInfo.indexName;
 							_self.indexDetail = dataApi.data.classInfo;
 							// 计算classHeight及总Height
