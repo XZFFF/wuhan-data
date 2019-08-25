@@ -51,7 +51,7 @@
 			}
 		},
 		onLoad() {
-			let winHeight = uni.getSystemInfoSync().windowHeight;
+			let winHeight = uni.getStorageSync('winHeight');
 			this.itemHeight = winHeight / 23;
 			this.winHeight = winHeight;
 		},
