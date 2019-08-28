@@ -95,7 +95,6 @@
 		},
 		onShow() {
 			// 判断是否有关键词，若无则置true，否则展示搜索结果列表页
-			// this.isHistory = true;
 			let text = this.keyword;
 			let self = this;
 			if (text != '') {

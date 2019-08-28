@@ -3,26 +3,18 @@
 	"errMsg": "success",
 	"data": {
 		"slideshow": [{
-				"id": "1",
-				"title": "全国经济进入新常态",
-				"image": "../../../static/home/slideshow/image1.png"
-			},
-			{
-				"id": "2",
-				"title": "大数据专题分析报告",
-				"image": "../../../static/home/slideshow/image2.png"
-			},
-			{
-				"id": "3",
-				"title": "新时代下的互联网经济形势",
-				"image": "../../../static/home/slideshow/image3.png"
-			},
-			{
-				"id": "4",
-				"title": "湖北省区域经济发展新格局",
-				"image": "../../../static/home/slideshow/image4.png"
-			}
-		],
+			"id": "2",
+			"title": "大数据专题分析报告",
+			"image": "../../../static/home/slideshow/image2.png"
+		}, {
+			"id": "3",
+			"title": "大数据专题分析报告",
+			"image": "../../../static/home/slideshow/image2.png"
+		}, {
+			"id": "4",
+			"title": "大数据专题分析报告",
+			"image": "../../../static/home/slideshow/image2.png"
+		}],
 		"analysis": [{
 				"id": "0",
 				"background": "#72ACF6",

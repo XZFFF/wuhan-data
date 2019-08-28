@@ -1,7 +1,7 @@
 <template>
 	<view class="index-item">
 		<!-- 指标起始竖条 -->
-		<view class="index-item-start-bar"></view>
+		<!-- <view class="index-item-start-bar"></view> -->
 		<view class="index-item-name" @tap="openDetail(indexId, indexName, isFavorite, source)">
 			<text>{{tranIndexName}}</text>
 		</view>
@@ -15,9 +15,9 @@
 			</view>
 		</view> -->
 		<view class="index-item-end-bar"></view>
-		<view class="index-item-fav" @tap="changeFav">
+		<!-- <view class="index-item-fav" @tap="changeFav">
 			<image class="" :src="'../../../static/icon/fav/'+favIcon"></image>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -139,11 +139,11 @@
 <style>
 	.index-item {
 		display: flex;
-		width: 90%;
-		height: 120upx;
-		margin: 40upx auto;
+		width: 100%;
+		height: 80upx;
+		/* margin: 40upx auto; */
 		background: #FFFFFF;
-		box-shadow: 2px 2px 1px #aaaaaa;
+		/* box-shadow: 2px 2px 1px #aaaaaa; */
 	}
 
 	.index-item-start-bar {

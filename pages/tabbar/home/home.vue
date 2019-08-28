@@ -1,23 +1,39 @@
 <template>
 	<view>
 		<!-- 轮播图 -->
-		<view>
-			<swiper style="width: 750upx; height: 350upx;" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
-			 :duration="duration" :circular="true">
-				<view v-for="(item,index) in slideshow" :key="index">
-					<swiper-item>
-						<image mode="widthFix" :src="item.image" class="slide-image"></image>
-					</swiper-item>
-				</view>
+		<view style="background-color: #FFFFFF; margin-bottom: 0upx;max-height: 280upx;">
+			<!-- 全屏宽轮播图 -->
+			<swiper class="screen-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
+			 :autoplay="true" interval="5000" duration="500">
+				<swiper-item v-for="(item,index) in slideshow" :key="index">
+					<image :src="item.image" style="max-height: 280upx;" mode="aspectFill"></image>
+				</swiper-item>
 			</swiper>
+			<!-- 卡片式轮播图 -->
+			<!-- <swiper class="card-swiper" style="height: 380upx;padding: 0upx 0upx;margin: 0upx 0upx;" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
+			 :autoplay="true" interval="5000" duration="500" @change="cardSwiper" indicator-color="#8799a3"
+			 indicator-active-color="#0081ff">
+				<swiper-item v-for="(item,index) in slideshow" :key="index" :class="cardCur==index?'cur':''">
+					<view class="swiper-item">
+						<image :src="item.image" mode="aspectFill"></image>
+					</view>
+				</swiper-item>
+			</swiper> -->
 		</view>
 		<!-- 搜索框 -->
-		<view class="search">
+		<view class="cu-bar bg-white search" style="margin-top: 0upx;background-color: #FFFFFF;">
+			<view class="search-form radius" style="border-radius: 50upx;" @click="openSearch">
+				<text class="cuIcon-search"></text>
+				<input focus="false" :adjust-position="false" type="text" placeholder="指标搜索" confirm-type="search"></input>
+			</view>
+		</view>
+		<!-- <view class="search">
 			<view class="input-view" @click="openSearch">
 				<uni-icon type="search" size="18" color="#8E8E93"></uni-icon>
 				<input disabled="true" confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
 			</view>
-		</view>
+		</view> -->
+
 		<!-- 经济分析 -->
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis" :key="index">
@@ -29,11 +45,17 @@
 		</view>
 		<!-- 专题 -->
 		<view class="topic">
-			<view class="topic-image" @click="openTopicList()">
-				<image class="topic-image-src" src="../../../static/home/title/topic_title.png"></image>
+			<view class="cu-bar bg-white" style="height: 80upx; width: 750upx;margin: 0upx;">
+				<view class="action">
+					<text class="cuIcon-titles text-blue" style="color: #3A82CC;"></text>
+					<text class="text-xl  text-blue" style="color: #3A82CC;">专题</text>
+				</view>
 			</view>
-			<view v-for="(item,index) in topic" :key="index" @click="openTopicDetail(item)">
-				<wd-topic-card :image="item.image" :title="item.title"></wd-topic-card>
+			<view class="flex flex-wrap justify-around" style="flex-direction: row;" v-for="(item,index) in topic" :key="index"
+			 @click="openTopicDetail(item)">
+				<image style="height: 175upx;width: 330upx;margin: 0upx 0upx 30upx 30upx;padding: 0;border-radius: 5px 5px 5px 5px;overflow: hidden;"
+				 :src="item.image"></image>
+				<!-- <wd-topic-card :image="item.image" :title="item.title"></wd-topic-card> -->
 			</view>
 		</view>
 	</view>
@@ -46,6 +68,7 @@
 	import checkApi from '@/common/checkApi.js';
 	import homeApiJson from '@/common/api/home.json';
 
+
 	export default {
 		components: {
 			uniIcon,
@@ -53,6 +76,8 @@
 		},
 		data() {
 			return {
+				cardCur: 0,
+				dotStyle: true,
 				indicatorDots: true, // 是否显示面板指示点
 				autoplay: true, // 是否自动切换
 				interval: 2000, // 自动切换时长
@@ -65,7 +90,12 @@
 		onShow: function() {
 			console.log(this.apiUrl);
 			this.showStorage();
-			this.initHomePage();
+			// this.initHomePage();
+			uni.hideLoading();
+			let dataApi = homeApiJson;
+			this.slideshow = dataApi.data.slideshow;
+			this.analysis = dataApi.data.analysis;
+			this.topic = dataApi.data.topic;
 		},
 		onPullDownRefresh: function() {
 			this.removeHomeStorage();
@@ -79,8 +109,8 @@
 				// 通过请求接口获取轮播图
 				uni.request({
 					// url: 'http://192.168.124.20:8089/wuhan_data1/initHome',
-					url: this.apiUrl + 'initHome',
-					// url: 'https://www.baidu.com',
+					// url: this.apiUrl + 'initHome',
+					url: 'https://www.baidu.com',
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -179,12 +209,22 @@
 				uni.switchTab({
 					url: "../search/search"
 				})
-			}
+			},
+			cardSwiper(e) {
+				this.cardCur = e.detail.current
+			},
 		}
 	}
 </script>
 
 <style>
+	@import "../../../colorui/animation.css";
+
+	image[class*="gif-"] {
+		border-radius: 6upx;
+		display: block;
+	}
+
 	.slide-image {
 		/* height: 350upx; */
 		width: 750upx;
@@ -219,7 +259,6 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		margin-top: 30upx;
 		padding: 5upx;
 		background-color: #FFFFFF;
 	}
@@ -230,8 +269,8 @@
 		align-items: center;
 		justify-content: center;
 		width: 20%;
-		padding-top: 20upx;
-		padding-bottom: 20upx;
+		padding-top: 15upx;
+		padding-bottom: 15upx;
 	}
 
 	.icon-single-background {
@@ -261,7 +300,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		margin-top: 30upx;
+		margin-top: 20upx;
 		padding: 5upx;
 		background-color: #FFFFFF;
 	}

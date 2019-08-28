@@ -3,8 +3,8 @@
 	"errMsg": "success",
 	"data": {
 		"list": [{
-				"id": "1",
-				"name": "综合",
+				"listId": "1",
+				"listName": "综合",
 				"subList": [{
 						"indexId": "1000",
 						"indexName": "全国PMI指数",
@@ -155,150 +155,48 @@
 				]
 			},
 			{
-				"id": "2",
-				"name": "工业",
-				"subList": [{
-						"indexId": "1011",
-						"indexName": "工业信贷量及增速",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "78",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "5.20",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					}, {
-						"indexId": "1012",
-						"indexName": "总货运量及增速",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "56",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "4.18",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					}, {
-						"indexId": "1003",
-						"indexName": "工业用电量及增速",
-						"desc": [{
-							"descName": "当期",
-							"descNum": "65",
-							"descUnit": "亿元"
-						}, {
-							"descName": "增速",
-							"descNum": "4.49",
-							"descUnit": "%"
-						}],
-						"isFavorite": false
-					},
-					{
-						"indexId": "1003",
-						"indexName": "PPI",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "34",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "6.91",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					}, {
-						"indexId": "1003",
-						"indexName": "工业企业利润及增速",
-						"desc": [{
-							"descName": "当期",
-							"descNum": "25",
-							"descUnit": "亿元"
-						}, {
-							"descName": "增速",
-							"descNum": "6.12",
-							"descUnit": "%"
-						}],
-						"isFavorite": false
-					}, {
-						"indexId": "1003",
-						"indexName": "工业产销率及增速",
-						"desc": [{
-							"descName": "当期",
-							"descNum": "11",
-							"descUnit": "亿元"
-						}, {
-							"descName": "增速",
-							"descNum": "3.96",
-							"descUnit": "%"
-						}],
-						"isFavorite": false
-					},
-					{
-						"indexId": "1003",
-						"indexName": "企业亏损额及亏损面",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "44",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "5.28",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					}
-				]
-			},
-			{
-				"id": "3",
-				"name": "农业",
+				"listId": "2",
+				"listName": "工业",
 				"subList": []
 			},
 			{
-				"id": "4",
-				"name": "服务业",
+				"listId": "3",
+				"listName": "农业",
 				"subList": []
 			},
 			{
-				"id": "5",
-				"name": "消费",
+				"listId": "4",
+				"listName": "服务业",
 				"subList": []
 			},
 			{
-				"id": "6",
-				"name": "投资",
+				"listId": "5",
+				"listName": "消费",
 				"subList": []
 			},
 			{
-				"id": "7",
-				"name": "对外开放",
+				"listId": "6",
+				"listName": "投资",
 				"subList": []
 			},
 			{
-				"id": "8",
-				"name": "新经济",
+				"listId": "7",
+				"listName": "对外开放",
 				"subList": []
 			},
 			{
-				"id": "9",
-				"name": "绿色发展",
+				"listId": "8",
+				"listName": "新经济",
 				"subList": []
 			},
 			{
-				"id": "10",
-				"name": "民生",
+				"listId": "9",
+				"listName": "绿色发展",
+				"subList": []
+			},
+			{
+				"listId": "10",
+				"listName": "民生",
 				"subList": []
 			}
 		]

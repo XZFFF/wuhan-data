@@ -4,18 +4,113 @@
 			<scroll-view class="nav-left" scroll-y :style="'height:'+height+'px'">
 				<view class="nav-left-item" @click="categoryClickMain(item,index)" :key="index" :class="index==categoryActive?'active':''"
 				 v-for="(item,index) in categoryList">
-					<view :class="index==categoryActive?'active-block':''" class="'orgin-block'"></view>
-					<view style="flex: 1; text-align: center;">
+					<!-- <view :class="index==categoryActive?'active-block':''" class="'orgin-block'"></view> -->
+					<view style="flex: 1; text-align: center;font-size: 28upx;">
 						{{item.listName}}
 					</view>
 				</view>
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
 			 scroll-with-animation>
-				<view v-for="(item,index) in subCategoryList" :key="index">
+				<!-- <view v-for="(item,index) in subCategoryList" :key="index">
 					<wd-indi-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"
 					 :source="source" :item="item"></wd-indi-item>
+				</view> -->
+				<!-- 折叠效果 -->
+				<view class="padding-top padding-lr">
+					<uni-collapse @change="changeCollapse">
+						<uni-collapse-item title="先行">
+							<view class="cu-list menu sm-border">
+								<view class="cu-item arrow" style="">
+									<view class="content">
+										<text class="text-grey" style="color: #212121;">全国PMI指数</text>
+									</view>
+								</view>
+								<view class="cu-item arrow">
+									<view class="content">
+										<text class="text-grey" style="color: #212121;">全社会用电量</text>
+									</view>
+								</view>
+								<view class="cu-item arrow">
+									<view class="content">
+										<text class="text-grey" style="color: #212121;">工业用电量</text>
+									</view>
+								</view>
+							</view>
+						</uni-collapse-item>
+					</uni-collapse>
 				</view>
+				<!-- 先行 -->
+				<view class="padding-top padding-lr">
+					<view class="cu-bar solid-bottom bg-white" style="min-height: 80upx;">
+						<view class="action" style="font-size: 28upx;min-height: 80upx;">
+							<text class="cuIcon-title text-blue" style="color:#3A82CC"></text>
+							<text style="font-size: 28upx;color:#3A82CC">先行</text>
+						</view>
+					</view>
+					<view class="cu-list menu sm-border">
+						<view class="cu-item arrow" style="">
+							<view class="content">
+								<text class="text-grey" style="color: #212121;">全国PMI指数</text>
+							</view>
+						</view>
+						<view class="cu-item arrow">
+							<view class="content">
+								<text class="text-grey" style="color: #212121;">全社会用电量</text>
+							</view>
+						</view>
+						<view class="cu-item arrow">
+							<view class="content">
+								<text class="text-grey" style="color: #212121;">工业用电量</text>
+							</view>
+						</view>
+					</view>
+				</view>
+
+				<!-- 同步 -->
+				<view class="padding-top padding-lr">
+					<view class="cu-bar solid-bottom bg-white" style="min-height: 80upx;">
+						<view class="action" style="font-size: 28upx;min-height: 80upx;">
+							<text class="cuIcon-title text-blue" style="color:#3A82CC"></text>
+							<text style="font-size: 28upx;color:#3A82CC">同步</text>
+						</view>
+					</view>
+					<view class="cu-list menu sm-border">
+						<view class="cu-item arrow" style="">
+							<view class="content">
+								<text class="text-grey" style="color: #212121;">项目新开工投资增幅</text>
+							</view>
+						</view>
+						<view class="cu-item arrow">
+							<view class="content">
+								<text class="text-grey" style="color: #212121;">金融机构贷款余额</text>
+							</view>
+						</view>
+					</view>
+				</view>
+
+				<!-- 结果 -->
+				<view class="padding-top padding-lr">
+					<view class="cu-bar solid-bottom bg-white" style="min-height: 80upx;">
+						<view class="action" style="font-size: 28upx;min-height: 80upx;">
+							<text class="cuIcon-title text-blue" style="color:#3A82CC"></text>
+							<text style="font-size: 28upx;color:#3A82CC">结果</text>
+						</view>
+					</view>
+					<view class="cu-list menu sm-border">
+						<view class="cu-item arrow" style="">
+							<view class="content">
+								<text class="text-grey" style="color: #212121;">各市GDP总量、增速</text>
+							</view>
+						</view>
+						<view class="cu-item arrow">
+							<view class="content">
+								<text class="text-grey" style="color: #212121;">GDP总体情况走势</text>
+							</view>
+						</view>
+					</view>
+				</view>
+
 			</scroll-view>
 		</view>
 	</view>
@@ -24,12 +119,16 @@
 <script>
 	// 引入公共样式
 	import wdIndiItem from '@/components/wd-indi-item/wd-indi-item.vue';
+	import uniCollapse from '@/components/uni-collapse/uni-collapse.vue';
+	import uniCollapseItem from '@/components/uni-collapse-item/uni-collapse-item.vue';
 	import checkApi from '@/common/checkApi.js';
 	import analysisListApiJson from '@/common/api/analysisList.json';
 
 	export default {
 		components: {
-			wdIndiItem
+			wdIndiItem,
+			uniCollapse,
+			uniCollapseItem
 		},
 		data() {
 			return {
@@ -44,19 +143,27 @@
 			};
 		},
 		onShow() {
-			this.showStorage();
-			this.setScroll();
+			// this.showStorage();
+			// this.setScroll();
 		},
 		onLoad: function(e) {
 			if (JSON.stringify(e) != '{}') {
 				this.itemKey = e.itemKey;
 			}
 			console.log("进入经济分析栏目详情页;" + JSON.stringify(e));
-			uni.showLoading({
-				title: "加载栏目列表中",
-			});
-			this.showStorage();
-			this.initAnalysisList();
+			// uni.showLoading({
+			// 	title: "加载栏目列表中",
+			// });
+			// this.showStorage();
+
+			let dataApi = analysisListApiJson;
+			checkApi.isApi(dataApi);
+			this.categoryList = dataApi.data.list;
+			this.categoryActive = 0;
+			this.source = this.categoryList[this.categoryActive].listName;
+			this.subCategoryList = this.categoryList[this.categoryActive].subList;
+			this.height = uni.getSystemInfoSync().windowHeight;
+			// this.initAnalysisList();
 		},
 		methods: {
 			initAnalysisList() {
@@ -130,7 +237,14 @@
 					console.log("发生异常;" + JSON.stringify(e));
 				}
 
-			}
+			},
+			changeCollapse(e) {
+				console.log(JSON.stringify(e));
+				// this.$refs.add.resize();
+				// this.$nextTick(() => {
+				// 	this.$refs.add.resize();
+				// });
+			},
 
 		},
 	}
@@ -147,14 +261,14 @@
 	}
 
 	.nav-left {
-		width: 25%;
-		background-color: #F6F7F7;
+		width: 20%;
+		background-color: #FFFFFF;
 	}
 
 	.nav-left-item {
-		height: 120upx;
+		height: 100upx;
 		/* border-right: solid 1px #E0E0E0; */
-		border-bottom: solid 1px #E0E0E0;
+		/* border-bottom: solid 1px #E0E0E0; */
 		font-size: 30upx;
 		display: flex;
 		align-items: center;
@@ -162,7 +276,7 @@
 
 	.active {
 		color: #1A82D2;
-		background-color: #FFFFFF;
+		background-color: #F6F7F7;
 	}
 
 	.orgin-block {
@@ -176,8 +290,8 @@
 	}
 
 	.nav-right {
-		width: 75%;
-		background-color: #FFFFFF;
+		width: 80%;
+		background-color: #F6F7F7;
 	}
 
 	/* 侧边分类右侧样式#F0AD4E */
