@@ -66,6 +66,8 @@
 			if (changeTel.flag) {
 				this.countryTel = changeTel.tel;
 			}
+			let winHeight = uni.getSystemInfoSync().windowHeight;
+			uni.setStorageSync('winHeight',winHeight);
 		},
 		// #ifdef APP-PLUS
 		onBackPress() {
