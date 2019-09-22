@@ -49,13 +49,14 @@
 						</view>
 					</view>
 					<view class="cu-list menu sm-border">
-						<view v-for="(item2,index2) in item.themeList" :key="index2" class="cu-item arrow" style="">
+						<view v-for="(item2,index2) in item.themeList" :key="index2" class="cu-item arrow" @click="openDetail(item2.indexId, item2.indexName)">
 							<view class="content">
 								<text class="text-grey" style="color: #212121;">{{item2.indexName}}</text>
 							</view>
 						</view>
 					</view>
 				</view>
+				<view class="padding-top padding-lr"></view>
 			</scroll-view>
 		</view>
 	</view>
@@ -88,40 +89,36 @@
 			};
 		},
 		onShow() {
-			// this.showStorage();
-			// this.setScroll();
+			this.showStorage();
+			this.setScroll();
 		},
 		onLoad: function(e) {
 			if (JSON.stringify(e) != '{}') {
 				this.itemKey = e.itemKey;
 			}
 			console.log("进入经济分析栏目详情页;" + JSON.stringify(e));
-			// uni.showLoading({
-			// 	title: "加载栏目列表中",
-			// });
-			// this.showStorage();
-			// this.initAnalysisList(this.itemKey);
+			uni.showLoading({
+				title: "加载栏目列表中",
+			});
+			this.showStorage();
+			this.initAnalysisList();
 
-			let dataApi = analysisListApiJson;
-			checkApi.isApi(dataApi);
-			this.typeList = dataApi.data.list;
-			this.typeActive = 0;
-			this.source = this.typeList[this.typeActive].typeName;
-			this.labelList = this.typeList[this.typeActive].labelList;
-			this.height = uni.getSystemInfoSync().windowHeight;
-
-			// 
-
+			// let dataApi = analysisListApiJson;
+			// checkApi.isApi(dataApi);
+			// this.typeList = dataApi.data.list;
+			// this.typeActive = 0;
+			// this.source = this.typeList[this.typeActive].typeName;
+			// this.labelList = this.typeList[this.typeActive].labelList;
+			// this.height = uni.getSystemInfoSync().windowHeight;
 		},
 		methods: {
-			initAnalysisList(typeId) {
+			initAnalysisList() {
 				let token = uni.getStorageSync('token');
 				uni.request({
 					url: this.apiUrl + "getAnalysisList",
 					method: 'POST',
 					data: {
 						token: token,
-						typeId: typeId
 					},
 					success: (res) => {
 						// 获取homepage的数据
@@ -143,8 +140,10 @@
 					},
 					complete: () => {
 						// 设置初始化的左右侧子栏数据(默认为第一个)
-						this.source = this.typeList[this.typeActive].listName;
-						this.labelList = this.typeList[this.typeActive].subList;
+						this.typeActive = this.itemKey;
+						console.log('typeActive' + this.typeActive);
+						this.source = this.typeList[this.typeActive].typeName;
+						this.labelList = this.typeList[this.typeActive].labelList;
 						uni.hideLoading();
 						this.setScroll();
 					}
@@ -158,7 +157,7 @@
 					this.typeList = analysisList;
 					this.typeActive = this.itemKey;
 					this.source = this.typeList[this.typeActive].typeName;
-					this.labelList = this.typeList[this.typeActive].subList;
+					this.labelList = this.typeList[this.typeActive].labelList;
 					uni.hideLoading();
 				}
 			},
@@ -171,7 +170,7 @@
 				this.typeActive = index;
 				this.source = this.typeList[this.typeActive].typeName;
 				// 右侧栏数据根据左侧栏变更做出变化
-				this.labelList = categroy.subList;
+				this.labelList = categroy.labelList;
 				this.scrollTop = -this.scrollHeight * index;
 				uni.setStorageSync('analysis_list_scroll_index', this.typeActive);
 			},
@@ -180,12 +179,20 @@
 					let analysisListScrollIndex = uni.getStorageSync('analysis_list_scroll_index');
 					let analysisListScrollTop = uni.getStorageSync('analysis_list_scroll_top');
 					this.typeActive = analysisListScrollIndex;
-					this.labelList = this.typeList[this.typeActive].subList;
+					this.labelList = this.typeList[this.typeActive].labelList;
 					this.scrollTop = analysisListScrollTop;
 				} catch (e) {
 					console.log("发生异常;" + JSON.stringify(e));
 				}
-
+			},
+			// 跳转到指标详情页
+			openDetail(indexId, indexName) {
+				let source = this.source;
+				console.log(source);
+				uni.navigateTo({
+					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName +
+						'&source=' + source
+				});
 			},
 			changeCollapse(e) {
 				console.log(JSON.stringify(e));

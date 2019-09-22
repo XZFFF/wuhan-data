@@ -1,6 +1,6 @@
 <template>
 	<view class="container" :style="{height:totalHeight + 'px'}">
-		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
+		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition" hasArea='0'></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
@@ -43,7 +43,7 @@
 				indexDetail: [],
 				relatedData: [],
 				totalHeight: 1000,
-				classTotalHeight: 400
+				classTotalHeight: 400,
 			};
 		},
 		onLoad: function(e) {
@@ -53,9 +53,7 @@
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
 				this.source = e.source;
-				this.isFavorite = e.isFavorite;
 			}
-			this.initNav();
 			console.log("onload 进入经济分析栏目详情页;" + JSON.stringify(e));
 			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.source);
 			// 初始化页面数据
@@ -65,6 +63,7 @@
 			this.showStorage(this.indexId);
 			console.log("0请求的indexId=" + this.indexId);
 			this.initAnalysisDetail(this.indexId);
+			this.initNav();
 		},
 		methods: {
 			// 初始化数据，请求数据进行页面渲染
@@ -100,10 +99,7 @@
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						try {
-							this.indexId = dataApi.data.baseInfo.indexId;
-							this.indexName = dataApi.data.baseInfo.indexName;
 							this.isFavorite = dataApi.data.baseInfo.isFavorite;
-							this.source = dataApi.data.baseInfo.source;
 							this.timeCondition = dataApi.data.timeCondition;
 							this.indexDetail = dataApi.data.classInfo;
 							this.relatedData = dataApi.data.relatedData;
