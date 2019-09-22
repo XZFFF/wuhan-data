@@ -133,6 +133,12 @@
 		line-height: calc(40upx - 2px);
 		font-size: 24upx
 	}
+	
+	.uni-tag--default {
+		color: #fff;
+		background-color: #9c26b0;
+		border: 1px solid #9c26b0
+	}
 
 	.uni-tag--primary {
 		color: #fff;
