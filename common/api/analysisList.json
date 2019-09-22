@@ -1,204 +1,87 @@
 {
-	"errCode": "0",
-	"errMsg": "success",
+	"errMsg": "成功获取数据",
 	"data": {
 		"list": [{
-				"listId": "1",
-				"listName": "综合",
-				"subList": [{
-						"indexId": "1000",
-						"indexName": "全国PMI指数",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "67",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "5.09",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": true
-					},
-					{
-						"indexId": "1001",
-						"indexName": "全社会用电量",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "110",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "7.12",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					},
-					{
-						"indexId": "1002",
-						"indexName": "工业用电量",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "79",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "4.58",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					},
-					{
-						"indexId": "1003",
-						"indexName": "铁路货运量",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "25",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "6.12",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					}, {
-						"indexId": "1003",
-						"indexName": "湖北PMI指数",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "11",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "3.96",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					}, {
-						"indexId": "1003",
-						"indexName": "各市GDP总量、增速",
-						"desc": [{
-							"descName": "当期",
-							"descNum": "24",
-							"descUnit": "亿元"
-						}, {
-							"descName": "增速",
-							"descNum": "2.77",
-							"descUnit": "%"
-						}],
-						"isFavorite": false
-					},
-					{
-						"indexId": "1003",
-						"indexName": "GDP总体情况走势",
-						"desc": [{
-								"descName": "当期",
-								"descNum": "18",
-								"descUnit": "亿元"
-							},
-							{
-								"descName": "增速",
-								"descNum": "4.27",
-								"descUnit": "%"
-							}
-						],
-						"isFavorite": false
-					}, {
-						"indexId": "1003",
-						"indexName": "进出口总额及增速",
-						"desc": [{
-							"descName": "当期",
-							"descNum": "21",
-							"descUnit": "亿元"
-						}, {
-							"descName": "增速",
-							"descNum": "3.68",
-							"descUnit": "%"
-						}],
-						"isFavorite": false
-					}, {
-						"indexId": "1003",
-						"indexName": "金融机构贷款余额",
-						"desc": [{
-							"descName": "当期",
-							"descNum": "65",
-							"descUnit": "亿元"
-						}, {
-							"descName": "增速",
-							"descNum": "4.49",
-							"descUnit": "%"
-						}],
-						"isFavorite": false
-					}, {
-						"indexId": "1003",
-						"indexName": "项目新开工投资增幅",
-						"desc": [{
-							"descName": "当期",
-							"descNum": "34",
-							"descUnit": "亿元"
-						}, {
-							"descName": "增速",
-							"descNum": "6.91",
-							"descUnit": "%"
-						}],
-						"isFavorite": false
-					}
-				]
-			},
-			{
-				"listId": "2",
-				"listName": "工业",
-				"subList": []
-			},
-			{
-				"listId": "3",
-				"listName": "农业",
-				"subList": []
-			},
-			{
-				"listId": "4",
-				"listName": "服务业",
-				"subList": []
-			},
-			{
-				"listId": "5",
-				"listName": "消费",
-				"subList": []
-			},
-			{
-				"listId": "6",
-				"listName": "投资",
-				"subList": []
-			},
-			{
-				"listId": "7",
-				"listName": "对外开放",
-				"subList": []
-			},
-			{
-				"listId": "8",
-				"listName": "新经济",
-				"subList": []
-			},
-			{
-				"listId": "9",
-				"listName": "绿色发展",
-				"subList": []
-			},
-			{
-				"listId": "10",
-				"listName": "民生",
-				"subList": []
-			}
-		]
-	}
+			"typeName": "综合",
+			"labelList": [{
+				"themeList": [{
+					"indexId": "13",
+					"indexName": "各市（州）GDP总量、增速"
+				}, {
+					"indexId": "11",
+					"indexName": "全国/主要省份（中部）比较"
+				}, {
+					"indexId": "14",
+					"indexName": "广义货币供应量"
+				}, {
+					"indexId": "15",
+					"indexName": "城镇新增就业人数"
+				}, {
+					"indexId": "16",
+					"indexName": "进出口总额及增速"
+				}, {
+					"indexId": "17",
+					"indexName": "财政收入"
+				}, {
+					"indexId": "18",
+					"indexName": "财政支出"
+				}, {
+					"indexId": "182",
+					"indexName": "价格指数总体情况及走势"
+				}, {
+					"indexId": "183",
+					"indexName": "CPI-PPI同比剪刀差"
+				}, {
+					"indexId": "184",
+					"indexName": "PPI-IPI同比剪刀差"
+				}, {
+					"indexId": "185",
+					"indexName": "（季度）GDP总量及增速总体情况及走势"
+				}, {
+					"indexId": "186",
+					"indexName": "（年度_生产法）GDP总量及增速总体情况及走势"
+				}, {
+					"indexId": "187",
+					"indexName": "（年度_支出法）GDP总量及增速总体情况及走势"
+				}, {
+					"indexId": "188",
+					"indexName": "（季度）三次产业增加值增速、占比"
+				}, {
+					"indexId": "189",
+					"indexName": "（年度）三次产业增加值增速、占比"
+				}]
+			}, {
+				"themeList": [{
+					"indexId": "1",
+					"indexName": "PMI指数（全国）"
+				}, {
+					"indexId": "2",
+					"indexName": "全社会用电量"
+				}, {
+					"indexId": "3",
+					"indexName": "工业用电量"
+				}, {
+					"indexId": "4",
+					"indexName": "铁路货运量"
+				}, {
+					"indexId": "5",
+					"indexName": "金融机构新增贷款余额"
+				}, {
+					"indexId": "6",
+					"indexName": "货运量增幅"
+				}, {
+					"indexId": "7",
+					"indexName": "湖北PMI"
+				}, {
+					"indexId": "8",
+					"indexName": "项目新开工个数增幅"
+				}, {
+					"indexId": "9",
+					"indexName": "项目新开工投资增幅"
+				}]
+			}],
+			"typeId": 1
+		}]
+	},
+	"errCode": "0"
 }

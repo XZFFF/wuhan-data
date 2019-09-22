@@ -2,36 +2,36 @@
 	<view class="container">
 		<view class="page-body">
 			<scroll-view class="nav-left" scroll-y :style="'height:'+height+'px'">
-				<view class="nav-left-item" @click="categoryClickMain(item,index)" :key="index" :class="index==categoryActive?'active':''"
-				 v-for="(item,index) in categoryList">
-					<!-- <view :class="index==categoryActive?'active-block':''" class="'orgin-block'"></view> -->
+				<view class="nav-left-item" @click="categoryClickMain(item,index)" :key="index" :class="index==typeActive?'active':''"
+				 v-for="(item,index) in typeList">
+					<!-- <view :class="index==typeActive?'active-block':''" class="'orgin-block'"></view> -->
 					<view style="flex: 1; text-align: center;font-size: 28upx;">
-						{{item.listName}}
+						{{item.typeName}}
 					</view>
 				</view>
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
 			 scroll-with-animation>
-				<!-- <view v-for="(item,index) in subCategoryList" :key="index">
+				<!-- <view v-for="(item,index) in labelList" :key="index">
 					<wd-indi-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"
 					 :source="source" :item="item"></wd-indi-item>
 				</view> -->
 				<!-- 折叠效果 -->
-				<view class="padding-top padding-lr">
+				<!-- <view class="padding-top padding-lr">
 					<uni-collapse @change="changeCollapse">
 						<uni-collapse-item title="先行">
 							<view class="cu-list menu sm-border">
-								<view class="cu-item arrow" style="">
+								<view class="cu-item">
 									<view class="content">
 										<text class="text-grey" style="color: #212121;">全国PMI指数</text>
 									</view>
 								</view>
-								<view class="cu-item arrow">
+								<view class="cu-item">
 									<view class="content">
 										<text class="text-grey" style="color: #212121;">全社会用电量</text>
 									</view>
 								</view>
-								<view class="cu-item arrow">
+								<view class="cu-item">
 									<view class="content">
 										<text class="text-grey" style="color: #212121;">工业用电量</text>
 									</view>
@@ -39,78 +39,23 @@
 							</view>
 						</uni-collapse-item>
 					</uni-collapse>
-				</view>
+				</view> -->
 				<!-- 先行 -->
-				<view class="padding-top padding-lr">
+				<view v-for="(item,index) in labelList" :key="index" class="padding-top padding-lr">
 					<view class="cu-bar solid-bottom bg-white" style="min-height: 80upx;">
 						<view class="action" style="font-size: 28upx;min-height: 80upx;">
-							<text class="cuIcon-title text-blue" style="color:#3A82CC"></text>
-							<text style="font-size: 28upx;color:#3A82CC">先行</text>
+							<text class="cuIcon-titles text-blue" style="color: #3A82CC;"></text>
+							<text style="font-size: 28upx;color:#3A82CC">{{item.labelName}}</text>
 						</view>
 					</view>
 					<view class="cu-list menu sm-border">
-						<view class="cu-item arrow" style="">
+						<view v-for="(item2,index2) in item.themeList" :key="index2" class="cu-item arrow" style="">
 							<view class="content">
-								<text class="text-grey" style="color: #212121;">全国PMI指数</text>
-							</view>
-						</view>
-						<view class="cu-item arrow">
-							<view class="content">
-								<text class="text-grey" style="color: #212121;">全社会用电量</text>
-							</view>
-						</view>
-						<view class="cu-item arrow">
-							<view class="content">
-								<text class="text-grey" style="color: #212121;">工业用电量</text>
+								<text class="text-grey" style="color: #212121;">{{item2.indexName}}</text>
 							</view>
 						</view>
 					</view>
 				</view>
-
-				<!-- 同步 -->
-				<view class="padding-top padding-lr">
-					<view class="cu-bar solid-bottom bg-white" style="min-height: 80upx;">
-						<view class="action" style="font-size: 28upx;min-height: 80upx;">
-							<text class="cuIcon-title text-blue" style="color:#3A82CC"></text>
-							<text style="font-size: 28upx;color:#3A82CC">同步</text>
-						</view>
-					</view>
-					<view class="cu-list menu sm-border">
-						<view class="cu-item arrow" style="">
-							<view class="content">
-								<text class="text-grey" style="color: #212121;">项目新开工投资增幅</text>
-							</view>
-						</view>
-						<view class="cu-item arrow">
-							<view class="content">
-								<text class="text-grey" style="color: #212121;">金融机构贷款余额</text>
-							</view>
-						</view>
-					</view>
-				</view>
-
-				<!-- 结果 -->
-				<view class="padding-top padding-lr">
-					<view class="cu-bar solid-bottom bg-white" style="min-height: 80upx;">
-						<view class="action" style="font-size: 28upx;min-height: 80upx;">
-							<text class="cuIcon-title text-blue" style="color:#3A82CC"></text>
-							<text style="font-size: 28upx;color:#3A82CC">结果</text>
-						</view>
-					</view>
-					<view class="cu-list menu sm-border">
-						<view class="cu-item arrow" style="">
-							<view class="content">
-								<text class="text-grey" style="color: #212121;">各市GDP总量、增速</text>
-							</view>
-						</view>
-						<view class="cu-item arrow">
-							<view class="content">
-								<text class="text-grey" style="color: #212121;">GDP总体情况走势</text>
-							</view>
-						</view>
-					</view>
-				</view>
-
 			</scroll-view>
 		</view>
 	</view>
@@ -134,11 +79,11 @@
 			return {
 				itemKey: 0,
 				height: 0,
-				categoryActive: 0,
+				typeActive: 0,
 				scrollTop: 0,
 				scrollHeight: 0,
-				categoryList: [],
-				subCategoryList: [],
+				typeList: [],
+				labelList: [],
 				source: ""
 			};
 		},
@@ -155,24 +100,28 @@
 			// 	title: "加载栏目列表中",
 			// });
 			// this.showStorage();
+			// this.initAnalysisList(this.itemKey);
 
 			let dataApi = analysisListApiJson;
 			checkApi.isApi(dataApi);
-			this.categoryList = dataApi.data.list;
-			this.categoryActive = 0;
-			this.source = this.categoryList[this.categoryActive].listName;
-			this.subCategoryList = this.categoryList[this.categoryActive].subList;
+			this.typeList = dataApi.data.list;
+			this.typeActive = 0;
+			this.source = this.typeList[this.typeActive].typeName;
+			this.labelList = this.typeList[this.typeActive].labelList;
 			this.height = uni.getSystemInfoSync().windowHeight;
-			// this.initAnalysisList();
+
+			// 
+
 		},
 		methods: {
-			initAnalysisList() {
+			initAnalysisList(typeId) {
 				let token = uni.getStorageSync('token');
 				uni.request({
 					url: this.apiUrl + "getAnalysisList",
 					method: 'POST',
 					data: {
-						token: token
+						token: token,
+						typeId: typeId
 					},
 					success: (res) => {
 						// 获取homepage的数据
@@ -181,21 +130,21 @@
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						console.log(JSON.stringify(dataApi));
-						this.categoryList = dataApi.data.list;
+						this.typeList = dataApi.data.list;
 						// 数据存入缓存
-						uni.setStorageSync('analysis_list', this.categoryList);
+						uni.setStorageSync('analysis_list', this.typeList);
 					},
 					fail: (e) => {
 						// 调用缓存数据
 						let analysisList = uni.getStorageSync('analysis_list');
 						if (analysisList) {
-							this.categoryList = analysisList
+							this.typeList = analysisList
 						}
 					},
 					complete: () => {
 						// 设置初始化的左右侧子栏数据(默认为第一个)
-						this.source = this.categoryList[this.categoryActive].listName;
-						this.subCategoryList = this.categoryList[this.categoryActive].subList;
+						this.source = this.typeList[this.typeActive].listName;
+						this.labelList = this.typeList[this.typeActive].subList;
 						uni.hideLoading();
 						this.setScroll();
 					}
@@ -206,10 +155,10 @@
 				console.log("show storage list");
 				let analysisList = uni.getStorageSync('analysis_list');
 				if (analysisList) {
-					this.categoryList = analysisList;
-					this.categoryActive = this.itemKey;
-					this.source = this.categoryList[this.categoryActive].listName;
-					this.subCategoryList = this.categoryList[this.categoryActive].subList;
+					this.typeList = analysisList;
+					this.typeActive = this.itemKey;
+					this.source = this.typeList[this.typeActive].typeName;
+					this.labelList = this.typeList[this.typeActive].subList;
 					uni.hideLoading();
 				}
 			},
@@ -219,19 +168,19 @@
 				uni.setStorageSync('analysis_list_scroll_top', e.detail.scrollTop);
 			},
 			categoryClickMain(categroy, index) {
-				this.categoryActive = index;
-				this.source = this.categoryList[this.categoryActive].listName;
+				this.typeActive = index;
+				this.source = this.typeList[this.typeActive].typeName;
 				// 右侧栏数据根据左侧栏变更做出变化
-				this.subCategoryList = categroy.subList;
+				this.labelList = categroy.subList;
 				this.scrollTop = -this.scrollHeight * index;
-				uni.setStorageSync('analysis_list_scroll_index', this.categoryActive);
+				uni.setStorageSync('analysis_list_scroll_index', this.typeActive);
 			},
 			setScroll() {
 				try {
 					let analysisListScrollIndex = uni.getStorageSync('analysis_list_scroll_index');
 					let analysisListScrollTop = uni.getStorageSync('analysis_list_scroll_top');
-					this.categoryActive = analysisListScrollIndex;
-					this.subCategoryList = this.categoryList[this.categoryActive].subList;
+					this.typeActive = analysisListScrollIndex;
+					this.labelList = this.typeList[this.typeActive].subList;
 					this.scrollTop = analysisListScrollTop;
 				} catch (e) {
 					console.log("发生异常;" + JSON.stringify(e));
