@@ -5,17 +5,6 @@
 			<text>时间选择</text>
 		</view>
 
-		<view v-if="hasArea==1||hasArea=='1'" class="ti-condition">
-			<view class="ti-condition-name">
-				<text>地区选择:</text>
-			</view>
-			<view class="ti-condition-choose uni-list-cell-db">
-				<picker @change="bindAreaPickerChange" :value="areaIndex" :range="areaArray">
-					<text>{{areaArray[areaIndex]}}</text>
-				</picker>
-			</view>
-		</view>
-
 		<view class="ti-condition">
 			<view class="ti-condition-name">
 				<text>时间频度:</text>
@@ -29,7 +18,7 @@
 
 		<view class="ti-condition">
 			<view class="ti-condition-name">
-				<text>起始时间:</text>
+				<text>数据时间:</text>
 			</view>
 			<view class="ti-condition-choose uni-list-cell-db">
 				<picker @change="bindStartPickerChange" :value="startIndex" :range="startArray">
@@ -38,16 +27,6 @@
 			</view>
 		</view>
 
-		<view class="ti-condition">
-			<view class="ti-condition-name">
-				<text>结束时间:</text>
-			</view>
-			<view class="ti-condition-choose uni-list-cell-db">
-				<picker @change="bindEndPickerChange" :value="endIndex" :range="endArray">
-					<text>{{endArray[endIndex]}}</text>
-				</picker>
-			</view>
-		</view>
 		<view class="ti-condition" style="padding-bottom: 20upx;">
 			<button type="default" plain="true" size="mini" @tap="pickerConfirm">确定</button>
 		</view>
@@ -59,22 +38,14 @@
 		props: {
 			timeCondition: {
 				type: Array,
-			},
-			hasArea: String,
-			areaCondition: {
-				type: Object,
 			}
 		},
 		data() {
 			return {
-				areaArray: [],
-				areaIndex: 0,
 				freqArray: [],
 				freqIndex: 0,
 				startArray: [],
 				startIndex: 0,
-				endArray: [],
-				endIndex: 0,
 			}
 		},
 		watch: {
@@ -99,52 +70,26 @@
 					}
 					this.freqArray = freqCondition;
 					this.startArray = pageTimeCondition[this.freqIndex].startArray;
-					this.endArray = pageTimeCondition[this.freqIndex].endArray;
 					if (pageTimeCondition[this.freqIndex].hasOwnProperty("current")) {
 						this.startIndex = pageTimeCondition[this.freqIndex].current[0];
-						this.endIndex = pageTimeCondition[this.freqIndex].current[1];
 					}
 				}
-				if (this.hasArea == 1 || this.hasArea == '1') {
-					this.areaArray = areaCondition.areaArray;
-					this.areaIndex = areaCondition.areaIndex;
-				}
-			},
-			bindAreaPickerChange: function(e) {
-				this.areaIndex = e.target.value
 			},
 			bindFreqPickerChange: function(e) {
 				this.freqIndex = e.target.value;
 				this.startArray = this.timeCondition[this.freqIndex].startArray;
-				this.endArray = this.timeCondition[this.freqIndex].endArray;
 			},
 			bindStartPickerChange: function(e) {
 				this.startIndex = e.target.value
 			},
-			bindEndPickerChange: function(e) {
-				this.endIndex = e.target.value
-			},
 			pickerConfirm(e) {
-				let area = "";
-				try {
-					area = this.areaArray[this.areaIndex];
-				} catch (e) {
-					area = "";
-				}
 				let timeFreq = this.freqArray[this.freqIndex];
 				let startTime = this.startArray[this.startIndex];
-				let endTime = this.endArray[this.endIndex];
-				if (startTime > endTime) {
-					uni.showModal({
-						title: "提示",
-						content: "结束时间不能小于开始时间",
-					});
-				}
+				let endTime = startTime;
 				this.$emit("confirm", {
-					area: area,
 					timeFreq: timeFreq,
 					startTime: startTime,
-					endTime: endTime
+					endTime: endTime,
 				});
 			},
 		}
