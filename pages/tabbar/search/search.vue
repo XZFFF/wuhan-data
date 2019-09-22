@@ -38,10 +38,17 @@
 		<view v-else class="">
 			<view v-if="resultList.length > 0" class="history-list-box">
 				<view class="history-list-item" v-for="(item, index) in resultList" :key="index" @click="searchResultTap(item)">
-					<rich-text style="display: flex; align-items: center;" :nodes="item.nameNodes"></rich-text>
-					<view class="tag-view">
-						<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+					<view style="display: flex; flex-direction: row; justify-content: flex-start;">
+						
+						<rich-text style="display: flex; align-items: center;max-width: 280upx;" :nodes="item.nameNodes"></rich-text>
+						<!-- TODO 路径展示 -->
+						<view class="tag-view" style="display: flex; flex-direction: row;">
+							<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+							<view style="width: 10upx;"></view>
+							<wd-tag :text="item.areaName" type="warning" size="small" :circle="true"></wd-tag>
+						</view>
 					</view>
+					<button class="cu-btn bg-cyan shadow" :disabled="item.isArea ==1?false:true" style="margin-right: 30upx;">地市数据</button>
 				</view>
 			</view>
 			<view v-else class="no-data">{{noResultText}}</view>
@@ -94,19 +101,35 @@
 			};
 		},
 		onShow() {
-			// 判断是否有关键词，若无则置true，否则展示搜索结果列表页
-			let text = this.keyword;
-			let self = this;
-			if (text != '') {
-				self.isHistory = false;
-				uni.hideTabBar({});
-				console.log("重置搜索状态：" + text + this.source);
-				self.getInputtips(text);
-			} else {
-				self.isHistory = true;
-				uni.showTabBar({});
-				this.initSearch();
-			}
+			this.isHistory = true;
+			this.keyword = '';
+			this.resultList = [];
+			// 测试新版搜索列表样式
+			this.isHistory = false;
+			this.resultList = [{
+					"id": "1",
+					"name": "地区生产总值(GDP)",
+					"path": "地区生产总值(GDP)地区生产总",
+					"areaName": "全国",
+					"isArea": "1",
+					"source": "湖统"
+				},
+				{
+					"id": "3",
+					"name": "地区生产总值(GDP)",
+					"path": "地区生产总值(GDP)地区生",
+					"areaName": "河南省",
+					"isArea": "0",
+					"source": "湖统"
+				},
+				{
+					"id": "2",
+					"name": "PMI指数",
+					"path": "PMI指数",
+					"isArea": "0",
+					"source": "湖统"
+				}
+			];
 		},
 
 		methods: {
@@ -360,7 +383,7 @@
 
 	.history-list-item {
 		display: flex;
-		justify-content: flex-start;
+		justify-content: space-between;
 		padding: 30upx 0;
 		margin-left: 30upx;
 		border-bottom: 1px #EEEEEE solid;
