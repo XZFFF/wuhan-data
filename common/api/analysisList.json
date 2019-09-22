@@ -2,86 +2,594 @@
 	"errMsg": "成功获取数据",
 	"data": {
 		"list": [{
-			"typeName": "综合",
-			"labelList": [{
-				"themeList": [{
-					"indexId": "13",
-					"indexName": "各市（州）GDP总量、增速"
-				}, {
-					"indexId": "11",
-					"indexName": "全国/主要省份（中部）比较"
-				}, {
-					"indexId": "14",
-					"indexName": "广义货币供应量"
-				}, {
-					"indexId": "15",
-					"indexName": "城镇新增就业人数"
-				}, {
-					"indexId": "16",
-					"indexName": "进出口总额及增速"
-				}, {
-					"indexId": "17",
-					"indexName": "财政收入"
-				}, {
-					"indexId": "18",
-					"indexName": "财政支出"
-				}, {
-					"indexId": "182",
-					"indexName": "价格指数总体情况及走势"
-				}, {
-					"indexId": "183",
-					"indexName": "CPI-PPI同比剪刀差"
-				}, {
-					"indexId": "184",
-					"indexName": "PPI-IPI同比剪刀差"
-				}, {
-					"indexId": "185",
-					"indexName": "（季度）GDP总量及增速总体情况及走势"
-				}, {
-					"indexId": "186",
-					"indexName": "（年度_生产法）GDP总量及增速总体情况及走势"
-				}, {
-					"indexId": "187",
-					"indexName": "（年度_支出法）GDP总量及增速总体情况及走势"
-				}, {
-					"indexId": "188",
-					"indexName": "（季度）三次产业增加值增速、占比"
-				}, {
-					"indexId": "189",
-					"indexName": "（年度）三次产业增加值增速、占比"
-				}]
-			}, {
-				"themeList": [{
-					"indexId": "1",
-					"indexName": "PMI指数（全国）"
-				}, {
-					"indexId": "2",
-					"indexName": "全社会用电量"
-				}, {
-					"indexId": "3",
-					"indexName": "工业用电量"
-				}, {
-					"indexId": "4",
-					"indexName": "铁路货运量"
-				}, {
-					"indexId": "5",
-					"indexName": "金融机构新增贷款余额"
-				}, {
-					"indexId": "6",
-					"indexName": "货运量增幅"
-				}, {
-					"indexId": "7",
-					"indexName": "湖北PMI"
-				}, {
-					"indexId": "8",
-					"indexName": "项目新开工个数增幅"
-				}, {
-					"indexId": "9",
-					"indexName": "项目新开工投资增幅"
-				}]
-			}],
-			"typeId": 1
-		}]
+				"typeName": "综合",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "13",
+								"indexName": "各市（州）GDP总量、增速"
+							},
+							{
+								"indexId": "11",
+								"indexName": "全国/主要省份（中部）比较"
+							},
+							{
+								"indexId": "14",
+								"indexName": "广义货币供应量"
+							},
+							{
+								"indexId": "15",
+								"indexName": "城镇新增就业人数"
+							},
+							{
+								"indexId": "16",
+								"indexName": "进出口总额及增速"
+							},
+							{
+								"indexId": "17",
+								"indexName": "财政收入"
+							},
+							{
+								"indexId": "18",
+								"indexName": "财政支出"
+							},
+							{
+								"indexId": "182",
+								"indexName": "价格指数总体情况及走势"
+							},
+							{
+								"indexId": "183",
+								"indexName": "CPI-PPI同比剪刀差"
+							},
+							{
+								"indexId": "184",
+								"indexName": "PPI-IPI同比剪刀差"
+							},
+							{
+								"indexId": "185",
+								"indexName": "（季度）GDP总量及增速总体情况及走势"
+							},
+							{
+								"indexId": "186",
+								"indexName": "（年度_生产法）GDP总量及增速总体情况及走势"
+							},
+							{
+								"indexId": "187",
+								"indexName": "（年度_支出法）GDP总量及增速总体情况及走势"
+							},
+							{
+								"indexId": "188",
+								"indexName": "（季度）三次产业增加值增速、占比"
+							},
+							{
+								"indexId": "189",
+								"indexName": "（年度）三次产业增加值增速、占比"
+							}
+						],
+						"labelName": "同步指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "1",
+								"indexName": "PMI指数（全国）"
+							},
+							{
+								"indexId": "2",
+								"indexName": "全社会用电量"
+							},
+							{
+								"indexId": "3",
+								"indexName": "工业用电量"
+							},
+							{
+								"indexId": "4",
+								"indexName": "铁路货运量"
+							},
+							{
+								"indexId": "5",
+								"indexName": "金融机构新增贷款余额"
+							},
+							{
+								"indexId": "6",
+								"indexName": "货运量增幅"
+							},
+							{
+								"indexId": "7",
+								"indexName": "湖北PMI"
+							},
+							{
+								"indexId": "8",
+								"indexName": "项目新开工个数增幅"
+							},
+							{
+								"indexId": "9",
+								"indexName": "项目新开工投资增幅"
+							}
+						],
+						"labelName": "先行指标"
+					}
+				],
+				"typeId": 1
+			},
+			{
+				"typeName": "工业",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "28",
+								"indexName": "规模以上工业增加值增速总体情况及走势"
+							},
+							{
+								"indexId": "29",
+								"indexName": "全国/主要省份（中部）比较"
+							},
+							{
+								"indexId": "30",
+								"indexName": "工业增加值增速（分行业）"
+							},
+							{
+								"indexId": "31",
+								"indexName": "工业增加值增速【分市（州）】"
+							},
+							{
+								"indexId": "32",
+								"indexName": "主要工业产品产量及增速总体情况及走势"
+							},
+							{
+								"indexId": "33",
+								"indexName": "分主要产品（汽车、钢铁、工业机器人等32小类）产量/增速\n"
+							}
+						],
+						"labelName": "同步指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "24",
+								"indexName": "总货运量及增速"
+							},
+							{
+								"indexId": "25",
+								"indexName": "工业用电量及增速"
+							},
+							{
+								"indexId": "26",
+								"indexName": "PPI"
+							},
+							{
+								"indexId": "27",
+								"indexName": "制造业PMI指数（全国）"
+							}
+						],
+						"labelName": "先行指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "35",
+								"indexName": "产品销售收入及增速"
+							},
+							{
+								"indexId": "36",
+								"indexName": "工业产销率及增速"
+							},
+							{
+								"indexId": "34",
+								"indexName": "工业企业利润及增速"
+							},
+							{
+								"indexId": "37",
+								"indexName": "企业亏损额及亏损面"
+							},
+							{
+								"indexId": "38",
+								"indexName": "工业应收账款增速"
+							},
+							{
+								"indexId": "39",
+								"indexName": "工业主营业务收入和企业利润增速"
+							}
+						],
+						"labelName": "结果指标"
+					}
+				],
+				"typeId": 2
+			},
+			{
+				"typeName": "农业",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "50",
+								"indexName": "全年粮食总产量及增速"
+							},
+							{
+								"indexId": "51",
+								"indexName": "农业增加值总量及增速"
+							},
+							{
+								"indexId": "52",
+								"indexName": "主要农产品产量"
+							}
+						],
+						"labelName": "同步指标"
+					},
+					{
+						"themeList": [{
+							"indexId": "47",
+							"indexName": "农业生产资料价格指数"
+						}],
+						"labelName": "先行指标"
+					}
+				],
+				"typeId": 3
+			},
+			{
+				"typeName": "服务业",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "62",
+								"indexName": "服务业增加值及增速"
+							},
+							{
+								"indexId": "63",
+								"indexName": "服务业增加值占GDP比重"
+							}
+						],
+						"labelName": "同步指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "57",
+								"indexName": "服务业固定资产投资及增速【分行业、分市（州）】"
+							},
+							{
+								"indexId": "58",
+								"indexName": "服务业用电量"
+							},
+							{
+								"indexId": "61",
+								"indexName": "服务业PMI指数（全国）"
+							}
+						],
+						"labelName": "先行指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "64",
+								"indexName": "规模以上服务业企业效益营业收入、成本"
+							},
+							{
+								"indexId": "65",
+								"indexName": "规模以上服务业企业效益利润总额及增速"
+							},
+							{
+								"indexId": "66",
+								"indexName": "规模以上服务业企业效益营业税金及附加"
+							}
+						],
+						"labelName": "结果指标"
+					}
+				],
+				"typeId": 4
+			},
+			{
+				"typeName": "投资",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "84",
+								"indexName": "固定资产投资额及增速【总量、分产业、分市（州）、全国、中部省份】"
+							},
+							{
+								"indexId": "85",
+								"indexName": "三次产业投资占比及增速"
+							},
+							{
+								"indexId": "86",
+								"indexName": "基础设施投资及增速【分市（州）、分行业】"
+							},
+							{
+								"indexId": "87",
+								"indexName": "房地产投资及增速【分市（州）、分行业】"
+							},
+							{
+								"indexId": "88",
+								"indexName": "技改投资及增速【分市（州）、分行业】"
+							},
+							{
+								"indexId": "89",
+								"indexName": "民间投资及增速【分市（州）、分行业】"
+							}
+						],
+						"labelName": "同步指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "70",
+								"indexName": "项目核准备案个数及金额"
+							},
+							{
+								"indexId": "72",
+								"indexName": "招投标网站项目数（互联网大数据）"
+							},
+							{
+								"indexId": "73",
+								"indexName": "项目环评个数"
+							},
+							{
+								"indexId": "74",
+								"indexName": "国有建设用地出让面积（互联网大数据）"
+							},
+							{
+								"indexId": "75",
+								"indexName": "中长期贷款余额（互联网大数据）"
+							},
+							{
+								"indexId": "79",
+								"indexName": "施工项目个数及增速"
+							},
+							{
+								"indexId": "80",
+								"indexName": "新开工项目个数及增速"
+							},
+							{
+								"indexId": "81",
+								"indexName": "亿元以上项目情况"
+							},
+							{
+								"indexId": "82",
+								"indexName": "10亿元以上项目情况"
+							}
+						],
+						"labelName": "先行指标"
+					}
+				],
+				"typeId": 5
+			},
+			{
+				"typeName": "消费",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "99",
+								"indexName": "总体情况及走势【分行业、分市（州）】"
+							},
+							{
+								"indexId": "100",
+								"indexName": "全国/主要省份（中部）比较"
+							},
+							{
+								"indexId": "101",
+								"indexName": "网络零售额/占社零比重"
+							},
+							{
+								"indexId": "102",
+								"indexName": "电子商务交易额"
+							},
+							{
+								"indexId": "103",
+								"indexName": "商品房销售面积、销售额/增速"
+							},
+							{
+								"indexId": "104",
+								"indexName": "汽车消费零售额/增速"
+							},
+							{
+								"indexId": "106",
+								"indexName": "全省商品房待售面积"
+							}
+						],
+						"labelName": "同步指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "95",
+								"indexName": "居民存款储蓄"
+							},
+							{
+								"indexId": "96",
+								"indexName": "城乡居民人均可支配收入"
+							},
+							{
+								"indexId": "97",
+								"indexName": "城镇居民平均工资水平"
+							},
+							{
+								"indexId": "98",
+								"indexName": "CPI"
+							}
+						],
+						"labelName": "先行指标"
+					},
+					{
+						"themeList": [],
+						"labelName": "结果指标"
+					}
+				],
+				"typeId": 6
+			},
+			{
+				"typeName": "对外开放",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "115",
+								"indexName": "铁路货运量"
+							},
+							{
+								"indexId": "116",
+								"indexName": "水路运输货物发送量"
+							},
+							{
+								"indexId": "117",
+								"indexName": "劳务外派人数"
+							}
+						],
+						"labelName": "先行指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "118",
+								"indexName": "总体情况及走势【分行业、分市（州）】"
+							},
+							{
+								"indexId": "119",
+								"indexName": "全国/主要省份（中部）比较"
+							},
+							{
+								"indexId": "120",
+								"indexName": "新批外商投资项目规模/增速"
+							},
+							{
+								"indexId": "121",
+								"indexName": "实际利用外资总额/增速"
+							},
+							{
+								"indexId": "122",
+								"indexName": "合同外资金额/增速"
+							},
+							{
+								"indexId": "123",
+								"indexName": "对外投资金额/增速"
+							},
+							{
+								"indexId": "124",
+								"indexName": "引进省外项目数量和资金"
+							}
+						],
+						"labelName": "结果指标"
+					}
+				],
+				"typeId": 7
+			},
+			{
+				"typeName": "新经济",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "129",
+								"indexName": "新增企业数量（互联网大数据）"
+							},
+							{
+								"indexId": "130",
+								"indexName": "新经济网上就业岗位发布数、简历投档数"
+							},
+							{
+								"indexId": "132",
+								"indexName": "新经济行业风险投资比例（互联网大数据）"
+							},
+							{
+								"indexId": "133",
+								"indexName": "新经济行业岗位占比"
+							},
+							{
+								"indexId": "134",
+								"indexName": "每万人口发明专利拥有量"
+							},
+							{
+								"indexId": "135",
+								"indexName": "技术合同交易额"
+							},
+							{
+								"indexId": "136",
+								"indexName": "千人拥有研发人员数"
+							},
+							{
+								"indexId": "137",
+								"indexName": "R&D经费支出占GDP比重"
+							}
+						],
+						"labelName": "先行指标"
+					},
+					{
+						"themeList": [{
+								"indexId": "140",
+								"indexName": "高新技术产业增加值/增速--总体情况及走势【分行业、分市（州）】\n"
+							},
+							{
+								"indexId": "141",
+								"indexName": "高新技术产业增加值占GDP比重--总体情况及走势【分市（州）】\n"
+							},
+							{
+								"indexId": "142",
+								"indexName": "电子商务交易额/增速"
+							},
+							{
+								"indexId": "144",
+								"indexName": "高新技术制造业与规上工业增加值走势比较"
+							}
+						],
+						"labelName": "结果指标"
+					}
+				],
+				"typeId": 8
+			},
+			{
+				"typeName": "绿色发展",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "149",
+								"indexName": "单位生产总值能耗"
+							},
+							{
+								"indexId": "150",
+								"indexName": "单位生产总值全社会用电量"
+							},
+							{
+								"indexId": "151",
+								"indexName": "单位生产总值煤炭消耗量"
+							},
+							{
+								"indexId": "153",
+								"indexName": "主要河流断面水质劣V类比例"
+							},
+							{
+								"indexId": "154",
+								"indexName": "全省17个重点城市空气质量优良天数比例"
+							}
+						],
+						"labelName": "约束性指标"
+					},
+					{
+						"themeList": [{
+							"indexId": "157",
+							"indexName": "全省17个重点城市主要污染物月均浓度"
+						}],
+						"labelName": "监测预测\r\n监测预测\r\n监测预测"
+					}
+				],
+				"typeId": 9
+			},
+			{
+				"typeName": "民生",
+				"labelList": [{
+						"themeList": [{
+								"indexId": "161",
+								"indexName": "农村居民人均可支配收入及增速"
+							},
+							{
+								"indexId": "162",
+								"indexName": "城镇新增就业人数"
+							},
+							{
+								"indexId": "163",
+								"indexName": "城镇登记失业人数/失业率"
+							},
+							{
+								"indexId": "164",
+								"indexName": "城乡居民人均可支配收入"
+							},
+							{
+								"indexId": "168",
+								"indexName": "网络求职申请人数与网络招聘岗位数量"
+							},
+							{
+								"indexId": "169",
+								"indexName": "全省新开工保障性安居工程"
+							}
+						],
+						"labelName": "约束性指标"
+					},
+					{
+						"themeList": [],
+						"labelName": "预期性指标"
+					}
+				],
+				"typeId": 10
+			}
+		]
 	},
 	"errCode": "0"
 }

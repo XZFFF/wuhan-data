@@ -3,17 +3,17 @@
 	"errMsg": "success",
 	"data": {
 		"slideshow": [{
+			"id": "1",
+			"title": "一芯两带三区",
+			"image": "../../../static/home/slideshow/image1.png"
+		}, {
 			"id": "2",
-			"title": "大数据专题分析报告",
+			"title": "高质量发展",
 			"image": "../../../static/home/slideshow/image2.png"
 		}, {
 			"id": "3",
-			"title": "大数据专题分析报告",
-			"image": "../../../static/home/slideshow/image2.png"
-		}, {
-			"id": "4",
-			"title": "大数据专题分析报告",
-			"image": "../../../static/home/slideshow/image2.png"
+			"title": "中部崛起",
+			"image": "../../../static/home/slideshow/image3.png"
 		}],
 		"analysis": [{
 				"id": "0",

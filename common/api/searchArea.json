@@ -4,7 +4,7 @@
 	"data": {
 		"baseInfo": {
 			"indexId": "1000",
-			"indexName": "指标-时间维度",
+			"indexName": "指标-地域维度",
 			"isFavorite": false
 		},
 		"timeCondition": [{
@@ -12,11 +12,6 @@
 				"startArray": ["201701", "201702"],
 				"endArray": ["201709", "201710"],
 				"current": [0, 1]
-			},
-			{
-				"freqName": "年度",
-				"startArray": ["2016", "2017"],
-				"endArray": ["2017", "2018"]
 			}
 		],
 		"classInfo": [{
@@ -38,7 +33,7 @@
 					"xAxis": {
 						"name": "x轴",
 						"type": "category",
-						"data": ["2018Q1", "2018Q2", "2018Q3", "2018Q4", "2019Q1", "2019Q2"]
+						"data": ["武汉市", "十堰市", "其他市", "其他市", "其他市", "其他市"]
 					},
 					"yAxis": {
 						"name": "y轴",
