@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<!-- 轮播图 -->
-		<view style="background-color: #FFFFFF; margin-bottom: 0upx;max-height: 280upx;">
+		<view style="background-color: #FFFFFF; margin-bottom: 0upx; max-height: 300upx;">
 			<!-- 全屏宽轮播图 -->
-			<swiper class="screen-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
-			 :autoplay="true" interval="5000" duration="500">
+			<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000"
+			 duration="500">
 				<swiper-item v-for="(item,index) in slideshow" :key="index">
-					<image :src="item.image" style="max-height: 280upx;" mode="aspectFill"></image>
+					<image :src="item.image" style="max-height: 300upx;" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 			<!-- 卡片式轮播图 -->
@@ -45,7 +45,7 @@
 		</view>
 		<!-- 专题 -->
 		<view class="topic">
-			<view class="cu-bar bg-white" style="height: 80upx; width: 750upx;margin: 0upx;">
+			<view class="cu-bar bg-white" style="min-height: 80upx; width: 750upx;margin: 0upx;">
 				<view class="action">
 					<text class="cuIcon-titles text-blue" style="color: #3A82CC;"></text>
 					<text class="text-xl  text-blue" style="color: #3A82CC;">专题</text>
@@ -301,7 +301,7 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		margin-top: 20upx;
-		padding: 5upx;
+		/* padding: 5upx; */
 		background-color: #FFFFFF;
 	}
 
