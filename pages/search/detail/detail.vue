@@ -1,6 +1,8 @@
 <template>
 	<view class="container" :style="{height:totalHeight + 'px'}">
-		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
+		<view style="margin: 10upx 20upx;">综合-同步-PMI指数-采购经理版块-全省采购经理指数</view>
+		<wd-area-picker v-if="isArea=='1' || isArea==1" @confirm="onConfirm" :timeCondition="timeCondition"></wd-area-picker>
+		<wd-time-picker v-else @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
@@ -15,6 +17,7 @@
 
 <script>
 	import wdTimePicker from '@/components/wd-time-picker/wd-time-picker.vue';
+	import wdAreaPicker from '@/components/wd-time-picker/wd-area-picker.vue';
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
@@ -28,6 +31,7 @@
 	export default {
 		components: {
 			wdTimePicker,
+			wdAreaPicker,
 			wdEcharts,
 			wdTable,
 			wdRelatedList,
@@ -39,6 +43,7 @@
 				indexName: "指标详情页",
 				source: "",
 				isFavorite: false,
+				isArea: 1,
 				timeCondition: [],
 				indexDetail: [],
 				relatedData: [],
@@ -54,6 +59,7 @@
 				_self.indexName = e.indexName;
 				_self.isFavorite = e.isFavorite;
 				_self.source = e.source;
+				_self.isArea = e.isArea;
 			}
 			console.log("收藏状态：" + this.isFavorite);
 			// 初始化页面数据
@@ -77,7 +83,8 @@
 					data: {
 						token: token,
 						indexId: this.indexId,
-						source: this.source
+						source: this.source,
+						isArea: this.isArea
 					},
 					success: res => {
 						console.log(JSON.stringify(res.data));
@@ -89,6 +96,7 @@
 						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
+						dataApi = searchDetailApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
@@ -96,7 +104,6 @@
 							_self.indexId = dataApi.data.baseInfo.indexId;
 							_self.indexName = dataApi.data.baseInfo.indexName;
 							_self.isFavorite = dataApi.data.baseInfo.isFavorite;
-							_self.source = dataApi.data.baseInfo.source;
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
 							_self.relatedData = dataApi.data.relatedData;
@@ -120,11 +127,12 @@
 					url: this.apiUrl + 'searchConfirm',
 					method: 'POST',
 					data: {
-						"indexId": _self.indexId,
-						"source": _self.source,
-						"timeFreq": val.timeFreq,
-						"startTime": val.startTime,
-						"endTime": val.endTime,
+						indexId: _self.indexId,
+						source: _self.source,
+						isArea: _self.isArea,
+						timeFreq: val.timeFreq,
+						startTime: val.startTime,
+						endTime: val.endTime,
 					},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
