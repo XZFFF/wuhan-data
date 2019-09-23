@@ -4,7 +4,7 @@
 			<image src="../../../static/icon/echarts/trend-upward.png"></image>
 			<text>{{classTitle}}</text>
 		</view>
-		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="echarts" />
+		<mpvue-echarts :echarts="echarts" @onInit="onInit" :canvasId="canvasId" ref="chart1" />
 	</view>
 </template>
 
@@ -12,7 +12,7 @@
 	import * as echarts from '@/components/echarts/echarts.min.js';
 	import mpvueEcharts from '@/components/mpvue-echarts/src/echarts.vue';
 
-	let wdChart = null;
+	let chart1 = null;
 
 	export default {
 		components: {
@@ -42,22 +42,38 @@
 		},
 		watch: {
 			echartOption(newOption, oldOption) {
-				//console.log(this.$refs.echarts.chart);
-				wdChart = this.$refs.echarts.chart;
-				wdChart.setOption(this.echartOption)
+				console.log(this.$refs.chart1.chart);
+				chart1 = this.$refs.chart1.chart;
+				chart1.setOption(this.echartOption)
 			}
 		},
 		onLoad() {},
 		methods: {
-			onInit(canvas, width, height) {
-				wdChart = echarts.init(canvas, null, {
+			onInit(e) {
+				let {
+					width,
+					height
+				} = e;
+				let canvas = this.$refs.chart1.canvas;
+				echarts.setCanvasCreator(() => canvas);
+				chart1 = echarts.init(canvas, null, {
 					width: width,
 					height: height
-				})
-				canvas.setChart(wdChart)
-				wdChart.setOption(this.echartOption)
-				return wdChart
-			}
+				});
+				canvas.setChart(chart1);
+				chart1.setOption(this.echartOption);
+				this.$refs.chart1.setChart(chart1);
+			},
+
+			// onInit(canvas, width, height) {
+			// 	wdChart = echarts.init(canvas, null, {
+			// 		width: width,
+			// 		height: height
+			// 	})
+			// 	canvas.setChart(wdChart)
+			// 	wdChart.setOption(this.echartOption)
+			// 	return wdChart
+			// }
 		}
 	}
 </script>
