@@ -78,7 +78,8 @@
 				let dataApi;
 				console.log("token:" + token + "indexId:" + this.indexId + "source:" + this.source)
 				uni.request({
-					url: this.apiUrl + 'searchDetail',
+					// url: this.apiUrl + 'searchDetail',
+					url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
@@ -87,7 +88,7 @@
 						isArea: this.isArea
 					},
 					success: res => {
-						console.log(JSON.stringify(res.data));
+						// console.log(JSON.stringify(res.data));
 						dataApi = res.data;
 						let search_detail_key = 'search_detail' + _self.indexId;
 						uni.setStorageSync(search_detail_key, dataApi);

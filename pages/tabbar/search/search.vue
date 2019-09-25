@@ -13,7 +13,7 @@
 					<text class="uni-icon uni-icon-trash" @click="clearSearch"></text>
 				</view>
 				<view v-if="historyList.length > 0" class="history-content">
-					<view class="history-item" v-for="(item, index) in tranName" :key="index">
+					<view class="history-item" v-for="(item, index) in tranName" :key="index" @tap="openIndexDetail(item)">
 						{{item.name}}
 					</view>
 				</view>
@@ -38,17 +38,16 @@
 		<view v-else class="">
 			<view v-if="resultList.length > 0" class="history-list-box">
 				<view class="history-list-item" v-for="(item, index) in resultList" :key="index" @click="searchResultTap(item)">
-					<view style="display: flex; flex-direction: row; justify-content: flex-start;">
-						
-						<rich-text style="display: flex; align-items: center;max-width: 280upx;" :nodes="item.nameNodes"></rich-text>
-						<!-- TODO 路径展示 -->
-						<view class="tag-view" style="display: flex; flex-direction: row;">
-							<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
-							<view style="width: 10upx;"></view>
-							<wd-tag :text="item.areaName" type="warning" size="small" :circle="true"></wd-tag>
+					<view style="display: flex; flex-direction: column; justify-content: flex-start;">
+						<view style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 28upx;">
+							<rich-text style="display: flex; align-items: center;max-width: 280upx;font-size: 28upx;" :nodes="item.nameNodes"></rich-text>
+							<view class="tag-view" style="display: flex; flex-direction: row;">
+								<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+							</view>
 						</view>
+						<view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">{{item.path}}</view>
 					</view>
-					<button class="cu-btn bg-cyan shadow" :disabled="item.isArea ==1?false:true" style="margin-right: 30upx;">地市数据</button>
+					<button class="cu-btn bg-cyan shadow" style="margin: auto 30upx auto 0upx;" :disabled="item.isArea ==1?false:true">地市数据</button>
 				</view>
 			</view>
 			<view v-else class="no-data">{{noResultText}}</view>
@@ -105,31 +104,32 @@
 			this.keyword = '';
 			this.resultList = [];
 			// 测试新版搜索列表样式
-			this.isHistory = false;
-			this.resultList = [{
-					"id": "1",
-					"name": "地区生产总值(GDP)",
-					"path": "地区生产总值(GDP)地区生产总",
-					"areaName": "全国",
-					"isArea": "1",
-					"source": "湖统"
-				},
-				{
-					"id": "3",
-					"name": "地区生产总值(GDP)",
-					"path": "地区生产总值(GDP)地区生",
-					"areaName": "河南省",
-					"isArea": "0",
-					"source": "湖统"
-				},
-				{
-					"id": "2",
-					"name": "PMI指数",
-					"path": "PMI指数",
-					"isArea": "0",
-					"source": "湖统"
-				}
-			];
+			// this.isHistory = false;
+			// this.getInputtips();
+			// 	this.resultList = [{
+			// 			"id": "1",
+			// 			"nameNodes": "地区生产总值(GDP)",
+			// 			"path": "地区生产总值(GDP)-第一产业",
+			// 			"areaName": "全国",
+			// 			"isArea": "1",
+			// 			"source": "湖统"
+			// 		},
+			// 		{
+			// 			"id": "3",
+			// 			"nameNodes": "地区生产总值(GDP)",
+			// 			"path": "地区生产总值(GDP)-第二产业",
+			// 			"areaName": "河南省",
+			// 			"isArea": "0",
+			// 			"source": "湖统"
+			// 		},
+			// 		{
+			// 			"id": "2",
+			// 			"nameNodes": "PMI指数",
+			// 			"path": "PMI指数",
+			// 			"isArea": "0",
+			// 			"source": "湖统"
+			// 		}
+			// 	];
 		},
 
 		methods: {
@@ -175,7 +175,8 @@
 				});
 				checkApi.checkNetwork();
 				uni.request({
-					url: this.apiUrl + 'searchIndi',
+					// url: this.apiUrl + 'searchIndi',
+					url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						keyword: val,
@@ -183,6 +184,7 @@
 					},
 					success: res => {
 						let searchResultApi = res.data;
+						searchResultApi = searchResultApiJson;
 						// 检查json数据
 						checkApi.isApi(searchResultApi);
 						// 设置各部分数据
@@ -215,10 +217,18 @@
 			 * 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			 */
 			searchTrendTap(item) {
-				util.setHistory(item.name);
+				util.setHistory(item.id, item.name, item.source, item.isArea);
 				console.log(JSON.stringify(item));
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + '&isFavorite=false' +
+						"&source=" + item.source
+				})
+			},
+			openIndexDetail(item) {
+				console.log(JSON.stringify(item));
+				// 注：这里因为是存储的结构是id和name，并能不和接口有关系
+				uni.navigateTo({
+					url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + '&isFavorite=false' +
 						"&source=" + item.source
 				})
 			},
@@ -233,11 +243,12 @@
 				} else {
 					this.isHistory = true;
 					// 点击列表存储搜索数据,更新历史搜索记录
-					util.setHistory(item);
+					console.log("存储历史记录" + JSON.stringify(item));
+					util.setHistory(item.id, item.name, item.source, item.isArea);
 					this.historyList = uni.getStorageSync('search_history');
 					// TODO 记录历史搜索记录到服务端
 					// 跳转到对应的界面,这里先做的是返回上一个界面
-					console.log("source" + item.source);
+					console.log("已存储的历史记录" + JSON.stringify(this.historyList));
 					uni.navigateTo({
 						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + '&isFavorite=false' +
 							"&source=" + item.source
@@ -263,12 +274,10 @@
 				this.isHistory = true;
 				this.historyList = [];
 				this.historyList = uni.getStorageSync('search_history');
-				uni.showTabBar({});
 				return;
 			} else {
 				this.keyword = text;
 				this.isHistory = false;
-				uni.hideTabBar({});
 				this.getInputtips(text);
 			}
 		},
@@ -384,7 +393,7 @@
 	.history-list-item {
 		display: flex;
 		justify-content: space-between;
-		padding: 30upx 0;
+		padding: 20upx 0;
 		margin-left: 30upx;
 		border-bottom: 1px #EEEEEE solid;
 		font-size: 28upx;

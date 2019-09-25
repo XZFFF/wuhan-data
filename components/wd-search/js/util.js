@@ -5,7 +5,7 @@ const util = {
 	serachNmme(val, name) {
 		let namestr = new RegExp(val);
 		let nameresult =
-			`<div style="font-size: 14px;color: #333;line-height: 1.5;">
+			`<div style="font-size: 16px;color: #333;line-height: 1.5;">
 		    ${name.replace(namestr, "<span style='color:#66ccff;'>" + val + '</span>')}
 		    </div>`
 			.trim();
@@ -20,7 +20,7 @@ const util = {
 		if (val) {
 			item.nameNodes = util.serachNmme(val, item.name);
 		} else {
-			item.nameNodes = `<div style="font-size: 14px;color: #333;line-height: 1.5;">${item.name}</div>`;
+			item.nameNodes = `<div style="font-size: 16px;color: #333;line-height: 1.5;">${item.name}</div>`;
 		}
 		return item;
 	},
@@ -37,24 +37,16 @@ const util = {
 	 * 存储历史数据
 	 * val [string | object]需要存储的内容
 	 */
-	setHistory(val) {
+	setHistory(id, name, source, isArea) {
 		let searchHistory = uni.getStorageSync('search_history');
 		if (!searchHistory) searchHistory = [];
 		let serachData = {};
-		if (typeof(val) === 'string') {
-			serachData = {
-				adcode: [],
-				address: [],
-				city: [],
-				district: [],
-				id: [],
-				location: [],
-				name: val,
-				typecode: []
-			};
-		} else {
-			serachData = val
-		}
+		serachData = {
+			id: id,
+			name: name,
+			source: source,
+			isArea: isArea
+		};
 
 		// 判断数组是否存在，如果存在，那么将放到最前面
 		for (var i = 0; i < searchHistory.length; i++) {
