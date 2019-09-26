@@ -11,14 +11,14 @@
 		</view>
 		<block v-if="searchResult.length > 0">
 			<view class="cu-list menu">
-				<view class="cu-item arrow" v-for="(item,index) in searchResult" :key="index" @click="openDetail(item.indexId, item.indexName)">
+				<view class="cu-item arrow" v-for="(item,index) in searchResult" :key="index" @click="openDetail(item.indexId, item.indexName, item.typeName)">
 					<view class="content">
-						<text class="cuIcon-titles text-blue" style="color: #3A82CC;"></text>
-						<text class="text-grey">{{item.title}}</text>
+						<!-- <text class="cuIcon-titles text-blue" style="color: #3A82CC;"></text> -->
+						<text class="text-black">{{item.indexName}}</text>
 					</view>
 					<view class="action">
-						<wd-tag style="margin-right: 10upx;" text="综合" size="small" :circle="true"></wd-tag>
-						<wd-tag text="先行" size="small" :circle="true"></wd-tag>
+						<wd-tag style="margin-right: 10upx;" :text="item.typeName" size="small" :circle="true"></wd-tag>
+						<wd-tag :text="item.labelName" size="small" :circle="true"></wd-tag>
 					</view>
 				</view>
 			</view>
@@ -27,14 +27,12 @@
 </template>
 
 <script>
-	import uniList from '@/components/uni-list/uni-list.vue';
-	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
 	import wdTag from '@/components/wd-tag/wd-tag.vue';
+	import checkApi from '@/common/checkApi.js';
+	import analysisSearchApiJson from '@/common/api/analysisSearch.json';
 
 	export default {
 		components: {
-			uniList,
-			uniListItem,
 			wdTag,
 		},
 		data() {
@@ -53,20 +51,14 @@
 				this.keyword = e.detail.value;
 			},
 			doSearch() {
-				this.searchResult = [{
-						'id': '1',
-						'title': '栏目1'
-					},
-					{
-						'id': '2',
-						'title': '栏目2'
-					}
-				];
+				let dataApi = analysisSearchApiJson;
+				// 检查json数据
+				checkApi.isApi(dataApi);
+				this.searchResult = dataApi.data.result;
 			},
 			// 跳转到指标详情页
-			openDetail(indexId, indexName) {
-				let source = this.source;
-				console.log(source);
+			openDetail(indexId, indexName, source) {
+				console.log(indexId + indexName + source);
 				uni.navigateTo({
 					url: '../../analysis/detail/detail?indexId=' + indexId + '&indexName=' + indexName +
 						'&source=' + source

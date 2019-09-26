@@ -1,20 +1,25 @@
 {
-    "errMsg": "数据获取成功",
-    "data": {
-        "result": [
-            {
-                "typeName": "投资",
-                "indexId": "87",
-                "indexName": "房地产投资及增速【分市（州）、分行业】",
-                "labelName": "同步指标"
-            },
-            {
-                "typeName": "投资",
-                "indexId": "74",
-                "indexName": "国有建设用地出让面积（互联网大数据）",
-                "labelName": "先行指标"
-            }
-        ]
-    },
-    "errCode": "0"
+	"errMsg": "数据获取成功",
+	"data": {
+		"result": [{
+				"typeName": "投资",
+				"indexId": "87",
+				"indexName": "房地产投资及增速【分市（州）、分行业】",
+				"labelName": "同步指标"
+			},
+			{
+				"typeName": "投资",
+				"indexId": "74",
+				"indexName": "国有建设用地出让面积（互联网大数据）",
+				"labelName": "先行指标"
+			},
+			{
+				"typeName": "综合",
+				"indexId": "14",
+				"indexName": "广义货币供应量",
+				"labelName": "同步指标"
+			}
+		]
+	},
+	"errCode": "0"
 }
