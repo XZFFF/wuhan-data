@@ -34,7 +34,7 @@
             <text>QQ/邮箱</text>
         </view>
         <view class="feedback-body">
-            <input class="feedback-input" v-model="sendDate.contact" placeholder="填写您的联系方式以便我们后续联系您" :value="contact" />
+            <input class="feedback-input" v-model="sendDate.contact" placeholder="填写您的联系方式以便我们后续联系您" />
         </view>
         <button type="default" class="feedback-submit" @tap="send">提交</button>
     </view>
@@ -220,5 +220,8 @@
     }
 	.feedback-submit{
 		margin-top: 125upx;
+	}
+	.feedback-input{
+		height: 80upx;
 	}
 </style>

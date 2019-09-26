@@ -3,6 +3,7 @@
 		<view style="margin: 10upx 20upx;">综合-同步-PMI指数-采购经理版块-全省采购经理指数</view>
 		<wd-area-picker v-if="isArea=='1' || isArea==1" @confirm="onConfirm" :timeCondition="timeCondition"></wd-area-picker>
 		<wd-time-picker v-else @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
+		<wdSharePoster></wdSharePoster>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
@@ -12,6 +13,7 @@
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
 		<wd-share type="search" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share>
+		
 	</view>
 </template>
 
@@ -22,6 +24,7 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
+	import wdSharePoster from '@/components/wd-sharePoster/wd-sharePoster.vue';
 	import checkApi from '@/common/checkApi.js';
 	import searchDetailApiJson from "@/common/api/searchDetail.json";
 	import searchConfirmApiJson from "@/common/api/searchConfirm.json";
@@ -35,7 +38,8 @@
 			wdEcharts,
 			wdTable,
 			wdRelatedList,
-			wdShare
+			wdShare,
+			wdSharePoster
 		},
 		data() {
 			return {
@@ -78,7 +82,8 @@
 				let dataApi;
 				console.log("token:" + token + "indexId:" + this.indexId + "source:" + this.source)
 				uni.request({
-					url: this.apiUrl + 'searchDetail',
+					// url: this.apiUrl + 'searchDetail',
+					url: "https://www.baidu.com",
 					method: 'POST',
 					data: {
 						token: token,
@@ -107,6 +112,21 @@
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
 							_self.relatedData = dataApi.data.relatedData;
+							var drawCanvas = _self.indexDetail;
+							var drawArr = [];
+							var canvasTitle = [];
+							var canvasHeight = [];
+							for (var i of drawCanvas) {
+								if (i.classType === "echarts") {
+									drawArr.push("echart"+i.id);
+									canvasTitle.push(i.classTitle);
+									canvasHeight.push(i.classHeight);
+								}
+							}
+							console.log("drawArr:"+drawArr);
+							uni.setStorageSync('drawArr',drawArr);
+							uni.setStorageSync('canvasTitle',canvasTitle);
+							uni.setStorageSync('canvasHeight',canvasHeight);
 							// 计算classHeight及总Height
 							this.setHeight();
 							// this.isFavorite = true;
@@ -224,7 +244,7 @@
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;
 			}
-		},
+		}
 	}
 </script>
 

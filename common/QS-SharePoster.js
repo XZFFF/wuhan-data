@@ -54,8 +54,8 @@ function returnPromise(obj) {
 			}
 			// 为了ios 缩放一些
 			bgScale = bgScale || .75;
-			bgObj.width = bgObj.width * bgScale;
-			bgObj.height = bgObj.height * bgScale;
+			// bgObj.width = bgObj.width * bgScale;
+			// bgObj.height = bgObj.height * bgScale;
 
 			_app.log('获取背景图信息对象成功:' + JSON.stringify(bgObj));
 			const params = {
@@ -131,6 +131,7 @@ function drawShareImage(obj) { //绘制海报方法
 		try {
 			_app.showLoading('正在绘制海报');
 			if (bgObj && bgObj.path) {
+				console.log("bgObj.path:"+bgObj.path);
 				Context.drawImage(bgObj.path, 0, 0, bgObj.width, bgObj.height);
 			} else {
 				if (bgObj.backgroundColor) {
@@ -168,7 +169,7 @@ function drawShareImage(obj) { //绘制海报方法
 				// #ifdef H5
 				rs({
 					tempFilePath: document.querySelector(`uni-canvas[canvas-id=${posterCanvasId}]>canvas`).toDataURL(
-						'image/jpeg', setObj.quality || .8)
+						'image/jpeg', setObj.quality || 1)
 				});
 				// #endif
 				// #ifndef H5
@@ -179,7 +180,7 @@ function drawShareImage(obj) { //绘制海报方法
 					height: bgObj.height,
 					destWidth: bgObj.width * 2, // 若H5使用这里请不要乘以二
 					destHeight: bgObj.height * 2, // 若H5使用这里请不要乘以二
-					quality: .8,
+					quality: 1,
 					...setObj
 				};
 				_app.log('canvasToTempFilePath的data对象:' + JSON.stringify(data));

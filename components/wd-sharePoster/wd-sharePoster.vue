@@ -12,11 +12,14 @@
 			</view>
 		</view>
 		<!--显示的按钮样式 -->
-		<!-- <button type="primary" @tap="shareFc()">生成海报</button> -->
+		<button type="primary" @tap="shareFc()">生成海报</button>
 		<view class="hideCanvasView">
 			<canvas class="hideCanvas" 
 			canvas-id="default_PosterCanvasId"
 			:style="{width: (poster.width||0) + 'px', height: (poster.height||0) + 'px'}"></canvas>
+		</view>
+		<view class="hideCanvas">
+			<canvas canvas-id="hideCanvas" :style="{height: canvasHeight+'px',width: windowWidth+'px'}"></canvas>
 		</view>
 	</view>
 </template>
@@ -29,8 +32,23 @@
 			return {
 				poster: {},
 				qrShow: false,
-				canvasId: 'default_PosterCanvasId'
+				canvasId: 'default_PosterCanvasId',
+				canvasHeight: 0,
+				windowWidth: 0
 			};
+		},
+		updated() {
+				const { windowWidth, windowHeight } = uni.getSystemInfoSync();	
+				this.windowWidth = windowWidth;
+				var heiArr = uni.getStorageSync("canvasHeight");
+				var titleArr = uni.getStorageSync("canvasTitle");
+				var hei = 30;
+				console.log("windowWidth:"+windowWidth);
+				for (var i of heiArr) {
+					hei += parseInt(i)+20;
+				}
+				console.log("hei:"+hei);
+				this.canvasHeight = hei;
 		},
 		methods: {
 			async shareFc() {
@@ -40,7 +58,11 @@
 							type: 'testShareType',
 							posterCanvasId: this.canvasId,
 							setCanvasWH: ({bgObj, type, bgScale}) => { // 为动态设置画布宽高的方法，
+								console.log("bgObj.height:"+bgObj.height);
 								this.poster = bgObj;
+								if (this.poster.height>1400) {
+									this.poster.height = 1400;
+								}
 							},
 							// setDraw: ({Context, bgObj, type, bgScale}) => {
 							// 	Context.setFillStyle('black');
@@ -60,8 +82,11 @@
 			},
 			saveImage() {
 				// #ifndef H5
+				const finalPath = uni.getStorageSync("drawImg");
+				console.log("drawImg:"+finalPath);
 				uni.saveImageToPhotosAlbum({
-					filePath: this.poster.finalPath,
+					// filePath: this.poster.finalPath,
+					filePath: finalPath,
 					success(res) {
 						_app.showToast('保存成功');
 					}
@@ -72,8 +97,10 @@
 				// #endif
 			},
 			shareImg() {
+				const finalPath = uni.getStorageSync("drawImg");
 				// #ifdef APP-PLUS
-				_app.getShare(false, false, 2, '', '', '', this.poster.finalPath, false, false);
+				// _app.getShare(false, false, 2, '', '', '', this.poster.finalPath, false, false);
+				_app.getShare(false, false, 2, '', '', '', finalPath, false, false);
 				// #endif
 			
 				// #ifndef APP-PLUS
@@ -116,7 +143,8 @@
 		bottom: 0;
 		opacity: 0;
 		outline: 0;
-		transform: scale(3);
+		/* transform: scale(3); */
+		transform: scale(1);
 		perspective: 2500upx;
 		background: rgba(0, 0, 0, 0.6);
 		transition: all .3s ease-in-out;
