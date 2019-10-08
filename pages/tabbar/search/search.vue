@@ -47,7 +47,8 @@
 						</view>
 						<view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">{{item.path}}</view>
 					</view>
-					<button class="cu-btn bg-cyan shadow" style="margin: auto 30upx auto 0upx;" :disabled="item.isArea ==1?false:true" @click="searchResultTap(item, 1)">地市数据</button>
+					<button class="cu-btn bg-cyan shadow" style="margin: auto 30upx auto 0upx;" :disabled="item.isArea ==1?false:true"
+					 @click="searchResultTap(item, 1)">地市数据</button>
 				</view>
 			</view>
 			<view v-else class="no-data">{{noResultText}}</view>
@@ -245,7 +246,7 @@
 					// 点击列表存储搜索数据,更新历史搜索记录
 					console.log("存储历史记录" + JSON.stringify(item));
 					util.setHistory(item.id, item.name, item.source, isArea);
-					this.historyList = uni.getStorageSync('search_history');
+					this.historyList = util.getHistory();
 					// TODO 记录历史搜索记录到服务端
 					// 跳转到对应的界面,这里先做的是返回上一个界面
 					console.log("已存储的历史记录" + JSON.stringify(this.historyList));
@@ -273,7 +274,7 @@
 				this.keyword = '';
 				this.isHistory = true;
 				this.historyList = [];
-				this.historyList = uni.getStorageSync('search_history');
+				this.historyList = util.getHistory();
 				return;
 			} else {
 				this.keyword = text;
@@ -289,7 +290,7 @@
 			if (!text) {
 				this.isHistory = true;
 				this.historyList = [];
-				this.historyList = uni.getStorageSync('search_history');
+				this.historyList = util.getHistory();
 				uni.showModal({
 					title: '提示',
 					content: '请输入内容。',

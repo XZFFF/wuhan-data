@@ -66,7 +66,13 @@ const util = {
 		});
 	},
 	getHistory() {
-
+		let searchHistory = uni.getStorageSync('search_history');
+		if (!searchHistory) searchHistory = [];
+		if(searchHistory.length > 10) {
+			return searchHistory.slice(0, 9);
+		} else {
+			return searchHistory;
+		}
 	},
 	removeHistory() {
 		uni.removeStorage({
