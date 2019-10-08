@@ -9,6 +9,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
+		<wd-share-poster></wd-share-poster>
 		<wd-share type="analysis" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share>
 	</view>
 </template>
@@ -19,8 +20,9 @@
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdShare from '@/components/wd-share/wd-share.vue';
+	import wdSharePoster from '@/components/wd-sharePoster/wd-sharePoster.vue';
 	import checkApi from '@/common/checkApi.js';
-	//import analysisDetailApiJson from "@/common/api/analysisDetail.json";
+	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
 
 	//import analysisDetailApiJson from "@/common/api/anaDemo.json";
@@ -31,7 +33,8 @@
 			wdEcharts,
 			wdTable,
 			wdRelatedList,
-			wdShare
+			wdShare,
+			wdSharePoster
 		},
 		data() {
 			return {
@@ -60,7 +63,7 @@
 			uni.showLoading({
 				title: "加载栏目:" + this.indexId,
 			});
-			this.showStorage(this.indexId);
+			// this.showStorage(this.indexId);
 			console.log("0请求的indexId=" + this.indexId);
 			this.initAnalysisDetail(this.indexId);
 			this.initNav();
@@ -95,6 +98,7 @@
 						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
+						dataApi = analysisDetailApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
