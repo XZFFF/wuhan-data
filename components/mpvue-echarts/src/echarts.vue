@@ -1,62 +1,95 @@
 <template>
 	<canvas v-if="canvasId" class="ec-canvas" :id="canvasId" :canvasId="canvasId" @touchstart="touchStart" @touchmove="touchMove"
-	 @touchend="touchEnd" @error="error"></canvas>
+	 @touchend="touchEnd" @error="error">
+	</canvas>
 </template>
+
 <script>
-	import WxCanvas from "./wx-canvas";
+	import WxCanvas from './wx-canvas';
+
 	export default {
 		props: {
+			echarts: {
+				required: true,
+				type: Object,
+				default () {
+					return null;
+				},
+			},
+			onInit: {
+				required: true,
+				type: Function,
+				default: null,
+			},
 			canvasId: {
 				type: String,
-				default: "ec-canvas"
+				default: 'ec-canvas',
 			},
 			lazyLoad: {
 				type: Boolean,
-				default: false
+				default: false,
 			},
 			disableTouch: {
 				type: Boolean,
-				default: false
+				default: false,
 			},
 			throttleTouch: {
 				type: Boolean,
-				default: false
-			}
-		},
-		// #ifdef H5  
-		mounted() {
-			if (!this.lazyLoad) this.init();
-		},
-		// #endif  
-		// #ifndef H5  
-		onReady() {
-			if (!this.lazyLoad) this.init();
-		},
-		// #endif  
-		methods: {
-			setChart(chart) {
-				this.chart = chart;
+				default: false,
 			},
+		},
+		onLoad() {
+			this.init();
+		},
+		onPullDownRefresh() {
+			this.init();
+		},
+		// #ifdef H5
+		mounted() {
+			if (!this.echarts) {
+				console.warn('组件需绑定 echarts 变量，例：<ec-canvas id="mychart-dom-bar" ' +
+					'canvas-id="mychart-bar" :echarts="echarts"></ec-canvas>');
+				return;
+			}
+
+			if (!this.lazyLoad) this.init();
+		},
+		// #endif
+		// #ifndef H5
+		onReady() {
+			if (!this.echarts) {
+				console.warn('组件需绑定 echarts 变量，例：<ec-canvas id="mychart-dom-bar" ' +
+					'canvas-id="mychart-bar" :echarts="echarts"></ec-canvas>');
+				return;
+			}
+
+			if (!this.lazyLoad) this.init();
+		},
+		// #endif
+		methods: {
 			init() {
+				if (!this.onInit) {
+					console.warn('请传入 onInit 函数进行初始化');
+					return;
+				}
+
 				const {
 					canvasId
 				} = this;
-				this.ctx = wx.createCanvasContext(canvasId, this);
-				this.canvas = new WxCanvas(this.ctx, canvasId);
-				const query = wx.createSelectorQuery().in(this);
-				query
-					.select(`#${canvasId}`)
-					.boundingClientRect(res => {
-						if (!res) {
-							setTimeout(() => this.init(), 50);
-							return;
-						}
-						this.$emit("onInit", {
-							width: res.width,
-							height: res.height
-						});
-					})
-					.exec();
+				this.ctx = wx.createCanvasContext(canvasId);
+
+				const canvas = new WxCanvas(this.ctx, canvasId);
+
+				this.echarts.setCanvasCreator(() => canvas);
+
+				const query = wx.createSelectorQuery();
+				query.select(`#${canvasId}`).boundingClientRect((res) => {
+					if (!res) {
+						setTimeout(() => this.init(), 50);
+						return;
+					}
+					this.chart = this.onInit(canvas, res.width, res.height);
+				}).exec();
 			},
 			canvasToTempFilePath(opt) {
 				const {
@@ -65,7 +98,7 @@
 				this.ctx.draw(true, () => {
 					wx.canvasToTempFilePath({
 						canvasId,
-						...opt
+						...opt,
 					});
 				});
 			},
@@ -76,13 +109,13 @@
 				} = this;
 				if (disableTouch || !chart || !e.mp.touches.length) return;
 				const touch = e.mp.touches[0];
-				chart._zr.handler.dispatch("mousedown", {
+				chart._zr.handler.dispatch('mousedown', {
 					zrX: touch.x,
-					zrY: touch.y
+					zrY: touch.y,
 				});
-				chart._zr.handler.dispatch("mousemove", {
+				chart._zr.handler.dispatch('mousemove', {
 					zrX: touch.x,
-					zrY: touch.y
+					zrY: touch.y,
 				});
 			},
 			touchMove(e) {
@@ -90,18 +123,20 @@
 					disableTouch,
 					throttleTouch,
 					chart,
-					lastMoveTime
+					lastMoveTime,
 				} = this;
 				if (disableTouch || !chart || !e.mp.touches.length) return;
+
 				if (throttleTouch) {
 					const currMoveTime = Date.now();
 					if (currMoveTime - lastMoveTime < 240) return;
 					this.lastMoveTime = currMoveTime;
 				}
+
 				const touch = e.mp.touches[0];
-				chart._zr.handler.dispatch("mousemove", {
+				chart._zr.handler.dispatch('mousemove', {
 					zrX: touch.x,
-					zrY: touch.y
+					zrY: touch.y,
 				});
 			},
 			touchEnd(e) {
@@ -111,18 +146,19 @@
 				} = this;
 				if (disableTouch || !chart) return;
 				const touch = e.mp.changedTouches ? e.mp.changedTouches[0] : {};
-				chart._zr.handler.dispatch("mouseup", {
+				chart._zr.handler.dispatch('mouseup', {
 					zrX: touch.x,
-					zrY: touch.y
+					zrY: touch.y,
 				});
-				chart._zr.handler.dispatch("click", {
+				chart._zr.handler.dispatch('click', {
 					zrX: touch.x,
-					zrY: touch.y
+					zrY: touch.y,
 				});
-			}
-		}
+			},
+		},
 	};
 </script>
+
 <style scoped>
 	.ec-canvas {
 		width: 100%;
