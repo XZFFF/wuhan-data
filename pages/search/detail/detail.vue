@@ -44,6 +44,7 @@
 				source: "",
 				isFavorite: false,
 				isArea: 1,
+				path: "",
 				timeCondition: [],
 				indexDetail: [],
 				relatedData: [],
@@ -60,6 +61,7 @@
 				_self.isFavorite = e.isFavorite;
 				_self.source = e.source;
 				_self.isArea = e.isArea;
+				_self.path = e.path;
 			}
 			console.log("收藏状态：" + this.isFavorite);
 			// 初始化页面数据
@@ -76,16 +78,24 @@
 				let token = uni.getStorageSync('token');
 				checkApi.checkNetwork();
 				let dataApi;
-				console.log("token:" + token + "indexId:" + this.indexId + "source:" + this.source)
+				let requestData = {
+					token: token,
+					indexId: this.indexId,
+					source: this.source,
+					isArea: this.isArea,
+					path: this.path
+				};
+				console.log(JSON.stringify(requestData));
 				uni.request({
-					// url: this.apiUrl + 'searchDetail',
-					url: 'https://www.baidu.com',
+					url: this.apiUrl + 'searchDetail',
+					// url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
 						indexId: this.indexId,
 						source: this.source,
-						isArea: this.isArea
+						isArea: this.isArea,
+						lj: this.path
 					},
 					success: res => {
 						// console.log(JSON.stringify(res.data));
@@ -97,7 +107,7 @@
 						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
-						dataApi = searchDetailApiJson;
+						// dataApi = searchDetailApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据

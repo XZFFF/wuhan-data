@@ -37,8 +37,8 @@
 		<!-- 搜索结果列表 -->
 		<view v-else class="">
 			<view v-if="resultList.length > 0" class="history-list-box">
-				<view class="history-list-item" v-for="(item, index) in resultList" :key="index" @click="searchResultTap(item)">
-					<view style="display: flex; flex-direction: column; justify-content: flex-start;">
+				<view class="history-list-item" v-for="(item, index) in resultList" :key="index">
+					<view style="display: flex; flex-direction: column; justify-content: flex-start;" @click="searchResultTap(item, 0)">
 						<view style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 28upx;">
 							<rich-text style="display: flex; align-items: center;max-width: 280upx;font-size: 28upx;" :nodes="item.nameNodes"></rich-text>
 							<view class="tag-view" style="display: flex; flex-direction: row;">
@@ -47,7 +47,7 @@
 						</view>
 						<view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">{{item.path}}</view>
 					</view>
-					<button class="cu-btn bg-cyan shadow" style="margin: auto 30upx auto 0upx;" :disabled="item.isArea ==1?false:true">地市数据</button>
+					<button class="cu-btn bg-cyan shadow" style="margin: auto 30upx auto 0upx;" :disabled="item.isArea ==1?false:true" @click="searchResultTap(item, 1)">地市数据</button>
 				</view>
 			</view>
 			<view v-else class="no-data">{{noResultText}}</view>
@@ -175,8 +175,8 @@
 				});
 				checkApi.checkNetwork();
 				uni.request({
-					// url: this.apiUrl + 'searchIndi',
-					url: 'https://www.baidu.com',
+					url: this.apiUrl + 'searchIndi',
+					// url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						keyword: val,
@@ -184,7 +184,7 @@
 					},
 					success: res => {
 						let searchResultApi = res.data;
-						searchResultApi = searchResultApiJson;
+						// searchResultApi = searchResultApiJson;
 						// 检查json数据
 						checkApi.isApi(searchResultApi);
 						// 设置各部分数据
@@ -235,7 +235,7 @@
 			/**
 			 * 搜索结果列表点击
 			 */
-			searchResultTap(item) {
+			searchResultTap(item, isArea) {
 				item = JSON.parse(JSON.stringify(item));
 				// 如果当前是历史搜索页面,那么点击不储存,直接跳转
 				if (this.isHistory) {
@@ -244,14 +244,14 @@
 					this.isHistory = true;
 					// 点击列表存储搜索数据,更新历史搜索记录
 					console.log("存储历史记录" + JSON.stringify(item));
-					util.setHistory(item.id, item.name, item.source, item.isArea);
+					util.setHistory(item.id, item.name, item.source, isArea);
 					this.historyList = uni.getStorageSync('search_history');
 					// TODO 记录历史搜索记录到服务端
 					// 跳转到对应的界面,这里先做的是返回上一个界面
 					console.log("已存储的历史记录" + JSON.stringify(this.historyList));
 					uni.navigateTo({
 						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + '&isFavorite=false' +
-							"&source=" + item.source
+							"&source=" + item.source + "&isArea=" + isArea + "&path=" + item.path
 					})
 				}
 			},
