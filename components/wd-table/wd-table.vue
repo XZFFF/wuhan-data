@@ -1,5 +1,4 @@
 <template>
-
 	<view class="table-main">
 		<view class="table-nav">
 			<image src="../../../static/icon/echarts/table.png"></image>
@@ -85,7 +84,7 @@
 	}
 
 	.table-nav image {
-		margin: 20upx 0upx 20upx 20upx;
+		margin: auto 0upx auto 20upx;
 		width: 50upx;
 		height: 50upx;
 	}
