@@ -9,7 +9,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share-poster></wd-share-poster>
+		<wdSharePoster></wdSharePoster>
 		<wd-share type="analysis" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share>
 	</view>
 </template>
@@ -78,7 +78,8 @@
 				console.log("1请求的indexId" + indexId);
 				console.log("2请求的indexId=" + this.indexId);
 				uni.request({
-					url: this.apiUrl + 'getAnalysisDetail',
+					// url: this.apiUrl + 'getAnalysisDetail',
+					url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
@@ -107,6 +108,22 @@
 							this.timeCondition = dataApi.data.timeCondition;
 							this.indexDetail = dataApi.data.classInfo;
 							this.relatedData = dataApi.data.relatedData;
+							var drawCanvas = _self.indexDetail;
+							var drawArr = [];
+							var canvasTitle = [];
+							var canvasHeight = [];
+							for (var i of drawCanvas) {
+								if (i.classType === "echarts") {
+									drawArr.push("echart"+i.id);
+									canvasTitle.push(i.classTitle);
+									canvasHeight.push(i.classHeight);
+								}
+							}
+							console.log("drawArr:"+drawArr);
+							uni.setStorageSync('drawTitle',_self.indexName);
+							uni.setStorageSync('drawArr',drawArr);
+							uni.setStorageSync('canvasTitle',canvasTitle);
+							uni.setStorageSync('canvasHeight',canvasHeight);
 							// 计算classHeight及总Height
 							this.setHeight();
 						} catch (e) {

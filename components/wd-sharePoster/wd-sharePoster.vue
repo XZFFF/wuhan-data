@@ -42,10 +42,10 @@
 				this.windowWidth = windowWidth;
 				var heiArr = uni.getStorageSync("canvasHeight");
 				var titleArr = uni.getStorageSync("canvasTitle");
-				var hei = 30;
+				var hei = 50;
 				console.log("windowWidth:"+windowWidth);
 				for (var i of heiArr) {
-					hei += parseInt(i)+20;
+					hei += parseInt(i)+40;
 				}
 				console.log("hei:"+hei);
 				this.canvasHeight = hei;

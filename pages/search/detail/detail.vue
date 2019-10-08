@@ -133,6 +133,7 @@
 								}
 							}
 							console.log("drawArr:"+drawArr);
+							uni.setStorageSync('drawTitle',_self.indexName);
 							uni.setStorageSync('drawArr',drawArr);
 							uni.setStorageSync('canvasTitle',canvasTitle);
 							uni.setStorageSync('canvasHeight',canvasHeight);
