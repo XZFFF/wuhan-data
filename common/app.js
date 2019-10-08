@@ -34,29 +34,113 @@ let _app = {
 		// });
 		return new Promise((rs, rj) => {
 			let image = new Promise((rs, rj) => {
-				var res;
-				var imgID = String(Date.parse( new Date()));
-				var self = plus.webview.currentWebview();  
-				var bitmap = new plus.nativeObj.Bitmap(imgID);
-				self.draw(bitmap,function(){
-						res = bitmap.toBase64Data();
-						rs(res);
-				});
+				var drawArr = uni.getStorageSync('drawArr');
+				var canvasTitle = uni.getStorageSync('canvasTitle');
+				const ctx = uni.createCanvasContext('hideCanvas');
+				ctx.setFillStyle("#FFFFFF");
+				ctx.fillRect(0, 0,100000,1000000);
+				var hei = 30;
+				var wid = 0;
+				var url;
+				var imgObj;
+				async function f1() {
+					for(var i=0;i<drawArr.length;i++){
+						await new Promise((rs,rj) => {
+							uni.canvasToTempFilePath({
+								canvasId: drawArr[i],
+								success: function(res) {
+									console.log("返回图片路径"+i+":"+res.tempFilePath);
+									uni.saveFile({
+										tempFilePath: res.tempFilePath,
+										success(res) {
+											log('保存成功:' + JSON.stringify(res));
+											url = res.savedFilePath;
+											console.log("url"+i+":"+url);
+											uni.getImageInfo({
+												src: res.savedFilePath,
+												success: res => {
+													log('获取图片信息成功:' + JSON.stringify(res));
+													imgObj = res;
+													rs(res);
+												},
+												fail: err => {
+													log('获取图片信息失败:' + JSON.stringify(err));
+												}
+											})
+										}
+									})
+								}
+							});
+						}).then(function() {
+							// uni.saveImageToPhotosAlbum({
+							// 	filePath: url,
+							// 	success: function () {
+							// 		console.log('save success'+i);
+							// 	}
+							// });
+							//#ifndef H5
+							ctx.font = "18px bold 黑体";
+							ctx.setFillStyle('black');
+							// 设置水平对齐方式
+							ctx.setTextAlign = "center";
+							// 设置垂直对齐方式
+							ctx.setTextBaseline = "middle";
+							// 绘制文字（参数：要写的字，x坐标，y坐标）
+							var txt = canvasTitle[i];
+							ctx.setFontSize(20);
+							ctx.fillText(txt, 30, hei);
+							hei += 20;
+							ctx.drawImage(url,wid,hei,imgObj.width/3,imgObj.height/3);
+							hei += imgObj.height/3;
+							//#endif
+							console.log("绘图成功"+i);
+							if (i === drawArr.length-1) {
+								f2();
+							}
+						})
+					}
+				}
+				function f2 (){
+					console.log("绘图到画布");
+					ctx.draw();
+					setTimeout(function(){
+						uni.canvasToTempFilePath({
+							canvasId: 'hideCanvas',
+							success: function(res) {
+								console.log("成功保存到hideCanvas");
+								//#ifndef H5
+								console.log("res.tempFilePath:"+res.tempFilePath);
+								uni.saveFile({
+									tempFilePath: res.tempFilePath,
+									success(res) {
+										log('保存成功:' + JSON.stringify(res));
+										uni.setStorageSync("drawImg",res.savedFilePath);
+										uni.getImageInfo({
+											src: res.savedFilePath,
+											success: res => {
+												console.log("image.width:"+res.width);
+												console.log("image.height:"+res.height);
+											},
+											fail: err => {
+												log('获取图片信息失败:' + JSON.stringify(err));
+											}
+										})
+									}
+								})
+								rs(res.tempFilePath);
+								//#endif
+							} ,
+						})
+					},500);
+				}
+				f1();
 			});
-			console.log("打印测试："+image);
-			// if (backgroundImage)
-			// 	image = backgroundImage;
-			// else
-			// 	switch (type) { //根据type获取背景图, 一般要改成request获取
-			// 		case 1:
-			// 			image = '';
-			// 			break;
-			// 		default:
-			// 			image = '/static/1.jpg';
-			// 			break;
-			// 	}
+
 			if (image)
-				rs(image); // resolve图片的路径
+				{
+					console.log("image:"+image);
+					rs(image);
+					} // resolve图片的路径
 			else
 				rj('背景图片路径不存在');
 		})
@@ -558,6 +642,7 @@ let _app = {
 	// #endif
 }
 
+	
 function checkMPUrl(url) {
 	// #ifdef MP
 	if(
