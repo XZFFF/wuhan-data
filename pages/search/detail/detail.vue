@@ -118,6 +118,21 @@
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
 							_self.relatedData = dataApi.data.relatedData;
+							var drawCanvas = _self.indexDetail;
+							var drawArr = [];
+							var canvasTitle = [];
+							var canvasHeight = [];
+							for (var i of drawCanvas) {
+								if (i.classType === "echarts") {
+									drawArr.push("echart"+i.id);
+									canvasTitle.push(i.classTitle);
+									canvasHeight.push(i.classHeight);
+								}
+							}
+							console.log("drawArr:"+drawArr);
+							uni.setStorageSync('drawArr',drawArr);
+							uni.setStorageSync('canvasTitle',canvasTitle);
+							uni.setStorageSync('canvasHeight',canvasHeight);
 							// 计算classHeight及总Height
 							this.setHeight();
 							// this.isFavorite = true;
