@@ -266,7 +266,7 @@
 	},
 	"condition": {
 		//模式配置，仅开发期间生效
-		"current": 4, //当前激活的模式(list 的索引项)
+		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [{
 				"name": "home",
 				"path": "pages/tabbar/home/home",
