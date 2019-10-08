@@ -306,9 +306,9 @@
 		onNavigationBarButtonTap(e) {
 			let self = this;
 			uni.showActionSheet({
-				itemList: ['全部', '国统', '湖统', '大数据'],
+				itemList: ['全部', '国统', '湖统'],
 				success: function(res) {
-					var itemList = ['全部', '国统', '湖统', '大数据'];
+					var itemList = ['全部', '国统', '湖统'];
 					// 这里无法直接调用前面的itemList，所以重新声明一次
 					self.source = itemList[res.tapIndex];
 					// 通过控制该页面的webview对象来重置导航栏的button中text数值
