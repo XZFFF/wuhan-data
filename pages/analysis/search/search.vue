@@ -17,7 +17,7 @@
 						<text class="text-black">{{item.indexName}}</text>
 					</view>
 					<view class="action">
-						<wd-tag style="margin-right: 10upx;" :text="item.typeName" size="small" :circle="true"></wd-tag>
+						<wd-tag :text="item.typeName" size="small" :circle="true"></wd-tag>
 						<wd-tag :text="item.labelName" size="small" :circle="true"></wd-tag>
 					</view>
 				</view>
@@ -51,10 +51,30 @@
 				this.keyword = e.detail.value;
 			},
 			doSearch() {
-				let dataApi = analysisSearchApiJson;
-				// 检查json数据
-				checkApi.isApi(dataApi);
-				this.searchResult = dataApi.data.result;
+				uni.showLoading({
+					title: "正在搜索...",
+				});
+				checkApi.checkNetwork();
+				uni.request({
+					url: this.apiUrl + 'searchAnalysis',
+					method: 'POST',
+					data: {
+						keyword: this.keyword
+					},
+					success: (res) => {
+						let dataApi = res.data;
+						// 检查json数据
+						checkApi.isApi(dataApi);
+						// 设置各部分数据
+						this.searchResult = dataApi.data.result;
+						// this.searchResult = analysisSearchApiJson.data.result;
+						console.log(JSON.stringify(dataApi));
+					},
+					fail: (e) => {},
+					complete: () => {
+						uni.hideLoading();
+					}
+				});
 			},
 			// 跳转到指标详情页
 			openDetail(indexId, indexName, source) {

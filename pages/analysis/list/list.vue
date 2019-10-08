@@ -111,6 +111,17 @@
 			// this.labelList = this.typeList[this.typeActive].labelList;
 			// this.height = uni.getSystemInfoSync().windowHeight;
 		},
+		onNavigationBarButtonTap(e) {
+			console.log(JSON.stringify(e));
+			if(e.text == '搜索') {
+				uni.navigateTo({
+					url: '../search/search',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			}
+		},
 		methods: {
 			initAnalysisList() {
 				let token = uni.getStorageSync('token');
