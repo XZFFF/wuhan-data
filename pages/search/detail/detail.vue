@@ -119,13 +119,7 @@
 					// url: this.apiUrl + 'searchDetail',
 					url: 'https://www.baidu.com',
 					method: 'POST',
-					data: {
-						token: token,
-						indexId: this.indexId,
-						source: this.source,
-						isArea: this.isArea,
-						path: this.path
-					},
+					data: requestData,
 					success: (res) => {
 						dataApi = res.data;
 						let search_detail_key = 'search_detail' + _self.indexId;
@@ -162,22 +156,27 @@
 				uni.showLoading({
 					title: "数据加载中...",
 				});
+				let token = uni.getStorageSync('token');
 				checkApi.checkNetwork();
+				let dataApi;
+				let requestData = {
+					token: token,
+					indexId: _self.indexId,
+					source: _self.source,
+					isArea: _self.isArea,
+					path: _self.path,
+					timeFreq: val.timeFreq,
+					startTime: val.startTime,
+					endTime: val.endTime,
+				};
 				uni.request({
 					url: this.apiUrl + 'searchConfirm',
 					method: 'POST',
-					data: {
-						indexId: _self.indexId,
-						source: _self.source,
-						isArea: _self.isArea,
-						timeFreq: val.timeFreq,
-						startTime: val.startTime,
-						endTime: val.endTime,
-					},
+					data: requestData,
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						try {
-							let dataApi = res.data;
+							dataApi = res.data;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
