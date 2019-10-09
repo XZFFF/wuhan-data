@@ -1,6 +1,6 @@
 <template>
 	<view class="container" :style="{height:totalHeight + 'px'}">
-		<view style="margin: 10upx 20upx;">综合-同步-PMI指数-采购经理版块-全省采购经理指数</view>
+		<view style="margin: 10upx 20upx;">{{path}}</view>
 		<wd-area-picker v-if="isArea=='1' || isArea==1" @confirm="onConfirm" :timeCondition="timeCondition"></wd-area-picker>
 		<wd-time-picker v-else @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
@@ -12,7 +12,6 @@
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
 		<wd-share-poster></wd-share-poster>
-		<wd-share type="search" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share>
 	</view>
 </template>
 
@@ -76,7 +75,34 @@
 			this.initSearchDetail();
 			this.initNav();
 		},
+		onNavigationBarButtonTap(e) {
+			switch (e.type) {
+				case "favorite":
+					if (this.isFavorite == false || this.isFavorite == "false") {
+						if (checkApi.setCollect(this.type, this.indexId, this.indexName, this.source)) {
+							this.isFavorite = true;
+							favColor = "#f9da74";
+						}
+					} else if (this.isFavorite == true || this.isFavorite == "true") {
+						if (checkApi.delCollect(this.type, this.indexId, this.indexName, this.source)) {
+							this.isFavorite = false;
+							favColor = "#ffffff";
+						}
+					} else {
+						console.log("收藏状态异常" + this.isFavorite);
+					}
+					// 更新导航栏
+					this.initNav();
+					break;
+				default:
+					uni.showToast({
+						title: e.type,
+						icon: "none"
+					});
+			}
+		},
 		methods: {
+			// 初始化指标数据
 			initSearchDetail() {
 				let token = uni.getStorageSync('token');
 				checkApi.checkNetwork();
@@ -98,10 +124,9 @@
 						indexId: this.indexId,
 						source: this.source,
 						isArea: this.isArea,
-						lj: this.path
+						path: this.path
 					},
-					success: res => {
-						// console.log(JSON.stringify(res.data));
+					success: (res) => {
 						dataApi = res.data;
 						let search_detail_key = 'search_detail' + _self.indexId;
 						uni.setStorageSync(search_detail_key, dataApi);
@@ -121,26 +146,10 @@
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
 							_self.relatedData = dataApi.data.relatedData;
-							var drawCanvas = _self.indexDetail;
-							var drawArr = [];
-							var canvasTitle = [];
-							var canvasHeight = [];
-							for (var i of drawCanvas) {
-								if (i.classType === "echarts") {
-									drawArr.push("echart"+i.id);
-									canvasTitle.push(i.classTitle);
-									canvasHeight.push(i.classHeight);
-								}
-							}
-							console.log("drawArr:"+drawArr);
-							uni.setStorageSync('drawTitle',_self.indexName);
-							uni.setStorageSync('drawArr',drawArr);
-							uni.setStorageSync('canvasTitle',canvasTitle);
-							uni.setStorageSync('canvasHeight',canvasHeight);
 							// 计算classHeight及总Height
 							this.setHeight();
-							// this.isFavorite = true;
-							this.initNav();
+							// 设置画布数据
+							this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -148,6 +157,7 @@
 					}
 				});
 			},
+			// 再请求指标数据
 			onConfirm(val) {
 				uni.showLoading({
 					title: "数据加载中...",
@@ -168,12 +178,10 @@
 						console.log("获取成功;" + JSON.stringify(res.data));
 						try {
 							let dataApi = res.data;
-							// 检查json数据
 							checkApi.isApi(dataApi);
-							// 更新图例数据
 							_self.indexDetail = dataApi.data.classInfo;
-							// 计算classHeight及总Height
 							this.setHeight();
+							this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -186,6 +194,7 @@
 					}
 				});
 			},
+			// 展示缓存数据
 			showStorage() {
 				let dataApi;
 				let search_detail_key = 'search_detail' + _self.indexId;
@@ -205,6 +214,7 @@
 					}
 				}
 			},
+			// 渲染导航栏title及icon
 			initNav() {
 				let favColor = "#ffffff";
 				// 渲染收藏icon
@@ -213,7 +223,7 @@
 					favColor = "#ffffff";
 				} else {
 					this.isFavorite == true;
-					favColor = "#f9da74";
+					favColor = "#e54d42"; // red-#e54d42 yellow-#f9da74
 				}
 				console.log("设置收藏按钮颜色：" + favColor);
 				let pages = getCurrentPages();
@@ -241,6 +251,7 @@
 				console.log(JSON.stringify(currentWebview));
 				// #endif
 			},
+			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
 			setHeight() {
 				let timeConditionHeight = 300;
 				let classHeight = 0;
@@ -253,6 +264,25 @@
 				}
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;
+			},
+			// 设置画布数据
+			setDrawCanvas() {
+				var drawCanvas = _self.indexDetail;
+				var drawArr = [];
+				var canvasTitle = [];
+				var canvasHeight = [];
+				for (var i of drawCanvas) {
+					if (i.classType === "echarts") {
+						drawArr.push("echart" + i.id);
+						canvasTitle.push(i.classTitle);
+						canvasHeight.push(i.classHeight);
+					}
+				}
+				console.log("drawArr:" + drawArr);
+				uni.setStorageSync('drawTitle', _self.indexName);
+				uni.setStorageSync('drawArr', drawArr);
+				uni.setStorageSync('canvasTitle', canvasTitle);
+				uni.setStorageSync('canvasHeight', canvasHeight);
 			}
 		},
 	}
