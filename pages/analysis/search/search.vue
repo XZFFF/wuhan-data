@@ -18,7 +18,7 @@
 					</view>
 					<view class="action">
 						<wd-tag :text="item.typeName" size="small" :circle="true"></wd-tag>
-						<wd-tag :text="item.labelName" size="small" :circle="true"></wd-tag>
+						<!-- <wd-tag :text="item.labelName" size="small" :circle="true"></wd-tag> -->
 					</view>
 				</view>
 			</view>

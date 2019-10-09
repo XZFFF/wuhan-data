@@ -523,13 +523,6 @@
 					]
 				}
 			}
-		],
-		"relatedData": [{
-			"indexId": "1",
-			"indexName": "全社会用电量"
-		}, {
-			"indexId": "2",
-			"indexName": "工业用电量"
-		}]
+		]
 	}
 }

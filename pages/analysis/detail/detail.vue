@@ -25,7 +25,6 @@
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
 
-	//import analysisDetailApiJson from "@/common/api/anaDemo.json";
 	var _self;
 	export default {
 		components: {
@@ -52,19 +51,16 @@
 		onLoad: function(e) {
 			_self = this;
 			if (JSON.stringify(e) != '{}') {
-				console.log("初始化数据" + e.indexId)
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
 				this.source = e.source;
 			}
-			console.log("onload 进入经济分析栏目详情页;" + JSON.stringify(e));
 			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.source);
 			// 初始化页面数据
 			uni.showLoading({
 				title: "加载栏目:" + this.indexId,
 			});
 			// this.showStorage(this.indexId);
-			console.log("0请求的indexId=" + this.indexId);
 			this.initAnalysisDetail(this.indexId);
 			this.initNav();
 		},
@@ -74,9 +70,6 @@
 				let token = uni.getStorageSync('token');
 				checkApi.checkNetwork();
 				let dataApi;
-				let timestamp = Date.parse(new Date());
-				console.log("1请求的indexId" + indexId);
-				console.log("2请求的indexId=" + this.indexId);
 				uni.request({
 					// url: this.apiUrl + 'getAnalysisDetail',
 					url: 'https://www.baidu.com',
@@ -86,11 +79,6 @@
 						indexId: this.indexId,
 					},
 					success: (res) => {
-						console.log("获取成功;" + JSON.stringify(res.data));
-						let timestamp2 = Date.parse(new Date());
-						// uni.showToast({
-						// 	title: "请求时间:" + (timestamp2 - timestamp)
-						// });
 						dataApi = res.data;
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
@@ -114,16 +102,16 @@
 							var canvasHeight = [];
 							for (var i of drawCanvas) {
 								if (i.classType === "echarts") {
-									drawArr.push("echart"+i.id);
+									drawArr.push("echart" + i.id);
 									canvasTitle.push(i.classTitle);
 									canvasHeight.push(i.classHeight);
 								}
 							}
-							console.log("drawArr:"+drawArr);
-							uni.setStorageSync('drawTitle',_self.indexName);
-							uni.setStorageSync('drawArr',drawArr);
-							uni.setStorageSync('canvasTitle',canvasTitle);
-							uni.setStorageSync('canvasHeight',canvasHeight);
+							console.log("drawArr:" + drawArr);
+							uni.setStorageSync('drawTitle', _self.indexName);
+							uni.setStorageSync('drawArr', drawArr);
+							uni.setStorageSync('canvasTitle', canvasTitle);
+							uni.setStorageSync('canvasHeight', canvasHeight);
 							// 计算classHeight及总Height
 							this.setHeight();
 						} catch (e) {
@@ -158,11 +146,8 @@
 						console.log("获取成功;" + JSON.stringify(res.data));
 						try {
 							dataApi = res.data;
-							// 检查json数据
 							checkApi.isApi(dataApi);
-							// 设置各部分数据
 							_self.indexDetail = dataApi.data.classInfo;
-							// 计算classHeight及总Height
 							this.setHeight();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
@@ -176,6 +161,7 @@
 					}
 				});
 			},
+			// 展示缓存数据
 			showStorage(indexId) {
 				let dataApi;
 				let analysis_detail_key = 'analysis_detail' + indexId;
@@ -188,7 +174,6 @@
 						this.timeCondition = dataApi.data.timeCondition;
 						this.indexDetail = dataApi.data.classInfo;
 						this.relatedData = dataApi.data.relatedData;
-						// 计算classHeight及总Height
 						this.setHeight();
 						uni.hideLoading();
 					} catch (e) {
@@ -198,6 +183,7 @@
 			},
 			// 渲染导航栏title及icon
 			initNav() {
+				console.log("收藏状态:" + this.isFavorite);
 				let favColor = "#ffffff";
 				// 渲染收藏icon
 				if (this.isFavorite == false || this.isFavorite == "false") {
@@ -205,14 +191,13 @@
 					favColor = "#ffffff";
 				} else {
 					this.isFavorite == true;
-					favColor = "#f9da74";
+					favColor = "#e54d42"; // red-#e54d42 yellow-#f9da74
 				}
 				let pages = getCurrentPages();
 				let page = pages[pages.length - 1];
 				// #ifdef APP-PLUS
 				let currentWebview = page.$getAppWebview();
 				let titleObj = currentWebview.getStyle().titleNView;
-				console.log(this.indexName);
 				try {
 					if (!titleObj.titleText) {
 						return;
@@ -229,61 +214,18 @@
 				} catch (e) {
 					console.log(JSON.stringify(e));
 				}
-				console.log(JSON.stringify(currentWebview));
-				// #endif
-			},
-			initNavTitle() {
-				// 更新导航栏收藏按钮颜色
-				let pages = getCurrentPages();
-				let page = pages[pages.length - 1];
-				// #ifdef APP-PLUS
-				let currentWebview = page.$getAppWebview();
-				let titleObj = currentWebview.getStyle().titleNView;
-				try {
-					if (!titleObj.titleText) {
-						return;
-					}
-					titleObj.titleText = this.indexName;
-					currentWebview.setStyle({
-
-						titleNView: titleObj
-					});
-				} catch (e) {
-					console.log(JSON.stringify(e));
-				}
-				// #endif
-			},
-			// 根据参数初始化导航栏中按钮的颜色
-			initFavColor(initColor) {
-				// 更新导航栏收藏按钮颜色
-				let pages = getCurrentPages();
-				let page = pages[pages.length - 1];
-				// #ifdef APP-PLUS
-				let currentWebview = page.$getAppWebview();
-				let titleObj = currentWebview.getStyle().titleNView;
-				try {
-					if (!titleObj.buttons) {
-						return;
-					}
-					titleObj.buttons[1].color = initColor;
-					currentWebview.setStyle({
-						titleNView: titleObj
-					});
-				} catch (e) {
-					console.log(JSON.stringify(e));
-				}
 				// #endif
 			},
 			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
 			setHeight() {
-				let timeConditionHeight = 200;
+				let timeConditionHeight = 300;
 				let classHeight = 0;
 				let relatedHeight = 0;
 				if (_self.indexDetail) {
 					classHeight = checkApi.calClassInfoHeight(_self.indexDetail);
 				}
 				if (_self.relatedData) {
-					relatedHeight = _self.relatedData.length == 0 ? 0 : (_self.relatedData.length + 1) * 40;
+					relatedHeight = _self.relatedData.length == 0 ? 0 : (_self.relatedData.length + 1) * 70;
 				}
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;

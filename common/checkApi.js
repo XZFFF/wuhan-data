@@ -1,6 +1,7 @@
 module.exports = {
 	error: '',
-	apiUrl: 'http://59.208.244.108:8080/wuhan-data-panel/',
+	apiUrl: 'http://59.208.244.108:4708/wuhan-data-panel/',
+	// 检查是否是合法api数据
 	isApi: function(apiData) {
 		try {
 			if (apiData && apiData.errMsg) {
@@ -30,6 +31,7 @@ module.exports = {
 			return false;
 		}
 	},
+	// 检查是否是json字符串
 	isJSON: function(str) {
 		if (typeof str == 'string') {
 			try {
@@ -45,6 +47,7 @@ module.exports = {
 			}
 		}
 	},
+	// 检验是否是数字
 	isNumber: function(checkVal) {
 		var reg = /^-?[1-9][0-9]?.?[0-9]*$/;
 		return reg.test(checkVal);
@@ -66,6 +69,7 @@ module.exports = {
 		});
 		return false;
 	},
+	// 检查token令牌
 	checkToken: function() {
 		// 检查token令牌是否存在
 		let token = uni.getStorageSync('token');
@@ -80,6 +84,7 @@ module.exports = {
 		}
 		return true;
 	},
+	// 动态计算图例高度
 	calClassInfoHeight: function(classInfo) {
 		let classHeight = 0;
 		try {
@@ -96,9 +101,7 @@ module.exports = {
 				} else if (item.classType == 'echarts') {
 					if (typeof item.classHeight === 'string') {
 						h = parseInt(item.classHeight); // 允许设置
-						console.log("版块" + i + "高度" + h);
 					} else {
-						console.log("版块" + i + "未设置高度");
 						h = 400;
 					}
 				} else if (item.classType == 'card') {
@@ -111,6 +114,7 @@ module.exports = {
 		}
 		return classHeight;
 	},
+	// 加入足迹
 	setFootprint: function(type, indexId, indexName, source) {
 		// 检查token令牌是否存在
 		let token = uni.getStorageSync('token');
@@ -146,6 +150,7 @@ module.exports = {
 		});
 		return true;
 	},
+	// 设置收藏
 	setCollect: function(type, indexId, indexName, source) {
 		// 检查token令牌是否存在
 		let token = uni.getStorageSync('token');
@@ -197,6 +202,7 @@ module.exports = {
 		});
 		return true;
 	},
+	// 取消收藏
 	delCollect: function(type, indexId) {
 		// 检查token令牌是否存在
 		let token = uni.getStorageSync('token');
