@@ -12,11 +12,9 @@
 			</view>
 		</view>
 		<!--显示的按钮样式 -->
-		<button type="primary" @tap="shareFc()">生成海报</button>
+		<!-- <button type="primary" @tap="shareFc()">生成海报</button> -->
 		<view class="hideCanvasView">
-			<canvas class="hideCanvas" 
-			canvas-id="default_PosterCanvasId"
-			:style="{width: (poster.width||0) + 'px', height: (poster.height||0) + 'px'}"></canvas>
+			<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (poster.width||0) + 'px', height: (poster.height||0) + 'px'}"></canvas>
 		</view>
 		<view class="hideCanvas">
 			<canvas canvas-id="hideCanvas" :style="{height: canvasHeight+'px',width: windowWidth+'px'}"></canvas>
@@ -38,17 +36,27 @@
 			};
 		},
 		updated() {
-				const { windowWidth, windowHeight } = uni.getSystemInfoSync();	
-				this.windowWidth = windowWidth;
-				var heiArr = uni.getStorageSync("canvasHeight");
-				var titleArr = uni.getStorageSync("canvasTitle");
-				var hei = 50;
-				console.log("windowWidth:"+windowWidth);
-				for (var i of heiArr) {
-					hei += parseInt(i)+40;
-				}
-				console.log("hei:"+hei);
-				this.canvasHeight = hei;
+			const {
+				windowWidth,
+				windowHeight
+			} = uni.getSystemInfoSync();
+			this.windowWidth = windowWidth;
+			var heiArr = uni.getStorageSync("canvasHeight");
+			var titleArr = uni.getStorageSync("canvasTitle");
+			var hei = 50;
+			console.log("windowWidth:" + windowWidth);
+			for (var i of heiArr) {
+				hei += parseInt(i) + 40;
+			}
+			console.log("hei:" + hei);
+			this.canvasHeight = hei;
+		},
+		onNavigationBarButtonTap(e) {
+			switch (e.type) {
+				case "share": //点击分享按钮
+					this.shareFc();
+					break;
+			}
 		},
 		methods: {
 			async shareFc() {
@@ -57,10 +65,14 @@
 						const d = await getSharePoster({
 							type: 'testShareType',
 							posterCanvasId: this.canvasId,
-							setCanvasWH: ({bgObj, type, bgScale}) => { // 为动态设置画布宽高的方法，
-								console.log("bgObj.height:"+bgObj.height);
+							setCanvasWH: ({
+								bgObj,
+								type,
+								bgScale
+							}) => { // 为动态设置画布宽高的方法，
+								console.log("bgObj.height:" + bgObj.height);
 								this.poster = bgObj;
-								if (this.poster.height>1400) {
+								if (this.poster.height > 1400) {
 									this.poster.height = 1400;
 								}
 							},
@@ -83,7 +95,7 @@
 			saveImage() {
 				// #ifndef H5
 				const finalPath = uni.getStorageSync("drawImg");
-				console.log("drawImg:"+finalPath);
+				console.log("drawImg:" + finalPath);
 				uni.saveImageToPhotosAlbum({
 					// filePath: this.poster.finalPath,
 					filePath: finalPath,
@@ -102,7 +114,7 @@
 				// _app.getShare(false, false, 2, '', '', '', this.poster.finalPath, false, false);
 				_app.getShare(false, false, 2, '', '', '', finalPath, false, false);
 				// #endif
-			
+
 				// #ifndef APP-PLUS
 				_app.showToast('分享了');
 				// #endif
@@ -118,21 +130,21 @@
 	.hideCanvasView {
 		position: relative;
 	}
-	
+
 	.hideCanvas {
 		position: fixed;
 		top: -99999upx;
 		left: -99999upx;
 		z-index: -99999;
 	}
-	
+
 	.flex_row_c_c {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 	}
-	
+
 	.modalView {
 		width: 100%;
 		height: 100%;
@@ -152,39 +164,39 @@
 		backface-visibility: hidden;
 		z-index: 999;
 	}
-	
+
 	.modalView.show {
 		opacity: 1;
 		transform: scale(1);
 		pointer-events: auto;
 	}
-	
+
 	.flex_column {
 		display: flex;
 		flex-direction: column;
 	}
-	
+
 	.backgroundColor-white {
 		background-color: white;
 	}
-	
+
 	.border_radius_10px {
 		border-radius: 10px;
 	}
-	
+
 	.padding1vh {
 		padding: 1vh;
 	}
-	
+
 	.posterImage {
 		width: 60vw;
 	}
-	
+
 	.flex_row {
 		display: flex;
 		flex-direction: row;
 	}
-	
+
 	.marginTop2vh {
 		margin-top: 2vh;
 	}

@@ -38,7 +38,7 @@ let _app = {
 				var canvasTitle = uni.getStorageSync('canvasTitle');
 				const ctx = uni.createCanvasContext('hideCanvas');
 				ctx.setFillStyle("#FFFFFF");
-				ctx.fillRect(0, 0,100000,1000000);
+				ctx.fillRect(0, 0, 100000, 1000000);
 				var hei = 0;
 				var wid = 0;
 				var url;
@@ -51,22 +51,25 @@ let _app = {
 				// 绘制文字（参数：要写的字，x坐标，y坐标）
 				var title = uni.getStorageSync('drawTitle');
 				// ctx.setFontSize(17);
-				const { windowWidth, windowHeight } = uni.getSystemInfoSync();
+				const {
+					windowWidth,
+					windowHeight
+				} = uni.getSystemInfoSync();
 				// ctx.setTextAlign('center');
-				ctx.fillText(title, 25, hei-16, windowWidth*2.7-50);
+				ctx.fillText(title, 25, hei - 16, windowWidth * 2.7 - 50);
 				async function f1() {
-					for(var i=0;i<drawArr.length;i++){
-						await new Promise((rs,rj) => {
+					for (var i = 0; i < drawArr.length; i++) {
+						await new Promise((rs, rj) => {
 							uni.canvasToTempFilePath({
 								canvasId: drawArr[i],
 								success: function(res) {
-									console.log("返回图片路径"+i+":"+res.tempFilePath);
+									console.log("返回图片路径" + i + ":" + res.tempFilePath);
 									uni.saveFile({
 										tempFilePath: res.tempFilePath,
 										success(res) {
 											log('保存成功:' + JSON.stringify(res));
 											url = res.savedFilePath;
-											console.log("url"+i+":"+url);
+											console.log("url" + i + ":" + url);
 											uni.getImageInfo({
 												src: res.savedFilePath,
 												success: res => {
@@ -102,38 +105,42 @@ let _app = {
 							// 绘制文字（参数：要写的字，x坐标，y坐标）
 							var txt = canvasTitle[i];
 							ctx.setFontSize(14);
-							const { windowWidth, windowHeight } = uni.getSystemInfoSync();
-							ctx.fillText(txt, 25, hei-13, windowWidth*2.7-50);
-							ctx.drawImage(url,wid,hei,imgObj.width/3,imgObj.height/3);
-							hei += imgObj.height/3;
+							const {
+								windowWidth,
+								windowHeight
+							} = uni.getSystemInfoSync();
+							ctx.fillText(txt, 25, hei - 13, windowWidth * 2.7 - 50);
+							ctx.drawImage(url, wid, hei, imgObj.width / 3, imgObj.height / 3);
+							hei += imgObj.height / 3;
 							//#endif
-							console.log("绘图成功"+i);
-							if (i === drawArr.length-1) {
+							console.log("绘图成功" + i);
+							if (i === drawArr.length - 1) {
 								f2();
 							}
 						})
 					}
 				}
-				function f2 (){
+
+				function f2() {
 					console.log("绘图到画布");
 					ctx.draw();
-					setTimeout(function(){
+					setTimeout(function() {
 						uni.canvasToTempFilePath({
 							canvasId: 'hideCanvas',
 							success: function(res) {
 								console.log("成功保存到hideCanvas");
 								//#ifndef H5
-								console.log("res.tempFilePath:"+res.tempFilePath);
+								console.log("res.tempFilePath:" + res.tempFilePath);
 								uni.saveFile({
 									tempFilePath: res.tempFilePath,
 									success(res) {
 										log('保存成功:' + JSON.stringify(res));
-										uni.setStorageSync("drawImg",res.savedFilePath);
+										uni.setStorageSync("drawImg", res.savedFilePath);
 										uni.getImageInfo({
 											src: res.savedFilePath,
 											success: res => {
-												console.log("image.width:"+res.width);
-												console.log("image.height:"+res.height);
+												console.log("image.width:" + res.width);
+												console.log("image.height:" + res.height);
 											},
 											fail: err => {
 												log('获取图片信息失败:' + JSON.stringify(err));
@@ -143,18 +150,17 @@ let _app = {
 								})
 								rs(res.tempFilePath);
 								//#endif
-							} ,
+							},
 						})
-					},500);
+					}, 500);
 				}
 				f1();
 			});
 
-			if (image)
-				{
-					console.log("image:"+image);
-					rs(image);
-					} // resolve图片的路径
+			if (image) {
+				console.log("image:" + image);
+				rs(image);
+			} // resolve图片的路径
 			else
 				rj('背景图片路径不存在');
 		})
@@ -162,16 +168,16 @@ let _app = {
 
 
 	drawImg() {
-		var imgID = String(Date.parse( new Date()));  
-		var self = plus.webview.currentWebview();  
-		var bitmap = new plus.nativeObj.Bitmap(imgID);  
-					
+		var imgID = String(Date.parse(new Date()));
+		var self = plus.webview.currentWebview();
+		var bitmap = new plus.nativeObj.Bitmap(imgID);
+
 		//绘制截图  
-		self.draw(bitmap,function(){  
+		self.draw(bitmap, function() {
 			var newImg = bitmap.toBase64Data();
 			that.headImg = newImg;
-		},function(e){  
-				console.log("截屏绘制失败");
+		}, function(e) {
+			console.log("截屏绘制失败");
 		});
 	},
 
@@ -257,7 +263,7 @@ let _app = {
 		return new Promise((rs, rj) => {
 			if (url.substring(0, 4) !== 'http') {
 				rs(url);
-			}else {
+			} else {
 				url = checkMPUrl(url);
 				log('url:' + url);
 				uni.downloadFile({
@@ -293,11 +299,11 @@ let _app = {
 					success(d_res) {
 						log('下载背景图成功：' + JSON.stringify(d_res));
 						if (d_res && d_res.tempFilePath) {
-							
+
 							// #ifdef H5
 							rs(d_res.tempFilePath);
 							// #endif
-							
+
 							// #ifndef H5
 							uni.saveFile({
 								tempFilePath: d_res.tempFilePath,
@@ -313,7 +319,7 @@ let _app = {
 								}
 							})
 							// #endif
-							
+
 						} else {
 							rj('not find tempFilePath');
 						}
@@ -322,7 +328,7 @@ let _app = {
 						rj(err);
 					}
 				})
-			}else{
+			} else {
 				rs(url);
 			}
 		})
@@ -656,13 +662,13 @@ let _app = {
 	// #endif
 }
 
-	
+
 function checkMPUrl(url) {
 	// #ifdef MP
-	if(
-		url.substring(0, 4) === 'http' && 
-		url.substring(0, 12) !== 'http://store' && 
-		url.substring(0, 10) !== 'http://tmp' && 
+	if (
+		url.substring(0, 4) === 'http' &&
+		url.substring(0, 12) !== 'http://store' &&
+		url.substring(0, 10) !== 'http://tmp' &&
 		url.substring(0, 5) !== 'https'
 	) {
 		url = 'https' + url.substring(4, url.length);

@@ -10,7 +10,7 @@
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
 		<wdSharePoster></wdSharePoster>
-		<wd-share type="analysis" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share>
+		<!-- <wd-share type="analysis" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share> -->
 	</view>
 </template>
 
@@ -64,6 +64,32 @@
 			this.initAnalysisDetail(this.indexId);
 			this.initNav();
 		},
+		onNavigationBarButtonTap(e) {
+			switch (e.type) {
+				case "favorite":
+					if (this.isFavorite == false || this.isFavorite == "false") {
+						if (checkApi.setCollect(this.type, this.indexId, this.indexName, this.source)) {
+							this.isFavorite = true;
+							favColor = "#f9da74";
+						}
+					} else if (this.isFavorite == true || this.isFavorite == "true") {
+						if (checkApi.delCollect(this.type, this.indexId, this.indexName, this.source)) {
+							this.isFavorite = false;
+							favColor = "#ffffff";
+						}
+					} else {
+						console.log("收藏状态异常" + this.isFavorite);
+					}
+					// 更新导航栏
+					this.initNav();
+					break;
+				default:
+					uni.showToast({
+						title: e.type,
+						icon: "none"
+					});
+			}
+		},
 		methods: {
 			// 初始化数据，请求数据进行页面渲染
 			initAnalysisDetail(indexId) {
@@ -96,24 +122,10 @@
 							this.timeCondition = dataApi.data.timeCondition;
 							this.indexDetail = dataApi.data.classInfo;
 							this.relatedData = dataApi.data.relatedData;
-							var drawCanvas = _self.indexDetail;
-							var drawArr = [];
-							var canvasTitle = [];
-							var canvasHeight = [];
-							for (var i of drawCanvas) {
-								if (i.classType === "echarts") {
-									drawArr.push("echart" + i.id);
-									canvasTitle.push(i.classTitle);
-									canvasHeight.push(i.classHeight);
-								}
-							}
-							console.log("drawArr:" + drawArr);
-							uni.setStorageSync('drawTitle', _self.indexName);
-							uni.setStorageSync('drawArr', drawArr);
-							uni.setStorageSync('canvasTitle', canvasTitle);
-							uni.setStorageSync('canvasHeight', canvasHeight);
 							// 计算classHeight及总Height
 							this.setHeight();
+							// 设置画布数据
+							this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -149,6 +161,7 @@
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
+							this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -229,7 +242,26 @@
 				}
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;
-			}
+			},
+			// 设置画布数据
+			setDrawCanvas() {
+				var drawCanvas = _self.indexDetail;
+				var drawArr = [];
+				var canvasTitle = [];
+				var canvasHeight = [];
+				for (var i of drawCanvas) {
+					if (i.classType === "echarts") {
+						drawArr.push("echart" + i.id);
+						canvasTitle.push(i.classTitle);
+						canvasHeight.push(i.classHeight);
+					}
+				}
+				console.log("drawArr:" + drawArr);
+				uni.setStorageSync('drawTitle', _self.indexName);
+				uni.setStorageSync('drawArr', drawArr);
+				uni.setStorageSync('canvasTitle', canvasTitle);
+				uni.setStorageSync('canvasHeight', canvasHeight);
+			},
 		}
 	}
 </script>
