@@ -101,22 +101,24 @@
 			};
 		},
 		onShow() {
-			this.isHistory = true;
-			this.keyword = '';
-			this.resultList = [];
+			this.initPage();
 			this.initSearch();
-			this.showPage();
 		},
 		methods: {
-			showPage() {
-				// https://ask.dcloud.net.cn/article/35374
+			// 初始化页面
+			// 思路来源: https://ask.dcloud.net.cn/article/35374
+			initPage() {
+				this.isHistory = true;
+				this.keyword = '';
+				this.resultList = [];
+				// 设置 searchInput的 text  
 				// #ifdef APP-PLUS  
 				var webView = this.$mp.page.$getAppWebview();
-				// 设置 searchInput的 text  
 				var text = '';
 				webView.setTitleNViewSearchInputText(text);
 				// #endif
 			},
+			// 初始化指标搜索页面数据
 			initSearch() {
 				checkApi.checkNetwork();
 				this.isHistory = true;
@@ -152,7 +154,7 @@
 					complete: () => {}
 				});
 			},
-			//关键字搜索
+			// 关键字搜索
 			getInputtips(val) {
 				uni.showLoading({
 					title: "正在搜索...",
@@ -168,12 +170,10 @@
 					},
 					success: res => {
 						let searchResultApi = res.data;
-						// searchResultApi = searchResultApiJson;
 						// 检查json数据
 						checkApi.isApi(searchResultApi);
 						// 设置各部分数据
 						let dataObj = searchResultApi.data.result;
-						// let dataObj = res.data;
 						dataObj = util.dataHandle(dataObj, val);
 						this.resultList = dataObj;
 					},
@@ -183,9 +183,7 @@
 					}
 				});
 			},
-			/**
-			 * 清理历史搜索数据
-			 */
+			// 清理历史搜索数据
 			clearSearch() {
 				uni.showModal({
 					title: '提示',
@@ -197,9 +195,7 @@
 					}
 				});
 			},
-			/**
-			 * 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
-			 */
+			// 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			searchTrendTap(item) {
 				util.setHistory(item.id, item.name, item.source, item.isArea);
 				console.log(JSON.stringify(item));
@@ -208,6 +204,7 @@
 						"&source=" + item.source
 				})
 			},
+			// 打开指标搜索详情页
 			openIndexDetail(item) {
 				console.log(JSON.stringify(item));
 				// 注：这里因为是存储的结构是id和name，并能不和接口有关系
@@ -216,9 +213,7 @@
 						"&source=" + item.source
 				})
 			},
-			/**
-			 * 搜索结果列表点击
-			 */
+			// 搜索结果列表点击
 			searchResultTap(item, isArea) {
 				item = JSON.parse(JSON.stringify(item));
 				// 如果当前是历史搜索页面,那么点击不储存,直接跳转
@@ -240,16 +235,7 @@
 				}
 			},
 		},
-		// 监听搜索栏点击事件
-		onNavigationBarSearchInputClicked(e) {
-			uni.showToast({
-				title: JSON.stringify(e)
-			});
-			console.log(JSON.stringify(e));
-		},
-		/**
-		 * 当 searchInput 输入时触发
-		 */
+		// 当 searchInput 输入时触发
 		onNavigationBarSearchInputChanged(e) {
 			let text = e.text;
 			uni.hideLoading();
@@ -265,9 +251,7 @@
 				this.getInputtips(text);
 			}
 		},
-		/**
-		 * 点击软键盘搜索按键触发
-		 */
+		// 点击软键盘搜索按键触发
 		onNavigationBarSearchInputConfirmed(e) {
 			let text = e.text;
 			if (!text) {
@@ -284,9 +268,7 @@
 				return;
 			}
 		},
-		/**
-		 *  点击导航栏 buttons 时触发
-		 */
+		// 点击导航栏 buttons 时触发
 		onNavigationBarButtonTap(e) {
 			let self = this;
 			uni.showActionSheet({
