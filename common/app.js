@@ -81,8 +81,15 @@ let _app = {
 													log('获取图片信息失败:' + JSON.stringify(err));
 												}
 											})
-										}
+										},
 									})
+								},
+								fail: function() {
+									uni.showToast({
+										icon: 'none',
+										title: "图表正在加载，请稍后再试"
+									});
+									rj(false);
 								}
 							});
 						}).then(function() {
