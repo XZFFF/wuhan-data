@@ -104,36 +104,19 @@
 			this.isHistory = true;
 			this.keyword = '';
 			this.resultList = [];
-			// 测试新版搜索列表样式
-			// this.isHistory = false;
-			// this.getInputtips();
-			// 	this.resultList = [{
-			// 			"id": "1",
-			// 			"nameNodes": "地区生产总值(GDP)",
-			// 			"path": "地区生产总值(GDP)-第一产业",
-			// 			"areaName": "全国",
-			// 			"isArea": "1",
-			// 			"source": "湖统"
-			// 		},
-			// 		{
-			// 			"id": "3",
-			// 			"nameNodes": "地区生产总值(GDP)",
-			// 			"path": "地区生产总值(GDP)-第二产业",
-			// 			"areaName": "河南省",
-			// 			"isArea": "0",
-			// 			"source": "湖统"
-			// 		},
-			// 		{
-			// 			"id": "2",
-			// 			"nameNodes": "PMI指数",
-			// 			"path": "PMI指数",
-			// 			"isArea": "0",
-			// 			"source": "湖统"
-			// 		}
-			// 	];
+			this.initSearch();
+			this.showPage();
 		},
-
 		methods: {
+			showPage() {
+				// https://ask.dcloud.net.cn/article/35374
+				// #ifdef APP-PLUS  
+				var webView = this.$mp.page.$getAppWebview();
+				// 设置 searchInput的 text  
+				var text = '';
+				webView.setTitleNViewSearchInputText(text);
+				// #endif
+			},
 			initSearch() {
 				checkApi.checkNetwork();
 				this.isHistory = true;
