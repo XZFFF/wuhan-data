@@ -1,6 +1,7 @@
 <template>
 	<view class="container">
 		<view class="page-body">
+			<!-- 一级列表 -->
 			<scroll-view class="nav-left" scroll-y :style="'height:'+height+'px'">
 				<view class="nav-left-item" @click="categoryClickMain(item,index)" :key="index" :class="index==typeActive?'active':''"
 				 v-for="(item,index) in typeList">
@@ -10,37 +11,9 @@
 					</view>
 				</view>
 			</scroll-view>
+			<!-- 二级列表 -->
 			<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" :style="'height:'+height+'px'"
 			 scroll-with-animation>
-				<!-- <view v-for="(item,index) in labelList" :key="index">
-					<wd-indi-item :indexId="item.indexId" :indexName="item.indexName" :desc="item.desc" :isFavorite="item.isFavorite"
-					 :source="source" :item="item"></wd-indi-item>
-				</view> -->
-				<!-- 折叠效果 -->
-				<!-- <view class="padding-top padding-lr">
-					<uni-collapse @change="changeCollapse">
-						<uni-collapse-item title="先行">
-							<view class="cu-list menu sm-border">
-								<view class="cu-item">
-									<view class="content">
-										<text class="text-grey" style="color: #212121;">全国PMI指数</text>
-									</view>
-								</view>
-								<view class="cu-item">
-									<view class="content">
-										<text class="text-grey" style="color: #212121;">全社会用电量</text>
-									</view>
-								</view>
-								<view class="cu-item">
-									<view class="content">
-										<text class="text-grey" style="color: #212121;">工业用电量</text>
-									</view>
-								</view>
-							</view>
-						</uni-collapse-item>
-					</uni-collapse>
-				</view> -->
-				<!-- 先行 -->
 				<view v-for="(item,index) in labelList" :key="index" class="padding-top padding-lr">
 					<view class="cu-bar solid-bottom bg-white" style="min-height: 80upx;">
 						<view class="action" style="font-size: 28upx;min-height: 80upx;">
@@ -102,18 +75,10 @@
 			});
 			this.showStorage();
 			this.initAnalysisList();
-
-			// let dataApi = analysisListApiJson;
-			// checkApi.isApi(dataApi);
-			// this.typeList = dataApi.data.list;
-			// this.typeActive = 0;
-			// this.source = this.typeList[this.typeActive].typeName;
-			// this.labelList = this.typeList[this.typeActive].labelList;
-			// this.height = uni.getSystemInfoSync().windowHeight;
 		},
 		onNavigationBarButtonTap(e) {
 			console.log(JSON.stringify(e));
-			if(e.text == '搜索') {
+			if (e.text == '搜索') {
 				uni.navigateTo({
 					url: '../search/search',
 					success: res => {},
@@ -123,6 +88,7 @@
 			}
 		},
 		methods: {
+			// 初始化经济分析栏目列表
 			initAnalysisList() {
 				let token = uni.getStorageSync('token');
 				uni.request({
@@ -161,8 +127,8 @@
 				});
 				this.height = uni.getSystemInfoSync().windowHeight;
 			},
+			// 展示经济分析列表缓存数据
 			showStorage() {
-				console.log("show storage list");
 				let analysisList = uni.getStorageSync('analysis_list');
 				if (analysisList) {
 					this.typeList = analysisList;
@@ -172,11 +138,7 @@
 					uni.hideLoading();
 				}
 			},
-			scroll(e) {
-				console.log(JSON.stringify(e));
-				this.scrollHeight = e.detail.scrollHeight;
-				uni.setStorageSync('analysis_list_scroll_top', e.detail.scrollTop);
-			},
+			// 右侧数据根据左侧的一级栏目选择做出对应的变化
 			categoryClickMain(categroy, index) {
 				this.typeActive = index;
 				this.source = this.typeList[this.typeActive].typeName;
@@ -185,6 +147,12 @@
 				this.scrollTop = -this.scrollHeight * index;
 				uni.setStorageSync('analysis_list_scroll_index', this.typeActive);
 			},
+			// 记录滑轮位置
+			scroll(e) {
+				this.scrollHeight = e.detail.scrollHeight;
+				uni.setStorageSync('analysis_list_scroll_top', e.detail.scrollTop);
+			},
+			// 从其他页面进入时，设置滑轮高度
 			setScroll() {
 				try {
 					let analysisListScrollIndex = uni.getStorageSync('analysis_list_scroll_index');
@@ -205,14 +173,6 @@
 						'&source=' + source
 				});
 			},
-			changeCollapse(e) {
-				console.log(JSON.stringify(e));
-				// this.$refs.add.resize();
-				// this.$nextTick(() => {
-				// 	this.$refs.add.resize();
-				// });
-			},
-
 		},
 	}
 </script>
