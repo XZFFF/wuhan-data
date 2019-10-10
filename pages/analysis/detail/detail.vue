@@ -97,8 +97,8 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					// url: this.apiUrl + 'getAnalysisDetail',
-					url: 'https://www.baidu.com',
+					url: this.apiUrl + 'getAnalysisDetail',
+					// url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
@@ -106,6 +106,7 @@
 					},
 					success: (res) => {
 						dataApi = res.data;
+						console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
 					},
@@ -113,7 +114,7 @@
 						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
-						dataApi = analysisDetailApiJson;
+						// dataApi = analysisDetailApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
