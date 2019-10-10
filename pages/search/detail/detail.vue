@@ -71,7 +71,7 @@
 				title: "加载栏目:" + _self.indexId,
 			});
 			checkApi.setFootprint("search", this.indexId, this.indexName, this.source);
-			// this.showStorage();
+			this.showStorage();
 			this.initSearchDetail();
 			this.initNav();
 		},
@@ -116,8 +116,8 @@
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({
-					// url: this.apiUrl + 'searchDetail',
-					url: 'https://www.baidu.com',
+					url: this.apiUrl + 'searchDetail',
+					// url: 'https://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
@@ -129,7 +129,7 @@
 						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
-						dataApi = searchDetailApiJson;
+						// dataApi = searchDetailApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
@@ -252,6 +252,7 @@
 			},
 			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
 			setHeight() {
+				let pathHeight = 50;
 				let timeConditionHeight = 300;
 				let classHeight = 0;
 				let relatedHeight = 0;
@@ -262,7 +263,7 @@
 					relatedHeight = _self.relatedData.length == 0 ? 0 : (_self.relatedData.length + 1) * 40;
 				}
 				_self.classTotalHeight = classHeight;
-				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;
+				_self.totalHeight = pathHeight + timeConditionHeight + classHeight + relatedHeight;
 			},
 			// 设置画布数据
 			setDrawCanvas() {
