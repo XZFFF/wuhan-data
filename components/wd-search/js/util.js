@@ -37,7 +37,7 @@ const util = {
 	 * 存储历史数据
 	 * val [string | object]需要存储的内容
 	 */
-	setHistory(id, name, source, isArea) {
+	setHistory(id, name, source, isArea, path) {
 		let searchHistory = uni.getStorageSync('search_history');
 		if (!searchHistory) searchHistory = [];
 		let serachData = {};
@@ -45,7 +45,8 @@ const util = {
 			id: id,
 			name: name,
 			source: source,
-			isArea: isArea
+			isArea: isArea,
+			path: path
 		};
 
 		// 判断数组是否存在，如果存在，那么将放到最前面
