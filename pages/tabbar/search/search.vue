@@ -197,11 +197,11 @@
 			},
 			// 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			searchTrendTap(item) {
-				util.setHistory(item.id, item.name, item.source, item.isArea);
+				util.setHistory(item.id, item.name, item.source, item.isArea, item.path);
 				console.log(JSON.stringify(item));
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + '&isFavorite=false' +
-						"&source=" + item.source
+						"&source=" + item.source + "&path=" + item.path
 				})
 			},
 			// 打开指标搜索详情页
@@ -223,7 +223,7 @@
 					this.isHistory = true;
 					// 点击列表存储搜索数据,更新历史搜索记录
 					console.log("存储历史记录" + JSON.stringify(item));
-					util.setHistory(item.id, item.name, item.source, isArea);
+					util.setHistory(item.id, item.name, item.source, isArea, item.path);
 					this.historyList = util.getHistory();
 					// TODO 记录历史搜索记录到服务端
 					// 跳转到对应的界面,这里先做的是返回上一个界面
