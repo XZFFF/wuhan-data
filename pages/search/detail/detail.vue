@@ -71,7 +71,7 @@
 				title: "加载栏目:" + _self.indexId,
 			});
 			checkApi.setFootprint("search", this.indexId, this.indexName, this.source);
-			this.showStorage();
+			// this.showStorage();
 			this.initSearchDetail();
 			this.initNav();
 		},
@@ -169,6 +169,7 @@
 					startTime: val.startTime,
 					endTime: val.endTime,
 				};
+				console.log(JSON.stringify(requestData));
 				uni.request({
 					url: this.apiUrl + 'searchConfirm',
 					method: 'POST',

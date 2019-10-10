@@ -1,39 +1,22 @@
 <template>
 	<view>
 		<!-- 轮播图 -->
-		<view style="background-color: #FFFFFF; margin-bottom: 0upx; max-height: 300upx;">
+		<view style="background-color: #FFFFFF; margin-bottom: 0upx; max-height: 400upx;">
 			<!-- 全屏宽轮播图 -->
 			<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000"
 			 duration="500">
 				<swiper-item v-for="(item,index) in slideshow" :key="index">
-					<image :src="item.image" style="max-height: 300upx;" mode="aspectFill"></image>
+					<image :src="item.image" style="max-height: 400upx;" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
-			<!-- 卡片式轮播图 -->
-			<!-- <swiper class="card-swiper" style="height: 380upx;padding: 0upx 0upx;margin: 0upx 0upx;" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
-			 :autoplay="true" interval="5000" duration="500" @change="cardSwiper" indicator-color="#8799a3"
-			 indicator-active-color="#0081ff">
-				<swiper-item v-for="(item,index) in slideshow" :key="index" :class="cardCur==index?'cur':''">
-					<view class="swiper-item">
-						<image :src="item.image" mode="aspectFill"></image>
-					</view>
-				</swiper-item>
-			</swiper> -->
 		</view>
 		<!-- 搜索框 -->
 		<view class="cu-bar bg-white search" style="margin-top: 0upx;background-color: #FFFFFF;">
 			<view class="search-form radius" style="border-radius: 50upx;" @click="openSearch">
 				<text class="cuIcon-search"></text>
-				<input focus="false" :adjust-position="false" type="text" placeholder="指标搜索" confirm-type="search"></input>
+				<text class="text-grey">指标搜索</text>
 			</view>
 		</view>
-		<!-- <view class="search">
-			<view class="input-view" @click="openSearch">
-				<uni-icon type="search" size="18" color="#8E8E93"></uni-icon>
-				<input disabled="true" confirm-type="search" @confirm="confirm" class="input" type="text" placeholder="输入搜索关键词" />
-			</view>
-		</view> -->
-
 		<!-- 经济分析 -->
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis" :key="index">
@@ -55,7 +38,6 @@
 			 @click="openTopicDetail(item)">
 				<image style="height: 175upx;width: 330upx;margin: 0upx 0upx 30upx 30upx;padding: 0;border-radius: 5px 5px 5px 5px;overflow: hidden;"
 				 :src="item.image"></image>
-				<!-- <wd-topic-card :image="item.image" :title="item.title"></wd-topic-card> -->
 			</view>
 		</view>
 	</view>
@@ -108,7 +90,6 @@
 				let dataApi;
 				// 通过请求接口获取轮播图
 				uni.request({
-					// url: 'http://192.168.124.20:8089/wuhan_data1/initHome',
 					// url: this.apiUrl + 'initHome',
 					url: 'https://www.baidu.com',
 					method: 'GET',
