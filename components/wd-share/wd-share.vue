@@ -6,7 +6,7 @@
 
 <script>
 	import checkApi from '@/common/checkApi.js'
-	const open = uni.requireNativePlugin("Html5App-openFile");
+	// const open = uni.requireNativePlugin("Html5App-openFile");
 	// #ifdef APP-PLUS
 	// 如下为分享内容定义，可根据业务需求自行定义
 	var strShareUrl = "hubeidata://pages/analysis/detail/detail??indexId=1&indexName=PMI(全国)&isFavorite=false"
@@ -365,41 +365,42 @@
 					uni.setStorageSync('analysis_list', analysisList);
 				}
 			},
-			downloader: function(path) {
-				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
-				//判断文件是否存在
-				plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
-					//如果文件存在直接打开。
-					open.openFile({
-						filename: entry.fullPath
-					});
-				}, function(e) {
-					//如果文件不存在，则下载文件到本地
-					uni.showLoading({
-						title: "文件下载中..."
-					});
-					// 创建下载任务					
-					const dtask = plus.downloader.createDownload(path, {
-						filename: "_downloads/" + filename
-					}, function(d, status) {
-						uni.hideLoading();
-						if (status == 200) {
-							uni.showToast({
-								title: "下载完成"
-							});
-							let filepath = plus.io.convertLocalFileSystemURL(d.filename);
-							open.openFile({
-								filename: filepath
-							});
-						} else {
-							uni.showToas({
-								title: "下载失败"
-							});
-						}
-					});
-					dtask.start(); //开始下载
-				});
-			}
+			downloader: function(path) {},
+			// downloader: function(path) {
+			// 	var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
+			// 	//判断文件是否存在
+			// 	plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
+			// 		//如果文件存在直接打开。
+			// 		open.openFile({
+			// 			filename: entry.fullPath
+			// 		});
+			// 	}, function(e) {
+			// 		//如果文件不存在，则下载文件到本地
+			// 		uni.showLoading({
+			// 			title: "文件下载中..."
+			// 		});
+			// 		// 创建下载任务					
+			// 		const dtask = plus.downloader.createDownload(path, {
+			// 			filename: "_downloads/" + filename
+			// 		}, function(d, status) {
+			// 			uni.hideLoading();
+			// 			if (status == 200) {
+			// 				uni.showToast({
+			// 					title: "下载完成"
+			// 				});
+			// 				let filepath = plus.io.convertLocalFileSystemURL(d.filename);
+			// 				open.openFile({
+			// 					filename: filepath
+			// 				});
+			// 			} else {
+			// 				uni.showToas({
+			// 					title: "下载失败"
+			// 				});
+			// 			}
+			// 		});
+			// 		dtask.start(); //开始下载
+			// 	});
+			// }
 		}
 	}
 </script>

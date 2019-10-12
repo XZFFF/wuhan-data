@@ -18,7 +18,7 @@
 	import wdMessageCard from '@/components/wd-message-card/wd-message-card.vue';
 	import checkApi from '@/common/checkApi.js';
 	import getNewsApiJson from "@/common/api/getMessage.json";
-	const open = uni.requireNativePlugin("Html5App-openFile");
+	// const open = uni.requireNativePlugin("Html5App-openFile");
 	export default {
 		components: {
 			wdTag,
@@ -132,65 +132,67 @@
 					console.log(e.message);
 				}
 			},
-			open: function(index) {
-				let myNews = uni.getStorageSync('my_news');
-				let type = myNews[index].type;
-				if (type == 'message') {
-					uni.setStorageSync('news_index', index);
-					uni.navigateTo({
-						url: 'news_details/news_details'
-					});
-					return false;
-				}
-				if (type == 'pdf' || type == 'excel') {
-					let path = myNews[index].path;
-					this.downloader(path);
-					return;
-				}
-				if (type == 'link') {
-					let path = myNews[index].path;
-					plus.runtime.openURL(path);
-					return;
-				}
-			},
-			// downloader() {}
+			open: function(index) {},
+			// open: function(index) {
+			// 	let myNews = uni.getStorageSync('my_news');
+			// 	let type = myNews[index].type;
+			// 	if (type == 'message') {
+			// 		uni.setStorageSync('news_index', index);
+			// 		uni.navigateTo({
+			// 			url: 'news_details/news_details'
+			// 		});
+			// 		return false;
+			// 	}
+			// 	if (type == 'pdf' || type == 'excel') {
+			// 		let path = myNews[index].path;
+			// 		this.downloader(path);
+			// 		return;
+			// 	}
+			// 	if (type == 'link') {
+			// 		let path = myNews[index].path;
+			// 		plus.runtime.openURL(path);
+			// 		return;
+			// 	}
+			// },
+			
+			downloader() {}
 
 
-			downloader: function(path) {
-				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
-				//判断文件是否存在
-				plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
-					//如果文件存在直接打开。
-					open.openFile({
-						filename: entry.fullPath
-					});
-				}, function(e) {
-					//如果文件不存在，则下载文件到本地
-					uni.showLoading({
-						title: "文件下载中..."
-					});
-					// 创建下载任务					
-					const dtask = plus.downloader.createDownload(path, {
-						filename: "_downloads/" + filename
-					}, function(d, status) {
-						uni.hideLoading();
-						if (status == 200) {
-							uni.showToast({
-								title: "下载完成"
-							});
-							let filepath = plus.io.convertLocalFileSystemURL(d.filename);
-							open.openFile({
-								filename: filepath
-							});
-						} else {
-							uni.showToas({
-								title: "下载失败"
-							});
-						}
-					});
-					dtask.start(); //开始下载
-				});
-			}
+			// downloader: function(path) {
+			// 	var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
+			// 	//判断文件是否存在
+			// 	plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
+			// 		//如果文件存在直接打开。
+			// 		open.openFile({
+			// 			filename: entry.fullPath
+			// 		});
+			// 	}, function(e) {
+			// 		//如果文件不存在，则下载文件到本地
+			// 		uni.showLoading({
+			// 			title: "文件下载中..."
+			// 		});
+			// 		// 创建下载任务					
+			// 		const dtask = plus.downloader.createDownload(path, {
+			// 			filename: "_downloads/" + filename
+			// 		}, function(d, status) {
+			// 			uni.hideLoading();
+			// 			if (status == 200) {
+			// 				uni.showToast({
+			// 					title: "下载完成"
+			// 				});
+			// 				let filepath = plus.io.convertLocalFileSystemURL(d.filename);
+			// 				open.openFile({
+			// 					filename: filepath
+			// 				});
+			// 			} else {
+			// 				uni.showToas({
+			// 					title: "下载失败"
+			// 				});
+			// 			}
+			// 		});
+			// 		dtask.start(); //开始下载
+			// 	});
+			// }
 
 		}
 	}
