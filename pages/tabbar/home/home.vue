@@ -1,18 +1,18 @@
 <template>
 	<view>
 		<!-- 轮播图 -->
-		<view style="background-color: #FFFFFF; margin-bottom: 0upx; max-height: 400upx;">
+		<view style="background-color: #FFFFFF; margin-bottom: 0upx; max-height: 480upx;">
 			<!-- 全屏宽轮播图 -->
 			<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000"
 			 duration="500">
 				<swiper-item v-for="(item,index) in slideshow" :key="index">
-					<image :src="item.image" style="max-height: 400upx;" mode="aspectFill"></image>
+					<image :src="item.image" style="max-height: 480upx;" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
 		<!-- 搜索框 -->
-		<view class="cu-bar bg-white search" style="margin-top: 0upx;background-color: #FFFFFF;">
-			<view class="search-form radius" style="border-radius: 50upx;" @click="openSearch">
+		<view class="cu-bar bg-white search" style="min-height: 120upx;margin-top: 0upx;background-color: #FFFFFF;padding: 20upx 0upx;">
+			<view class="search-form radius" style="height: 72upx;border-radius: 50upx;" @click="openSearch">
 				<text class="cuIcon-search"></text>
 				<text class="text-grey">指标搜索</text>
 			</view>
@@ -28,7 +28,7 @@
 		</view>
 		<!-- 专题 -->
 		<view class="topic">
-			<view class="cu-bar bg-white" style="min-height: 80upx; width: 750upx;margin: 0upx;">
+			<view class="cu-bar bg-white" style="min-height: 100upx; width: 750upx;margin: 0upx;">
 				<view class="action">
 					<text class="cuIcon-titles text-blue" style="color: #3A82CC;"></text>
 					<text class="text-xl  text-blue" style="color: #3A82CC;">专题</text>
@@ -214,7 +214,6 @@
 	.search {
 		display: flex;
 		flex-direction: row;
-		margin-top: 20upx;
 		background-color: #F8F8F8;
 		align-items: center;
 	}
@@ -240,6 +239,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
+		margin-top: 0upx;
 		padding: 5upx;
 		background-color: #FFFFFF;
 	}
@@ -281,7 +281,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		margin-top: 20upx;
+		margin-top: 30upx;
 		/* padding: 5upx; */
 		background-color: #FFFFFF;
 	}
