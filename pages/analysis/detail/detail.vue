@@ -9,7 +9,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wdSharePoster></wdSharePoster>
+		<wd-share-poster></wd-share-poster>
 		<!-- <wd-share type="analysis" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share> -->
 	</view>
 </template>
@@ -246,22 +246,28 @@
 			},
 			// 设置画布数据
 			setDrawCanvas() {
-				var drawCanvas = _self.indexDetail;
-				var drawArr = [];
-				var canvasTitle = [];
-				var canvasHeight = [];
-				for (var i of drawCanvas) {
-					if (i.classType === "echarts") {
-						drawArr.push("echart" + i.id);
-						canvasTitle.push(i.classTitle);
-						canvasHeight.push(i.classHeight);
+				try {
+					var drawCanvas = _self.indexDetail;
+					var drawArr = [];
+					var canvasTitle = [];
+					var canvasHeight = [];
+					for (var i of drawCanvas) {
+						if (i.classType === "echarts") {
+							drawArr.push("echart" + i.id);
+							canvasTitle.push(i.classTitle);
+							canvasHeight.push(i.classHeight);
+						}
 					}
+					console.log("drawArr:" + drawArr);
+					uni.setStorageSync('drawTitle', _self.indexName);
+					uni.setStorageSync('drawArr', drawArr);
+					uni.setStorageSync('canvasTitle', canvasTitle);
+					uni.setStorageSync('canvasHeight', canvasHeight);
+				} catch (e) {
+					uni.showToast({
+						title: e.message
+					});
 				}
-				console.log("drawArr:" + drawArr);
-				uni.setStorageSync('drawTitle', _self.indexName);
-				uni.setStorageSync('drawArr', drawArr);
-				uni.setStorageSync('canvasTitle', canvasTitle);
-				uni.setStorageSync('canvasHeight', canvasHeight);
 			},
 		}
 	}

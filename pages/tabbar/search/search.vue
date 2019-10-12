@@ -201,7 +201,7 @@
 				console.log(JSON.stringify(item));
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + '&isFavorite=false' +
-						"&source=" + item.source + "&path=" + item.path
+						"&source=" + item.source + "&isArea=0" + "&path=" + item.path
 				})
 			},
 			// 打开指标搜索详情页
@@ -210,7 +210,7 @@
 				// 注：这里因为是存储的结构是id和name，并能不和接口有关系
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + '&isFavorite=false' +
-						"&source=" + item.source
+						"&source=" + item.source + "&isArea=" + item.isArea + "&path=" + item.path
 				})
 			},
 			// 搜索结果列表点击

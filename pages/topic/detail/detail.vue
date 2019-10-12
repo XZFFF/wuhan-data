@@ -8,7 +8,7 @@
 				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
 			</block>
 		</view>
-		<wd-share :indexId="indexId" :indexName="indexName"></wd-share>
+		<!-- <wd-share :indexId="indexId" :indexName="indexName"></wd-share> -->
 	</view>
 </template>
 
