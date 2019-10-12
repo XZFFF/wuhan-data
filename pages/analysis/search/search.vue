@@ -3,14 +3,14 @@
 		<view class="cu-bar search bg-white">
 			<view class="search-form round">
 				<text class="cuIcon-search"></text>
-				<input @focus="InputFocus" @blur="InputBlur" :adjust-position="false" type="text" placeholder="栏目搜索" confirm-type="search"></input>
+				<input @input="InputKeyword" :adjust-position="false" type="text" placeholder="栏目搜索" confirm-type="search"></input>
 			</view>
 			<view class="action">
 				<button class="cu-btn bg-blue shadow-blur round" @click="doSearch">搜索</button>
 			</view>
 		</view>
-		<block v-if="searchResult.length > 0">
-			<view class="cu-list menu">
+		<block>
+			<view v-if="searchResult.length > 0" class="cu-list menu">
 				<view class="cu-item arrow" v-for="(item,index) in searchResult" :key="index" @click="openDetail(item.indexId, item.indexName, item.typeName)">
 					<view class="content">
 						<!-- <text class="cuIcon-titles text-blue" style="color: #3A82CC;"></text> -->
@@ -22,6 +22,7 @@
 					</view>
 				</view>
 			</view>
+			<view v-else class="no-data">{{noResultText}}</view>
 		</block>
 	</view>
 </template>
@@ -38,23 +39,29 @@
 		data() {
 			return {
 				keyword: '',
-				searchResult: []
+				searchResult: [],
+				noResultText: "",
 			}
 		},
-		onLoad() {},
+		onLoad() {
+			this.noResultText = "";
+		},
 		methods: {
-			InputFocus(e) {
-				console.log(e.detail.value)
-			},
-			InputBlur(e) {
-				console.log(e.detail.value)
+			InputKeyword(e) {
 				this.keyword = e.detail.value;
+				this.doSearch();
 			},
 			doSearch() {
+				if (this.keyword == '') {
+					this.searchResult = [];
+					this.noResultText = "";
+					return;
+				}
 				uni.showLoading({
 					title: "正在搜索...",
 				});
 				checkApi.checkNetwork();
+				console.log("搜索关键词为:" + this.keyword);
 				uni.request({
 					url: this.apiUrl + 'searchAnalysis',
 					method: 'POST',
@@ -67,11 +74,10 @@
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						this.searchResult = dataApi.data.result;
-						// this.searchResult = analysisSearchApiJson.data.result;
-						console.log(JSON.stringify(dataApi));
 					},
 					fail: (e) => {},
 					complete: () => {
+						this.noResultText = "没有搜索到相关内容";
 						uni.hideLoading();
 					}
 				});
@@ -89,7 +95,9 @@
 </script>
 
 <style>
-	.box {}
-
-	.box view.cu-bar {}
+	.no-data {
+		text-align: center;
+		color: #999;
+		margin: 100upx;
+	}
 </style>
