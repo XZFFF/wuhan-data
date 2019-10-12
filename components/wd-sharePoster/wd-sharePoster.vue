@@ -84,6 +84,10 @@
 						});
 						console.log('海报生成成功， 临时路径: ' + d.poster.tempFilePath)
 						this.poster.finalPath = d.poster.tempFilePath;
+						uni.removeStorageSync('drawTitle');
+						uni.removeStorageSync('drawArr');
+						uni.removeStorageSync('canvasTitle');
+						uni.removeStorageSync('canvasHeight');
 					}
 					this.qrShow = true;
 				} catch (e) {
