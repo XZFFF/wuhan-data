@@ -365,7 +365,20 @@
 					uni.setStorageSync('analysis_list', analysisList);
 				}
 			},
-			downloader: function(path) {},
+			downloader: function(path) {
+				uni.downloadFile({
+				  url: path,
+				  success: function (res) {
+				    var filePath = res.tempFilePath;
+				    uni.openDocument({
+				      filePath: filePath,
+				      success: function (res) {
+				        console.log('打开文档成功');
+				      }
+				    });
+				  }
+				});
+			},
 			// downloader: function(path) {
 			// 	var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
 			// 	//判断文件是否存在

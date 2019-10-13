@@ -97,8 +97,8 @@
 			initMyNews() {
 				checkApi.checkNetwork();
 				uni.request({
-					url: this.apiUrl + "getMessageApp",
-					//url: 'http://www.baidu.com',
+					// url: this.apiUrl + "getMessageApp",
+					url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -132,7 +132,37 @@
 					console.log(e.message);
 				}
 			},
-			open: function(index) {},
+			open: function(index) {
+				let myNews = uni.getStorageSync('my_news');
+				let type = myNews[index].type;
+				if (type == 'message') {
+					uni.setStorageSync('news_index', index);
+					uni.navigateTo({
+						url: 'news_details/news_details'
+					});
+					return false;
+				}
+				if (type == 'pdf' || type == 'excel') {
+					let path = myNews[index].path;
+					uni.downloadFile({
+					  url: path,
+					  success: function (res) {
+					    var filePath = res.tempFilePath;
+					    uni.openDocument({
+					      filePath: filePath,
+					      success: function (res) {
+					        console.log('打开文档成功');
+					      }
+					    });
+					  }
+					});
+				}
+				if (type == 'link') {
+					let path = myNews[index].path;
+					plus.runtime.openURL(path);
+					return;
+				}
+			},
 			// open: function(index) {
 			// 	let myNews = uni.getStorageSync('my_news');
 			// 	let type = myNews[index].type;
