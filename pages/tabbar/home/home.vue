@@ -72,7 +72,7 @@
 		onShow: function() {
 			console.log(this.apiUrl);
 			this.showStorage();
-			// this.initHomePage();
+			this.initHomePage();
 			uni.hideLoading();
 			let dataApi = homeApiJson;
 			this.slideshow = dataApi.data.slideshow;
@@ -90,8 +90,8 @@
 				let dataApi;
 				// 通过请求接口获取轮播图
 				uni.request({
-					// url: this.apiUrl + 'initHome',
-					url: 'https://www.baidu.com',
+					url: this.apiUrl + 'initHome',
+					// url: 'https://www.baidu.com',
 					method: 'GET',
 					data: {},
 					success: res => {
