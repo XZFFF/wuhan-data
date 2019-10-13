@@ -36,6 +36,7 @@
 				indexId: "1",
 				indexName: "专题详情页",
 				indexDetail: [],
+				topicPath: "",
 				totalHeight: 1000,
 				classTotalHeight: 400
 			};
@@ -62,23 +63,14 @@
 					switch (this.indexId) {
 						case "1":
 						case 1:
-							path = "http://www.html5-app.com/file/1.pdf";
-							this.downloader(path);
-							break;
 						case "2":
 						case 2:
-							path = "http://www.html5-app.com/file/1.pdf";
-							this.downloader(path);
-							break;
 						case "3":
 						case 3:
-							path = "http://www.html5-app.com/file/1.pdf";
-							this.downloader(path);
-							break;
 						case "4":
 						case 4:
-							path = "http://www.html5-app.com/file/1.pdf";
-							this.downloader(path);
+							// path = "http://www.html5-app.com/file/1.pdf";
+							this.downloader(_self.topicPath);
 							break;
 						default:
 							uni.showToast({
@@ -121,6 +113,7 @@
 							// 检查json数据
 							checkApi.isApi(dataApi);
 							// 设置各部分数据
+							_self.topicPath = dataApi.data.baseInfo.file;
 							_self.indexName = dataApi.data.baseInfo.indexName;
 							_self.indexDetail = dataApi.data.classInfo;
 							// 计算classHeight及总Height
@@ -169,6 +162,13 @@
 			},
 			// 下载文件并打开
 			downloader(path) {
+				console.log("下载路径为:" + path);
+				if (path == "") {
+					uni.showToast({
+						title: '文档下载路径错误'
+					});
+					return;
+				}
 				uni.downloadFile({
 					url: path,
 					success: function(res) {
