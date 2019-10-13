@@ -5,7 +5,7 @@
 				<image src="../../../static/icon/echarts/trend-upward.png"></image>
 				<text>{{classTitle}}</text>
 			</view>
-			<text class="lg text-black cuIcon-down" style="margin-right: 20upx;"></text>
+			<text class="lg text-black cuIcon-down" style="margin-right: 20upx;" @tap="downEcharts()"></text>
 		</view>
 		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="echarts" />
 	</view>
@@ -60,6 +60,47 @@
 				canvas.setChart(wdChart)
 				wdChart.setOption(this.echartOption)
 				return wdChart
+			},
+			downEcharts() {
+				let url = "";
+				uni.canvasToTempFilePath({
+					canvasId: this.canvasId,
+					success: function(res) {
+						console.log("返回图片路径:" + res.tempFilePath);
+						uni.saveFile({
+							tempFilePath: res.tempFilePath,
+							success(res) {
+								console.log('保存成功:' + JSON.stringify(res));
+								let url = res.savedFilePath;
+								console.log("url:" + url);
+							},
+						})
+					},
+					fail: function() {
+						uni.showToast({
+							icon: 'none',
+							title: "图表正在加载，请稍后再试"
+						});
+						rj(false);
+					}
+				});
+				uni.getImageInfo({
+					src: url,
+					success: res => {
+						console.log('获取图片信息成功:' + JSON.stringify(res));
+					},
+					fail: err => {
+						console.log('获取图片信息失败:' + JSON.stringify(err));
+					}
+				});
+				uni.saveImageToPhotosAlbum({
+					filePath: url,
+					success(res) {
+						uni.showToast({
+							title: '保存成功'
+						});
+					}
+				})
 			}
 		}
 	}
