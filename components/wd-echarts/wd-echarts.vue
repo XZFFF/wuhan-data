@@ -1,8 +1,11 @@
 <template>
 	<view class="canvas-view" :style="{height:classHeight + 'px'}">
-		<view class="echart-nav">
-			<image src="../../../static/icon/echarts/trend-upward.png"></image>
-			<text>{{classTitle}}</text>
+		<view style="display: flex;justify-content: space-between;flex-direction: row;align-items: center;">
+			<view class="echart-nav" style="display: flex;justify-content: flex-start;flex-direction: row">
+				<image src="../../../static/icon/echarts/trend-upward.png"></image>
+				<text>{{classTitle}}</text>
+			</view>
+			<text class="lg text-black cuIcon-down" style="margin-right: 20upx;"></text>
 		</view>
 		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="echarts" />
 	</view>
