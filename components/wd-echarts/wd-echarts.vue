@@ -66,22 +66,10 @@
 				uni.canvasToTempFilePath({
 					canvasId: this.canvasId,
 					success: function(res) {
-						console.log("返回图片路径:" + res.tempFilePath);
 						uni.saveFile({
 							tempFilePath: res.tempFilePath,
 							success(res) {
-								console.log('保存成功:' + JSON.stringify(res));
 								let url = res.savedFilePath;
-								console.log("url:" + url);
-								uni.getImageInfo({
-									src: url,
-									success: res => {
-										console.log('获取图片信息成功:' + JSON.stringify(res));
-									},
-									fail: err => {
-										console.log('获取图片信息失败:' + JSON.stringify(err));
-									}
-								});
 								uni.saveImageToPhotosAlbum({
 									filePath: url,
 									success(res) {
@@ -101,23 +89,6 @@
 						return false;
 					}
 				});
-				// uni.getImageInfo({
-				// 	src: url,
-				// 	success: res => {
-				// 		console.log('获取图片信息成功:' + JSON.stringify(res));
-				// 	},
-				// 	fail: err => {
-				// 		console.log('获取图片信息失败:' + JSON.stringify(err));
-				// 	}
-				// });
-				// uni.saveImageToPhotosAlbum({
-				// 	filePath: url,
-				// 	success(res) {
-				// 		uni.showToast({
-				// 			title: '保存成功'
-				// 		});
-				// 	}
-				// })
 			}
 		}
 	}
