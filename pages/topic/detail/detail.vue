@@ -68,7 +68,7 @@
 						case "2":
 						case 2:
 							path = "http://www.html5-app.com/file/1.pdf";
-							this.downloader1(path);
+							this.downloader(path);
 							break;
 						case "3":
 						case 3:
@@ -102,9 +102,11 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					url: this.apiUrl + 'topic' + _self.indexId,
+					url: this.apiUrl + 'getTopicData',
 					method: 'POST',
-					data: {},
+					data: {
+						topicId: _self.indexId
+					},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						dataApi = res.data;
