@@ -21,9 +21,9 @@
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="openAnalysisList(index)">
-					<image class="icon-single-backicon" :src="item.icon_url"></image>
+					<image class="icon-single-backicon" :src="item.iconUrl"></image>
 				</view>
-				<text class="icon-single-text">{{item.icon_name}}</text>
+				<text class="icon-single-text">{{item.typeName}}</text>
 			</view>
 		</view>
 		<!-- 专题 -->
@@ -92,9 +92,8 @@
 					method: 'GET',
 					data: {},
 					success: res => {
-						console.log("获取成功;" + JSON.stringify(res.data));
 						// 获取homepage的数据
-						dataApi = homeApiJson;
+						dataApi = res.data;
 					},
 					fail: (e) => {
 						//取出缓存数据并绑定到data
