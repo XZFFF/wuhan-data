@@ -8,7 +8,6 @@
 				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
 			</block>
 		</view>
-		<!-- <wd-share :indexId="indexId" :indexName="indexName"></wd-share> -->
 	</view>
 </template>
 
@@ -16,7 +15,6 @@
 	import uniCard from '@/components/uni-card/uni-card.vue';
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
-	import wdShare from '@/components/wd-share/wd-share.vue';
 	import wdCard from '@/components/wd-card/wd-card.vue';
 	import checkApi from '@/common/checkApi.js';
 	import topicDetailApiJson from "@/common/api/topicDetail.json";
@@ -24,14 +22,13 @@
 	import topic2 from "@/common/api/topic2.json";
 	import topic3 from "@/common/api/topic3.json";
 	import topic4 from "@/common/api/topic4.json";
-	
+
 	var _self;
 	export default {
 		components: {
 			uniCard,
 			wdEcharts,
 			wdTable,
-			wdShare,
 			wdCard
 		},
 		data() {
@@ -57,6 +54,51 @@
 			this.initTopicDetail();
 			_self.initNav();
 		},
+		onNavigationBarButtonTap(e) {
+			switch (e.type) {
+				case "none":
+					// #ifdef APP-PLUS
+					if (e.text == '导出') {
+						let path = "";
+						switch (this.indexId) {
+							case "1":
+							case 1:
+								path = "http://www.html5-app.com/file/1.pdf";
+								this.downloader(path);
+								break;
+							case "2":
+							case 2:
+								path = "http://www.html5-app.com/file/1.pdf";
+								this.downloader1(path);
+								break;
+							case "3":
+							case 3:
+								path = "http://www.html5-app.com/file/1.pdf";
+								this.downloader(path);
+								break;
+							case "4":
+							case 4:
+								path = "http://www.html5-app.com/file/1.pdf";
+								this.downloader(path);
+								break;
+							default:
+								uni.showToast({
+									title: "专题" + this.indexId + "导出失败",
+									duration: 1000
+								});
+								break;
+						}
+
+					}
+					// #endif
+					break;
+				default:
+					uni.showToast({
+						title: e.type,
+						icon: "none"
+					});
+			}
+		},
 		methods: {
 			// 初始化数据，请求数据进行页面渲染
 			initTopicDetail() {
@@ -71,23 +113,6 @@
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						dataApi = res.data;
-						// switch (this.indexId) {
-						// 	case "1":
-						// 		dataApi = topic1;
-						// 		break;
-						// 	case "2":
-						// 		dataApi = topic2;
-						// 		break;
-						// 	case "3":
-						// 		dataApi = topic3;
-						// 		break;
-						// 	case "4":
-						// 		dataApi = topic4;
-						// 		break;
-						// 	default:
-						// 		dataApi = topic1;
-						// 		break;
-						// }
 						// let topic_detail_key = 'topic_detail' + this.indexId;
 						// uni.setStorageSync(topic_detail_key, dataApi);
 					},
@@ -99,7 +124,6 @@
 							// 检查json数据
 							checkApi.isApi(dataApi);
 							// 设置各部分数据
-							// _self.indexId = dataApi.data.baseInfo.indexId;
 							_self.indexName = dataApi.data.baseInfo.indexName;
 							_self.indexDetail = dataApi.data.classInfo;
 							// 计算classHeight及总Height
@@ -145,6 +169,75 @@
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = classHeight;
 			},
+			downloader1(path) {
+				uni.downloadFile({
+					url: path,
+					success: function(res) {
+						var filePath = res.tempFilePath;
+						uni.openDocument({
+							filePath: filePath,
+							success: function(res) {
+								console.log('打开文档成功');
+							}
+						});
+					}
+				});
+			},
+			downloader(path) {
+				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
+				//判断文件是否存在
+				plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
+					//如果文件存在直接打开。
+
+					// 尝试其他方式
+					uni.openDocument({
+						filePath: entry.fullPath,
+						success: function(res) {
+							console.log('打开文档成功');
+						},
+						fail: function(e) {
+							console.log('打开文档失败'.e.message);
+						}
+					})
+					// open.openFile({
+					// 	filename: entry.fullPath
+					// });
+				}, function(e) {
+					//如果文件不存在，则下载文件到本地
+					uni.showLoading({
+						title: "文件下载中..."
+					});
+					// 创建下载任务					
+					const dtask = plus.downloader.createDownload(path, {
+						filename: "_downloads/" + filename
+					}, function(d, status) {
+						uni.hideLoading();
+						if (status == 200) {
+							uni.showToast({
+								title: "下载完成"
+							});
+							let filepath = plus.io.convertLocalFileSystemURL(d.filename);
+							// open.openFile({
+							// 	filename: filepath
+							// });
+							uni.openDocument({
+								filePath: filepath,
+								success: function(res) {
+									console.log('打开文档成功');
+								},
+								fail: function(e) {
+									console.log('打开文档失败'.e.message);
+								}
+							})
+						} else {
+							uni.showToast({
+								title: "下载失败"
+							});
+						}
+					});
+					dtask.start(); //开始下载
+				});
+			}
 		}
 	}
 </script>

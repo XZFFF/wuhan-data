@@ -145,16 +145,16 @@
 				if (type == 'pdf' || type == 'excel') {
 					let path = myNews[index].path;
 					uni.downloadFile({
-					  url: path,
-					  success: function (res) {
-					    var filePath = res.tempFilePath;
-					    uni.openDocument({
-					      filePath: filePath,
-					      success: function (res) {
-					        console.log('打开文档成功');
-					      }
-					    });
-					  }
+						url: path,
+						success: function(res) {
+							var filePath = res.tempFilePath;
+							uni.openDocument({
+								filePath: filePath,
+								success: function(res) {
+									console.log('打开文档成功');
+								}
+							});
+						}
 					});
 				}
 				if (type == 'link') {
@@ -184,7 +184,7 @@
 			// 		return;
 			// 	}
 			// },
-			
+
 			downloader() {}
 
 
