@@ -170,6 +170,9 @@ module.exports = {
 		} else {
 			typeName = "未知类型";
 		}
+		if(!source) {
+			source = "未知来源";
+		}
 		console.log(token + typeName + indexId + indexName + source);
 		uni.request({
 			url: this.apiUrl + 'setCollectApp',

@@ -156,7 +156,7 @@
 			goSearchDetail(item) {
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source +
-						"&isFavorite=true"
+						"&isFavorite=true&isArea=0&path="
 				})
 			},
 			async changeTab(e) {

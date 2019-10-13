@@ -36,7 +36,7 @@
 			return {
 				indexId: "1000",
 				indexName: "指标详情页",
-				source: "未知来源",
+				sourceName: "未知来源",
 				isFavorite: false,
 				timeCondition: [],
 				indexDetail: [],
@@ -50,9 +50,9 @@
 			if (JSON.stringify(e) != '{}') {
 				this.indexId = e.indexId;
 				this.indexName = e.indexName;
-				this.source = e.source;
+				this.sourceName = e.source;
 			}
-			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.source);
+			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.sourceName);
 			// 初始化页面数据
 			uni.showLoading({
 				title: "加载栏目:" + this.indexId,
@@ -65,14 +65,12 @@
 			switch (e.type) {
 				case "favorite":
 					if (this.isFavorite == false || this.isFavorite == "false") {
-						if (checkApi.setCollect(this.type, this.indexId, this.indexName, this.source)) {
+						if (checkApi.setCollect("analysis", this.indexId, this.indexName, this.sourceName)) {
 							this.isFavorite = true;
-							favColor = "#f9da74";
 						}
 					} else if (this.isFavorite == true || this.isFavorite == "true") {
-						if (checkApi.delCollect(this.type, this.indexId, this.indexName, this.source)) {
+						if (checkApi.delCollect("analysis", this.indexId, this.indexName, this.sourceName)) {
 							this.isFavorite = false;
-							favColor = "#ffffff";
 						}
 					} else {
 						console.log("收藏状态异常" + this.isFavorite);
@@ -99,7 +97,7 @@
 					},
 					success: (res) => {
 						dataApi = res.data;
-						console.log(JSON.stringify(dataApi));
+						// console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
 					},
@@ -142,13 +140,11 @@
 					"startTime": val.startTime,
 					"endTime": val.endTime
 				};
-				console.log(JSON.stringify(requestData));
 				uni.request({
 					url: this.apiUrl + 'getAnalysisDetailByTime',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
-						console.log("获取成功;" + JSON.stringify(res.data));
 						try {
 							dataApi = res.data;
 							checkApi.isApi(dataApi);
@@ -176,7 +172,6 @@
 					try {
 						dataApi = analysis_detail;
 						this.isFavorite = dataApi.data.baseInfo.isFavorite;
-						this.source = dataApi.data.baseInfo.source;
 						this.timeCondition = dataApi.data.timeCondition;
 						this.indexDetail = dataApi.data.classInfo;
 						this.relatedData = dataApi.data.relatedData;
@@ -250,7 +245,6 @@
 							canvasHeight.push(i.classHeight);
 						}
 					}
-					console.log("drawArr:" + drawArr);
 					uni.setStorageSync('drawTitle', _self.indexName);
 					uni.setStorageSync('drawArr', drawArr);
 					uni.setStorageSync('canvasTitle', canvasTitle);

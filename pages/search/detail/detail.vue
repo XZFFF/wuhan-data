@@ -21,7 +21,6 @@
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
-	import wdShare from '@/components/wd-share/wd-share.vue';
 	import wdSharePoster from '@/components/wd-sharePoster/wd-sharePoster.vue';
 	import checkApi from '@/common/checkApi.js';
 	import searchDetailApiJson from "@/common/api/searchDetail.json";
@@ -36,7 +35,6 @@
 			wdEcharts,
 			wdTable,
 			wdRelatedList,
-			wdShare,
 			wdSharePoster
 		},
 		data() {
@@ -76,17 +74,22 @@
 			this.initNav();
 		},
 		onNavigationBarButtonTap(e) {
+			console.log("source:" + this.source);
 			switch (e.type) {
 				case "favorite":
+					if (this.isArea == '1' || this.isArea == 1) {
+						uni.showToast({
+							title: '该指标暂不支持收藏'
+						});
+						return;
+					}
 					if (this.isFavorite == false || this.isFavorite == "false") {
-						if (checkApi.setCollect(this.type, this.indexId, this.indexName, this.source)) {
+						if (checkApi.setCollect("search", this.indexId, this.indexName, this.source)) {
 							this.isFavorite = true;
-							favColor = "#f9da74";
 						}
 					} else if (this.isFavorite == true || this.isFavorite == "true") {
-						if (checkApi.delCollect(this.type, this.indexId, this.indexName, this.source)) {
+						if (checkApi.delCollect("search", this.indexId, this.indexName, this.source)) {
 							this.isFavorite = false;
-							favColor = "#ffffff";
 						}
 					} else {
 						console.log("收藏状态异常" + this.isFavorite);
@@ -114,7 +117,6 @@
 				console.log(JSON.stringify(requestData));
 				uni.request({
 					url: this.apiUrl + 'searchDetail',
-					// url: 'https://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
@@ -131,8 +133,6 @@
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
 						try {
-							_self.indexId = dataApi.data.baseInfo.indexId;
-							_self.indexName = dataApi.data.baseInfo.indexName;
 							_self.isFavorite = dataApi.data.baseInfo.isFavorite;
 							_self.timeCondition = dataApi.data.timeCondition;
 							_self.indexDetail = dataApi.data.classInfo;
@@ -199,11 +199,9 @@
 				if (search_detail) {
 					try {
 						dataApi = search_detail;
-						_self.source = dataApi.data.baseInfo.source;
 						_self.timeCondition = dataApi.data.timeCondition;
 						_self.indexDetail = dataApi.data.classInfo;
 						_self.relatedData = dataApi.data.relatedData;
-						// 计算classHeight及总Height
 						this.setHeight();
 						uni.hideLoading();
 					} catch (e) {
