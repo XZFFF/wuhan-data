@@ -73,6 +73,23 @@
 								console.log('保存成功:' + JSON.stringify(res));
 								let url = res.savedFilePath;
 								console.log("url:" + url);
+								uni.getImageInfo({
+									src: url,
+									success: res => {
+										console.log('获取图片信息成功:' + JSON.stringify(res));
+									},
+									fail: err => {
+										console.log('获取图片信息失败:' + JSON.stringify(err));
+									}
+								});
+								uni.saveImageToPhotosAlbum({
+									filePath: url,
+									success(res) {
+										uni.showToast({
+											title: '保存成功'
+										});
+									}
+								})
 							},
 						})
 					},
@@ -81,26 +98,26 @@
 							icon: 'none',
 							title: "图表正在加载，请稍后再试"
 						});
-						rj(false);
+						return false;
 					}
 				});
-				uni.getImageInfo({
-					src: url,
-					success: res => {
-						console.log('获取图片信息成功:' + JSON.stringify(res));
-					},
-					fail: err => {
-						console.log('获取图片信息失败:' + JSON.stringify(err));
-					}
-				});
-				uni.saveImageToPhotosAlbum({
-					filePath: url,
-					success(res) {
-						uni.showToast({
-							title: '保存成功'
-						});
-					}
-				})
+				// uni.getImageInfo({
+				// 	src: url,
+				// 	success: res => {
+				// 		console.log('获取图片信息成功:' + JSON.stringify(res));
+				// 	},
+				// 	fail: err => {
+				// 		console.log('获取图片信息失败:' + JSON.stringify(err));
+				// 	}
+				// });
+				// uni.saveImageToPhotosAlbum({
+				// 	filePath: url,
+				// 	success(res) {
+				// 		uni.showToast({
+				// 			title: '保存成功'
+				// 		});
+				// 	}
+				// })
 			}
 		}
 	}
