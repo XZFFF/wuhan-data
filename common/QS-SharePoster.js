@@ -677,12 +677,12 @@ function getShreUserPosterBackground(objs) { //检查背景图是否存在于本
 			_app.showLoading('正在获取海报背景图');
 			let pbg;
 			// #ifndef H5
-			pbg = getPosterStorage(type);
+			// pbg = getPosterStorage(type);
 			// #endif
 			// #ifdef H5
 			pbg = false;
 			// #endif
-			_app.log('获取的缓存:' + JSON.stringify(pbg));
+			// _app.log('获取的缓存:' + JSON.stringify(pbg));
 			if (pbg && pbg.path && pbg.name) {
 				_app.log('海报有缓存, 准备获取后端背景图进行对比');
 				const image = await _app.getPosterUrl(objs);
@@ -755,7 +755,7 @@ function removePosterStorage(type) {
 }
 
 function setPosterStorage(type, data) {
-	_app.setStorage(getStorageKey(type), data);
+	// _app.setStorage(getStorageKey(type), data);
 }
 
 function getStorageKey(type) {
