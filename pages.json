@@ -20,7 +20,6 @@
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
-						//"type": "transparent",
 						"titleColor": "#FFFFFF",
 						"backgroundColor": "#007AFF",
 						"buttons": [{
@@ -61,10 +60,10 @@
 					"titleNView": {
 						"buttons": [{
 							"type": "none",
-							"text": "搜索",
 							"float": "right",
-							"fontSize": "14px",
-							"width": "auto"
+							"text": "\ue466",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "24px"
 						}]
 					}
 				}
@@ -116,10 +115,10 @@
 					"titleNView": {
 						"buttons": [{
 							"type": "none",
-							"text": "导出",
 							"float": "right",
-							"fontSize": "14px",
-							"width": "auto"
+							"text": "\ue403",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "24px"
 						}]
 					}
 				}

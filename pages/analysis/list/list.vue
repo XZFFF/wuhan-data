@@ -78,7 +78,7 @@
 		},
 		onNavigationBarButtonTap(e) {
 			console.log(JSON.stringify(e));
-			if (e.text == '搜索') {
+			if (e.type == 'none') {
 				uni.navigateTo({
 					url: '../search/search',
 					success: res => {},

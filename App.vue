@@ -15,50 +15,10 @@
 				console.log(JSON.stringify(e));
 			}
 
-			console.log('App Launch')
 		},
-		onShow: function() {
-			console.log('App Show');
-			// this.checkStorage();
-			//var args = plus.runtime.arguments;
-			//if (args) {
-			// console.log(args);
-			// let argsJson = JSON.parse(args);
-			// let argsJson = {
-			// 	"name": "analysis-detail",
-			// 	"pathName": "pages/analysis/detail/detail",
-			// 	"query": "indexId=1001&indexName=GDP"
-			// };
-			// let navigateUrl = "/" + argsJson.pathName + "?" + argsJson.query;
-			// console.log(navigateUrl);
-			// // 处理args参数，如直达到某新页面等
-			// setTimeout(function() {
-			// 	uni.reLaunch({
-			// 		url: navigateUrl,
-			// 		success(res) {
-			// 			console.log('success jump');
-			// 		},
-			// 		fail(e) {
-			// 			console.log('fail jump');
-			// 		}
-			// 	});
-			// }, 1000);
-			//}
-		},
-		onHide: function() {
-			console.log('App Hide')
-		},
-		methods: {
-			sleep(numberMillis) {
-				var now = new Date();
-				var exitTime = now.getTime() + numberMillis;
-				while (true) {
-					now = new Date();
-					if (now.getTime() > exitTime)
-						return;
-				}
-			},
-		}
+		onShow: function() {},
+		onHide: function() {},
+		methods: {}
 	}
 </script>
 

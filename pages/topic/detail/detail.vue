@@ -50,7 +50,7 @@
 				title: "加载中",
 			});
 			console.log("topicId" + this.indexId);
-			// this.showStorage();
+			this.showStorage();
 			this.initTopicDetail();
 			_self.initNav();
 		},
@@ -58,37 +58,34 @@
 			switch (e.type) {
 				case "none":
 					// #ifdef APP-PLUS
-					if (e.text == '导出') {
-						let path = "";
-						switch (this.indexId) {
-							case "1":
-							case 1:
-								path = "http://www.html5-app.com/file/1.pdf";
-								this.downloader(path);
-								break;
-							case "2":
-							case 2:
-								path = "http://www.html5-app.com/file/1.pdf";
-								this.downloader1(path);
-								break;
-							case "3":
-							case 3:
-								path = "http://www.html5-app.com/file/1.pdf";
-								this.downloader(path);
-								break;
-							case "4":
-							case 4:
-								path = "http://www.html5-app.com/file/1.pdf";
-								this.downloader(path);
-								break;
-							default:
-								uni.showToast({
-									title: "专题" + this.indexId + "导出失败",
-									duration: 1000
-								});
-								break;
-						}
-
+					let path = "";
+					switch (this.indexId) {
+						case "1":
+						case 1:
+							path = "http://www.html5-app.com/file/1.pdf";
+							this.downloader(path);
+							break;
+						case "2":
+						case 2:
+							path = "http://www.html5-app.com/file/1.pdf";
+							this.downloader1(path);
+							break;
+						case "3":
+						case 3:
+							path = "http://www.html5-app.com/file/1.pdf";
+							this.downloader(path);
+							break;
+						case "4":
+						case 4:
+							path = "http://www.html5-app.com/file/1.pdf";
+							this.downloader(path);
+							break;
+						default:
+							uni.showToast({
+								title: "专题" + this.indexId + "导出失败",
+								duration: 1000
+							});
+							break;
 					}
 					// #endif
 					break;
@@ -105,16 +102,14 @@
 				checkApi.checkNetwork();
 				let dataApi;
 				uni.request({
-					// url: 'https://www.baidu.com',
-					// url: 'http://192.168.124.14:8089/wuhan_data1/topic' + this.indexId,
 					url: this.apiUrl + 'topic' + _self.indexId,
 					method: 'POST',
 					data: {},
 					success: (res) => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						dataApi = res.data;
-						// let topic_detail_key = 'topic_detail' + this.indexId;
-						// uni.setStorageSync(topic_detail_key, dataApi);
+						let topic_detail_key = 'topic_detail' + this.indexId;
+						uni.setStorageSync(topic_detail_key, dataApi);
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
@@ -135,6 +130,7 @@
 					}
 				});
 			},
+			// 展示缓存数据
 			showStorage() {
 				let dataApi;
 				let topic_detail_key = 'topic_detail' + this.indexId;
@@ -169,7 +165,8 @@
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = classHeight;
 			},
-			downloader1(path) {
+			// 下载文件并打开
+			downloader(path) {
 				uni.downloadFile({
 					url: path,
 					success: function(res) {
@@ -183,61 +180,6 @@
 					}
 				});
 			},
-			downloader(path) {
-				var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
-				//判断文件是否存在
-				plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
-					//如果文件存在直接打开。
-
-					// 尝试其他方式
-					uni.openDocument({
-						filePath: entry.fullPath,
-						success: function(res) {
-							console.log('打开文档成功');
-						},
-						fail: function(e) {
-							console.log('打开文档失败'.e.message);
-						}
-					})
-					// open.openFile({
-					// 	filename: entry.fullPath
-					// });
-				}, function(e) {
-					//如果文件不存在，则下载文件到本地
-					uni.showLoading({
-						title: "文件下载中..."
-					});
-					// 创建下载任务					
-					const dtask = plus.downloader.createDownload(path, {
-						filename: "_downloads/" + filename
-					}, function(d, status) {
-						uni.hideLoading();
-						if (status == 200) {
-							uni.showToast({
-								title: "下载完成"
-							});
-							let filepath = plus.io.convertLocalFileSystemURL(d.filename);
-							// open.openFile({
-							// 	filename: filepath
-							// });
-							uni.openDocument({
-								filePath: filepath,
-								success: function(res) {
-									console.log('打开文档成功');
-								},
-								fail: function(e) {
-									console.log('打开文档失败'.e.message);
-								}
-							})
-						} else {
-							uni.showToast({
-								title: "下载失败"
-							});
-						}
-					});
-					dtask.start(); //开始下载
-				});
-			}
 		}
 	}
 </script>
