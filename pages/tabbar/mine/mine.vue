@@ -186,7 +186,7 @@
 						checkApi.isApi(dataApi);
 						try {
 							this.user = dataApi.data;
-							if (!this.user.head) {
+							if (this.user.head == null || this.user.head == 'null') {
 								this.user.head = '../../../static/icon/mine/default.jpg';
 							}
 							uni.setStorageSync('user', this.user);
