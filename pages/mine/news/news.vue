@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view style="margin-bottom: 20px;"></view>
-		<view v-for="(item,index) in messageList" :key="index" @click="open(index)">
+		<view v-for="(item,index) in messageList" :key="index" @click="openNews(index)">
 			<view style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
 				<wd-tag type="time" :text="item.tranTime"></wd-tag>
 			</view>
@@ -18,7 +18,7 @@
 	import wdMessageCard from '@/components/wd-message-card/wd-message-card.vue';
 	import checkApi from '@/common/checkApi.js';
 	import getNewsApiJson from "@/common/api/getMessage.json";
-	// const open = uni.requireNativePlugin("Html5App-openFile");
+	
 	export default {
 		components: {
 			wdTag,
@@ -50,7 +50,6 @@
 		computed: {
 			messageList: function() {
 				let messageList = this.message;
-				// console.log(messageList.length);
 				try {
 					for (let i = 0; i < messageList.length; i++) {
 						messageList[i].tranTime = this.tranTime(messageList[i].dateTime);
@@ -97,16 +96,15 @@
 			initMyNews() {
 				checkApi.checkNetwork();
 				uni.request({
-					// url: this.apiUrl + "getMessageApp",
-					url: 'https://www.baidu.com',
+					url: this.apiUrl + "getMessageApp",
 					method: 'POST',
 					data: {
 						"token": this.token,
 					},
 					success: (res) => {
 						try {
-							// let dataApi = res.data;
-							let dataApi = getNewsApiJson;
+							let dataApi = res.data;
+							// let dataApi = getNewsApiJson;
 							checkApi.isApi(dataApi);
 							this.message = dataApi.data.message;
 							console.log(JSON.stringify(this.message));
@@ -132,7 +130,7 @@
 					console.log(e.message);
 				}
 			},
-			open: function(index) {
+			openNews(index) {
 				let myNews = uni.getStorageSync('my_news');
 				let type = myNews[index].type;
 				if (type == 'message') {
@@ -147,12 +145,20 @@
 					uni.downloadFile({
 						url: path,
 						success: function(res) {
+							uni.showToast({
+								title: '文档下载成功'
+							});
 							var filePath = res.tempFilePath;
 							uni.openDocument({
 								filePath: filePath,
 								success: function(res) {
 									console.log('打开文档成功');
 								}
+							});
+						},
+						fail: function(e) {
+							uni.showToast({
+								title: '文档下载失败'
 							});
 						}
 					});
@@ -163,67 +169,6 @@
 					return;
 				}
 			},
-			// open: function(index) {
-			// 	let myNews = uni.getStorageSync('my_news');
-			// 	let type = myNews[index].type;
-			// 	if (type == 'message') {
-			// 		uni.setStorageSync('news_index', index);
-			// 		uni.navigateTo({
-			// 			url: 'news_details/news_details'
-			// 		});
-			// 		return false;
-			// 	}
-			// 	if (type == 'pdf' || type == 'excel') {
-			// 		let path = myNews[index].path;
-			// 		this.downloader(path);
-			// 		return;
-			// 	}
-			// 	if (type == 'link') {
-			// 		let path = myNews[index].path;
-			// 		plus.runtime.openURL(path);
-			// 		return;
-			// 	}
-			// },
-
-			downloader() {}
-
-
-			// downloader: function(path) {
-			// 	var filename = path.substring(path.lastIndexOf("/") + 1); //分割文件名出来
-			// 	//判断文件是否存在
-			// 	plus.io.resolveLocalFileSystemURL("_downloads/" + filename, function(entry) {
-			// 		//如果文件存在直接打开。
-			// 		open.openFile({
-			// 			filename: entry.fullPath
-			// 		});
-			// 	}, function(e) {
-			// 		//如果文件不存在，则下载文件到本地
-			// 		uni.showLoading({
-			// 			title: "文件下载中..."
-			// 		});
-			// 		// 创建下载任务					
-			// 		const dtask = plus.downloader.createDownload(path, {
-			// 			filename: "_downloads/" + filename
-			// 		}, function(d, status) {
-			// 			uni.hideLoading();
-			// 			if (status == 200) {
-			// 				uni.showToast({
-			// 					title: "下载完成"
-			// 				});
-			// 				let filepath = plus.io.convertLocalFileSystemURL(d.filename);
-			// 				open.openFile({
-			// 					filename: filepath
-			// 				});
-			// 			} else {
-			// 				uni.showToas({
-			// 					title: "下载失败"
-			// 				});
-			// 			}
-			// 		});
-			// 		dtask.start(); //开始下载
-			// 	});
-			// }
-
 		}
 	}
 </script>

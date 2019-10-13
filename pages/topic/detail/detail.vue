@@ -170,12 +170,20 @@
 				uni.downloadFile({
 					url: path,
 					success: function(res) {
+						uni.showToast({
+							title: '文档下载成功'
+						});
 						var filePath = res.tempFilePath;
 						uni.openDocument({
 							filePath: filePath,
 							success: function(res) {
 								console.log('打开文档成功');
 							}
+						});
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '文档下载失败'
 						});
 					}
 				});
