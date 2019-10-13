@@ -70,6 +70,7 @@
 			};
 		},
 		onShow: function() {
+			uni.hideLoading();
 			uni.showLoading({
 				title: "加载中",
 			});

@@ -81,10 +81,7 @@
 					this.initNav();
 					break;
 				default:
-					uni.showToast({
-						title: e.type,
-						icon: "none"
-					});
+					console.log(e.type);
 			}
 		},
 		methods: {
