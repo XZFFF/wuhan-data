@@ -63,8 +63,6 @@
 	import wdTag from '@/components/wd-tag/wd-tag.vue';
 	import wdTrendList from '@/components/wd-trend-list/wd-trend-list.vue';
 	import checkApi from '@/common/checkApi.js';
-	import searchApiJson from '@/common/api/search.json';
-	import searchResultApiJson from '@/common/api/searchResult.json';
 
 	export default {
 		components: {
@@ -142,7 +140,6 @@
 							checkApi.isApi(searchApi);
 							// 设置各部分数据
 							this.trendList = res.data.data.trend;
-							// this.trendList = searchApi.data.trend;
 							uni.setStorageSync('search_trend', this.trendList);
 						} catch (e) {
 							console.log(e.message);
@@ -162,7 +159,6 @@
 				checkApi.checkNetwork();
 				uni.request({
 					url: this.apiUrl + 'searchIndi',
-					// url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						keyword: val,

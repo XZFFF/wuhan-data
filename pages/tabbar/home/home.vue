@@ -70,14 +70,11 @@
 			};
 		},
 		onShow: function() {
-			console.log(this.apiUrl);
+			uni.showLoading({
+				title: "加载中",
+			});
 			this.showStorage();
 			this.initHomePage();
-			uni.hideLoading();
-			let dataApi = homeApiJson;
-			this.slideshow = dataApi.data.slideshow;
-			this.analysis = dataApi.data.analysis;
-			this.topic = dataApi.data.topic;
 		},
 		onPullDownRefresh: function() {
 			this.removeHomeStorage();
@@ -91,13 +88,11 @@
 				// 通过请求接口获取轮播图
 				uni.request({
 					url: this.apiUrl + 'initHome',
-					// url: 'https://www.baidu.com',
 					method: 'GET',
 					data: {},
 					success: res => {
 						console.log("获取成功;" + JSON.stringify(res.data));
 						// 获取homepage的数据
-						// dataApi = res.data;
 						dataApi = homeApiJson;
 					},
 					fail: (e) => {
@@ -115,6 +110,7 @@
 							this.topic = dataApi.data.topic;
 							// 数据存入缓存
 							this.setHomeStorage();
+							uni.hideLoading();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -139,6 +135,7 @@
 				if (homeTopic) {
 					this.topic = homeTopic;
 				}
+				uni.hideLoading();
 			},
 			removeHomeStorage() {
 				uni.removeStorageSync('home_slideshow');
@@ -169,17 +166,11 @@
 				}
 			},
 			openAnalysisList(index) {
-				// var analysisId = e.currentTarget.dataset.analysisid;
 				uni.setStorageSync('analysis_list_scroll_top', 0);
 				uni.setStorageSync('analysis_list_scroll_index', index);
 				uni.navigateTo({
 					url: '../../analysis/list/list?itemKey=' + index
 				});
-			},
-			openTopicList(e) {
-				// uni.navigateTo({
-				// 	url: '../../topic/list/list'
-				// });
 			},
 			openTopicDetail(item) {
 				uni.navigateTo({
@@ -191,21 +182,11 @@
 					url: "../search/search"
 				})
 			},
-			cardSwiper(e) {
-				this.cardCur = e.detail.current
-			},
 		}
 	}
 </script>
 
 <style>
-	@import "../../../colorui/animation.css";
-
-	image[class*="gif-"] {
-		border-radius: 6upx;
-		display: block;
-	}
-
 	.slide-image {
 		/* height: 350upx; */
 		width: 750upx;

@@ -10,7 +10,6 @@
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
 		<wd-share-poster></wd-share-poster>
-		<!-- <wd-share type="analysis" :indexId="indexId" :indexName="indexName" :isFavorite="isFavorite" :source="source"></wd-share> -->
 	</view>
 </template>
 
@@ -19,7 +18,6 @@
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
-	import wdShare from '@/components/wd-share/wd-share.vue';
 	import wdSharePoster from '@/components/wd-sharePoster/wd-sharePoster.vue';
 	import checkApi from '@/common/checkApi.js';
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
@@ -32,7 +30,6 @@
 			wdEcharts,
 			wdTable,
 			wdRelatedList,
-			wdShare,
 			wdSharePoster
 		},
 		data() {
@@ -60,7 +57,7 @@
 			uni.showLoading({
 				title: "加载栏目:" + this.indexId,
 			});
-			// this.showStorage(this.indexId);
+			this.showStorage(this.indexId);
 			this.initAnalysisDetail(this.indexId);
 			this.initNav();
 		},
@@ -98,7 +95,6 @@
 				let dataApi;
 				uni.request({
 					url: this.apiUrl + 'getAnalysisDetail',
-					// url: 'https://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
@@ -114,7 +110,6 @@
 						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
-						// dataApi = analysisDetailApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
