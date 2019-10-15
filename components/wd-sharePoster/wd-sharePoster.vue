@@ -43,10 +43,10 @@
 			this.windowWidth = windowWidth;
 			var heiArr = uni.getStorageSync("canvasHeight");
 			var titleArr = uni.getStorageSync("canvasTitle");
-			var hei = 50;
+			var hei = 60;
 			console.log("windowWidth:" + windowWidth);
 			for (var i of heiArr) {
-				hei += parseInt(i) + 40;
+				hei += parseInt(i) + 10;
 			}
 			console.log("hei:" + hei);
 			this.canvasHeight = hei;
@@ -76,6 +76,8 @@
 								if (this.poster.height > 1400) {
 									this.poster.height = 1400;
 								}
+								console.log("画布高度："+this.poster.height);
+								console.log("画布宽度："+this.poster.width);
 							},
 							// setDraw: ({Context, bgObj, type, bgScale}) => {
 							// 	Context.setFillStyle('black');

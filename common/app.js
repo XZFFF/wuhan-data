@@ -34,29 +34,29 @@ let _app = {
 		// });
 		return new Promise((rs, rj) => {
 			let image = new Promise((rs, rj) => {
+				const {
+					windowWidth,
+					windowHeight
+				} = uni.getSystemInfoSync();
 				var drawArr = uni.getStorageSync('drawArr');
 				var canvasTitle = uni.getStorageSync('canvasTitle');
 				const ctx = uni.createCanvasContext('hideCanvas');
 				ctx.setFillStyle("#FFFFFF");
-				ctx.fillRect(0, 0, 100000, 1000000);
+				ctx.fillRect(0, 0, windowWidth, 1000000);
 				var hei = 0;
 				var wid = 0;
 				var url;
 				var imgObj;
 				ctx.setFillStyle('#3A82CC');
-				ctx.fillRect(0, 0, 10000, 50);
-				hei += 50;
-				ctx.font = "18px bold 黑体";
+				ctx.fillRect(0, 0, windowWidth, 70);
+				hei += 60;
+				ctx.font = "24px bold 黑体";
 				ctx.setFillStyle('white');
 				// 绘制文字（参数：要写的字，x坐标，y坐标）
 				var title = uni.getStorageSync('drawTitle');
 				// ctx.setFontSize(17);
-				const {
-					windowWidth,
-					windowHeight
-				} = uni.getSystemInfoSync();
-				// ctx.setTextAlign('center');
-				ctx.fillText(title, 25, hei - 16, windowWidth * 2.7 - 50);
+				ctx.setTextAlign('center');
+				ctx.fillText(title, windowWidth/2, hei - 18, windowWidth * 2.7);
 				async function f1() {
 					for (var i = 0; i < drawArr.length; i++) {
 						await new Promise((rs, rj) => {
@@ -93,6 +93,10 @@ let _app = {
 								}
 							});
 						}).then(function() {
+							const {
+								windowWidth,
+								windowHeight
+							} = uni.getSystemInfoSync();
 							// uni.saveImageToPhotosAlbum({
 							// 	filePath: url,
 							// 	success: function () {
@@ -101,24 +105,26 @@ let _app = {
 							// });
 							//#ifndef H5
 							ctx.setFillStyle('#F5F5F5');
-							ctx.fillRect(0, hei, 10000, 40);
-							ctx.font = "14px bold 黑体";
+							ctx.fillRect(0, hei, windowWidth, 15);
+							ctx.font = "15px bold 黑体";
 							hei += 40;
 							ctx.setFillStyle('black');
 							// 设置水平对齐方式
-							ctx.setTextAlign = "center";
-							// 设置垂直对齐方式
 							ctx.setTextBaseline = "middle";
 							// 绘制文字（参数：要写的字，x坐标，y坐标）
 							var txt = canvasTitle[i];
-							ctx.setFontSize(14);
-							const {
-								windowWidth,
-								windowHeight
-							} = uni.getSystemInfoSync();
-							ctx.fillText(txt, 25, hei - 13, windowWidth * 2.7 - 50);
+							ctx.setFontSize(15);
+							ctx.setTextAlign('left');
+							ctx.fillText(txt, 20, hei, windowWidth * 2.7 - 40);
+							// ctx.draw();
+							ctx.setStrokeStyle('#D3D3D3');
+							hei += 10;
+							ctx.moveTo(0, hei);
+							ctx.lineTo(windowWidth-20, hei);
+							ctx.stroke();
+							// ctx.draw();
 							ctx.drawImage(url, wid, hei, imgObj.width / 3, imgObj.height / 3);
-							hei += imgObj.height / 3;
+							hei += imgObj.height / 3 - 40;
 							//#endif
 							console.log("绘图成功" + i);
 							if (i === drawArr.length - 1) {
