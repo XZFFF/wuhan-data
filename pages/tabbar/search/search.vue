@@ -29,7 +29,7 @@
 				</view>
 				<uni-list style="background-color: #FFFFFF;">
 					<view v-for="(item, index) in trendList" :key="index" @click="searchTrendTap(item)">
-						<wd-trend-list :trendId="item.id" :title="item.name" :trendArrow="item.arrow" :trendRate="item.rate"></wd-trend-list>
+						<wd-trend-list :trendId="item.id" :title="item.name" :trendArrow="item.arrow" :trendRate="item.rate" :trendSource="item.source"></wd-trend-list>
 					</view>
 				</uni-list>
 			</view>

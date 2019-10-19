@@ -6,8 +6,11 @@
 					<text class="wd-list-item__id-text">{{trendId}}</text>
 				</view>
 			</view>
-			<view class="wd-list-item__content">
-				<view class="wd-list-item__content-title">{{title}}</view>
+			<view class="wd-list-item__content" style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 30upx;">
+				<view class="wd-list-item__content-title" style="display: flex; align-items: center;max-width: 280upx;font-size: 30upx;">{{title}}</view>
+				<view class="tag-view" style="display: flex; flex-direction: row;">
+					<wd-tag :text="trendSource" size="small" :circle="true"></wd-tag>
+				</view>
 			</view>
 			<view class="wd-list-item__extra">
 				<text style="margin-left: 6upx; margin-right: 10upx; font-size: 11px;">{{trendRate}}</text>
@@ -19,12 +22,18 @@
 </template>
 
 <script>
+	import wdTag from '@/components/wd-tag/wd-tag.vue';
+
 	export default {
+		components: {
+			wdTag
+		},
 		props: {
 			trendId: String, //序号
 			title: String, //列表标题
 			trendArrow: String,
-			trendRate: String // 趋势数据
+			trendRate: String ,// 趋势数据
+			trendSource: String // 趋势来源
 		},
 		computed: {
 			trendIdBackground() {
@@ -147,5 +156,10 @@
 		flex-direction: row;
 		justify-content: flex-end;
 		align-items: center
+	}
+
+	.tag-view {
+		margin: auto 20upx;
+		display: inline-block;
 	}
 </style>
