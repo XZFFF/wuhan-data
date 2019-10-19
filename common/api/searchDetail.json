@@ -6,7 +6,7 @@
 			"classTitle": "全国/主要省份（中部）社会消费品零售总额增速比较",
 			"classType": "echarts",
 			"echartOption": {
-				"backgroundColor": "#f0855b",
+				"backgroundColor": "#FFFFFF",
 				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8", "#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"],
 				"grid": {
 					"height": "250",
@@ -135,7 +135,7 @@
 			"classTitle": "主要省份（中部）社会消费品零售总额比较",
 			"classType": "echarts",
 			"echartOption": {
-				"backgroundColor": "#f0855b",
+				"backgroundColor": "#FFFFFF",
 				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8", "#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"],
 				"grid": {
 					"height": "250",

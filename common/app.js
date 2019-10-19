@@ -124,7 +124,7 @@ let _app = {
 							ctx.stroke();
 							// ctx.draw();
 							ctx.drawImage(url, wid, hei, imgObj.width / 3, imgObj.height / 3);
-							hei += imgObj.height / 3 - 40;
+							hei += imgObj.height / 3+10;
 							//#endif
 							console.log("绘图成功" + i);
 							if (i === drawArr.length - 1) {

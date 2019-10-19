@@ -46,7 +46,7 @@
 			var hei = 60;
 			console.log("windowWidth:" + windowWidth);
 			for (var i of heiArr) {
-				hei += parseInt(i) + 10;
+				hei += parseInt(i);
 			}
 			console.log("hei:" + hei);
 			this.canvasHeight = hei;
