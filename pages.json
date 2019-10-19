@@ -9,6 +9,9 @@
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent" //透明渐变导航栏
+					},
+					"pullToRefresh": {
+						"support": true
 					}
 				}
 			}
