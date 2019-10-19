@@ -15,14 +15,20 @@ module.exports = {
 				if (apiData.errCode != 0 || apiData.errCode != '0') {
 					// TODO 记录到服务端日志表中
 					console.log(JSON.stringify(apiData));
+					uni.showModal({
+						title: '错误信息',
+						content: apiData.errMsg,
+						showCancel: false,
+						cancelText: '关闭',
+						confirmText: '确认',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
 					return false;
 				}
 				if (apiData.errCode == -2 || apiData.errCode == '-2') {
-					uni.showToast({
-						title: apiData.errMsg,
-						duration: 1000,
-						icon: 'none'
-					});
+					console.log(apiData.errMsg);
 				}
 			}
 			return true;

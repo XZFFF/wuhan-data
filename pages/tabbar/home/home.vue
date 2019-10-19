@@ -173,21 +173,20 @@
 				});
 			},
 			openTopicDetail(item) {
-				if (item.showType == 'vis') {
+				if (item.show_type == 'vis') {
 					uni.navigateTo({
 						url: '../../topic/detail/detail?indexId=' + item.id + '&indexName=' + item.title
 					});
 					return;
-				} else if (item.showType == 'file') {
+				} else if (item.show_type == 'file') {
 					this.downloader(item.file);
 					return;
 				} else {
 					uni.showToast({
 						title: '专题无法打开'
 					});
-					console.log('不支持的类型：' + item.showType);
+					console.log('不支持的类型：' + item.show_type);
 				}
-
 			},
 			openSearch(e) {
 				uni.switchTab({
