@@ -21,9 +21,9 @@
 		<view class="icon-layout">
 			<view class="icon-single-layout" v-for="(item,index) in analysis" :key="index">
 				<view class="icon-single-background" :style="'background: '+item.background" @click="openAnalysisList(index)">
-					<image class="icon-single-backicon" :src="item.iconUrl"></image>
+					<image class="icon-single-backicon" :src="item.icon_url"></image>
 				</view>
-				<text class="icon-single-text">{{item.typeName}}</text>
+				<text class="icon-single-text">{{item.type_name}}</text>
 			</view>
 		</view>
 		<!-- 专题 -->

@@ -107,7 +107,7 @@ module.exports = {
 				} else if (item.classType == 'card') {
 					h = 180;
 				}
-				classHeight += h;
+				classHeight = classHeight + h + 0; // 30的margin-top
 			}
 		} catch (e) {
 			console.log(e.message);
@@ -170,7 +170,7 @@ module.exports = {
 		} else {
 			typeName = "未知类型";
 		}
-		if(!source) {
+		if (!source) {
 			source = "未知来源";
 		}
 		console.log(token + typeName + indexId + indexName + source);

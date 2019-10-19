@@ -1,9 +1,16 @@
 <template>
 	<view class="table-main">
-		<view class="table-nav">
+		<view style="display: flex;justify-content: space-between;flex-direction: row;align-items: center;">
+			<view class="table-nav" style="display: flex;justify-content: flex-start;flex-direction: row">
+				<image src="../../../static/icon/echarts/table.png"></image>
+				<text>{{classTitle}}</text>
+			</view>
+			<!-- <text class="lg text-black cuIcon-down" style="margin-right: 20upx;" @tap="downEcharts()"></text> -->
+		</view>
+		<!-- <view class="table-nav">
 			<image src="../../../static/icon/echarts/table.png"></image>
 			<text>{{title}}</text>
-		</view>
+		</view> -->
 
 		<view class="page">
 			<scroll-view scroll-x="true" scroll-y="true" class="table">
@@ -27,7 +34,7 @@
 					]
 				}
 			},
-			title: {
+			classTitle: {
 				type: String,
 				default: '表格展示',
 			},

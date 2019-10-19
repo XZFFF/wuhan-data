@@ -5,7 +5,7 @@
 		<wd-time-picker v-else @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
-				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
+				<wd-table v-if="item.classType === 'table'" :classTitle="item.classTitle" :tableBody="item.tableBody"></wd-table>
 				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
 				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
 			</block>
@@ -248,8 +248,8 @@
 			},
 			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
 			setHeight() {
-				let pathHeight = 50;
-				let timeConditionHeight = 300;
+				let pathHeight = 100;
+				let timeConditionHeight = 250;
 				let classHeight = 0;
 				let relatedHeight = 0;
 				if (_self.indexDetail) {

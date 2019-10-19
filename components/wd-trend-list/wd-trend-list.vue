@@ -6,12 +6,15 @@
 					<text class="wd-list-item__id-text">{{trendId}}</text>
 				</view>
 			</view>
-			<view class="wd-list-item__content" style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 30upx;">
-				<view class="wd-list-item__content-title" style="display: flex; align-items: center;max-width: 280upx;font-size: 30upx;">{{title}}</view>
-				<view class="tag-view" style="display: flex; flex-direction: row;">
-					<wd-tag :text="trendSource" size="small" :circle="true"></wd-tag>
+			<!-- <view style="display: flex; flex-direction: column; justify-content: flex-start;"> -->
+				<view class="wd-list-item__content" style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 30upx;">
+					<view class="wd-list-item__content-title" style="display: flex; align-items: center;max-width: 320upx;font-size: 30upx;">{{title}}</view>
+					<view class="tag-view" style="display: flex; flex-direction: row;">
+						<wd-tag :text="trendSource" size="small" :circle="true"></wd-tag>
+					</view>
 				</view>
-			</view>
+				<!-- <view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">地区生产总值(GDP)-三次产业-第三产业-地区生产总值(GDP)-三次产业-第三产业</view> -->
+			<!-- </view> -->
 			<view class="wd-list-item__extra">
 				<text style="margin-left: 6upx; margin-right: 10upx; font-size: 11px;">{{trendRate}}</text>
 				<image v-if="trendArrow === 'up'" src="../../../static/icon/search/up.png" style="height: 35upx; width: 35upx;"></image>
@@ -32,7 +35,7 @@
 			trendId: String, //序号
 			title: String, //列表标题
 			trendArrow: String,
-			trendRate: String ,// 趋势数据
+			trendRate: String, // 趋势数据
 			trendSource: String // 趋势来源
 		},
 		computed: {

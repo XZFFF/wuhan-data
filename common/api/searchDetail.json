@@ -6,10 +6,11 @@
 			"classTitle": "全国/主要省份（中部）社会消费品零售总额增速比较",
 			"classType": "echarts",
 			"echartOption": {
+				"backgroundColor": "#f0855b",
 				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8", "#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"],
 				"grid": {
 					"height": "250",
-					"bottom": "60",
+					"bottom": "10",
 					"containLabel": true
 				},
 				"legend": {
@@ -25,7 +26,7 @@
 					"height": "175",
 					"orient": "vertical",
 					"data": ["湖北省", "湖南省", "全国", "山西省", "安徽省", "江西省", "河南省"],
-					"bottom": "330",
+					"bottom": "280",
 					"type": "scroll"
 				},
 				"series": [{
@@ -134,10 +135,11 @@
 			"classTitle": "主要省份（中部）社会消费品零售总额比较",
 			"classType": "echarts",
 			"echartOption": {
+				"backgroundColor": "#f0855b",
 				"color": ["#f0855b", "#96cdf6", "#8ac583", "#6d95e6", "#738c36", "#ee74b2", "#c23531", "#2f4554", "#61a0a8", "#d48265", "#91c7ae", "#749f83", "#ca8622", "#bda29a", "#6e7074", "#546570", "#c4ccd3"],
 				"grid": {
 					"height": "250",
-					"bottom": "60",
+					"bottom": "10",
 					"containLabel": true
 				},
 				"legend": {
@@ -153,7 +155,7 @@
 					"height": "175",
 					"orient": "vertical",
 					"data": ["山西", "安徽", "河南", "湖北", "湖南", "江西", "全国"],
-					"bottom": "330",
+					"bottom": "280",
 					"type": "scroll"
 				},
 				"series": [{
