@@ -173,14 +173,56 @@
 				});
 			},
 			openTopicDetail(item) {
-				uni.navigateTo({
-					url: '../../topic/detail/detail?indexId=' + item.id + '&indexName=' + item.title
-				})
+				if (item.showType == 'vis') {
+					uni.navigateTo({
+						url: '../../topic/detail/detail?indexId=' + item.id + '&indexName=' + item.title
+					});
+					return;
+				} else if (item.showType == 'file') {
+					this.downloader(item.file);
+					return;
+				} else {
+					uni.showToast({
+						title: '专题无法打开'
+					});
+					console.log('不支持的类型：' + item.showType);
+				}
+
 			},
 			openSearch(e) {
 				uni.switchTab({
 					url: "../search/search"
 				})
+			},
+			// 下载文件并打开
+			downloader(path) {
+				console.log("下载路径为:" + path);
+				if (path == "") {
+					uni.showToast({
+						title: '文档下载路径错误'
+					});
+					return;
+				}
+				uni.downloadFile({
+					url: path,
+					success: function(res) {
+						uni.showToast({
+							title: '文档下载成功'
+						});
+						var filePath = res.tempFilePath;
+						uni.openDocument({
+							filePath: filePath,
+							success: function(res) {
+								console.log('打开文档成功');
+							}
+						});
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '文档下载失败'
+						});
+					}
+				});
 			},
 		}
 	}
