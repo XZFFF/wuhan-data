@@ -2,7 +2,7 @@
 	<view class="card-text-main">
 		<view class="card-text-nav">
 			<image src="../../../static/icon/echarts/card.png"></image>
-			<text>{{title}}</text>
+			<text>{{classTitle}}</text>
 		</view>
 
 		<scroll-view scroll-x="false" scroll-y="true" class="card-text-page">
@@ -14,7 +14,7 @@
 <script>
 	export default {
 		props: {
-			title: {
+			classTitle: {
 				type: String,
 				default: '专题描述',
 			},

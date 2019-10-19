@@ -2,8 +2,8 @@
 	<view class="container" :style="{height:totalHeight + 'px'}">
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
-				<wd-card v-if="item.classType === 'card'" :title="item.classTitle" :cardText="item.cardText"></wd-card>
-				<wd-table v-if="item.classType === 'table'" :title="item.classTitle" :tableBody="item.tableBody"></wd-table>
+				<wd-card v-if="item.classType === 'card'" :classTitle="item.classTitle" :cardText="item.cardText"></wd-card>
+				<wd-table v-if="item.classType === 'table'" :classTitle="item.classTitle" :tableBody="item.tableBody"></wd-table>
 				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
 				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
 			</block>
