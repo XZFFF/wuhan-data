@@ -86,10 +86,17 @@
 			initHomePage() {
 				checkApi.checkNetwork();
 				let dataApi;
+				let token = "";
+				if (checkApi.checkToken()) {
+					token = uni.getStorageSync('token');
+				}
 				// 通过请求接口获取轮播图
 				uni.request({
 					url: this.apiUrl + 'initHome',
-					method: 'GET',
+					method: 'POST',
+					data: {
+						"token": token,
+					},
 					data: {},
 					success: res => {
 						// 获取homepage的数据
