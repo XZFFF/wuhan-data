@@ -55,7 +55,7 @@
 			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.sourceName);
 			// 初始化页面数据
 			uni.showLoading({
-				title: "加载栏目:" + this.indexId,
+				title: "数据加载中...",
 			});
 			this.showStorage(this.indexId);
 			this.initAnalysisDetail(this.indexId);

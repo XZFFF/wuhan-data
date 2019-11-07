@@ -66,7 +66,7 @@
 			console.log("收藏状态：" + this.isFavorite);
 			// 初始化页面数据
 			uni.showLoading({
-				title: "加载栏目:" + _self.indexId,
+				title: "数据加载中...",
 			});
 			checkApi.setFootprint("search", this.indexId, this.indexName, this.source);
 			// this.showStorage();

@@ -8,7 +8,7 @@
 			</view>
 			<!-- <view style="display: flex; flex-direction: column; justify-content: flex-start;"> -->
 				<view class="wd-list-item__content" style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 30upx;">
-					<view class="wd-list-item__content-title" style="display: flex; align-items: center;max-width: 320upx;font-size: 30upx;">{{title}}</view>
+					<view class="wd-list-item__content-title" style="display: flex; align-items: center;max-width: 400upx;font-size: 30upx;">{{title}}</view>
 					<view class="tag-view" style="display: flex; flex-direction: row;">
 						<wd-tag :text="trendSource" size="small" :circle="true"></wd-tag>
 					</view>
@@ -154,7 +154,7 @@
 	}
 
 	.wd-list-item__extra {
-		width: 25%;
+		width: 15%;
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-end;
