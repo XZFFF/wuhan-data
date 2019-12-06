@@ -90,14 +90,14 @@
 				if (checkApi.checkToken()) {
 					token = uni.getStorageSync('token');
 				}
+				console.log("token" + token);
 				// 通过请求接口获取轮播图
 				uni.request({
 					url: this.apiUrl + 'initHome',
 					method: 'POST',
 					data: {
-						"token": token,
+						token: token,
 					},
-					data: {},
 					success: res => {
 						// 获取homepage的数据
 						dataApi = res.data;

@@ -37,7 +37,7 @@ const util = {
 	 * 存储历史数据
 	 * val [string | object]需要存储的内容
 	 */
-	setHistory(id, name, source, isArea, path) {
+	setHistory(id, name, source, sourceArea, isArea, path) {
 		let searchHistory = uni.getStorageSync('search_history');
 		if (!searchHistory) searchHistory = [];
 		let serachData = {};
@@ -45,6 +45,7 @@ const util = {
 			id: id,
 			name: name,
 			source: source,
+			sourceArea: sourceArea,
 			isArea: isArea,
 			path: path
 		};

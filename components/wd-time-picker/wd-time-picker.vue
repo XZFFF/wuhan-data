@@ -62,7 +62,7 @@
 			},
 			hasArea: String,
 			areaCondition: {
-				type: Object,
+				type: Array,
 			}
 		},
 		data() {
@@ -106,8 +106,8 @@
 					}
 				}
 				if (this.hasArea == 1 || this.hasArea == '1') {
-					this.areaArray = areaCondition.areaArray;
-					this.areaIndex = areaCondition.areaIndex;
+					this.areaArray = this.areaCondition;
+					// this.areaIndex = areaCondition.areaIndex;
 				}
 			},
 			bindAreaPickerChange: function(e) {

@@ -1,6 +1,6 @@
 <template>
 	<view class="container" :style="{height:totalHeight + 'px'}">
-		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition" hasArea='0'></wd-time-picker>
+		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition" :hasArea="indexId=='13'?'1':'0'" :areaCondition="areaCondition"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :classTitle="item.classTitle" :tableBody="item.tableBody"></wd-table>
@@ -39,6 +39,7 @@
 				sourceName: "未知来源",
 				isFavorite: false,
 				timeCondition: [],
+				areaCondition: [],
 				indexDetail: [],
 				relatedData: [],
 				totalHeight: 1000,
@@ -88,6 +89,11 @@
 				let token = uni.getStorageSync('token');
 				checkApi.checkNetwork();
 				let dataApi;
+				let dataPost = {
+					token: token,
+					indexId: this.indexId,
+				};
+				console.log(JSON.stringify(dataPost));
 				uni.request({
 					url: this.apiUrl + 'getAnalysisDetail',
 					method: 'POST',
@@ -111,6 +117,9 @@
 						try {
 							this.isFavorite = dataApi.data.baseInfo.isFavorite;
 							this.timeCondition = dataApi.data.timeCondition;
+							if (this.indexId == '13') {
+								this.areaCondition = dataApi.data.areaCondition;
+							}
 							this.indexDetail = dataApi.data.classInfo;
 							this.relatedData = dataApi.data.relatedData;
 							// 计算classHeight及总Height
@@ -137,6 +146,7 @@
 				let requestData = {
 					"indexId": _self.indexId,
 					"timeFreq": val.timeFreq,
+					"area": val.area,
 					"startTime": val.startTime,
 					"endTime": val.endTime
 				};
@@ -173,6 +183,9 @@
 						dataApi = analysis_detail;
 						this.isFavorite = dataApi.data.baseInfo.isFavorite;
 						this.timeCondition = dataApi.data.timeCondition;
+						if (indexId == '13') {
+							this.areaCondition = dataApi.data.areaCondition;
+						}
 						this.indexDetail = dataApi.data.classInfo;
 						this.relatedData = dataApi.data.relatedData;
 						this.setHeight();

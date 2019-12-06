@@ -29,7 +29,8 @@
 				</view>
 				<uni-list style="background-color: #FFFFFF;">
 					<view v-for="(item, index) in trendList" :key="index" @click="searchTrendTap(item)">
-						<wd-trend-list :trendId="item.id" :title="item.name" :trendArrow="item.arrow" :trendRate="item.rate" :trendSource="item.source"></wd-trend-list>
+						<wd-trend-list :trendId="item.id" :title="item.name" :trendArrow="item.arrow" :trendRate="item.rate" :trendSource="item.source"
+						 :trendSourceArea="item.sourceArea"></wd-trend-list>
 					</view>
 				</uni-list>
 			</view>
@@ -43,6 +44,7 @@
 							<rich-text style="display: flex; align-items: center;max-width: 280upx;font-size: 28upx;" :nodes="item.nameNodes"></rich-text>
 							<view class="tag-view" style="display: flex; flex-direction: row;">
 								<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+								<wd-tag v-if="item.source=='国统'" style="margin-left: 20upx;" :text="item.sourceArea" size="small" :circle="true"></wd-tag>
 							</view>
 						</view>
 						<view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">{{item.path}}</view>
@@ -157,10 +159,15 @@
 					title: "正在搜索...",
 				});
 				checkApi.checkNetwork();
+				let token = "";
+				if (checkApi.checkToken()) {
+					token = uni.getStorageSync('token');
+				}
 				uni.request({
 					url: this.apiUrl + 'searchIndi',
 					method: 'POST',
 					data: {
+						token: token,
 						keyword: val,
 						source: this.source,
 					},
@@ -193,11 +200,11 @@
 			},
 			// 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			searchTrendTap(item) {
-				util.setHistory(item.id, item.name, item.source, item.isArea, item.path);
+				util.setHistory(item.id, item.name, item.source, item.sourceArea, item.isArea, item.path);
 				console.log(JSON.stringify(item));
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + '&isFavorite=false' +
-						"&source=" + item.source + "&isArea=0" + "&path=" + item.path
+						"&source=" + item.source + "&sourceArea=" + item.sourceArea + "&isArea=0" + "&path=" + item.path
 				})
 			},
 			// 打开指标搜索详情页
@@ -206,7 +213,7 @@
 				// 注：这里因为是存储的结构是id和name，并能不和接口有关系
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + '&isFavorite=false' +
-						"&source=" + item.source + "&isArea=" + item.isArea + "&path=" + item.path
+						"&source=" + item.source + "&sourceArea=" + item.sourceArea + "&isArea=" + item.isArea + "&path=" + item.path
 				})
 			},
 			// 搜索结果列表点击
@@ -219,14 +226,14 @@
 					this.isHistory = true;
 					// 点击列表存储搜索数据,更新历史搜索记录
 					console.log("存储历史记录" + JSON.stringify(item));
-					util.setHistory(item.id, item.name, item.source, isArea, item.path);
+					util.setHistory(item.id, item.name, item.source, item.sourceArea, isArea, item.path);
 					this.historyList = util.getHistory();
 					// TODO 记录历史搜索记录到服务端
 					// 跳转到对应的界面,这里先做的是返回上一个界面
 					console.log("已存储的历史记录" + JSON.stringify(this.historyList));
 					uni.navigateTo({
 						url: "../../search/detail/detail?indexId=" + item.id + "&indexName=" + item.name + '&isFavorite=false' +
-							"&source=" + item.source + "&isArea=" + isArea + "&path=" + item.path
+							"&source=" + item.source + "&sourceArea=" + item.sourceArea + "&isArea=" + isArea + "&path=" + item.path
 					})
 				}
 			},

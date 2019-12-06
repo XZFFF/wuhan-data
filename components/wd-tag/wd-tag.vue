@@ -79,8 +79,10 @@
 						sourceTypeName = 'hutong';
 						break;
 					case '大数据':
+					case '湖北省':
 						sourceTypeName = 'dashuju';
 						break;
+						
 					default:
 						sourceTypeName = 'default';
 						break;
@@ -270,6 +272,10 @@
 		color: #fff;
 		background-color: #757EDA;
 		border: 1px solid #757EDA
+	}
+	
+	.uni-tag+.uni-tag {
+		margin-left: 10upx;
 	}
 
 </style>

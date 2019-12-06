@@ -42,6 +42,7 @@
 				indexId: "1000",
 				indexName: "指标详情页",
 				source: "",
+				sourceArea: "",
 				isFavorite: false,
 				isArea: 1,
 				path: "",
@@ -60,6 +61,7 @@
 				_self.indexName = e.indexName;
 				_self.isFavorite = e.isFavorite;
 				_self.source = e.source;
+				_self.sourceArea = e.sourceArea;
 				_self.isArea = e.isArea;
 				_self.path = e.path;
 			}
@@ -111,6 +113,7 @@
 					token: token,
 					indexId: this.indexId,
 					source: this.source,
+					sourceArea: this.sourceArea,
 					isArea: this.isArea,
 					path: this.path
 				};
@@ -121,6 +124,7 @@
 					data: requestData,
 					success: (res) => {
 						dataApi = res.data;
+						console.log("获取ok;" + JSON.stringify(dataApi));
 						let search_detail_key = 'search_detail' + _self.indexId;
 						uni.setStorageSync(search_detail_key, dataApi);
 					},
@@ -160,6 +164,7 @@
 					token: token,
 					indexId: _self.indexId,
 					source: _self.source,
+					sourceArea: this.sourceArea,
 					isArea: _self.isArea,
 					path: _self.path,
 					timeFreq: val.timeFreq,
