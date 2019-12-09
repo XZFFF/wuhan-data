@@ -10,9 +10,9 @@
 							<view v-if="user.realName" class="username" style="font-size: 35upx;float: left;margin-top: 15upx;">
 								{{user.realName}}
 							</view>
-							<view v-if="user.roleName" class="rank">
+						<!-- 	<view v-if="user.roleName" class="rank">
 								{{user.roleName}}
-							</view>
+							</view> -->
 						</view>
 						<view v-if="user.tel" class="tel" style="font-size: 30upx;">
 							{{user.tel}}

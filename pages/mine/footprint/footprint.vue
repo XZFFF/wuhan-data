@@ -29,6 +29,7 @@
 							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
 							<view class="tag-view">
 								<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+								<wd-tag v-if="item.source=='国统'" style="margin-left: 20upx;" :text="item.sourceArea" size="small" :circle="true"></wd-tag>
 							</view>
 						</view>
 					</view>
@@ -96,17 +97,17 @@
 							checkApi.isApi(dataApi);
 							var menu1 = dataApi.data.economyData;
 							var menu2 = dataApi.data.indexData;
-							menu1.sort(function(a,b) {
+							menu1.sort(function(a, b) {
 								return Date.parse(b.createTime) - Date.parse(a.createTime);
 							});
-							menu2.sort(function(a,b) {
+							menu2.sort(function(a, b) {
 								return Date.parse(b.createTime) - Date.parse(a.createTime);
 							});
-							if(menu1.length>50) {
-								menu1.splice(50,menu1.length-1);
+							if (menu1.length > 50) {
+								menu1.splice(50, menu1.length - 1);
 							}
-							if(menu2.length>50) {
-								menu2.splice(50,menu1.length-1);
+							if (menu2.length > 50) {
+								menu2.splice(50, menu1.length - 1);
 							}
 							this.menu_list1 = menu1;
 							this.menu_list2 = menu2;
@@ -124,19 +125,19 @@
 				});
 			},
 			changeSwiperHeight() {
-				if(this.tabIndex === 0) {
-					var swiperHeight = this.menu_list1.length*81+10;
-					if(swiperHeight<1000) {
-						swiperHeight=1000;
+				if (this.tabIndex === 0) {
+					var swiperHeight = this.menu_list1.length * 81 + 10;
+					if (swiperHeight < 1000) {
+						swiperHeight = 1000;
 					}
-					this.swiperHeight = "height:"+swiperHeight+"upx;";
+					this.swiperHeight = "height:" + swiperHeight + "upx;";
 				}
-				if(this.tabIndex === 1) {
-					var swiperHeight = this.menu_list2.length*81+10;
-					if(swiperHeight<1000) {
-						swiperHeight=1000;
+				if (this.tabIndex === 1) {
+					var swiperHeight = this.menu_list2.length * 81 + 10;
+					if (swiperHeight < 1000) {
+						swiperHeight = 1000;
 					}
-					this.swiperHeight = "height:"+swiperHeight+"upx;";
+					this.swiperHeight = "height:" + swiperHeight + "upx;";
 				}
 			},
 			getFootprintStorage() {
@@ -160,7 +161,8 @@
 			},
 			goSearchDetail(item) {
 				uni.navigateTo({
-					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source
+					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source +
+						"&sourceArea=" + item.sourceArea + "&isArea=0&path="
 				})
 			},
 			async changeTab(e) {
@@ -246,7 +248,7 @@
 		margin: 20upx 40upx;
 		display: inline-block;
 	}
-	
+
 	.no-data {
 		text-align: center;
 		color: #999;

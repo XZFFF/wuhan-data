@@ -137,6 +137,7 @@
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						_self.indexDetail = dataApi.data.classInfo;
+						_self.topicPath = dataApi.data.baseInfo.file;
 						// 计算classHeight及总Height
 						this.setHeight();
 						uni.hideLoading();
@@ -175,6 +176,7 @@
 						uni.showToast({
 							title: '文档下载成功'
 						});
+						console.log(JSON.stringify(res.data));
 						var filePath = res.tempFilePath;
 						uni.openDocument({
 							filePath: filePath,

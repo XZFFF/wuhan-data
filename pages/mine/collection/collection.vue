@@ -29,6 +29,7 @@
 							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
 							<view class="tag-view">
 								<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+								<wd-tag v-if="item.source=='国统'" style="margin-left: 20upx;" :text="item.sourceArea" size="small" :circle="true"></wd-tag>
 							</view>
 						</view>
 					</view>
@@ -43,7 +44,7 @@
 	import wdTag from '@/components/wd-tag/wd-tag.vue';
 	import checkApi from '@/common/checkApi.js';
 	import getCollectApiJson from "@/common/api/getCollect.json";
-	
+
 	export default {
 		components: {
 			wdTag,
@@ -98,10 +99,10 @@
 							console.log(dataApi);
 							this.menu_list1 = dataApi.data.economyData;
 							this.menu_list2 = dataApi.data.indexData;
-							this.menu_list1.sort(function(a,b) {
+							this.menu_list1.sort(function(a, b) {
 								return Date.parse(b.createTime) - Date.parse(a.createTime);
 							});
-							this.menu_list1.sort(function(a,b) {
+							this.menu_list1.sort(function(a, b) {
 								return Date.parse(b.createTime) - Date.parse(a.createTime);
 							});
 							uni.setStorageSync('collect_economy', this.menu_list1);
@@ -118,19 +119,19 @@
 				});
 			},
 			changeSwiperHeight() {
-				if(this.tabIndex === 0) {
-					var swiperHeight = this.menu_list1.length*81+10;
-					if(swiperHeight<1000) {
-						swiperHeight=1000;
+				if (this.tabIndex === 0) {
+					var swiperHeight = this.menu_list1.length * 81 + 10;
+					if (swiperHeight < 1000) {
+						swiperHeight = 1000;
 					}
-					this.swiperHeight = "height:"+swiperHeight+"upx;";
+					this.swiperHeight = "height:" + swiperHeight + "upx;";
 				}
-				if(this.tabIndex === 1) {
-					var swiperHeight = this.menu_list2.length*81+10;
-					if(swiperHeight<1000) {
-						swiperHeight=1000;
+				if (this.tabIndex === 1) {
+					var swiperHeight = this.menu_list2.length * 81 + 10;
+					if (swiperHeight < 1000) {
+						swiperHeight = 1000;
 					}
-					this.swiperHeight = "height:"+swiperHeight+"upx;";
+					this.swiperHeight = "height:" + swiperHeight + "upx;";
 				}
 			},
 			getCollectStorage() {
@@ -156,7 +157,7 @@
 			goSearchDetail(item) {
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source +
-						"&isFavorite=true&isArea=0&path="
+						"&sourceArea=" + item.sourceArea + "&isFavorite=true&isArea=0&path="
 				})
 			},
 			async changeTab(e) {
@@ -226,7 +227,7 @@
 	}
 
 	.list-body {
-		
+
 		display: inline-flex;
 	}
 
@@ -243,7 +244,7 @@
 		margin: 20upx 40upx;
 		display: inline-block;
 	}
-	
+
 	.no-data {
 		text-align: center;
 		color: #999;
