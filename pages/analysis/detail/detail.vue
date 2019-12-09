@@ -140,9 +140,6 @@
 				});
 				checkApi.checkNetwork();
 				let dataApi;
-				uni.showLoading({
-					title: "加载栏目:" + this.indexId,
-				});
 				let requestData = {
 					"indexId": _self.indexId,
 					"timeFreq": val.timeFreq,
