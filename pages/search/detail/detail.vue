@@ -70,7 +70,7 @@
 			uni.showLoading({
 				title: "数据加载中...",
 			});
-			checkApi.setFootprint("search", this.indexId, this.indexName, this.source);
+			checkApi.setFootprint("search", this.indexId, this.indexName, this.source, this.sourceArea, this.path);
 			// this.showStorage();
 			this.initSearchDetail();
 			this.initNav();
@@ -86,11 +86,11 @@
 						return;
 					}
 					if (this.isFavorite == false || this.isFavorite == "false") {
-						if (checkApi.setCollect("search", this.indexId, this.indexName, this.source)) {
+						if (checkApi.setCollect("search", this.indexId, this.indexName, this.source, this.sourceArea, this.path)) {
 							this.isFavorite = true;
 						}
 					} else if (this.isFavorite == true || this.isFavorite == "true") {
-						if (checkApi.delCollect("search", this.indexId, this.indexName, this.source)) {
+						if (checkApi.delCollect("search", this.indexId, this.indexName, this.source, this.sourceArea, this.path)) {
 							this.isFavorite = false;
 						}
 					} else {

@@ -121,7 +121,7 @@ module.exports = {
 		return classHeight;
 	},
 	// 加入足迹
-	setFootprint: function(type, indexId, indexName, source) {
+	setFootprint: function(type, indexId, indexName, source, sourceArea, path) {
 		// 检查token令牌是否存在
 		let token = uni.getStorageSync('token');
 		if (!token) {
@@ -135,6 +135,9 @@ module.exports = {
 		} else {
 			typeName = "未知类型";
 		}
+		if (sourceArea == "全国" || sourceArea == "湖北省") {
+			source = source + "-" + sourceArea;
+		}
 		uni.request({
 			url: this.apiUrl + 'setTrackApp',
 			method: 'POST',
@@ -143,7 +146,8 @@ module.exports = {
 				"type": typeName,
 				"indexId": indexId,
 				"indexName": indexName,
-				"source": source
+				"source": source,
+				"path": path
 			},
 			success: (res) => {
 				console.log(JSON.stringify(res.data));
@@ -157,7 +161,7 @@ module.exports = {
 		return true;
 	},
 	// 设置收藏
-	setCollect: function(type, indexId, indexName, source) {
+	setCollect: function(type, indexId, indexName, source, sourceArea, path) {
 		// 检查token令牌是否存在
 		let token = uni.getStorageSync('token');
 		if (!token) {
@@ -179,7 +183,18 @@ module.exports = {
 		if (!source) {
 			source = "未知来源";
 		}
-		console.log(token + typeName + indexId + indexName + source);
+		if (sourceArea == "全国" || sourceArea == "湖北省") {
+			source = source + "-" + sourceArea;
+		}
+		let postData = {
+			"token": token,
+			"type": typeName,
+			"indexId": indexId,
+			"indexName": indexName,
+			"source": source,
+			"path": path
+		};
+		console.log(JSON.stringify(postData));
 		uni.request({
 			url: this.apiUrl + 'setCollectApp',
 			method: 'POST',
@@ -188,7 +203,8 @@ module.exports = {
 				"type": typeName,
 				"indexId": indexId,
 				"indexName": indexName,
-				"source": source
+				"source": source,
+				"path": path
 			},
 			success: (res) => {
 				console.log(JSON.stringify(res.data));
@@ -212,7 +228,7 @@ module.exports = {
 		return true;
 	},
 	// 取消收藏
-	delCollect: function(type, indexId) {
+	delCollect: function(type, indexId, indexName, source, sourceArea, path) {
 		// 检查token令牌是否存在
 		let token = uni.getStorageSync('token');
 		if (!token) {
@@ -231,6 +247,12 @@ module.exports = {
 		} else {
 			typeName = "未知类型";
 		}
+		if (!source) {
+			source = "未知来源";
+		}
+		if (sourceArea == "全国" || sourceArea == "湖北省") {
+			source = source + "-" + sourceArea;
+		}
 		console.log(token + typeName + indexId);
 		uni.request({
 			url: this.apiUrl + 'delCollectApp',
@@ -238,7 +260,10 @@ module.exports = {
 			data: {
 				"token": token,
 				"type": typeName,
-				"indexId": indexId
+				"indexId": indexId,
+				"indexName": indexName,
+				"source": source,
+				"path": path
 			},
 			success: (res) => {
 				console.log(JSON.stringify(res));

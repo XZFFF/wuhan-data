@@ -10,7 +10,7 @@
 		<!-- 内容 -->
 		<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab" :style="swiperHeight">
 			<swiper-item>
-				<view class="uni-list">
+				<!-- <view class="uni-list">
 					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list1" :key="key" @click="goAnalysisDetail(item)">
 						<view class="list-body">
 							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
@@ -20,10 +20,24 @@
 						</view>
 					</view>
 				</view>
-				<view v-if="menu_list1.length == 0" class="no-data">您还没有收藏任何经济分析</view>
+				<view v-if="menu_list1.length == 0" class="no-data">您还没有收藏任何经济分析</view> -->
+				<view v-if="menu_list1.length > 0" class="history-list-box">
+					<view class="history-list-item" v-for="(item, index) in menu_list1" :key="index">
+						<view style="display: flex; flex-direction: column; justify-content: flex-start;" @click="goAnalysisDetail(item)">
+							<view style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 28upx;">
+								<rich-text style="display: flex; align-items: center;max-width: 480upx;font-size: 28upx;" :nodes="item.indexName"></rich-text>
+								<view class="tag-view" style="display: flex; flex-direction: row;">
+									<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+								</view>
+							</view>
+							<view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">{{item.path}}</view>
+						</view>
+					</view>
+				</view>
+				<view v-else class="no-data">您还没有收藏任何经济分析栏目</view>
 			</swiper-item>
 			<swiper-item>
-				<view class="uni-list">
+				<!-- <view class="uni-list">
 					<view class="list-cell" hover-class="uni-list-cell-hover" v-for="(item,key) in menu_list2" :key="key" @click="goSearchDetail(item)">
 						<view class="list-body">
 							<view class="list-text" style="font-size: 35upx">{{item.indexName}}</view>
@@ -34,7 +48,26 @@
 						</view>
 					</view>
 				</view>
-				<view v-if="menu_list2.length == 0" class="no-data">您还没有收藏任何指标数据</view>
+				<view v-if="menu_list2.length == 0" class="no-data">您还没有收藏任何指标数据</view> -->
+				<view>
+					<view v-if="menu_list2.length > 0" class="history-list-box">
+						<view class="history-list-item" v-for="(item, index) in menu_list2" :key="index">
+							<view style="display: flex; flex-direction: column; justify-content: flex-start;" @click="goSearchDetail(item)">
+								<view style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 28upx;">
+									<rich-text style="display: flex; align-items: center;max-width: 480upx;font-size: 28upx;" :nodes="item.indexName"></rich-text>
+									<view class="tag-view" style="display: flex; flex-direction: row;">
+										<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
+										<wd-tag v-if="item.source=='国统'" style="margin-left: 20upx;" :text="item.sourceArea" size="small" :circle="true"></wd-tag>
+									</view>
+								</view>
+								<view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">{{item.path}}</view>
+							</view>
+							<!-- <button class="cu-btn bg-cyan shadow" style="margin: auto 30upx auto 0upx;" :disabled="item.isArea ==1?false:true"
+							 @click="goSearchDetail(item)">地市数据</button> -->
+						</view>
+					</view>
+					<view v-else class="no-data">您还没有收藏任何指标数据</view>
+				</view>
 			</swiper-item>
 		</swiper>
 	</view>
@@ -157,7 +190,7 @@
 			goSearchDetail(item) {
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.indexName + "&source=" + item.source +
-						"&sourceArea=" + item.sourceArea + "&isFavorite=true&isArea=0&path="
+						"&sourceArea=" + item.sourceArea + "&isFavorite=true&isArea=0&path=" + item.path
 				})
 			},
 			async changeTab(e) {
@@ -240,8 +273,12 @@
 		white-space: nowrap;
 	}
 
-	.tag-view {
+	/* 	.tag-view {
 		margin: 20upx 40upx;
+		display: inline-block;
+	} */
+	.tag-view {
+		margin: 10upx 20upx;
 		display: inline-block;
 	}
 
@@ -249,5 +286,18 @@
 		text-align: center;
 		color: #999;
 		margin: 100upx;
+	}
+
+	.history-list-box {
+		/* margin: 10upx 0; */
+	}
+
+	.history-list-item {
+		display: flex;
+		justify-content: space-between;
+		padding: 20upx 0;
+		margin-left: 30upx;
+		border-bottom: 1px #EEEEEE solid;
+		font-size: 28upx;
 	}
 </style>

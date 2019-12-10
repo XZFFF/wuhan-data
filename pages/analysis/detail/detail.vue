@@ -53,7 +53,7 @@
 				this.indexName = e.indexName;
 				this.sourceName = e.source;
 			}
-			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.sourceName);
+			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.sourceName, "", "");
 			// 初始化页面数据
 			uni.showLoading({
 				title: "数据加载中...",
@@ -66,11 +66,11 @@
 			switch (e.type) {
 				case "favorite":
 					if (this.isFavorite == false || this.isFavorite == "false") {
-						if (checkApi.setCollect("analysis", this.indexId, this.indexName, this.sourceName)) {
+						if (checkApi.setCollect("analysis", this.indexId, this.indexName, this.sourceName, "", "")) {
 							this.isFavorite = true;
 						}
 					} else if (this.isFavorite == true || this.isFavorite == "true") {
-						if (checkApi.delCollect("analysis", this.indexId, this.indexName, this.sourceName)) {
+						if (checkApi.delCollect("analysis", this.indexId, this.indexName, this.sourceName, "", "")) {
 							this.isFavorite = false;
 						}
 					} else {
@@ -103,7 +103,7 @@
 					},
 					success: (res) => {
 						dataApi = res.data;
-						// console.log(JSON.stringify(dataApi));
+						console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
 					},

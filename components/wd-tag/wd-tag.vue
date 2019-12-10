@@ -82,7 +82,9 @@
 					case '湖北省':
 						sourceTypeName = 'dashuju';
 						break;
-						
+					case '全国':
+						sourceTypeName = 'quanguo';
+						break;
 					default:
 						sourceTypeName = 'default';
 						break;
@@ -135,11 +137,11 @@
 		line-height: calc(40upx - 2px);
 		font-size: 24upx
 	}
-	
+
 	.uni-tag--default {
 		color: #fff;
-		background-color: #9c26b0;
-		border: 1px solid #9c26b0
+		background-color: #f8f8f8;
+		border: 1px solid #f8f8f8
 	}
 
 	.uni-tag--primary {
@@ -274,8 +276,13 @@
 		border: 1px solid #757EDA
 	}
 	
+	.uni-tag--quanguo {
+		color: #fff;
+		background-color: #9c26b0;
+		border: 1px solid #9c26b0
+	}
+
 	.uni-tag+.uni-tag {
 		margin-left: 10upx;
 	}
-
 </style>

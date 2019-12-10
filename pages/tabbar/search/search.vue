@@ -14,7 +14,7 @@
 				</view>
 				<view v-if="historyList.length > 0" class="history-content">
 					<view class="history-item" v-for="(item, index) in tranName" :key="index" @tap="openIndexDetail(item)">
-						{{item.name}}
+						{{item.nameSub}}
 					</view>
 				</view>
 				<view v-else class="no-data">您还没有历史记录</view>
@@ -81,9 +81,8 @@
 					result.slice(0, 9);
 				}
 				for (var i = 0; i < result.length; i++) {
-
 					if (result[i].name.length > 6) {
-						result[i].name = result[i].name.substring(0, 4) + '..';
+						result[i].nameSub = result[i].name.substring(0, 4) + '..';
 					}
 				}
 				return result;
@@ -124,6 +123,7 @@
 				this.isHistory = true;
 				// 取出历史搜索缓存数据
 				this.historyList = uni.getStorageSync('search_history');
+				console.log("历史查阅指标" + JSON.stringify(this.historyList));
 				// 取出搜索趋势缓存数据
 				let searchTrend = uni.getStorageSync('search_trend');
 				if (searchTrend) {
@@ -200,7 +200,7 @@
 			},
 			// 搜索趋势点击（这里可能改成直接跳转到对应指标页，因为关键词难以分析）
 			searchTrendTap(item) {
-				util.setHistory(item.id, item.name, item.source, item.sourceArea, item.isArea, item.path);
+				util.setHistory(item.indexId, item.name, item.source, item.sourceArea, "0", item.path);
 				console.log(JSON.stringify(item));
 				uni.navigateTo({
 					url: "../../search/detail/detail?indexId=" + item.indexId + "&indexName=" + item.name + '&isFavorite=false' +
