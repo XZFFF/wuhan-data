@@ -47,8 +47,11 @@
 	@charset "UTF-8";
 
 	.uni-card {
+		margin-top: 30upx;
 		margin-left: 24upx;
 		margin-right: 24upx;
+		width: auto;
+		height: auto;
 		background: #fff;
 		box-shadow: none;
 		position: relative;
@@ -131,8 +134,16 @@
 		margin-right: 8upx;
 	}
 
+	.uni-card__content{
+		overflow:hidden; 
+		text-overflow:ellipsis;
+		display:-webkit-box; 
+		-webkit-box-orient:vertical;
+		-webkit-line-clamp:3; 
+	}
+	
 	.uni-card__content--pd {
-		padding: 16upx
+		padding: 16upx 16upx 10upx 16upx;
 	}
 
 	.uni-card__footer {

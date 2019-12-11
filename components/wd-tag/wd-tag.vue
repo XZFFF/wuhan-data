@@ -140,8 +140,8 @@
 
 	.uni-tag--default {
 		color: #fff;
-		background-color: #f8f8f8;
-		border: 1px solid #f8f8f8
+		background-color: #ebebeb;
+		border: 1px solid #ebebeb
 	}
 
 	.uni-tag--primary {
