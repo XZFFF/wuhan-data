@@ -188,6 +188,9 @@
 	.confirm-button {
 		width: 90%;
 		height: 80upx;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
 		font-size: 35upx;
 		color: #FFFFFF;
 		background-color: rgb(26, 130, 210);
