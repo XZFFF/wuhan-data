@@ -100,6 +100,7 @@
 					},
 					success: res => {
 						// 获取homepage的数据
+						console.log(JSON.stringify(res.data));
 						dataApi = res.data;
 					},
 					fail: (e) => {
