@@ -7,7 +7,7 @@
 			</view>
 			<text class="lg text-black cuIcon-down" style="margin-right: 20upx;" @tap="downEcharts()"></text>
 		</view>
-		<mpvue-echarts :echarts="echarts" :onInit="onInit" :canvasId="canvasId" ref="echarts" />
+		<mpvue-echarts :echarts="echarts" @onInit="onInit" :canvasId="canvasId" ref="echarts" />
 	</view>
 </template>
 
@@ -52,15 +52,33 @@
 		},
 		onLoad() {},
 		methods: {
-			onInit(canvas, width, height) {
+			// 2.2.2
+			// onInit(canvas, width, height) {
+			// 	wdChart = echarts.init(canvas, null, {
+			// 		width: width,
+			// 		height: height
+			// 	})
+			// 	canvas.setChart(wdChart)
+			// 	wdChart.setOption(this.echartOption)
+			// 	return wdChart
+			// },
+
+			onInit(e) {
+				let {
+					width,
+					height
+				} = e;
+				let canvas = this.$refs.echarts.canvas;
+				echarts.setCanvasCreator(() => canvas);
 				wdChart = echarts.init(canvas, null, {
 					width: width,
 					height: height
-				})
-				canvas.setChart(wdChart)
-				wdChart.setOption(this.echartOption)
-				return wdChart
+				});
+				canvas.setChart(wdChart);
+				wdChart.setOption(this.echartOption);
+				this.$refs.echarts.setChart(wdChart);
 			},
+
 			downEcharts() {
 				let url = "";
 				uni.canvasToTempFilePath({
