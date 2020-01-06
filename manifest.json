@@ -2,10 +2,13 @@
     "name" : "数说湖北",
     "appid" : "__UNI__8BAA13B",
     "description" : "",
-    "versionName" : "5.5.1",
-    "versionCode" : 551,
+    "versionName" : "5.6.1",
+    "versionCode" : 561,
     "transformPx" : false,
     "app-plus" : {
+        "compatible" : {
+            "ignoreVersion" : true //true表示忽略版本检查提示框，HBuilderX1.9.0及以上版本支持  
+        },
         /* 5+App特有相关 */
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,
@@ -14,7 +17,6 @@
             "delay" : 0
         },
         "modules" : {
-            "Push" : {},
             "Share" : {}
         },
         /* 模块配置 */
@@ -125,22 +127,7 @@
                 }
             }
         },
-        "nativePlugins" : {
-            "Html5App-openFile" : {
-                "__plugin_info__" : {
-                    "name" : "Android 办公文件doc,docx,ppt等等浏览器",
-                    "description" : "支持格式：doc,docx,ppt,pptx,xls,xlsx,txt,pdf,epub",
-                    "platforms" : "Android",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=477",
-                    "android_package_name" : "io.dcloud.UNI8BAA13B",
-                    "ios_bundle_id" : "",
-                    "isCloud" : true,
-                    "bought" : 1,
-                    "pid" : "477",
-                    "parameters" : {}
-                }
-            }
-        }
+        "nativePlugins" : {}
     },
     /* SDK配置 */
     "quickapp" : {},
