@@ -20,6 +20,7 @@
 	import wdRelatedList from '@/components/wd-related-list/wd-related-list.vue';
 	import wdSharePoster from '@/components/wd-sharePoster/wd-sharePoster.vue';
 	import checkApi from '@/common/checkApi.js';
+	import analysisDemoApiJson from "@/common/api/anaDemo.json";
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
 
@@ -55,12 +56,29 @@
 			}
 			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.sourceName, "", "");
 			// 初始化页面数据
-			uni.showLoading({
-				title: "数据加载中...",
-			});
-			this.showStorage(this.indexId);
-			this.initAnalysisDetail(this.indexId);
-			this.initNav();
+			// uni.showLoading({
+			// 	title: "数据加载中...",
+			// });
+			// this.showStorage(this.indexId);
+			// this.initAnalysisDetail(this.indexId);
+			// this.initNav();
+			
+			let dataApi = analysisDemoApiJson;
+			try {
+				this.isFavorite = dataApi.data.baseInfo.isFavorite;
+				this.timeCondition = dataApi.data.timeCondition;
+				if (this.indexId == '13') {
+					this.areaCondition = dataApi.data.areaCondition;
+				}
+				this.indexDetail = dataApi.data.classInfo;
+				this.relatedData = dataApi.data.relatedData;
+				// 计算classHeight及总Height
+				this.setHeight();
+				// 设置画布数据
+				this.setDrawCanvas();
+			} catch (e) {
+				console.log("发生异常;" + JSON.stringify(e));
+			}
 		},
 		onNavigationBarButtonTap(e) {
 			switch (e.type) {
