@@ -56,29 +56,29 @@
 			}
 			checkApi.setFootprint("analysis", this.indexId, this.indexName, this.sourceName, "", "");
 			// 初始化页面数据
-			// uni.showLoading({
-			// 	title: "数据加载中...",
-			// });
-			// this.showStorage(this.indexId);
-			// this.initAnalysisDetail(this.indexId);
-			// this.initNav();
-			
-			let dataApi = analysisDemoApiJson;
-			try {
-				this.isFavorite = dataApi.data.baseInfo.isFavorite;
-				this.timeCondition = dataApi.data.timeCondition;
-				if (this.indexId == '13') {
-					this.areaCondition = dataApi.data.areaCondition;
-				}
-				this.indexDetail = dataApi.data.classInfo;
-				this.relatedData = dataApi.data.relatedData;
-				// 计算classHeight及总Height
-				this.setHeight();
-				// 设置画布数据
-				this.setDrawCanvas();
-			} catch (e) {
-				console.log("发生异常;" + JSON.stringify(e));
-			}
+			uni.showLoading({
+				title: "数据加载中...",
+			});
+			this.showStorage(this.indexId);
+			this.initAnalysisDetail(this.indexId);
+			this.initNav();
+
+			// let dataApi = analysisDemoApiJson;
+			// try {
+			// 	this.isFavorite = dataApi.data.baseInfo.isFavorite;
+			// 	this.timeCondition = dataApi.data.timeCondition;
+			// 	if (this.indexId == '13') {
+			// 		this.areaCondition = dataApi.data.areaCondition;
+			// 	}
+			// 	this.indexDetail = dataApi.data.classInfo;
+			// 	this.relatedData = dataApi.data.relatedData;
+			// 	// 计算classHeight及总Height
+			// 	this.setHeight();
+			// 	// 设置画布数据
+			// 	this.setDrawCanvas();
+			// } catch (e) {
+			// 	console.log("发生异常;" + JSON.stringify(e));
+			// }
 		},
 		onNavigationBarButtonTap(e) {
 			switch (e.type) {
@@ -170,12 +170,14 @@
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
+						console.log(JSON.stringify(res.data));
 						try {
 							dataApi = res.data;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
 							this.setDrawCanvas();
+							// uni.$emit('update',{msg:'页面更新'})
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
