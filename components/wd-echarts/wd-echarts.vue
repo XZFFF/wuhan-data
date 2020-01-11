@@ -45,21 +45,25 @@
 		},
 		watch: {
 			echartOption(newOption, oldOption) {
-				this.echartOption.legend.formatter = function(name) {
-					return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
-				};
-				this.echartOption.tooltip.formatter = function(params) {
-					var tips = "";
-					if (params != null && params.length > 0) {
-						for (var i = 0; i < params.length; i++) {
-							// console.log(JSON.stringify(params));
-							var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName.substr(
-								-10, 10) : params[i].seriesName;
-							tips += name + ":" + params[i].value + "\n";
+				if (this.echartOption.legend.formatter != null) {
+					this.echartOption.legend.formatter = function(name) {
+						return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
+					};
+					this.echartOption.tooltip.formatter = function(params) {
+						var tips = "";
+						if (params != null && params.length > 0) {
+							for (var i = 0; i < params.length; i++) {
+								// console.log(JSON.stringify(params));
+								var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
+									.substr(
+										-10, 10) : params[i].seriesName;
+								tips += name + ":" + params[i].value + "\n";
+							}
 						}
-					}
-					return tips;
-				};
+						return tips;
+					};
+				}
+
 				//console.log(this.$refs.echarts.chart);
 				wdChart = this.$refs.echarts.chart;
 				wdChart.setOption(this.echartOption)
@@ -79,21 +83,25 @@
 			// },
 
 			onInit(e) {
-				this.echartOption.legend.formatter = function(name) {
-					return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
-				};
-				this.echartOption.tooltip.formatter = function(params) {
-					var tips = "";
-					if (params != null && params.length > 0) {
-						for (var i = 0; i < params.length; i++) {
-							// console.log(JSON.stringify(params));
-							var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName.substr(
-								-10, 10) : params[i].seriesName;
-							tips += name + ":" + params[i].value + "\n";
+				if (this.echartOption.hasOwnProperty('legend') &&
+					this.echartOption.hasOwnProperty('tooltip')) {
+					this.echartOption.legend.formatter = function(name) {
+						return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
+					};
+					this.echartOption.tooltip.formatter = function(params) {
+						var tips = "";
+						if (params != null && params.length > 0) {
+							for (var i = 0; i < params.length; i++) {
+								// console.log(JSON.stringify(params));
+								var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
+									.substr(
+										-10, 10) : params[i].seriesName;
+								tips += name + ":" + params[i].value + "\n";
+							}
 						}
-					}
-					return tips;
-				};
+						return tips;
+					};
+				}
 				// console.log(JSON.stringify(this.echartOption.legend.formatter));
 				let {
 					width,
