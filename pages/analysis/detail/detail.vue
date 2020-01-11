@@ -72,9 +72,7 @@
 			// 	}
 			// 	this.indexDetail = dataApi.data.classInfo;
 			// 	this.relatedData = dataApi.data.relatedData;
-			// 	// 计算classHeight及总Height
 			// 	this.setHeight();
-			// 	// 设置画布数据
 			// 	this.setDrawCanvas();
 			// } catch (e) {
 			// 	console.log("发生异常;" + JSON.stringify(e));
