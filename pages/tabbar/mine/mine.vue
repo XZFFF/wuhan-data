@@ -58,8 +58,8 @@
 					<view style="font-size: 30upx;">当前版本：{{currentVersion}}</view>
 					<view style="font-size: 30upx;">最新版本：{{newVersion}}</view>
 					<view style="margin-top: 20upx;margin-bottom: 20upx;white-space: pre-wrap;">{{updateText}}</view>
-					<input type="button" class="pop-button" value="下载" @click="Update()" />
-					<input type="button" class="pop-button" style="float: right;" value="取消" @click="togglePopup('')" />
+					<input type="button" class="pop-button" value="下载" style="float: left;" @click="Update()" />
+					<input type="button" class="pop-button" value="取消" style="float: right;" @click="togglePopup('')" />
 				</view>
 			</uni-popup>
 			<uni-popup :show="type === 'middle-download'" position="middle" mode="fixed">
@@ -176,6 +176,7 @@
 				checkApi.checkNetwork();
 				uni.request({
 					url: this.apiUrl + 'getUserApp',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						"token": this.token,
@@ -277,10 +278,11 @@
 					//checkApi.checkNetwork();
 					uni.request({
 						url: this.apiUrl + "getVersionApp",
+						// url: 'http://www.baidu.com',
 						method: 'GET',
 						data: {},
 						success: (res) => {
-							//let updateApi = getUpdateApiJson.data;
+							// let updateApi = getUpdateApiJson.data;
 							let updateApi = res.data;
 							let appid = plus.runtime.appid;
 							let version = plus.runtime.version;
@@ -616,9 +618,11 @@
 
 	.pop-button {
 		font-size: 30upx;
-		float: left;
-		background-color: rgba(255, 255, 255, 1);
-		border: rgba(255, 255, 255, 1) solid;
+		width: 30%;
+		text-align: center;
+		border-radius: 5px;
+		background-color: #ebebeb;
+		border: 1px solid #ebebeb
 	}
 
 	.loginPrompt {
