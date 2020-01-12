@@ -8,10 +8,10 @@
 			</view>
 			<!-- <view style="display: flex; flex-direction: column; justify-content: flex-start;"> -->
 				<view class="wd-list-item__content" style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 30upx;">
-					<view class="wd-list-item__content-title" style="display: flex; align-items: center;max-width: 300upx;font-size: 30upx;">{{title}}</view>
+					<view class="wd-list-item__content-title" style="display: flex; align-items: center;max-width: 260upx;font-size: 30upx;">{{title}}</view>
 					<view class="tag-view" style="display: flex; flex-direction: row;">
 						<wd-tag :text="trendSource" size="small" :circle="true"></wd-tag>
-						<wd-tag v-if="trendSource=='国统'" :text="trendSourceArea" size="small" :circle="true"></wd-tag>
+						<wd-tag v-if="trendSource=='国统'" style="margin-left: 20upx;" :text="trendSourceArea" size="small" :circle="true"></wd-tag>
 					</view>
 				</view>
 				<!-- <view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">地区生产总值(GDP)-三次产业-第三产业-地区生产总值(GDP)-三次产业-第三产业</view> -->

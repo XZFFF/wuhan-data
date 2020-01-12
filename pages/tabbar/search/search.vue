@@ -41,7 +41,7 @@
 				<view class="history-list-item" v-for="(item, index) in resultList" :key="index">
 					<view style="display: flex; flex-direction: column; justify-content: flex-start;" @click="searchResultTap(item, 0)">
 						<view style="display: flex; flex-direction: row; justify-content: flex-start;font-size: 28upx;">
-							<rich-text style="display: flex; align-items: center;max-width: 280upx;font-size: 28upx;" :nodes="item.nameNodes"></rich-text>
+							<rich-text style="display: flex; align-items: center;max-width: 260upx;font-size: 28upx;" :nodes="item.nameNodes"></rich-text>
 							<view class="tag-view" style="display: flex; flex-direction: row;">
 								<wd-tag :text="item.source" size="small" :circle="true"></wd-tag>
 								<wd-tag v-if="item.source=='国统'" style="margin-left: 20upx;" :text="item.sourceArea" size="small" :circle="true"></wd-tag>
@@ -50,7 +50,7 @@
 						<view style="color: #666666;font-size: 20upx;max-width: 500upx;font-family:'Courier New', Courier, monospace;">{{item.path}}</view>
 					</view>
 					<button class="cu-btn bg-cyan shadow" style="margin: auto 30upx auto 0upx;" :disabled="item.isArea ==1?false:true"
-					 @click="searchResultTap(item, 1)">地市数据</button>
+					 @click="searchResultTap(item, 1)">地市级</button>
 				</view>
 			</view>
 			<view v-else class="no-data">{{noResultText}}</view>
