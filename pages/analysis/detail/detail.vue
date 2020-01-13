@@ -9,7 +9,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share-poster></wd-share-poster>
+		<wd-share-poster ref="shareComp"></wd-share-poster>
 	</view>
 </template>
 
@@ -94,6 +94,10 @@
 					}
 					// 更新导航栏
 					this.initNav();
+					break;
+				case "share": //点击分享按钮
+					console.log("进入了page的分享监听");
+					this.$refs.shareComp.shareFc();
 					break;
 				default:
 					console.log(e.type);

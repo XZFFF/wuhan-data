@@ -54,6 +54,7 @@
 		onNavigationBarButtonTap(e) {
 			switch (e.type) {
 				case "share": //点击分享按钮
+				console.log("进入了组件的分享监听");
 					this.shareFc();
 					break;
 			}
