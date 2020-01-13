@@ -66,7 +66,7 @@
 					wx.canvasToTempFilePath({
 						canvasId,
 						...opt
-					});
+					}, this);
 				});
 			},
 			touchStart(e) {

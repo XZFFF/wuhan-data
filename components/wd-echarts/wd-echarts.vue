@@ -119,6 +119,35 @@
 			},
 
 			downEcharts() {
+				let canvas = this.$refs.echarts.canvas;
+				echarts.setCanvasCreator(() => canvas);
+				this.$refs.echarts.canvasToTempFilePath({
+					success: function(res) {
+						uni.saveFile({
+							tempFilePath: res.tempFilePath,
+							success(res) {
+								let url = res.savedFilePath;
+								uni.saveImageToPhotosAlbum({
+									filePath: url,
+									success(res) {
+										uni.showToast({
+											title: '保存成功'
+										});
+									}
+								})
+							},
+						})
+					},
+					fail: function(e) {
+						console.log(JSON.stringify(e));
+						uni.showToast({
+							icon: 'none',
+							title: "图表正在加载，请稍后再试"
+						});
+						return false;
+					}
+				});
+				/*
 				let url = "";
 				uni.canvasToTempFilePath({
 					canvasId: this.canvasId,
@@ -138,14 +167,16 @@
 							},
 						})
 					},
-					fail: function() {
+					fail: function(e) {
+						console.log(JSON.stringify(e));
 						uni.showToast({
 							icon: 'none',
 							title: "图表正在加载，请稍后再试"
 						});
 						return false;
 					}
-				});
+				}, this);
+				*/
 			}
 		}
 	}
