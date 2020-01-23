@@ -7,6 +7,7 @@ let _app = {
 			backgroundImage,
 			type
 		} = objs;
+		let that = this;
 		// let p = new Promise(function (resolve, reject) {
 		// 	var res;
 		// 	var imgID = String(Date.parse( new Date()));
@@ -40,6 +41,7 @@ let _app = {
 				} = uni.getSystemInfoSync();
 				var drawArr = uni.getStorageSync('drawArr');
 				var canvasTitle = uni.getStorageSync('canvasTitle');
+				var echartArr = uni.getStorageSync('echartArr');
 				const ctx = uni.createCanvasContext('hideCanvas');
 				ctx.setFillStyle("#FFFFFF");
 				ctx.fillRect(0, 0, windowWidth, 1000000);
@@ -60,12 +62,16 @@ let _app = {
 				async function f1() {
 					for (var i = 0; i < drawArr.length; i++) {
 						await new Promise((rs, rj) => {
-							uni.canvasToTempFilePath({
-								canvasId: drawArr[i],
-								success: function(res) {
-									console.log("返回图片路径" + i + ":" + res.tempFilePath);
+							// uni.canvasToTempFilePath({
+							// 	canvasId: drawArr[i],
+							// 	let canvas = this.$refs.echarts.canvas;
+							// 	console.log("canvas:"+canvas);
+							// 	echarts.setCanvasCreator(() => canvas);
+							// 	this.$refs.echarts.canvasToTempFilePath({
+							// 	success: function(res) {
+							// 		console.log("返回图片路径" + i + ":" + res.tempFilePath);
 									uni.saveFile({
-										tempFilePath: res.tempFilePath,
+										tempFilePath: echartArr[i].echartUrl,
 										success(res) {
 											log('保存成功:' + JSON.stringify(res));
 											url = res.savedFilePath;
@@ -83,15 +89,15 @@ let _app = {
 											})
 										},
 									})
-								},
-								fail: function() {
-									uni.showToast({
-										icon: 'none',
-										title: "图表正在加载，请稍后再试"
-									});
-									rj(false);
-								}
-							});
+							// 	},
+							// 	fail: function() {
+							// 		uni.showToast({
+							// 			icon: 'none',
+							// 			title: "图表正在加载，请稍后再试"
+							// 		});
+							// 		rj(false);
+							// 	}
+							// });
 						}).then(function() {
 							const {
 								windowWidth,
@@ -112,7 +118,7 @@ let _app = {
 							// 设置水平对齐方式
 							ctx.setTextBaseline = "middle";
 							// 绘制文字（参数：要写的字，x坐标，y坐标）
-							var txt = canvasTitle[i];
+							var txt = echartArr[i].echartTitle;
 							ctx.setFontSize(15);
 							ctx.setTextAlign('left');
 							ctx.fillText(txt, 20, hei, windowWidth * 2.7 - 40);
@@ -137,12 +143,12 @@ let _app = {
 				function f2() {
 					console.log("绘图到画布");
 					ctx.draw();
+					rs(ctx);
 					setTimeout(function() {
 						uni.canvasToTempFilePath({
 							canvasId: 'hideCanvas',
 							success: function(res) {
 								console.log("成功保存到hideCanvas");
-								//#ifndef H5
 								console.log("res.tempFilePath:" + res.tempFilePath);
 								uni.saveFile({
 									tempFilePath: res.tempFilePath,
@@ -162,20 +168,23 @@ let _app = {
 									}
 								})
 								rs(res.tempFilePath);
-								//#endif
 							},
+							fail: err => {
+								console.log('fail:' + JSON.stringify(err));
+							}
 						})
 					}, 500);
 				}
 				f1();
-			});
+			}).then(function() {
 
 			if (image) {
-				console.log("image:" + image);
+				console.log("image:" + JSON.stringify(image));
 				rs(image);
 			} // resolve图片的路径
 			else
 				rj('背景图片路径不存在');
+			})
 		})
 	},
 

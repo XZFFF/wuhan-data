@@ -74,6 +74,7 @@
 			// this.showStorage();
 			this.initSearchDetail();
 			this.initNav();
+			uni.removeStorageSync('echartArr');
 		},
 		onNavigationBarButtonTap(e) {
 			console.log("source:" + this.source);
@@ -119,11 +120,13 @@
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({
-					url: this.apiUrl + 'searchDetail',
+					// url: this.apiUrl + 'searchDetail',
+					url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
-						dataApi = res.data;
+						// dataApi = res.data;
+						dataApi = searchDetailApiJson;
 						console.log("获取ok;" + JSON.stringify(dataApi));
 						let search_detail_key = 'search_detail' + _self.indexId;
 						uni.setStorageSync(search_detail_key, dataApi);

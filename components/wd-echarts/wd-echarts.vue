@@ -69,7 +69,12 @@
 				wdChart.setOption(this.echartOption)
 			}
 		},
-		onLoad() {},
+		onLoad() {
+			
+		},
+		mounted() {
+			this.saveEcharts()
+		},
 		methods: {
 			// 2.2.2
 			// onInit(canvas, width, height) {
@@ -147,6 +152,51 @@
 						return false;
 					}
 				});
+			},
+			
+			saveEcharts() {
+				let that = this;
+				let canvas = this.$refs.echarts.canvas;
+				echarts.setCanvasCreator(() => canvas);
+				this.$refs.echarts.canvasToTempFilePath({
+					success: function(res) {
+						console.log("success");
+						that.setEchart(res.tempFilePath);
+					},
+					fail: function(e) {
+						console.log(JSON.stringify(e));
+						uni.showToast({
+							icon: 'none',
+							title: "图表正在加载，请稍后再试"
+						});
+						return false;
+					}
+				});
+				
+			},
+			
+			setEchart(echartUrl){
+				let that = this;
+				var echartArr = uni.getStorageSync('echartArr');
+				var newEchartArr = [];
+				if(echartUrl){
+					var echartObj = {
+						echartID: that.canvasId,
+						echartUrl: echartUrl,
+						echartTitle: that.classTitle,
+						echartHeight: that.classHeight
+					};
+					if(!echartArr) {
+						newEchartArr.push(echartObj);
+						console.log("newEchartArr:"+JSON.stringify(newEchartArr));
+					}
+					else {
+						echartArr.push(echartObj);
+						newEchartArr = echartArr;
+						console.log("newEchartArr:"+JSON.stringify(newEchartArr));
+					}
+					uni.setStorageSync('echartArr',newEchartArr);
+				}
 			}
 		}
 	}
