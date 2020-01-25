@@ -5,7 +5,8 @@ let _app = {
 	getPosterUrl(objs) { // 后端获取背景图的url路径方法
 		let {
 			backgroundImage,
-			type
+			type,
+			_this
 		} = objs;
 		let that = this;
 		// let p = new Promise(function (resolve, reject) {
@@ -75,7 +76,7 @@ let _app = {
 										success(res) {
 											log('保存成功:' + JSON.stringify(res));
 											url = res.savedFilePath;
-											console.log("url" + i + ":" + url);
+											// console.log("url" + i + ":" + url);
 											uni.getImageInfo({
 												src: res.savedFilePath,
 												success: res => {
@@ -122,13 +123,11 @@ let _app = {
 							ctx.setFontSize(15);
 							ctx.setTextAlign('left');
 							ctx.fillText(txt, 20, hei, windowWidth * 2.7 - 40);
-							// ctx.draw();
 							ctx.setStrokeStyle('#D3D3D3');
 							hei += 10;
 							ctx.moveTo(0, hei);
 							ctx.lineTo(windowWidth-20, hei);
 							ctx.stroke();
-							// ctx.draw();
 							ctx.drawImage(url, wid, hei, imgObj.width / 3, imgObj.height / 3);
 							hei += imgObj.height / 3+10;
 							//#endif
@@ -143,7 +142,6 @@ let _app = {
 				function f2() {
 					console.log("绘图到画布");
 					ctx.draw();
-					rs(ctx);
 					setTimeout(function() {
 						uni.canvasToTempFilePath({
 							canvasId: 'hideCanvas',
@@ -154,6 +152,16 @@ let _app = {
 									tempFilePath: res.tempFilePath,
 									success(res) {
 										log('保存成功:' + JSON.stringify(res));
+										let finalUrl = res.savedFilePath;
+										console.log("finalUrl:"+finalUrl);
+										
+										uni.saveImageToPhotosAlbum({
+											filePath: res.savedFilePath,
+											success(res) {
+												console.log("保存成功到相册");
+												rs(finalUrl);
+											}
+										})
 										uni.setStorageSync("drawImg", res.savedFilePath);
 										uni.getImageInfo({
 											src: res.savedFilePath,
@@ -167,24 +175,26 @@ let _app = {
 										})
 									}
 								})
-								rs(res.tempFilePath);
+								
 							},
 							fail: err => {
 								console.log('fail:' + JSON.stringify(err));
 							}
-						})
+						},_this)
 					}, 500);
 				}
 				f1();
 			}).then(function() {
-
-			if (image) {
-				console.log("image:" + JSON.stringify(image));
-				rs(image);
-			} // resolve图片的路径
-			else
-				rj('背景图片路径不存在');
+				if (image) {
+					console.log("image:" + JSON.stringify(image));
+					rs(image);
+				} // resolve图片的路径
+				else {
+					rj('背景图片路径不存在');
+				}
+					
 			})
+			
 		})
 	},
 
