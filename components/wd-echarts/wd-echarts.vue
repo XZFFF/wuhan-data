@@ -66,7 +66,8 @@
 
 				//console.log(this.$refs.echarts.chart);
 				wdChart = this.$refs.echarts.chart;
-				wdChart.setOption(this.echartOption)
+				wdChart.setOption(this.echartOption);
+				this.saveEcharts()
 			}
 		},
 		onLoad() {

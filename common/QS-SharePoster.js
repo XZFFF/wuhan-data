@@ -6,6 +6,7 @@ var isMp = false;
 // #ifdef MP
 isMp = true;
 // #endif
+// let bgScale = 0.1;
 
 
 // export default 
@@ -70,9 +71,9 @@ function returnPromise(obj) {
 				});
 			}
 			// 为了ios 缩放一些
-			bgScale = bgScale || .75;
-			bgObj.width = bgObj.width * bgScale;
-			bgObj.height = bgObj.height * bgScale;
+			// bgScale = bgScale || 1.5;
+			bgObj.width = bgObj.width * 1.5;
+			bgObj.height = bgObj.height * 1.5;
 
 			_app.log('获取背景图信息对象成功:' + JSON.stringify(bgObj));
 			const params = {
@@ -270,7 +271,14 @@ function drawShareImage(obj) { //绘制海报方法
 			}
 
 			_app.showLoading('绘制可控层级序列');
+			const {
+				windowWidth,
+				windowHeight
+			} = uni.getSystemInfoSync();
+			Context.setFillStyle('#3A82CC');
+			Context.fillRect(0, 0, windowWidth*2, 70);
 			if (drawArray && drawArray.length > 0) {
+				console.log("drawArray.lengthdrawArray.lengthdrawArray.length:"+JSON.stringify(drawArray));
 				for (let i = 0; i < drawArray.length; i++) {
 					const drawArrayItem = drawArray[i];
 					_app.log('绘制可控层级序列, drawArrayItem:' + JSON.stringify(drawArrayItem));
@@ -321,8 +329,8 @@ function drawShareImage(obj) { //绘制海报方法
 						y: 0,
 						width: bgObj.width,
 						height: bgObj.height,
-						destWidth: bgObj.width * 2, // 若H5使用这里请不要乘以二
-						destHeight: bgObj.height * 2, // 若H5使用这里请不要乘以二
+						destWidth: bgObj.width *2, // 若H5使用这里请不要乘以二
+						destHeight: bgObj.height *2, // 若H5使用这里请不要乘以二
 						quality: .8,
 						fileType: 'jpg',
 						...setObj
@@ -333,6 +341,18 @@ function drawShareImage(obj) { //绘制海报方法
 							...data,
 							canvasId: posterCanvasId,
 							success(res) {
+								// uni.saveFile({
+								// 	tempFilePath: res.tempFilePath,
+								// 	success(res) {
+								// 		let url = res.savedFilePath;
+								// 		uni.saveImageToPhotosAlbum({
+								// 			filePath: url,
+								// 			success(res) {
+								// 				console.log("保存成功保存成功保存成功");
+								// 			}
+								// 		})
+								// 	},
+								// })
 								_app.hideLoading();
 								rs(res);
 							},
@@ -1243,18 +1263,30 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
 				}
 			} else {
 				_app.log('没有从后端获取的背景图片路径, 尝试从后端获取背景图片路径');
-				const image = await _app.getPosterUrl(objs);
-				_app.log('尝试下载并保存背景图:' + image);
-				const savedFilePath = await _app.downLoadAndSaveFile_PromiseFc(image);
-				if (savedFilePath) {
-					_app.log('下载并保存背景图成功:' + savedFilePath);
-					const imageObj = await _app.getImageInfo_PromiseFc(savedFilePath);
+				// const image = await _app.getPosterUrl(objs);
+				// _app.log('尝试下载并保存背景图:' + image);
+				// const savedFilePath = await _app.downLoadAndSaveFile_PromiseFc(image);
+				// if (savedFilePath) {
+					// _app.log('下载并保存背景图成功:' + savedFilePath);
+					// const imageObj = await _app.getImageInfo_PromiseFc(savedFilePath);
+					const {
+						windowWidth,
+						windowHeight
+					} = uni.getSystemInfoSync();
 					_app.log('获取图片信息成功');
+					var echartArr = uni.getStorageSync('echartArr');
+					var hei = 70/1.5;
+					for (var i of echartArr) {
+						hei += 50/1.5;
+						hei += parseInt(i.echartHeight) *0.9;
+						console.log("gaogaogoaogoag::"+i.echartHeight);
+					}
 					const returnObj = {
-						path: savedFilePath,
-						width: imageObj.width,
-						height: imageObj.height,
-						name: _app.fileNameInPath(image)
+						// path: savedFilePath,
+						backgroundColor: 'white',
+						width: windowWidth,
+						height: hei
+						// name: _app.fileNameInPath(image)
 					}
 					_app.log('拼接背景图信息对象成功:' + JSON.stringify(returnObj));
 
@@ -1267,10 +1299,10 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
 					_app.log('返回背景图信息对象');
 					resolve({ ...returnObj
 					});
-				} else {
-					_app.hideLoading();
-					reject('not find savedFilePath');
-				}
+				// } else {
+				// 	_app.hideLoading();
+				// 	reject('not find savedFilePath');
+				// }
 			}
 		} catch (e) {
 			//TODO handle the exception
