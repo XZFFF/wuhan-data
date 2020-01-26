@@ -67,14 +67,19 @@
 				//console.log(this.$refs.echarts.chart);
 				wdChart = this.$refs.echarts.chart;
 				wdChart.setOption(this.echartOption);
-				this.saveEcharts()
+
+				setTimeout(() => {
+					console.log('调用save函数');
+					this.saveEcharts();
+				}, 2000);
 			}
 		},
-		onLoad() {
-			
-		},
+		onLoad() {},
 		mounted() {
-			this.saveEcharts()
+			setTimeout(() => {
+				console.log('调用save函数');
+				this.saveEcharts();
+			}, 2000);
 		},
 		methods: {
 			// 2.2.2
@@ -154,8 +159,9 @@
 					}
 				});
 			},
-			
+
 			saveEcharts() {
+				console.log('进入saveEcharts()');
 				let that = this;
 				let canvas = this.$refs.echarts.canvas;
 				echarts.setCanvasCreator(() => canvas);
@@ -173,30 +179,29 @@
 						return false;
 					}
 				});
-				
+
 			},
-			
-			setEchart(echartUrl){
+
+			setEchart(echartUrl) {
 				let that = this;
 				var echartArr = uni.getStorageSync('echartArr');
 				var newEchartArr = [];
-				if(echartUrl){
+				if (echartUrl) {
 					var echartObj = {
 						echartID: that.canvasId,
 						echartUrl: echartUrl,
 						echartTitle: that.classTitle,
 						echartHeight: that.classHeight
 					};
-					if(!echartArr) {
+					if (!echartArr) {
 						newEchartArr.push(echartObj);
-						console.log("newEchartArr:"+JSON.stringify(newEchartArr));
-					}
-					else {
+						console.log("newEchartArr:" + JSON.stringify(newEchartArr));
+					} else {
 						echartArr.push(echartObj);
 						newEchartArr = echartArr;
-						console.log("newEchartArr:"+JSON.stringify(newEchartArr));
+						console.log("newEchartArr:" + JSON.stringify(newEchartArr));
 					}
-					uni.setStorageSync('echartArr',newEchartArr);
+					uni.setStorageSync('echartArr', newEchartArr);
 				}
 			}
 		}

@@ -7,7 +7,7 @@
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :classTitle="item.classTitle" :tableBody="item.tableBody"></wd-table>
 				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
-				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
+				 :classHeight="item.classHeight" :classTitle="item.classTitle" ref="wdEcharts1"></wd-echarts>
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
@@ -75,6 +75,8 @@
 			this.initSearchDetail();
 			this.initNav();
 			uni.removeStorageSync('echartArr');
+
+			console.log(this.$children);
 		},
 		onNavigationBarButtonTap(e) {
 			console.log("source:" + this.source);
@@ -99,6 +101,8 @@
 					}
 					// 更新导航栏
 					this.initNav();
+					break;
+				case "share":
 					break;
 				default:
 					console.log(e.type);
@@ -176,13 +180,15 @@
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({
-					url: this.apiUrl + 'searchConfirm',
+					// url: this.apiUrl + 'searchConfirm',
+					url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
-						console.log("获取成功;" + JSON.stringify(res.data));
+						// console.log("获取成功;" + JSON.stringify(res.data));
 						try {
-							dataApi = res.data;
+							// dataApi = res.data;
+							dataApi = searchConfirmApiJson;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
