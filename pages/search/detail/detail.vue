@@ -75,7 +75,6 @@
 			this.initSearchDetail();
 			this.initNav();
 			uni.removeStorageSync('echartArr');
-
 			console.log(this.$children);
 		},
 		onNavigationBarButtonTap(e) {

@@ -82,7 +82,11 @@
 								var hei = 0;
 								hei += 70;
 								var echartArr = uni.getStorageSync('echartArr');
+								var echartId = uni.getStorageSync('drawArr');
 								var title = uni.getStorageSync('drawTitle');
+								echartArr.sort((a,b)=>{
+								    return echartId.indexOf(a.echartID)-echartId.indexOf(b.echartID);
+								});
 								var drawArr = [{
 									type: 'text',
 									fontStyle: 'normal',

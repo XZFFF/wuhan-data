@@ -278,7 +278,7 @@ function drawShareImage(obj) { //绘制海报方法
 			Context.setFillStyle('#3A82CC');
 			Context.fillRect(0, 0, windowWidth*2, 70);
 			if (drawArray && drawArray.length > 0) {
-				console.log("drawArray.lengthdrawArray.lengthdrawArray.length:"+JSON.stringify(drawArray));
+				console.log("drawArray:"+JSON.stringify(drawArray));
 				for (let i = 0; i < drawArray.length; i++) {
 					const drawArrayItem = drawArray[i];
 					_app.log('绘制可控层级序列, drawArrayItem:' + JSON.stringify(drawArrayItem));
@@ -1279,7 +1279,6 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
 					for (var i of echartArr) {
 						hei += 50/1.5;
 						hei += parseInt(i.echartHeight) *0.9;
-						console.log("gaogaogoaogoag::"+i.echartHeight);
 					}
 					const returnObj = {
 						// path: savedFilePath,
