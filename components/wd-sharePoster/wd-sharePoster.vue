@@ -3,7 +3,7 @@
 		<view class="flex_row_c_c modalView" :class="qrShow?'show':''" @tap="hideQr()">
 			<view class="flex_column">
 				<view class="backgroundColor-white padding1vh border_radius_10px">
-					<image :src="poster.finalPath" mode="widthFix" class="posterImage"></image>
+					<image :src="poster.finalPath" mode="aspectFill" class="posterImage"></image>
 				</view>
 				<view class="flex_row marginTop2vh">
 					<button type="primary" size="mini" @tap.prevent.stop="saveImage()">保存图片</button>
@@ -16,7 +16,7 @@
 		<view class="hideCanvasView">
 			<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (poster.width||0) + 'px', height: (poster.height||0) + 'px'}"></canvas>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -54,9 +54,9 @@
 						type: 'testShareType',
 						formData: {
 							//访问接口获取背景图携带自定义数据
-			
+
 						},
-						posterCanvasId: this.canvasId,	//canvasId
+						posterCanvasId: this.canvasId, //canvasId
 						delayTimeScale: 20, //延时系数
 						/* background: {
 							width: 1080,
@@ -84,22 +84,22 @@
 								var echartArr = uni.getStorageSync('echartArr');
 								var title = uni.getStorageSync('drawTitle');
 								var drawArr = [{
-										type: 'text',
-										fontStyle: 'normal',
-										text: title,
-										size: '35',
-										color: 'black',
-										alpha: 1,
-										textAlign: 'center',
-										textBaseline: 'middle',
-										mWidth: windowWidth * 1.4,
-										dx: windowWidth*0.75,
-										dy: hei-35,
-										serialNum: 0,
-										id: 'tag1'	//自定义标识
+									type: 'text',
+									fontStyle: 'normal',
+									text: title,
+									size: '35',
+									color: 'black',
+									alpha: 1,
+									textAlign: 'center',
+									textBaseline: 'middle',
+									mWidth: windowWidth * 1.4,
+									dx: windowWidth * 0.75,
+									dy: hei - 35,
+									serialNum: 0,
+									id: 'tag1' //自定义标识
 								}];
 								var i = echartArr.length;
-								for(i=0;i<echartArr.length;i++) {
+								for (i = 0; i < echartArr.length; i++) {
 									let url;
 									let imgObj;
 									let txt = echartArr[i].echartTitle;
@@ -124,9 +124,9 @@
 														textBaseline: 'middle',
 														mWidth: windowWidth * 1.8,
 														dx: 20,
-														dy: hei-20,
-														serialNum: i+1,
-														id: 'tag'+(i+2)	//自定义标识
+														dy: hei - 20,
+														serialNum: i + 1,
+														id: 'tag' + (i + 2) //自定义标识
 													}
 													drawArr.push(txtDraw);
 													hei += 10;
@@ -138,13 +138,13 @@
 														// alpha: .3,
 														dx: 0,
 														dy: hei,
-														dWidth:  imgObj.width/2, 
-														dHeight: imgObj.height/2
+														dWidth: imgObj.width / 2,
+														dHeight: imgObj.height / 2
 													};
-													hei += imgObj.height/2;
+													hei += imgObj.height / 2;
 													drawArr.push(echartDraw);
 													hei += 20;
-													if(i === echartArr.length){
+													if (i === echartArr.length) {
 														rs(drawArr);
 													}
 												},
@@ -155,9 +155,9 @@
 										},
 									})
 								}
-								
+
 							})
-									
+
 						},
 						setCanvasWH: ({
 							bgObj,
@@ -169,7 +169,7 @@
 					});
 					console.log('海报生成成功, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
 					this.poster.finalPath = d.poster.tempFilePath;
-					
+
 					this.qrShow = true;
 				} catch (e) {
 					_app.hideLoading();
@@ -196,7 +196,7 @@
 				// #ifdef APP-PLUS
 				_app.getShare(false, false, 2, '', '', '', this.poster.finalPath, false, false);
 				// #endif
-			
+
 				// #ifndef APP-PLUS
 				_app.showToast('分享了');
 				// #endif
@@ -204,7 +204,7 @@
 			hideQr() {
 				this.qrShow = false;
 			}
-				
+
 		}
 	}
 </script>
