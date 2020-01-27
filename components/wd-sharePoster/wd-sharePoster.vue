@@ -87,6 +87,7 @@
 								echartArr.sort((a,b)=>{
 								    return echartId.indexOf(a.echartID)-echartId.indexOf(b.echartID);
 								});
+								console.log(JSON.stringify(echartArr));
 								var drawArr = [{
 									type: 'text',
 									fontStyle: 'normal',

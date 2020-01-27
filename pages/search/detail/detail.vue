@@ -75,7 +75,7 @@
 			this.initSearchDetail();
 			this.initNav();
 			uni.removeStorageSync('echartArr');
-			console.log(this.$children);
+			// console.log(this.$children);
 		},
 		onNavigationBarButtonTap(e) {
 			console.log("source:" + this.source);
@@ -128,6 +128,7 @@
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
+						uni.removeStorageSync('echartArr');
 						// dataApi = res.data;
 						dataApi = searchDetailApiJson;
 						console.log("获取ok;" + JSON.stringify(dataApi));
@@ -186,6 +187,7 @@
 					success: (res) => {
 						// console.log("获取成功;" + JSON.stringify(res.data));
 						try {
+							uni.removeStorageSync('echartArr');
 							// dataApi = res.data;
 							dataApi = searchConfirmApiJson;
 							checkApi.isApi(dataApi);
