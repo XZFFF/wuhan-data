@@ -1,7 +1,16 @@
 import _app from './app.js';
+// import QRCodeAlg from './QRCodeAlg.js';
 const ShreUserPosterBackgroundKey = 'ShrePosterBackground_'; // 背景图片缓存名称前缀
+const idKey = 'QSSHAREPOSTER_IDKEY'; //drawArray自动生成的idkey
+var isMp = false;
+// #ifdef MP
+isMp = true;
+// #endif
+// let bgScale = 0.1;
 
-export default function getSharePoster(obj) {
+
+// export default 
+function getSharePoster(obj) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const result1 = await returnPromise(obj);
@@ -25,37 +34,46 @@ export default function getSharePoster(obj) {
 function returnPromise(obj) {
 	let {
 		type,
+		formData,
 		background,
 		posterCanvasId,
 		backgroundImage,
 		reserve,
 		textArray,
+		drawArray,
 		qrCodeArray,
 		imagesArray,
 		setCanvasWH,
 		setCanvasToTempFilePath,
 		setDraw,
 		bgScale,
-		Context
+		Context,
+		_this,
+		delayTimeScale,
+		drawDelayTime
 	} = obj;
 	return new Promise(async (rs, rj) => {
 		try {
 			_app.showLoading('正在准备海报数据');
-			if (!Context)
-				Context = uni.createCanvasContext(posterCanvasId);
+			if (!Context) {
+				_app.log('没有画布对象,创建画布对象');
+				Context = uni.createCanvasContext(posterCanvasId, (_this || null));
+			}
 			let bgObj;
 			if (background && background.width && background.height) {
 				bgObj = background;
 			} else {
-				bgObj = await getShreUserPosterBackground({
+				bgObj = await getShreUserPosterBackgroundFc({
 					backgroundImage,
-					type
+					type,
+					formData,
+					_this
 				});
 			}
 			// 为了ios 缩放一些
-			bgScale = bgScale || .75;
-			// bgObj.width = bgObj.width * bgScale;
-			// bgObj.height = bgObj.height * bgScale;
+			// bgScale = bgScale || 1.5;
+			bgObj.width = bgObj.width * 1.5;
+			bgObj.height = bgObj.height * 1.5;
 
 			_app.log('获取背景图信息对象成功:' + JSON.stringify(bgObj));
 			const params = {
@@ -68,13 +86,14 @@ function returnPromise(obj) {
 				if (typeof(imagesArray) == 'function')
 					imagesArray = imagesArray(params);
 				_app.showLoading('正在生成需绘制图片的临时路径');
-				imagesArray = await setImagesArray(imagesArray);
+				_app.log('准备设置图片');
+				imagesArray = await setImage(imagesArray);
 				_app.hideLoading();
 			}
 			if (textArray) {
 				if (typeof(textArray) == 'function')
 					textArray = textArray(params);
-				textArray = setTextArray(Context, textArray);
+				textArray = setText(Context, textArray);
 
 			}
 			if (qrCodeArray) {
@@ -82,23 +101,99 @@ function returnPromise(obj) {
 					qrCodeArray = qrCodeArray(params);
 				_app.showLoading('正在生成需绘制图片的临时路径');
 				for (let i = 0; i < qrCodeArray.length; i++) {
+					_app.log(i);
 					if (qrCodeArray[i].image)
 						qrCodeArray[i].image = await _app.downloadFile_PromiseFc(qrCodeArray[i].image);
 				}
 				_app.hideLoading();
+			}
+			if (drawArray) {
+				if (typeof(drawArray) == 'function') {
+					drawArray = drawArray(params);
+				}
+				if (_app.isPromise(drawArray)) {
+					drawArray = await drawArray;
+				}
+
+				if (_app.isArray(drawArray) && drawArray.length > 0) {
+					let hasAllInfoCallback = false;
+					for (let i = 0; i < drawArray.length; i++) {
+						const drawArrayItem = drawArray[i];
+						if (_app.isFn(drawArrayItem.allInfoCallback) && !hasAllInfoCallback) hasAllInfoCallback = true;
+						drawArrayItem[idKey] = i;
+						let newData;
+						switch (drawArrayItem.type) {
+							case 'image':
+								newData = await setImage(drawArrayItem);
+								break;
+							case 'text':
+								newData = setText(Context, drawArrayItem);
+								break;
+							case 'qrcode':
+								if (drawArrayItem.image)
+									newData = {
+										image: await _app.downloadFile_PromiseFc(drawArrayItem.image)
+									};
+								break;
+							case 'custom':
+								break;
+							default:
+								_app.log('未识别的类型');
+								break;
+						}
+						if (newData && _app.isObject(newData)) {
+							drawArray[i] = { ...drawArrayItem,
+								...newData
+							}
+						};
+					}
+
+					if (hasAllInfoCallback) {
+						_app.log('----------------hasAllInfoCallback----------------');
+						const drawArray_copy = [...drawArray];
+						drawArray_copy.sort((a, b) => {
+							const a_serialNum = !_app.isUndef(a.serialNum) && !_app.isNull(a.serialNum) ? Number(a.serialNum) : Number.NEGATIVE_INFINITY;
+							const b_serialNum = !_app.isUndef(b.serialNum) && !_app.isNull(b.serialNum) ? Number(b.serialNum) : Number.NEGATIVE_INFINITY;
+							return a_serialNum - b_serialNum;
+						})
+
+						for (let i = 0; i < drawArray_copy.length; i++) {
+							const item = { ...drawArray_copy[i]
+							};
+							if (_app.isFn(item.allInfoCallback)) {
+								let newData = item.allInfoCallback({
+									drawArray: drawArray_copy
+								});
+								if (_app.isPromise(newData)) newData = await newData;
+								const item_idKey = item[idKey];
+								if (!_app.isUndef(item_idKey)) {
+									drawArray[item[idKey]] = { ...item,
+										...newData
+									};
+								} else {
+									console.log('程序错误 找不到idKey!!!	...这不应该啊');
+								}
+							}
+						}
+					}
+				}
 			}
 			const poster = await drawShareImage({
 				Context,
 				type,
 				posterCanvasId,
 				reserve,
+				drawArray,
 				textArray,
 				imagesArray,
 				bgObj,
 				qrCodeArray,
 				setCanvasToTempFilePath,
 				setDraw,
-				bgScale
+				bgScale,
+				_this,
+				delayTimeScale,
+				drawDelayTime
 			});
 			_app.hideLoading();
 			rs({
@@ -120,102 +215,193 @@ function drawShareImage(obj) { //绘制海报方法
 		posterCanvasId,
 		reserve,
 		bgObj,
+		drawArray,
 		textArray,
 		qrCodeArray,
 		imagesArray,
 		setCanvasToTempFilePath,
 		setDraw,
-		bgScale
+		bgScale,
+		_this,
+		delayTimeScale,
+		drawDelayTime
 	} = obj;
+	const params = {
+		Context,
+		bgObj,
+		type,
+		bgScale
+	};
+	delayTimeScale = delayTimeScale !== undefined ? delayTimeScale : 15;
+	drawDelayTime = drawDelayTime !== undefined ? drawDelayTime : 100;
 	return new Promise((rs, rj) => {
 		try {
 			_app.showLoading('正在绘制海报');
+			_app.log('背景对象:' + JSON.stringify(bgObj));
 			if (bgObj && bgObj.path) {
-				console.log("bgObj.path:"+bgObj.path);
+				_app.log('背景有图片路径');
 				Context.drawImage(bgObj.path, 0, 0, bgObj.width, bgObj.height);
 			} else {
+				_app.log('背景没有图片路径');
 				if (bgObj.backgroundColor) {
-					Context.setFillStyle(bgObj.backgroundColor)
+					_app.log('背景有背景颜色:' + bgObj.backgroundColor);
+					Context.setFillStyle(bgObj.backgroundColor);
 					Context.fillRect(0, 0, bgObj.width, bgObj.height);
+				} else {
+					_app.log('背景没有背景颜色');
 				}
 			}
 
-			_app.showLoading('准备绘制图片');
-			drawImage(Context, imagesArray);
+			_app.showLoading('绘制图片');
+			if (imagesArray && imagesArray.length > 0)
+				drawImage(Context, imagesArray);
 
-			_app.showLoading('准备绘制自定义内容');
-			if (setDraw && typeof(setDraw) == 'function') setDraw({
-				Context,
-				bgObj,
-				type,
-				bgScale
-			});
+			_app.showLoading('绘制自定义内容');
+			if (setDraw && typeof(setDraw) == 'function') setDraw(params);
 
-			_app.showLoading('准备绘制文本');
-			drawText(Context, textArray, bgObj);
+			_app.showLoading('绘制文本');
+			if (textArray && textArray.length > 0)
+				drawText(Context, textArray, bgObj);
 
-			_app.showLoading('准备绘制二维码');
+			_app.showLoading('绘制二维码');
 			if (qrCodeArray && qrCodeArray.length > 0) {
 				for (let i = 0; i < qrCodeArray.length; i++) {
 					drawQrCode(Context, qrCodeArray[i]);
 				}
 			}
+
+			_app.showLoading('绘制可控层级序列');
+			const {
+				windowWidth,
+				windowHeight
+			} = uni.getSystemInfoSync();
+			Context.setFillStyle('#3A82CC');
+			Context.fillRect(0, 0, windowWidth*2, 70);
+			if (drawArray && drawArray.length > 0) {
+				console.log("drawArray:"+JSON.stringify(drawArray));
+				for (let i = 0; i < drawArray.length; i++) {
+					const drawArrayItem = drawArray[i];
+					_app.log('绘制可控层级序列, drawArrayItem:' + JSON.stringify(drawArrayItem));
+					switch (drawArrayItem.type) {
+						case 'image':
+							_app.log('绘制可控层级序列, 绘制图片');
+							drawImage(Context, drawArrayItem);
+							break;
+						case 'text':
+							_app.log('绘制可控层级序列, 绘制文本');
+							drawText(Context, drawArrayItem, bgObj);
+							break;
+						case 'qrcode':
+							_app.log('绘制可控层级序列, 绘制二维码');
+							drawQrCode(Context, drawArrayItem);
+							break;
+						case 'custom':
+							_app.log('绘制可控层级序列, 绘制自定义内容');
+							if (drawArrayItem.setDraw && typeof drawArrayItem.setDraw === 'function')
+								drawArrayItem.setDraw(Context);
+							break;
+						default:
+							_app.log('未识别的类型');
+							break;
+					}
+				}
+			}
 			_app.showLoading('绘制中')
-			Context.draw((typeof(reserve) == 'boolean' ? reserve : false), () => {
-				_app.showLoading('准备输出图片');
-				let setObj = {};
-				if (setCanvasToTempFilePath && typeof(setCanvasToTempFilePath) == 'function')
-					setObj = setCanvasToTempFilePath(bgObj, type);
-				// #ifdef H5
-				rs({
-					tempFilePath: document.querySelector(`uni-canvas[canvas-id=${posterCanvasId}]>canvas`).toDataURL(
-						'image/jpeg', setObj.quality || 1)
+			setTimeout(() => {
+				Context.draw((typeof(reserve) == 'boolean' ? reserve : false), function(){
+					_app.showLoading('正在输出图片');
+					let setObj = setCanvasToTempFilePath || {};
+					if (setObj && typeof(setObj) == 'function')
+						setObj = setCanvasToTempFilePath(bgObj, type);
+					let canvasToTempFilePathFn;
+					// #ifdef H5
+					canvasToTempFilePathFn = function() {
+						_app.hideLoading();
+						rs({
+							tempFilePath: document.querySelector(`uni-canvas[canvas-id=${posterCanvasId}]>canvas`).toDataURL(
+								'image/jpeg', setObj.quality || .8)
+						});
+					}
+					// #endif
+					// #ifndef H5
+					const data = {
+						x: 0,
+						y: 0,
+						width: bgObj.width,
+						height: bgObj.height,
+						destWidth: bgObj.width *2, // 若H5使用这里请不要乘以二
+						destHeight: bgObj.height *2, // 若H5使用这里请不要乘以二
+						quality: .8,
+						fileType: 'jpg',
+						...setObj
+					};
+					_app.log('canvasToTempFilePath的data对象:' + JSON.stringify(data));
+					canvasToTempFilePathFn = function() {
+						const toTempFilePathObj = { //输出为图片
+							...data,
+							canvasId: posterCanvasId,
+							success(res) {
+								// uni.saveFile({
+								// 	tempFilePath: res.tempFilePath,
+								// 	success(res) {
+								// 		let url = res.savedFilePath;
+								// 		uni.saveImageToPhotosAlbum({
+								// 			filePath: url,
+								// 			success(res) {
+								// 				console.log("保存成功保存成功保存成功");
+								// 			}
+								// 		})
+								// 	},
+								// })
+								_app.hideLoading();
+								rs(res);
+							},
+							fail(err) {
+								_app.hideLoading();
+								_app.log('输出图片失败:' + JSON.stringify(err));
+								rj('输出图片失败:' + JSON.stringify(err))
+							}
+						}
+						uni.canvasToTempFilePath(toTempFilePathObj, _this || null);
+					}
+					// #endif
+					let delayTime = 0;
+					if (qrCodeArray) {
+						qrCodeArray.forEach(item => {
+							if (item.text) {
+								delayTime += Number(item.text.length);
+							}
+						})
+					}
+					if (imagesArray) {
+						imagesArray.forEach(() => {
+							delayTime += delayTimeScale;
+						})
+					}
+					if (textArray) {
+						textArray.forEach(() => {
+							delayTime += delayTimeScale;
+						})
+					}
+					if (drawArray) {
+						drawArray.forEach(item => {
+							switch (item.type) {
+								case 'text':
+									if (item.text) {
+										delayTime += item.text.length;
+									}
+									break;
+								default:
+									delayTime += delayTimeScale;
+									break;
+							}
+						})
+					}
+					_app.log('延时系数:' + delayTimeScale);
+					_app.log('总计延时:' + delayTime);
+					setTimeout(canvasToTempFilePathFn, delayTime);
 				});
-				// #endif
-				// #ifndef H5
-				const data = {
-					x: 0,
-					y: 0,
-					width: bgObj.width,
-					height: bgObj.height,
-					destWidth: bgObj.width * 2, // 若H5使用这里请不要乘以二
-					destHeight: bgObj.height * 2, // 若H5使用这里请不要乘以二
-					quality: 1,
-					...setObj
-				};
-				_app.log('canvasToTempFilePath的data对象:' + JSON.stringify(data));
-				_app.showLoading('正在输出图片');
-				const canvasToTempFilePathFn = function () {
-					uni.canvasToTempFilePath({ //输出为图片
-						...data,
-						canvasId: posterCanvasId,
-						success(res) {
-							_app.hideLoading();
-							rs(res);
-						},
-						fail(err) {
-							_app.hideLoading();
-							_app.log('输出图片失败:' + JSON.stringify(err));
-							rj('输出图片失败:' + JSON.stringify(err))
-						}
-					})
-				}
-				// #ifdef MP
-				let textLength = 0;
-				if(qrCodeArray) {
-					qrCodeArray.forEach(item=>{
-						if(item.text) {
-							textLength = Number(item.text.length);
-						}
-					})
-				}
-				setTimeout(canvasToTempFilePathFn, textLength * 10);
-				// #endif
-				// #ifndef MP
-				canvasToTempFilePathFn();
-				// #endif
-				// #endif
-			});
+			}, drawDelayTime);
 		} catch (e) {
 			//TODO handle the exception
 			_app.hideLoading();
@@ -224,100 +410,287 @@ function drawShareImage(obj) { //绘制海报方法
 	});
 }
 
-export function setTextArray(Context, textArray) { // 设置文本数据
-	for (let i = 0; i < textArray.length; i++) {
-		const textItem = textArray[i];
-		_app.log('字符串信息-初始化之前:' + JSON.stringify(textArray[i]));
-		if (textItem.text && typeof(textItem.text) == "string" && textItem.text.length > 0) {
-			textItem.alpha = textItem.alpha !== undefined ? textItem.alpha : 1;
-			textItem.color = textItem.color || 'black';
-			textItem.size = textItem.size !== undefined ? textItem.size : 10;
-			textItem.textAlign = textItem.textAlign || 'left';
-			textItem.textBaseline = textItem.textBaseline || 'middle';
-			textItem.dx = textItem.dx || 0;
-			textItem.dy = textItem.dy || 0;
-			textItem.size = Math.ceil(Number(textItem.size));
-			_app.log('字符串信息-初始化默认值后:' + JSON.stringify(textArray[i]));
-			const textLength = countTextLength(Context, {
-				text: textItem.text,
-				size: textItem.size
-			});
-			_app.log('字符串信息-初始化时的文本长度:' + textLength);
-			let infoCallBackObj = {};
-			if (textItem.infoCallBack && typeof(textItem.infoCallBack) === 'function')
-				infoCallBackObj = textItem.infoCallBack(textLength);
-			textArray[i] = {
-				...textItem,
-				textLength,
-				...infoCallBackObj
+// export 
+function setText(Context, texts) { // 设置文本数据
+	_app.log('进入设置文字方法, texts:' + JSON.stringify(texts));
+	if (texts && _app.isArray(texts)) {
+		_app.log('texts是数组');
+		if (texts.length > 0) {
+			for (let i = 0; i < texts.length; i++) {
+				_app.log('字符串信息-初始化之前:' + JSON.stringify(texts[i]));
+				texts[i] = setTextFn(Context, texts[i]);
 			}
-			_app.log('字符串信息-infoCallBack后:' + JSON.stringify(textArray[i]));
 		}
+	} else {
+		_app.log('texts是对象');
+		texts = setTextFn(Context, texts);
 	}
-	return textArray;
+	_app.log('返回texts:' + JSON.stringify(texts));
+	return texts;
+}
+
+function setTextFn(Context, textItem) {
+	_app.log('进入设置文字方法, textItem:' + JSON.stringify(textItem));
+	if (_app.isNotNull_string(textItem.text)) {
+		textItem.text = String(textItem.text);
+		textItem.alpha = textItem.alpha !== undefined ? textItem.alpha : 1;
+		textItem.color = textItem.color || 'black';
+		textItem.size = textItem.size !== undefined ? textItem.size : 10;
+		textItem.textAlign = textItem.textAlign || 'left';
+		textItem.textBaseline = textItem.textBaseline || 'middle';
+		textItem.dx = textItem.dx || 0;
+		textItem.dy = textItem.dy || 0;
+		textItem.size = Math.ceil(Number(textItem.size));
+		_app.log('字符串信息-初始化默认值后:' + JSON.stringify(textItem));
+		const textLength = countTextLength(Context, {
+			text: textItem.text,
+			size: textItem.size
+		});
+		_app.log('字符串信息-初始化时的文本长度:' + textLength);
+		let infoCallBackObj = {};
+		if (textItem.infoCallBack && typeof(textItem.infoCallBack) === 'function') {
+			infoCallBackObj = textItem.infoCallBack(textLength);
+		}
+		textItem = {
+			...textItem,
+			textLength,
+			...infoCallBackObj
+		}
+		_app.log('字符串信息-infoCallBack后:' + JSON.stringify(textItem));
+	}
+	return textItem;
 }
 
 function countTextLength(Context, obj) {
-	_app.log('进入计算文字长度, obj:' + JSON.stringify(obj));
+	_app.log('计算文字长度, obj:' + JSON.stringify(obj));
 	const {
 		text,
 		size
 	} = obj;
 	Context.setFontSize(size);
-	let textLength = Context.measureText(text); // 官方文档说 App端自定义组件编译模式暂时不可用measureText方法
+	let textLength;
+	/* try{
+		textLength = Context.measureText(text); // 官方文档说 App端自定义组件编译模式暂时不可用measureText方法
+	}catch(e){
+		//TODO handle the exception
+		textLength = {};
+	} */
+	textLength = {};
 	_app.log('measureText计算文字长度, textLength:' + JSON.stringify(textLength));
 	textLength = textLength && textLength.width ? textLength.width : 0;
 	if (!textLength) {
 		let l = 0;
 		for (let j = 0; j < text.length; j++) {
 			let t = text.substr(j, 1);
-			if (/[\u4e00-\u9fa5]/.test(t)) {
-				l += 1;
-			} else {
-				if (/[A-Za-z0-9]/.test(t)) {
-					l += 0.75;
-				} else {
-					let c = text.charAt(j);
-					if (/^[\u0000-\u00ff]$/.test(c)) //匹配双字节
-					{
-						l += 0.2;
-					} else {
-						l += 1;
-					}
-				}
-			}
+			const countL = countStrLength(t);
+			_app.log('计算文字宽度系数:' + countL);
+			l += countL;
 		}
+		_app.log('文字宽度总系数:' + l);
 		textLength = l * size;
 	}
 	return textLength;
 }
 
-export function setImagesArray(imagesArray) { // 设置图片数据
+//计算字符长度系数
+function countStrLength(t) {
+	let l;
+	if (/a/.test(t)) {
+		l = 0.552734375
+	} else if (/b/.test(t)) {
+		l = 0.638671875
+	} else if (/c/.test(t)) {
+		l = 0.50146484375
+	} else if (/d/.test(t)) {
+		l = 0.6396484375
+	} else if (/e/.test(t)) {
+		l = 0.5673828125
+	} else if (/f/.test(t)) {
+		l = 0.3466796875
+	} else if (/g/.test(t)) {
+		l = 0.6396484375
+	} else if (/h/.test(t)) {
+		l = 0.61572265625
+	} else if (/i/.test(t)) {
+		l = 0.26611328125
+	} else if (/j/.test(t)) {
+		l = 0.26708984375
+	} else if (/k/.test(t)) {
+		l = 0.54443359375
+	} else if (/l/.test(t)) {
+		l = 0.26611328125
+	} else if (/m/.test(t)) {
+		l = 0.93701171875
+	} else if (/n/.test(t)) {
+		l = 0.6162109375
+	} else if (/o/.test(t)) {
+		l = 0.6357421875
+	} else if (/p/.test(t)) {
+		l = 0.638671875
+	} else if (/q/.test(t)) {
+		l = 0.6396484375
+	} else if (/r/.test(t)) {
+		l = 0.3818359375
+	} else if (/s/.test(t)) {
+		l = 0.462890625
+	} else if (/t/.test(t)) {
+		l = 0.37255859375
+	} else if (/u/.test(t)) {
+		l = 0.6162109375
+	} else if (/v/.test(t)) {
+		l = 0.52490234375
+	} else if (/w/.test(t)) {
+		l = 0.78955078125
+	} else if (/x/.test(t)) {
+		l = 0.5068359375
+	} else if (/y/.test(t)) {
+		l = 0.529296875
+	} else if (/z/.test(t)) {
+		l = 0.49169921875
+	} else if (/A/.test(t)) {
+		l = 0.70361328125
+	} else if (/B/.test(t)) {
+		l = 0.62744140625
+	} else if (/C/.test(t)) {
+		l = 0.6689453125
+	} else if (/D/.test(t)) {
+		l = 0.76171875
+	} else if (/E/.test(t)) {
+		l = 0.5498046875
+	} else if (/F/.test(t)) {
+		l = 0.53125
+	} else if (/G/.test(t)) {
+		l = 0.74365234375
+	} else if (/H/.test(t)) {
+		l = 0.7734375
+	} else if (/I/.test(t)) {
+		l = 0.2939453125
+	} else if (/J/.test(t)) {
+		l = 0.39599609375
+	} else if (/K/.test(t)) {
+		l = 0.634765625
+	} else if (/L/.test(t)) {
+		l = 0.51318359375
+	} else if (/M/.test(t)) {
+		l = 0.97705078125
+	} else if (/N/.test(t)) {
+		l = 0.81298828125
+	} else if (/O/.test(t)) {
+		l = 0.81494140625
+	} else if (/P/.test(t)) {
+		l = 0.61181640625
+	} else if (/Q/.test(t)) {
+		l = 0.81494140625
+	} else if (/R/.test(t)) {
+		l = 0.65283203125
+	} else if (/S/.test(t)) {
+		l = 0.5771484375
+	} else if (/T/.test(t)) {
+		l = 0.5732421875
+	} else if (/U/.test(t)) {
+		l = 0.74658203125
+	} else if (/V/.test(t)) {
+		l = 0.67626953125
+	} else if (/W/.test(t)) {
+		l = 1.017578125
+	} else if (/X/.test(t)) {
+		l = 0.64501953125
+	} else if (/Y/.test(t)) {
+		l = 0.603515625
+	} else if (/Z/.test(t)) {
+		l = 0.6201171875
+	} else if (/[0-9]/.test(t)) {
+		l = 0.58642578125
+	} else if (/[\u4e00-\u9fa5]/.test(t)) {
+		l = 1
+	} else if (/ /.test(t)) {
+		l = 0.2958984375
+	} else if (/\`/.test(t)) {
+		l = 0.294921875
+	} else if (/\~/.test(t)) {
+		l = 0.74169921875
+	} else if (/\!/.test(t)) {
+		l = 0.3125
+	} else if (/\@/.test(t)) {
+		l = 1.03125
+	} else if (/\#/.test(t)) {
+		l = 0.63818359375
+	} else if (/\$/.test(t)) {
+		l = 0.58642578125
+	} else if (/\%/.test(t)) {
+		l = 0.8896484375
+	} else if (/\^/.test(t)) {
+		l = 0.74169921875
+	} else if (/\&/.test(t)) {
+		l = 0.8701171875
+	} else if (/\*/.test(t)) {
+		l = 0.455078125
+	} else if (/\(/.test(t)) {
+		l = 0.333984375
+	} else if (/\)/.test(t)) {
+		l = 0.333984375
+	} else if (/\_/.test(t)) {
+		l = 0.4482421875
+	} else if (/\-/.test(t)) {
+		l = 0.4326171875
+	} else if (/\+/.test(t)) {
+		l = 0.74169921875
+	} else if (/\=/.test(t)) {
+		l = 0.74169921875
+	} else if (/\|/.test(t)) {
+		l = 0.26904296875
+	} else if (/\\/.test(t)) {
+		l = 0.416015625
+	} else if (/\[/.test(t)) {
+		l = 0.333984375
+	} else if (/\]/.test(t)) {
+		l = 0.333984375
+	} else if (/\;/.test(t)) {
+		l = 0.24072265625
+	} else if (/\'/.test(t)) {
+		l = 0.25634765625
+	} else if (/\,/.test(t)) {
+		l = 0.24072265625
+	} else if (/\./.test(t)) {
+		l = 0.24072265625
+	} else if (/\//.test(t)) {
+		l = 0.42724609375
+	} else if (/\{/.test(t)) {
+		l = 0.333984375
+	} else if (/\}/.test(t)) {
+		l = 0.333984375
+	} else if (/\:/.test(t)) {
+		l = 0.24072265625
+	} else if (/\"/.test(t)) {
+		l = 0.435546875
+	} else if (/\</.test(t)) {
+		l = 0.74169921875
+	} else if (/\>/.test(t)) {
+		l = 0.74169921875
+	} else if (/\?/.test(t)) {
+		l = 0.48291015625
+	} else {
+		l = 1
+	}
+	return l;
+}
+
+// export 
+function setImage(images) { // 设置图片数据
+	_app.log('进入设置图片数据方法');
 	return new Promise(async (resolve, rejcet) => {
 		try {
-			for (let i = 0; i < imagesArray.length; i++) {
-				if (imagesArray[i].url) {
-					let imgUrl = imagesArray[i].url;
-					imgUrl = await _app.downloadFile_PromiseFc(imgUrl);
-					imagesArray[i].url = imgUrl;
-					const imageInfo = await _app.getImageInfo_PromiseFc(imgUrl);
-					if (imagesArray[i].infoCallBack && typeof(imagesArray[i].infoCallBack) === 'function') {
-						imagesArray[i] = {
-							...imagesArray[i],
-							...imagesArray[i].infoCallBack(imageInfo)
-						};
-					}
-					imagesArray[i].dx = imagesArray[i].dx || 0;
-					imagesArray[i].dy = imagesArray[i].dy || 0;
-					imagesArray[i].dWidth = imagesArray[i].dWidth || imageInfo.width;
-					imagesArray[i].dHeight = imagesArray[i].dHeight || imageInfo.height;
-					imagesArray[i] = {
-						...imagesArray[i],
-						imageInfo
-					}
+			if (images && _app.isArray(images)) {
+				_app.log('images是一个数组');
+				for (let i = 0; i < images.length; i++) {
+					_app.log('设置图片数据循环中:' + i);
+					images[i] = await setImageFn(images[i]);
 				}
+			} else {
+				_app.log('images是一个对象');
+				images = await setImageFn(images);
 			}
-			resolve(imagesArray);
+			resolve(images);
 		} catch (e) {
 			//TODO handle the exception
 			rejcet(e);
@@ -325,7 +698,43 @@ export function setImagesArray(imagesArray) { // 设置图片数据
 	})
 }
 
-export function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
+function setImageFn(image) {
+	return new Promise(async (resolve, reject) => {
+		if (image.url) {
+			let imgUrl = image.url;
+			imgUrl = await _app.downloadFile_PromiseFc(imgUrl);
+			image.url = imgUrl;
+			const hasinfoCallBack = image.infoCallBack && typeof(image.infoCallBack) === 'function';
+			let imageInfo = {};
+			imageInfo = await _app.getImageInfo_PromiseFc(imgUrl);
+			if (hasinfoCallBack) {
+				image = {
+					...image,
+					...image.infoCallBack(imageInfo)
+				};
+			}
+			image.dx = image.dx || 0;
+			image.dy = image.dy || 0;
+			image.dWidth = image.dWidth || imageInfo.width;
+			image.dHeight = image.dHeight || imageInfo.height;
+			image = {
+				...image,
+				imageInfo
+			}
+		}
+		resolve(image);
+	})
+}
+
+// export 
+function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
+	if (!_app.isArray(textArray)) {
+		_app.log('遍历文本方法, 不是数组');
+		textArray = [textArray];
+	} else {
+		_app.log('遍历文本方法, 是数组');
+	}
+	_app.log('遍历文本方法, textArray:' + JSON.stringify(textArray));
 	const newArr = [];
 	if (textArray && textArray.length > 0) {
 		for (let j = 0; j < textArray.length; j++) {
@@ -335,7 +744,7 @@ export function drawText(Context, textArray, bgObj) { // 先遍历换行再绘�
 					maxWidth = bgObj.width,
 					lineHeight = textItem.size,
 					dx = textItem.dx;
-				if (textItem.lineFeed instanceof Object) {
+				if (_app.isObject(textItem.lineFeed)) {
 					const lineFeed = textItem.lineFeed;
 					lineNum = (lineFeed.lineNum !== undefined && typeof(lineFeed.lineNum) === 'number') && lineFeed.lineNum >= 0 ?
 						lineFeed.lineNum : lineNum;
@@ -366,7 +775,7 @@ export function drawText(Context, textArray, bgObj) { // 先遍历换行再绘�
 						temp = chr[a];
 					}
 				}
-				_app.log('循环出的文字数组:' + JSON.stringify(row));
+				_app.log('循环出的文本数组:' + JSON.stringify(row));
 				//只显示几行 变量间距lineHeight  变量行数lineNum
 				let allNum = (lineNum >= 0 && lineNum < row.length) ? lineNum : row.length;
 
@@ -384,7 +793,7 @@ export function drawText(Context, textArray, bgObj) { // 先遍历换行再绘�
 							size: textItem.size
 						})
 					};
-					_app.log('重新组成的文字对象:' + JSON.stringify(obj));
+					_app.log('重新组成的文本对象:' + JSON.stringify(obj));
 					newArr.push(obj);
 				}
 			} else {
@@ -392,129 +801,165 @@ export function drawText(Context, textArray, bgObj) { // 先遍历换行再绘�
 			}
 		}
 	}
-	drawTextFc(Context, newArr);
+	_app.log('绘制文本新数组:' + JSON.stringify(newArr));
+	drawTexts(Context, newArr);
 }
 
 function setFont(textItem = {}) {
-	if(textItem.font && typeof(textItem.font) === 'string') {
+	if (textItem.font && typeof(textItem.font) === 'string') {
 		_app.log(textItem.font)
 		return textItem.font;
-	}else{
+	} else {
 		let fontStyle = 'normal';
 		let fontVariant = 'normal';
 		let fontWeight = 'normal';
 		let fontSize = textItem.size || 10;
 		let fontFamily = 'sans-serif';
 		fontSize = Math.ceil(Number(fontSize));
-		if(textItem.fontStyle && typeof(textItem.fontStyle) === 'string')
+		if (textItem.fontStyle && typeof(textItem.fontStyle) === 'string')
 			fontStyle = textItem.fontStyle.trim();
-		if(textItem.fontVariant && typeof(textItem.fontVariant) === 'string')
+		if (textItem.fontVariant && typeof(textItem.fontVariant) === 'string')
 			fontVariant = textItem.fontVariant.trim();
-		if(textItem.fontWeight && (typeof(textItem.fontWeight) === 'string' || typeof(textItem.fontWeight) === 'number'))
+		if (textItem.fontWeight && (typeof(textItem.fontWeight) === 'string' || typeof(textItem.fontWeight) === 'number'))
 			fontWeight = textItem.fontWeight.trim();
-		if(textItem.fontFamily && typeof(textItem.fontFamily) === 'string')
+		if (textItem.fontFamily && typeof(textItem.fontFamily) === 'string')
 			fontFamily = textItem.fontFamily.trim();
-		return fontStyle + ' ' + 
-			   fontVariant + ' ' + 
-			   fontWeight + ' ' + 
-			   fontSize + 'px' + ' ' + 
-			   fontFamily;
+		return fontStyle + ' ' +
+			fontVariant + ' ' +
+			fontWeight + ' ' +
+			fontSize + 'px' + ' ' +
+			fontFamily;
 	}
 }
 
-function drawTextFc(Context, textArray) { // 绘制文本
-	if (textArray && textArray.length > 0) {
-		for (let i = 0; i < textArray.length; i++) {
-			const textItem = textArray[i];
-			if (textItem instanceof Object && textItem.text) {
-				Context.font = setFont(textItem);
-				Context.setFillStyle(textItem.color);
-				Context.setGlobalAlpha(textItem.alpha);
-				Context.setTextAlign(textItem.textAlign);
-				Context.setTextBaseline(textItem.textBaseline);
-				Context.fillText(textItem.text, textItem.dx, textItem.dy);
-				if (textItem.lineThrough && textItem.lineThrough instanceof Object) {
-					_app.log('有删除线');
-					let lineThrough = textItem.lineThrough;
-					lineThrough.alpha = lineThrough.alpha !== undefined ? lineThrough.alpha : textItem.alpha;
-					lineThrough.style = lineThrough.style || textItem.color;
-					lineThrough.width = lineThrough.width !== undefined ? lineThrough.width : textItem.size / 10;
-					lineThrough.cap = lineThrough.cap !== undefined ? lineThrough.cap : 'butt';
-					_app.log('删除线对象:' + JSON.stringify(lineThrough));
-					Context.setGlobalAlpha(lineThrough.alpha);
-					Context.setStrokeStyle(lineThrough.style);
-					Context.setLineWidth(lineThrough.width);
-					Context.setLineCap(lineThrough.cap);
-					let mx, my;
-					switch (textItem.textAlign) {
-						case 'left':
-							mx = textItem.dx;
-							break;
-						case 'center':
-							mx = textItem.dx - (textItem.textLength) / 2;
-							break;
-						default:
-							mx = textItem.dx - (textItem.textLength);
-							break;
-					}
-					switch (textItem.textBaseline) {
-						case 'top':
-							my = textItem.dy + (textItem.size * .5);
-							break;
-						case 'middle':
-							my = textItem.dy;
-							break;
-						default:
-							my = textItem.dy - (textItem.size * .5);
-							break;
-					}
-					Context.beginPath();
-					Context.moveTo(mx, my);
-					Context.lineTo(mx + textItem.textLength, my);
-					Context.stroke();
-					Context.closePath();
-					_app.log('删除线完毕');
-				}
-				Context.setGlobalAlpha(1);
-				Context.font = '10px sans-serif';
+function drawTexts(Context, texts) { // 绘制文本
+	_app.log('准备绘制文本方法, texts:' + JSON.stringify(texts));
+	if (texts && _app.isArray(texts)) {
+		_app.log('准备绘制文本方法, 是数组');
+		if (texts.length > 0) {
+			for (let i = 0; i < texts.length; i++) {
+				drawTextFn(Context, texts[i]);
 			}
+		}
+	} else {
+		_app.log('准备绘制文本方法, 不是数组');
+		drawTextFn(Context, texts);
+	}
+}
+
+function drawTextFn(Context, textItem) {
+	_app.log('进入绘制文本方法, textItem:' + JSON.stringify(textItem));
+	if (textItem && _app.isObject(textItem) && textItem.text) {
+		Context.font = setFont(textItem);
+		Context.setFillStyle(textItem.color);
+		Context.setGlobalAlpha(textItem.alpha);
+		Context.setTextAlign(textItem.textAlign);
+		Context.setTextBaseline(textItem.textBaseline);
+		Context.fillText(textItem.text, textItem.dx, textItem.dy);
+		if (textItem.lineThrough && _app.isObject(textItem.lineThrough)) {
+			_app.log('有删除线');
+			let lineThrough = textItem.lineThrough;
+			lineThrough.alpha = lineThrough.alpha !== undefined ? lineThrough.alpha : textItem.alpha;
+			lineThrough.style = lineThrough.style || textItem.color;
+			lineThrough.width = lineThrough.width !== undefined ? lineThrough.width : textItem.size / 10;
+			lineThrough.cap = lineThrough.cap !== undefined ? lineThrough.cap : 'butt';
+			_app.log('删除线对象:' + JSON.stringify(lineThrough));
+			Context.setGlobalAlpha(lineThrough.alpha);
+			Context.setStrokeStyle(lineThrough.style);
+			Context.setLineWidth(lineThrough.width);
+			Context.setLineCap(lineThrough.cap);
+			let mx, my;
+			switch (textItem.textAlign) {
+				case 'left':
+					mx = textItem.dx;
+					break;
+				case 'center':
+					mx = textItem.dx - (textItem.textLength) / 2;
+					break;
+				default:
+					mx = textItem.dx - (textItem.textLength);
+					break;
+			}
+			switch (textItem.textBaseline) {
+				case 'top':
+					my = textItem.dy + (textItem.size * .5);
+					break;
+				case 'middle':
+					my = textItem.dy;
+					break;
+				default:
+					my = textItem.dy - (textItem.size * .5);
+					break;
+			}
+			Context.beginPath();
+			Context.moveTo(mx, my);
+			Context.lineTo(mx + textItem.textLength, my);
+			Context.stroke();
+			Context.closePath();
+			_app.log('删除线完毕');
+		}
+		Context.setGlobalAlpha(1);
+		Context.font = '10px sans-serif';
+	}
+}
+// export 
+function drawImage(Context, images) { // 绘制图片
+	_app.log('判断图片数据类型:' + JSON.stringify(images))
+	if (images && _app.isArray(images)) {
+		if (images.length > 0) {
+			for (let i = 0; i < images.length; i++) {
+				readyDrawImageFn(Context, images[i]);
+			}
+		}
+	} else {
+		readyDrawImageFn(Context, images);
+	}
+
+}
+
+function readyDrawImageFn(Context, img) {
+	_app.log('判断绘制图片形状, img:' + JSON.stringify(img));
+	if (img.url) {
+		if (img.circleSet) {
+			drawCircleImage(Context, img);
+		} else if (img.roundRectSet) {
+			drawRoundRectImage(Context, img);
+		} else {
+			drawImageFn(Context, img);
 		}
 	}
 }
 
-export function drawImage(Context, imagesArray) { // 绘制图片
-	if (imagesArray && imagesArray.length > 0) {
-		for (let i = 0; i < imagesArray.length; i++) {
-			let img = imagesArray[i];
-			_app.log('imageArrayItem: ' + JSON.stringify(img));
-			if (img.url) {
-				if (img.circleSet) {
-					setImageCircle(Context, img);
-				} else if (img.roundRectSet) {
-					setImageRoundRect(Context, img);
-				}
-				if (img.dWidth && img.dHeight && img.sx && img.sy && img.sWidth && img.sHeight) {
-					Context.drawImage(img.url, img.dx || 0, img.dy || 0,
-						img.dWidth || false, img.dHeight || false,
-						img.sx || false, img.sy || false,
-						img.sWidth || false, img.sHeight || false);
-				} else if (img.dWidth && img.dHeight) {
-					Context.drawImage(img.url, img.dx || 0, img.dy || 0,
-						img.dWidth || false, img.dHeight || false);
-				} else {
-					Context.drawImage(img.url, img.dx || 0, img.dy || 0);
-				}
-				if (img.circleSet || img.roundRectSet) {
-					Context.restore();
-				}
-
-			}
+function drawImageFn(Context, img) {
+	_app.log('进入绘制默认图片方法, img:' + JSON.stringify(img));
+	if (img.url) {
+		const hasAlpha = !_app.isUndef(img.alpha);
+		img.alpha = Number(!_app.isUndef(img.alpha) ? img.alpha : 1);
+		Context.setGlobalAlpha(img.alpha);
+		_app.log('绘制默认图片方法, 有url');
+		if (img.dWidth && img.dHeight && img.sx && img.sy && img.sWidth && img.sHeight) {
+			_app.log('绘制默认图片方法, 绘制第一种方案');
+			Context.drawImage(img.url, img.dx || 0, img.dy || 0,
+				img.dWidth || false, img.dHeight || false,
+				img.sx || false, img.sy || false,
+				img.sWidth || false, img.sHeight || false);
+		} else if (img.dWidth && img.dHeight) {
+			_app.log('绘制默认图片方法, 绘制第二种方案');
+			Context.drawImage(img.url, img.dx || 0, img.dy || 0,
+				img.dWidth || false, img.dHeight || false);
+		} else {
+			_app.log('绘制默认图片方法, 绘制第三种方案');
+			Context.drawImage(img.url, img.dx || 0, img.dy || 0);
+		}
+		if (hasAlpha) {
+			Context.setGlobalAlpha(1);
 		}
 	}
+	_app.log('绘制默认图片方法, 绘制完毕');
 }
 
-function setImageCircle(Context, obj) {
-	Context.save();
+function drawCircleImage(Context, obj) {
+	_app.log('进入绘制圆形图片方法, obj:' + JSON.stringify(obj));
 	let {
 		dx,
 		dy,
@@ -535,15 +980,24 @@ function setImageCircle(Context, obj) {
 		r = d / 2;
 	}
 
-	 x = x?dx + x:(dx || 0) + r;
-	 y = y?dy + y:(dy || 0) + r;
+	x = x ? dx + x : (dx || 0) + r;
+	y = y ? dy + y : (dy || 0) + r;
+	Context.save();
 	Context.beginPath();
 	Context.arc(x, y, r, 0, 2 * Math.PI, false);
-	Context.clip();
 	Context.closePath();
+	Context.setGlobalAlpha(0);
+	Context.fillStyle = '#FFFFFF';
+	Context.fill();
+	Context.setGlobalAlpha(1);
+	Context.clip();
+	drawImageFn(Context, obj);
+	_app.log('默认图片绘制完毕');
+	Context.restore();
 }
 
-function setImageRoundRect(Context, obj) { // 绘制矩形
+function drawRoundRectImage(Context, obj) { // 绘制矩形
+	_app.log('进入绘制矩形图片方法, obj:' + JSON.stringify(obj));
 	Context.save();
 	let {
 		dx,
@@ -571,24 +1025,33 @@ function setImageRoundRect(Context, obj) { // 绘制矩形
 	Context.arcTo(dx + dWidth, dy + dHeight, dx, dy + dHeight, r);
 	Context.arcTo(dx, dy + dHeight, dx, dy, r);
 	Context.arcTo(dx, dy, dx + dWidth, dy, r);
-	Context.clip();
 	Context.closePath();
+	Context.setGlobalAlpha(0);
+	Context.fillStyle = '#FFFFFF';
+	Context.fill();
+	Context.setGlobalAlpha(1);
+	Context.clip();
+	drawImageFn(Context, obj);
+	Context.restore();
+	_app.log('进入绘制矩形图片方法, 绘制完毕');
 }
 
-export function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参考了 诗小柒 的二维码生成器代码
+// export 
+function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参考了 诗小柒 的二维码生成器代码
+	_app.log('进入绘制二维码方法')
 	_app.showLoading('正在生成二维码');
 	let qrcodeAlgObjCache = [];
 	let options = {
-		text: qrCodeObj.text || '', // 生成内容
-		size: qrCodeObj.size || 200, // 二维码大小
-		background: qrCodeObj.background || '#ffffff', // 背景色
-		foreground: qrCodeObj.foreground || '#000000', // 前景色
-		pdground: qrCodeObj.pdground || '#000000', // 定位角点颜色
-		correctLevel: qrCodeObj.correctLevel || 3, // 容错级别
-		image: qrCodeObj.image || '', // 二维码图标
-		imageSize: qrCodeObj.imageSize || 40, // 二维码图标大小
-		dx: qrCodeObj.dx || 0, // x轴距离
-		dy: qrCodeObj.dy || 0 // y轴距离
+		text: String(qrCodeObj.text || '') || '', // 生成内容
+		size: Number(qrCodeObj.size || 0) || 200, // 二维码大小
+		background: String(qrCodeObj.background || '') || '#ffffff', // 背景色
+		foreground: String(qrCodeObj.foreground || '') || '#000000', // 前景色
+		pdground: String(qrCodeObj.pdground || '') || '#000000', // 定位角点颜色
+		correctLevel: Number(qrCodeObj.correctLevel || 0) || 3, // 容错级别
+		image: String(qrCodeObj.image || '') || '', // 二维码图标
+		imageSize: Number(qrCodeObj.imageSize || 0) || 40, // 二维码图标大小
+		dx: Number(qrCodeObj.dx || 0) || 0, // x轴距离
+		dy: Number(qrCodeObj.dy || 0) || 0 // y轴距离
 	}
 	let qrCodeAlg = null;
 	let d = 0;
@@ -667,6 +1130,7 @@ export function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参�
 	_app.hideLoading();
 }
 
+
 function getShreUserPosterBackground(objs) { //检查背景图是否存在于本地， 若存在直接返回， 否则调用getShreUserPosterBackgroundFc方法
 	let {
 		backgroundImage,
@@ -677,12 +1141,12 @@ function getShreUserPosterBackground(objs) { //检查背景图是否存在于本
 			_app.showLoading('正在获取海报背景图');
 			let pbg;
 			// #ifndef H5
-			// pbg = getPosterStorage(type);
+			pbg = getPosterStorage(type);
 			// #endif
 			// #ifdef H5
 			pbg = false;
 			// #endif
-			// _app.log('获取的缓存:' + JSON.stringify(pbg));
+			_app.log('获取的缓存:' + JSON.stringify(pbg));
 			if (pbg && pbg.path && pbg.name) {
 				_app.log('海报有缓存, 准备获取后端背景图进行对比');
 				const image = await _app.getPosterUrl(objs);
@@ -755,7 +1219,7 @@ function removePosterStorage(type) {
 }
 
 function setPosterStorage(type, data) {
-	// _app.setStorage(getStorageKey(type), data);
+	_app.setStorage(getStorageKey(type), data);
 }
 
 function getStorageKey(type) {
@@ -765,7 +1229,8 @@ function getStorageKey(type) {
 function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景图方法
 	let {
 		backgroundImage,
-		type
+		type,
+		_this
 	} = objs;
 	_app.log('获取分享背景图, 尝试清空本地数据');
 	removePosterStorage(type);
@@ -798,18 +1263,29 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
 				}
 			} else {
 				_app.log('没有从后端获取的背景图片路径, 尝试从后端获取背景图片路径');
-				const image = await _app.getPosterUrl(objs);
-				_app.log('尝试下载并保存背景图:' + image);
-				const savedFilePath = await _app.downLoadAndSaveFile_PromiseFc(image);
-				if (savedFilePath) {
-					_app.log('下载并保存背景图成功:' + savedFilePath);
-					const imageObj = await _app.getImageInfo_PromiseFc(savedFilePath);
+				// const image = await _app.getPosterUrl(objs);
+				// _app.log('尝试下载并保存背景图:' + image);
+				// const savedFilePath = await _app.downLoadAndSaveFile_PromiseFc(image);
+				// if (savedFilePath) {
+					// _app.log('下载并保存背景图成功:' + savedFilePath);
+					// const imageObj = await _app.getImageInfo_PromiseFc(savedFilePath);
+					const {
+						windowWidth,
+						windowHeight
+					} = uni.getSystemInfoSync();
 					_app.log('获取图片信息成功');
+					var echartArr = uni.getStorageSync('echartArr');
+					var hei = 70/1.5;
+					for (var i of echartArr) {
+						hei += 50/1.5;
+						hei += parseInt(i.echartHeight) *0.9;
+					}
 					const returnObj = {
-						path: savedFilePath,
-						width: imageObj.width,
-						height: imageObj.height,
-						name: _app.fileNameInPath(image)
+						// path: savedFilePath,
+						backgroundColor: 'white',
+						width: windowWidth,
+						height: hei
+						// name: _app.fileNameInPath(image)
 					}
 					_app.log('拼接背景图信息对象成功:' + JSON.stringify(returnObj));
 
@@ -822,14 +1298,24 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
 					_app.log('返回背景图信息对象');
 					resolve({ ...returnObj
 					});
-				} else {
-					_app.hideLoading();
-					reject('not find savedFilePath');
-				}
+				// } else {
+				// 	_app.hideLoading();
+				// 	reject('not find savedFilePath');
+				// }
 			}
 		} catch (e) {
 			//TODO handle the exception
 			reject(e);
 		}
 	});
+}
+
+
+module.exports = {
+	getSharePoster,
+	setText,
+	setImage,
+	drawText,
+	drawImage,
+	drawQrCode
 }

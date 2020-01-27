@@ -66,10 +66,30 @@
 
 				//console.log(this.$refs.echarts.chart);
 				wdChart = this.$refs.echarts.chart;
-				wdChart.setOption(this.echartOption)
+				wdChart.setOption(this.echartOption);
+
+				// setTimeout(() => {
+				// 	console.log('调用save函数');
+				// 	this.saveEcharts();
+				// }, 2000);
 			}
 		},
 		onLoad() {},
+		mounted() {
+			// setTimeout(() => {
+			// 	console.log('调用save函数');
+			// 	this.saveEcharts();
+			// }, 2000);
+			let that = this;
+			var count=0;
+			var inervalId = setInterval(function() {
+			count++;
+			// if(count>=7) clearInterval(inervalId);
+			//其它操作
+			that.saveEcharts();
+			console.log("count:"+count);
+			}, 1000);
+		},
 		methods: {
 			// 2.2.2
 			// onInit(canvas, width, height) {
@@ -147,6 +167,63 @@
 						return false;
 					}
 				});
+			},
+
+			saveEcharts() {
+				console.log('进入saveEcharts()');
+				let that = this;
+				let canvas = this.$refs.echarts.canvas;
+				echarts.setCanvasCreator(() => canvas);
+				this.$refs.echarts.canvasToTempFilePath({
+					success: function(res) {
+						console.log("success");
+						that.setEchart(res.tempFilePath);
+					},
+					fail: function(e) {
+						console.log(JSON.stringify(e));
+						uni.showToast({
+							icon: 'none',
+							title: "图表正在加载，请稍后再试"
+						});
+						return false;
+					}
+				});
+
+			},
+
+			setEchart(echartUrl) {
+				let that = this;
+				var echartArr = uni.getStorageSync('echartArr');
+				var newEchartArr = [];
+				var flag = 0;
+				if (echartUrl) {
+					var echartObj = {
+						echartID: that.canvasId,
+						echartUrl: echartUrl,
+						echartTitle: that.classTitle,
+						echartHeight: that.classHeight
+					};
+					if (!echartArr) {
+						newEchartArr.push(echartObj);
+						console.log("newEchartArr:" + JSON.stringify(newEchartArr));
+					} else {
+						for(var i = 0;i<echartArr.length;i++) {
+							console.log("echartObj:"+JSON.stringify(echartObj));
+							console.log("echartArr:"+JSON.stringify(echartArr));
+							if(echartObj.echartID === echartArr[i].echartID) {
+								flag = 1;
+								echartArr[i] = echartObj;
+								console.log("echartArr111:"+JSON.stringify(echartArr));
+							}
+						}
+						if(flag === 0) {
+							echartArr.push(echartObj);
+						}
+						newEchartArr = echartArr;
+						console.log("newEchartArr:" + JSON.stringify(newEchartArr));
+					}
+					uni.setStorageSync('echartArr', newEchartArr);
+				}
 			}
 		}
 	}

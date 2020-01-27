@@ -71,9 +71,11 @@
 				title: "数据加载中...",
 			});
 			checkApi.setFootprint("search", this.indexId, this.indexName, this.source, this.sourceArea, this.path);
-			// this.showStorage();
+			this.showStorage();
 			this.initSearchDetail();
 			this.initNav();
+
+			uni.removeStorageSync('echartArr');
 		},
 		onNavigationBarButtonTap(e) {
 			console.log("source:" + this.source);
@@ -99,6 +101,8 @@
 					// 更新导航栏
 					this.initNav();
 					break;
+				case "share":
+					break;
 				default:
 					console.log(e.type);
 			}
@@ -120,10 +124,13 @@
 				console.log(JSON.stringify(requestData));
 				uni.request({
 					url: this.apiUrl + 'searchDetail',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
+						uni.removeStorageSync('echartArr');
 						dataApi = res.data;
+						// dataApi = searchDetailApiJson;
 						console.log("获取ok;" + JSON.stringify(dataApi));
 						let search_detail_key = 'search_detail' + _self.indexId;
 						uni.setStorageSync(search_detail_key, dataApi);
@@ -132,7 +139,6 @@
 						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
-						// dataApi = searchDetailApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
@@ -174,12 +180,15 @@
 				console.log(JSON.stringify(requestData));
 				uni.request({
 					url: this.apiUrl + 'searchConfirm',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
-						console.log("获取成功;" + JSON.stringify(res.data));
+						// console.log("获取成功;" + JSON.stringify(res.data));
 						try {
+							uni.removeStorageSync('echartArr');
 							dataApi = res.data;
+							// dataApi = searchConfirmApiJson;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
