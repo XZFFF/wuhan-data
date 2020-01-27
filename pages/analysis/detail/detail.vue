@@ -63,20 +63,7 @@
 			this.initAnalysisDetail(this.indexId);
 			this.initNav();
 
-			// let dataApi = analysisDemoApiJson;
-			// try {
-			// 	this.isFavorite = dataApi.data.baseInfo.isFavorite;
-			// 	this.timeCondition = dataApi.data.timeCondition;
-			// 	if (this.indexId == '13') {
-			// 		this.areaCondition = dataApi.data.areaCondition;
-			// 	}
-			// 	this.indexDetail = dataApi.data.classInfo;
-			// 	this.relatedData = dataApi.data.relatedData;
-			// 	this.setHeight();
-			// 	this.setDrawCanvas();
-			// } catch (e) {
-			// 	console.log("发生异常;" + JSON.stringify(e));
-			// }
+			uni.removeStorageSync('echartArr');
 		},
 		onNavigationBarButtonTap(e) {
 			switch (e.type) {
@@ -122,6 +109,7 @@
 						indexId: this.indexId,
 					},
 					success: (res) => {
+						uni.removeStorageSync('echartArr');
 						dataApi = res.data;
 						console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
@@ -174,12 +162,12 @@
 					success: (res) => {
 						console.log(JSON.stringify(res.data));
 						try {
+							uni.removeStorageSync('echartArr');
 							dataApi = res.data;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
 							this.setDrawCanvas();
-							// uni.$emit('update',{msg:'页面更新'})
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}

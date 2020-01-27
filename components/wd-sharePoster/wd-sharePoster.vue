@@ -36,15 +36,7 @@
 			};
 		},
 		onLoad() {
-			uni.clearStorage();
-		},
-		onNavigationBarButtonTap(e) {
-			switch (e.type) {
-				case "share": //点击分享按钮
-				console.log("进入了组件的分享监听");
-					this.shareFc();
-					break;
-			}
+			// uni.clearStorage();
 		},
 		methods: {
 			async shareFc() {
@@ -85,8 +77,8 @@
 								var echartArr = uni.getStorageSync('echartArr');
 								var echartId = uni.getStorageSync('drawArr');
 								var title = uni.getStorageSync('drawTitle');
-								echartArr.sort((a,b)=>{
-								    return echartId.indexOf(a.echartID)-echartId.indexOf(b.echartID);
+								echartArr.sort((a, b) => {
+									return echartId.indexOf(a.echartID) - echartId.indexOf(b.echartID);
 								});
 								console.log(JSON.stringify(echartArr));
 								var drawArr = [{
