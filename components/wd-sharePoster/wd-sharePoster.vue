@@ -171,7 +171,11 @@
 					this.qrShow = true;
 				} catch (e) {
 					_app.hideLoading();
-					_app.showToast(JSON.stringify(e));
+					if (JSON.stringify(e) == '{"line":288,"column":17}') {
+						_app.showToast('海报生成失败，请重试');
+					} else {
+						_app.showToast(JSON.stringify(e));
+					}
 					console.log(JSON.stringify(e));
 				}
 			},

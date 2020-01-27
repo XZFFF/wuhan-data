@@ -81,13 +81,13 @@
 			// 	this.saveEcharts();
 			// }, 2000);
 			let that = this;
-			var count=0;
+			var count = 0;
 			var inervalId = setInterval(function() {
-			count++;
-			// if(count>=7) clearInterval(inervalId);
-			//其它操作
-			that.saveEcharts();
-			console.log("count:"+count);
+				count++;
+				// if(count>=7) clearInterval(inervalId);
+				//其它操作
+				that.saveEcharts();
+				// console.log("count:"+count);
 			}, 1000);
 		},
 		methods: {
@@ -170,13 +170,13 @@
 			},
 
 			saveEcharts() {
-				console.log('进入saveEcharts()');
+				// console.log('进入saveEcharts()');
 				let that = this;
 				let canvas = this.$refs.echarts.canvas;
 				echarts.setCanvasCreator(() => canvas);
 				this.$refs.echarts.canvasToTempFilePath({
 					success: function(res) {
-						console.log("success");
+						// console.log("success");
 						that.setEchart(res.tempFilePath);
 					},
 					fail: function(e) {
@@ -205,22 +205,22 @@
 					};
 					if (!echartArr) {
 						newEchartArr.push(echartObj);
-						console.log("newEchartArr:" + JSON.stringify(newEchartArr));
+						// console.log("newEchartArr:" + JSON.stringify(newEchartArr));
 					} else {
-						for(var i = 0;i<echartArr.length;i++) {
-							console.log("echartObj:"+JSON.stringify(echartObj));
-							console.log("echartArr:"+JSON.stringify(echartArr));
-							if(echartObj.echartID === echartArr[i].echartID) {
+						for (var i = 0; i < echartArr.length; i++) {
+							// console.log("echartObj:"+JSON.stringify(echartObj));
+							// console.log("echartArr:"+JSON.stringify(echartArr));
+							if (echartObj.echartID === echartArr[i].echartID) {
 								flag = 1;
 								echartArr[i] = echartObj;
-								console.log("echartArr111:"+JSON.stringify(echartArr));
+								// console.log("echartArr111:"+JSON.stringify(echartArr));
 							}
 						}
-						if(flag === 0) {
+						if (flag === 0) {
 							echartArr.push(echartObj);
 						}
 						newEchartArr = echartArr;
-						console.log("newEchartArr:" + JSON.stringify(newEchartArr));
+						// console.log("newEchartArr:" + JSON.stringify(newEchartArr));
 					}
 					uni.setStorageSync('echartArr', newEchartArr);
 				}
