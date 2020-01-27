@@ -7,7 +7,7 @@
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :classTitle="item.classTitle" :tableBody="item.tableBody"></wd-table>
 				<wd-echarts v-if="item.classType === 'echarts'" :canvasId="'echart'+item.id" :echartOption="item.echartOption"
-				 :classHeight="item.classHeight" :classTitle="item.classTitle" ref="wdEcharts1"></wd-echarts>
+				 :classHeight="item.classHeight" :classTitle="item.classTitle"></wd-echarts>
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
@@ -71,11 +71,11 @@
 				title: "数据加载中...",
 			});
 			checkApi.setFootprint("search", this.indexId, this.indexName, this.source, this.sourceArea, this.path);
-			// this.showStorage();
+			this.showStorage();
 			this.initSearchDetail();
 			this.initNav();
+
 			uni.removeStorageSync('echartArr');
-			// console.log(this.$children);
 		},
 		onNavigationBarButtonTap(e) {
 			console.log("source:" + this.source);
@@ -123,14 +123,14 @@
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({
-					// url: this.apiUrl + 'searchDetail',
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'searchDetail',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
 						uni.removeStorageSync('echartArr');
-						// dataApi = res.data;
-						dataApi = searchDetailApiJson;
+						dataApi = res.data;
+						// dataApi = searchDetailApiJson;
 						console.log("获取ok;" + JSON.stringify(dataApi));
 						let search_detail_key = 'search_detail' + _self.indexId;
 						uni.setStorageSync(search_detail_key, dataApi);
@@ -139,7 +139,6 @@
 						console.log("获取失败;" + JSON.stringify(e));
 					},
 					complete: () => {
-						// dataApi = searchDetailApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据
@@ -180,16 +179,16 @@
 				};
 				console.log(JSON.stringify(requestData));
 				uni.request({
-					// url: this.apiUrl + 'searchConfirm',
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'searchConfirm',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
 						// console.log("获取成功;" + JSON.stringify(res.data));
 						try {
 							uni.removeStorageSync('echartArr');
-							// dataApi = res.data;
-							dataApi = searchConfirmApiJson;
+							dataApi = res.data;
+							// dataApi = searchConfirmApiJson;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
