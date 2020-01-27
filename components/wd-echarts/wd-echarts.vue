@@ -68,18 +68,27 @@
 				wdChart = this.$refs.echarts.chart;
 				wdChart.setOption(this.echartOption);
 
-				setTimeout(() => {
-					console.log('调用save函数');
-					this.saveEcharts();
-				}, 2000);
+				// setTimeout(() => {
+				// 	console.log('调用save函数');
+				// 	this.saveEcharts();
+				// }, 2000);
 			}
 		},
 		onLoad() {},
 		mounted() {
-			setTimeout(() => {
-				console.log('调用save函数');
-				this.saveEcharts();
-			}, 2000);
+			// setTimeout(() => {
+			// 	console.log('调用save函数');
+			// 	this.saveEcharts();
+			// }, 2000);
+			let that = this;
+			var count=0;
+			var inervalId = setInterval(function() {
+			count++;
+			// if(count>=7) clearInterval(inervalId);
+			//其它操作
+			that.saveEcharts();
+			console.log("count:"+count);
+			}, 1000);
 		},
 		methods: {
 			// 2.2.2
@@ -186,6 +195,7 @@
 				let that = this;
 				var echartArr = uni.getStorageSync('echartArr');
 				var newEchartArr = [];
+				var flag = 0;
 				if (echartUrl) {
 					var echartObj = {
 						echartID: that.canvasId,
@@ -197,7 +207,18 @@
 						newEchartArr.push(echartObj);
 						console.log("newEchartArr:" + JSON.stringify(newEchartArr));
 					} else {
-						echartArr.push(echartObj);
+						for(var i = 0;i<echartArr.length;i++) {
+							console.log("echartObj:"+JSON.stringify(echartObj));
+							console.log("echartArr:"+JSON.stringify(echartArr));
+							if(echartObj.echartID === echartArr[i].echartID) {
+								flag = 1;
+								echartArr[i] = echartObj;
+								console.log("echartArr111:"+JSON.stringify(echartArr));
+							}
+						}
+						if(flag === 0) {
+							echartArr.push(echartObj);
+						}
 						newEchartArr = echartArr;
 						console.log("newEchartArr:" + JSON.stringify(newEchartArr));
 					}
