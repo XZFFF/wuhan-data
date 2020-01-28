@@ -102,8 +102,8 @@
 				};
 				console.log(JSON.stringify(dataPost));
 				uni.request({
-					// url: this.apiUrl + 'getAnalysisDetail',
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getAnalysisDetail',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
@@ -111,8 +111,8 @@
 					},
 					success: (res) => {
 						uni.removeStorageSync('echartArr');
-						// dataApi = res.data;
-						dataApi = analysisDetailApiJson;
+						dataApi = res.data;
+						// dataApi = analysisDetailApiJson;
 						console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
@@ -158,16 +158,16 @@
 					"endTime": val.endTime
 				};
 				uni.request({
-					// url: this.apiUrl + 'getAnalysisDetailByTime',
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getAnalysisDetailByTime',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
 						console.log(JSON.stringify(res.data));
 						try {
 							uni.removeStorageSync('echartArr');
-							// dataApi = res.data;
-							dataApi = analysisConfirmApiJson;
+							dataApi = res.data;
+							// dataApi = analysisConfirmApiJson;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();

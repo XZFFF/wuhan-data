@@ -10,7 +10,7 @@
 							<view v-if="user.realName" class="username" style="font-size: 35upx;float: left;margin-top: 15upx;">
 								{{user.realName}}
 							</view>
-						<!-- 	<view v-if="user.roleName" class="rank">
+							<!-- 	<view v-if="user.roleName" class="rank">
 								{{user.roleName}}
 							</view> -->
 						</view>
@@ -221,13 +221,13 @@
 					},
 					success: (res) => {
 						try {
-							// let dataApi = res.data;
-							// checkApi.isApi(dataApi);
-							// this.newsList = dataApi.data.message;
-							// let myNews = uni.getStorageSync('my_news');
-							// if (this.newsList.length != myNews.length) {
-							// 	this.newsPoint = 1;
-							// }
+							let dataApi = res.data;
+							checkApi.isApi(dataApi);
+							this.newsList = dataApi.data.message;
+							let myNews = uni.getStorageSync('my_news');
+							if (this.newsList.length != myNews.length) {
+								this.newsPoint = 1;
+							}
 						} catch (e) {
 							console.log(e.errMsg);
 						}
