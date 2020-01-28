@@ -18,7 +18,7 @@
 	import wdMessageCard from '@/components/wd-message-card/wd-message-card.vue';
 	import checkApi from '@/common/checkApi.js';
 	import getNewsApiJson from "@/common/api/getMessage.json";
-	
+
 	export default {
 		components: {
 			wdTag,
@@ -81,9 +81,12 @@
 		},
 		methods: {
 			tranTime(time) {
-				var timestamp = Math.round(new Date(time) / 1000);
+				var timeSub = time.substring(0, 10);
+				// console.log(timeSub);
+				var timestamp = Math.round(new Date(timeSub) / 1000);
+				// console.log(timestamp);
 				var mistiming = Math.round(new Date() / 1000) - timestamp;
-				console.log(mistiming);
+				// console.log(mistiming);
 				var arrr = ['年', '个月', '星期', '天', '小时', '分钟', '秒'];
 				var arrn = [31536000, 2592000, 604800, 86400, 3600, 60, 1];
 				for (var i = 0; i <= 6; i++) {
@@ -97,6 +100,7 @@
 				checkApi.checkNetwork();
 				uni.request({
 					url: this.apiUrl + "getMessageApp",
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						"token": this.token,
