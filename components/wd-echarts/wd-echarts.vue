@@ -2,7 +2,7 @@
 	<view class="canvas-view" :style="{height:classHeight + 'px'}">
 		<view style="display: flex;justify-content: space-between;flex-direction: row;align-items: center;">
 			<view class="echart-nav" style="display: flex;justify-content: flex-start;flex-direction: row">
-				<image src="../../../static/icon/echarts/trend-upward.png"></image>
+				<image src="../../static/icon/echarts/trend-upward.png"></image>
 				<text>{{classTitle}}</text>
 			</view>
 			<text class="lg text-black cuIcon-down" style="margin-right: 20upx;" @tap="downEcharts()"></text>
@@ -127,7 +127,8 @@
 					width,
 					height
 				} = e;
-				let canvas = this.$refs.echarts.canvas;
+				let canvas = document.getElementById('echarts').canvas
+				// let canvas = this.$refs.echarts.canvas;
 				echarts.setCanvasCreator(() => canvas);
 				wdChart = echarts.init(canvas, null, {
 					width: width,

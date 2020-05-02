@@ -2,7 +2,7 @@
 	<view class="table-main">
 		<view style="display: flex;justify-content: space-between;flex-direction: row;align-items: center;">
 			<view class="table-nav" style="display: flex;justify-content: flex-start;flex-direction: row">
-				<image src="../../../static/icon/echarts/table.png"></image>
+				<image src="../../static/icon/echarts/table.png"></image>
 				<text>{{classTitle}}</text>
 			</view>
 			<!-- <text class="lg text-black cuIcon-down" style="margin-right: 20upx;" @tap="downEcharts()"></text> -->

@@ -1,7 +1,8 @@
 <template>
 	<view class="ti-main">
 		<view class="ti-nav">
-			<image src="../../../static/icon/echarts/calender.png"></image>
+			<image src="../../static/icon/echarts/calender.png"></image>
+			<!-- <image src="../../../static/icon/echarts/calender.png"></image> -->
 			<text>时间选择</text>
 		</view>
 

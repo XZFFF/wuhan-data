@@ -1,7 +1,7 @@
 <template>
 	<view class="card-text-main">
 		<view class="card-text-nav">
-			<image src="../../../static/icon/echarts/card.png"></image>
+			<image src="../../static/icon/echarts/card.png"></image>
 			<text>{{classTitle}}</text>
 		</view>
 

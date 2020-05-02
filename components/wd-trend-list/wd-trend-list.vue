@@ -18,8 +18,8 @@
 			<!-- </view> -->
 			<view class="wd-list-item__extra">
 				<text style="margin-left: 6upx; margin-right: 10upx; font-size: 11px;">{{trendRate}}</text>
-				<image v-if="trendArrow === 'up'" src="../../../static/icon/search/up.png" style="height: 35upx; width: 35upx;"></image>
-				<image v-if="trendArrow === 'down'" src="../../../static/icon/search/down.png" style="height: 35upx; width: 35upx;"></image>
+				<image v-if="trendArrow === 'up'" src="../../static/icon/search/up.png" style="height: 35upx; width: 35upx;"></image>
+				<image v-if="trendArrow === 'down'" src="../../static/icon/search/down.png" style="height: 35upx; width: 35upx;"></image>
 			</view>
 		</view>
 	</view>
