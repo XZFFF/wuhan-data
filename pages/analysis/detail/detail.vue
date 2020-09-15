@@ -9,7 +9,15 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share-poster ref="shareComp"></wd-share-poster>
+		<!-- <wd-share-poster ref="shareComp"></wd-share-poster> -->
+		<!-- <button @click="addUserDidTakeScreenshotNotification()">监听系统截屏通知</button> -->
+		<!-- <button @click="getScreenshot()">截图</button> -->
+		<!-- <image :src="imageSrc"></image>
+		<view class="code-btn">
+			<view class="line-btn">
+				<view class="btn" @tap="capture()">点击保存至手机相册</view>
+			</view>
+		</view> -->
 	</view>
 </template>
 
@@ -45,6 +53,7 @@
 				relatedData: [],
 				totalHeight: 1000,
 				classTotalHeight: 400,
+				imageSrc: ''
 			};
 		},
 		onLoad: function(e) {
@@ -84,7 +93,8 @@
 					break;
 				case "share": //点击分享按钮
 					console.log("进入了page的分享监听");
-					this.$refs.shareComp.shareFc();
+					this.capture()
+					// this.$refs.shareComp.shareFc();
 					break;
 				default:
 					console.log(e.type);
@@ -102,8 +112,8 @@
 				};
 				console.log(JSON.stringify(dataPost));
 				uni.request({
-					url: this.apiUrl + 'getAnalysisDetail',
-					// url: 'http://www.baidu.com',
+					// url: this.apiUrl + 'getAnalysisDetail',
+					url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
@@ -111,8 +121,8 @@
 					},
 					success: (res) => {
 						uni.removeStorageSync('echartArr');
-						dataApi = res.data;
-						// dataApi = analysisDetailApiJson;
+						// dataApi = res.data;
+						dataApi = analysisDetailApiJson;
 						console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
@@ -158,16 +168,16 @@
 					"endTime": val.endTime
 				};
 				uni.request({
-					url: this.apiUrl + 'getAnalysisDetailByTime',
-					// url: 'http://www.baidu.com',
+					// url: this.apiUrl + 'getAnalysisDetailByTime',
+					url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
 						console.log(JSON.stringify(res.data));
 						try {
 							uni.removeStorageSync('echartArr');
-							dataApi = res.data;
-							// dataApi = analysisConfirmApiJson;
+							// dataApi = res.data;
+							dataApi = analysisConfirmApiJson;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
@@ -278,6 +288,66 @@
 						title: e.message
 					});
 				}
+			},
+			addUserDidTakeScreenshotNotification() {
+				const KJScreenshot = uni.requireNativePlugin('KJ-Screenshot');
+				KJScreenshot.addUserDidTakeScreenshotNotification(result => {
+					console.log(result);
+				});
+			},
+			getScreenshot() {
+				var _this = this;
+				var dic = {
+					"saveImagePath": plus.io.convertLocalFileSystemURL("_doc/KJ-Screenshot/"), //保存截屏图片的路径，必须传_doc下的本地绝对路径
+					"saveImageName": "Screenshot.png" //保存截屏图片的名字，最好保存格式为png
+				};
+				console.log(JSON.stringify(dic));
+				uni.showToast({
+					title: JSON.stringify(dic)
+				});
+				const KJScreenshot = uni.requireNativePlugin('KJ-Screenshot');
+				KJScreenshot.getScreenshot(dic, result => {
+					//返回数据示例：{"error":"","code":1,"imagePath":"file:///var/mobile/Containers/Data/Application/C6BB19D8-44DB-4975-A88D-D5CFDB3F7731/Documents/Pandora/apps/F1B7B032C4B46A61CCC3A4DFCD579446/doc/KJ-Screenshot/Screenshot.png"}
+					//返回的数据说明：code等于0为失败，code等于1为成功，imagePath为截屏图片的路径
+					var imagePath = result["imagePath"]
+					console.log(JSON.stringify(result));
+					uni.showToast({
+						title: JSON.stringify(dic)
+					});
+					var imagePath = result["imagePath"];
+					_this.imageSrc = imagePath;
+				});
+			},
+			capture() {
+				var pages = getCurrentPages();
+				var page = pages[pages.length - 1];
+				console.log("当前页" + pages.length - 1);
+				var bitmap = null;
+				var currentWebview = page.$getAppWebview();
+				bitmap = new plus.nativeObj.Bitmap('amway_img');
+				// 将webview内容绘制到Bitmap对象中  
+				currentWebview.draw(bitmap, function() {
+					console.log('截屏绘制图片成功');
+					bitmap.save("_doc/a.jpg", {}, function(i) {
+						console.log('保存图片成功：' + JSON.stringify(i));
+						uni.saveImageToPhotosAlbum({
+							filePath: i.target,
+							success: function() {
+								bitmap.clear(); //销毁Bitmap图片  
+								uni.showToast({
+									title: '保存图片成功',
+									mask: false,
+									duration: 1500
+								});
+							}
+						});
+					}, function(e) {
+						console.log('保存图片失败：' + JSON.stringify(e));
+					});
+				}, function(e) {
+					console.log('截屏绘制图片失败：' + JSON.stringify(e));
+				});
+				//currentWebview.append(amway_bit);    
 			},
 		}
 	}

@@ -9,7 +9,7 @@
 		</view>
 		<!-- <uni-ec-canvas class="ec-canvas" :canvas-id="canvasId" :ec="ec" ref="echarts" ></uni-ec-canvas> -->
 		<!-- <mpvue-echarts :echarts="echarts" @onInit="onInit" :canvasId="canvasId" ref="echarts" /> -->
-		<echarts-el :option="echartOption" class="ec-canvas" ref="chart"></echarts-el>
+		<echarts-el :option="echartOption" class="ec-canvas" ref="echarts"></echarts-el>
 		<!-- <echarts-renderjs :option="echartOption" style="height: 300px;" @click="echartsClick"></echarts-renderjs> -->
 	</view>
 </template>
@@ -50,11 +50,6 @@
 		data() {
 			return {
 				echarts: echarts,
-				ec: {
-					option: {
-
-					}
-				}
 			};
 		},
 		watch: {
@@ -178,11 +173,12 @@
 			},
 
 			downEcharts() {
-				let canvas = this.$refs['chart'].canvas;
+				let canvas = document.getElementById('echarts').canvas
+				// let canvas = this.$refs['chart'].canvas;
 				console.log(canvas)
 				echarts.setCanvasCreator(() => canvas);
 				console.log(echarts)
-				this.$refs['chart'].canvasToTempFilePath({
+				this.$refs['echarts'].canvasToTempFilePath({
 					success: function(res) {
 						console.log(JSON.stringify(res))
 					},
