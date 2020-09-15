@@ -7,19 +7,28 @@
 			</view>
 			<text class="lg text-black cuIcon-down" style="margin-right: 20upx;" @tap="downEcharts()"></text>
 		</view>
-		<mpvue-echarts :echarts="echarts" @onInit="onInit" :canvasId="canvasId" ref="echarts" />
+		<!-- <uni-ec-canvas class="ec-canvas" :canvas-id="canvasId" :ec="ec" ref="echarts" ></uni-ec-canvas> -->
+		<!-- <mpvue-echarts :echarts="echarts" @onInit="onInit" :canvasId="canvasId" ref="echarts" /> -->
+		<echarts-el :option="echartOption" class="ec-canvas" ref="chart"></echarts-el>
+		<!-- <echarts-renderjs :option="echartOption" style="height: 300px;" @click="echartsClick"></echarts-renderjs> -->
 	</view>
 </template>
 
 <script>
 	import * as echarts from '@/components/echarts/echarts.min.js';
+	import uniEcCanvas from "@/components/uni-ec-canvas/uni-ec-canvas";
 	import mpvueEcharts from '@/components/mpvue-echarts/src/echarts.vue';
+	import EchartsEl from '@/components/echarts-renderjs/echarts-el.vue';
+	import EchartsRenderjs from '@/components/echarts-renderjs/echarts.vue'
 
 	let wdChart = null;
 
 	export default {
 		components: {
-			mpvueEcharts
+			mpvueEcharts,
+			uniEcCanvas,
+			EchartsEl,
+			EchartsRenderjs
 		},
 		props: {
 			echartOption: {
@@ -40,7 +49,12 @@
 		},
 		data() {
 			return {
-				echarts: echarts
+				echarts: echarts,
+				ec: {
+					option: {
+
+					}
+				}
 			};
 		},
 		watch: {
@@ -64,9 +78,11 @@
 					};
 				}
 
-				//console.log(this.$refs.echarts.chart);
-				wdChart = this.$refs.echarts.chart;
-				wdChart.setOption(this.echartOption);
+				// this.ec.option = this.echartOption
+
+				console.log('更新option');
+				// wdChart = this.$refs.echarts.chart;
+				// wdChart.setOption(this.echartOption);
 
 				// setTimeout(() => {
 				// 	console.log('调用save函数');
@@ -74,21 +90,24 @@
 				// }, 2000);
 			}
 		},
-		onLoad() {},
+		// onReady() {
+		// 	this.ec.option = this.echartOption
+		// 	// console.log(JSON.stringify(this.ec))
+		// },
 		mounted() {
 			// setTimeout(() => {
 			// 	console.log('调用save函数');
 			// 	this.saveEcharts();
 			// }, 2000);
-			let that = this;
-			var count = 0;
-			var inervalId = setInterval(function() {
-				count++;
-				// if(count>=7) clearInterval(inervalId);
-				//其它操作
-				that.saveEcharts();
-				// console.log("count:"+count);
-			}, 1000);
+			// let that = this;
+			// var count = 0;
+			// var inervalId = setInterval(function() {
+			// 	count++;
+			// 	if (count >= 7) clearInterval(inervalId);
+			// 	// 其它操作
+			// 	that.saveEcharts();
+			// 	// console.log("count:" + count);
+			// }, 1000);
 		},
 		methods: {
 			// 2.2.2
@@ -102,33 +121,51 @@
 			// 	return wdChart
 			// },
 
+			// onInit(e) {
+			// 	if (this.echartOption.hasOwnProperty('legend') &&
+			// 		this.echartOption.hasOwnProperty('tooltip')) {
+			// 		this.echartOption.legend.formatter = function(name) {
+			// 			return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
+			// 		};
+			// 		this.echartOption.tooltip.formatter = function(params) {
+			// 			var tips = "";
+			// 			if (params != null && params.length > 0) {
+			// 				for (var i = 0; i < params.length; i++) {
+			// 					// console.log(JSON.stringify(params));
+			// 					var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
+			// 						.substr(
+			// 							-10, 10) : params[i].seriesName;
+			// 					tips += name + ":" + params[i].value + "\n";
+			// 				}
+			// 			}
+			// 			return tips;
+			// 		};
+			// 	}
+			// 	// console.log(JSON.stringify(this.echartOption.legend.formatter));
+			// 	let {
+			// 		width,
+			// 		height
+			// 	} = e;
+			// 	let canvas = document.getElementById('echarts').canvas
+			// 	// let canvas = this.$refs.echarts.canvas;
+			// 	echarts.setCanvasCreator(() => canvas);
+			// 	wdChart = echarts.init(canvas, null, {
+			// 		width: width,
+			// 		height: height
+			// 	});
+			// 	canvas.setChart(wdChart);
+			// 	wdChart.setOption(this.echartOption);
+			// 	this.$refs.echarts.setChart(wdChart);
+			// },
+
+
 			onInit(e) {
-				if (this.echartOption.hasOwnProperty('legend') &&
-					this.echartOption.hasOwnProperty('tooltip')) {
-					this.echartOption.legend.formatter = function(name) {
-						return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
-					};
-					this.echartOption.tooltip.formatter = function(params) {
-						var tips = "";
-						if (params != null && params.length > 0) {
-							for (var i = 0; i < params.length; i++) {
-								// console.log(JSON.stringify(params));
-								var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
-									.substr(
-										-10, 10) : params[i].seriesName;
-								tips += name + ":" + params[i].value + "\n";
-							}
-						}
-						return tips;
-					};
-				}
-				// console.log(JSON.stringify(this.echartOption.legend.formatter));
 				let {
 					width,
 					height
 				} = e;
-				let canvas = document.getElementById('echarts').canvas
-				// let canvas = this.$refs.echarts.canvas;
+				// let canvas = document.getElementById('echarts').canvas
+				let canvas = this.$refs.echarts.canvas;
 				echarts.setCanvasCreator(() => canvas);
 				wdChart = echarts.init(canvas, null, {
 					width: width,
@@ -137,27 +174,17 @@
 				canvas.setChart(wdChart);
 				wdChart.setOption(this.echartOption);
 				this.$refs.echarts.setChart(wdChart);
+
 			},
 
 			downEcharts() {
-				let canvas = this.$refs.echarts.canvas;
+				let canvas = this.$refs['chart'].canvas;
+				console.log(canvas)
 				echarts.setCanvasCreator(() => canvas);
-				this.$refs.echarts.canvasToTempFilePath({
+				console.log(echarts)
+				this.$refs['chart'].canvasToTempFilePath({
 					success: function(res) {
-						uni.saveFile({
-							tempFilePath: res.tempFilePath,
-							success(res) {
-								let url = res.savedFilePath;
-								uni.saveImageToPhotosAlbum({
-									filePath: url,
-									success(res) {
-										uni.showToast({
-											title: '保存成功'
-										});
-									}
-								})
-							},
-						})
+						console.log(JSON.stringify(res))
 					},
 					fail: function(e) {
 						console.log(JSON.stringify(e));
@@ -168,6 +195,37 @@
 						return false;
 					}
 				});
+
+				// let canvas = this.$refs.echarts.canvas;
+				// console.log(canvas)
+				// echarts.setCanvasCreator(() => canvas);
+				// console.log(echarts)
+				// this.$refs.echarts.canvasToTempFilePath({
+				// 	success: function(res) {
+				// 		uni.saveFile({
+				// 			tempFilePath: res.tempFilePath,
+				// 			success(res) {
+				// 				let url = res.savedFilePath;
+				// 				uni.saveImageToPhotosAlbum({
+				// 					filePath: url,
+				// 					success(res) {
+				// 						uni.showToast({
+				// 							title: '保存成功'
+				// 						});
+				// 					}
+				// 				})
+				// 			},
+				// 		})
+				// 	},
+				// 	fail: function(e) {
+				// 		console.log(JSON.stringify(e));
+				// 		uni.showToast({
+				// 			icon: 'none',
+				// 			title: "图表正在加载，请稍后再试"
+				// 		});
+				// 		return false;
+				// 	}
+				// });
 			},
 
 			saveEcharts() {
@@ -225,7 +283,14 @@
 					}
 					uni.setStorageSync('echartArr', newEchartArr);
 				}
-			}
+			},
+			/**
+			 * 点击事件
+			 * @param {Object} params
+			 */
+			echartsClick(params) {
+				console.log('点击数据', params)
+			},
 		}
 	}
 </script>
@@ -259,5 +324,14 @@
 	.echart-nav text {
 		margin: auto 20upx;
 		font-size: 14px;
+	}
+
+	.ec-canvas {
+		width: 100%;
+		height: 88%;
+		flex: 1;
+		/* width: 100%;
+		height: 100%;
+		display: block; */
 	}
 </style>
