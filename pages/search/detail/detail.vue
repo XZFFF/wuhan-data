@@ -11,7 +11,7 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
-		<wd-share-poster ref="shareComp"></wd-share-poster>
+		<!-- <wd-share-poster ref="shareComp"></wd-share-poster> -->
 	</view>
 </template>
 
@@ -103,7 +103,8 @@
 					break;
 				case "share": //点击分享按钮
 					console.log("进入了page的分享监听");
-					this.$refs.shareComp.shareFc();
+					this.capture()
+					// this.$refs.shareComp.shareFc();
 					break;
 				default:
 					console.log(e.type);
@@ -152,7 +153,7 @@
 							// 计算classHeight及总Height
 							this.setHeight();
 							// 设置画布数据
-							this.setDrawCanvas();
+							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -194,7 +195,7 @@
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
-							this.setDrawCanvas();
+							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -301,7 +302,46 @@
 						title: e.message
 					});
 				}
-			}
+			},
+			capture() {
+				var pages = getCurrentPages();
+				var page = pages[pages.length - 1];
+				console.log("当前页" + pages.length - 1);
+				var bitmap = null;
+				var currentWebview = page.$getAppWebview();
+				bitmap = new plus.nativeObj.Bitmap('amway_img');
+				// 将webview内容绘制到Bitmap对象中  
+				currentWebview.draw(bitmap, function() {
+					console.log('截屏绘制图片成功');
+					bitmap.save("_doc/a.jpg", {}, function(i) {
+						console.log('保存图片成功：' + JSON.stringify(i));
+						//拉起分享
+						// #ifdef APP-PLUS
+						_app.getShare(false, false, 2, '', '', '', i.target, false, false);
+						// #endif
+						// #ifndef APP-PLUS
+						_app.showToast('请在APP中进行分享');
+						// #endif
+						uni.saveImageToPhotosAlbum({
+							filePath: i.target,
+							success: function() {
+								bitmap.clear(); //销毁Bitmap图片  
+								uni.showToast({
+									title: '保存图片成功',
+									mask: false,
+									duration: 1500
+								});
+							}
+						});
+
+					}, function(e) {
+						console.log('保存图片失败：' + JSON.stringify(e));
+					});
+				}, function(e) {
+					console.log('截屏绘制图片失败：' + JSON.stringify(e));
+				});
+				//currentWebview.append(amway_bit);    
+			},
 		},
 	}
 </script>

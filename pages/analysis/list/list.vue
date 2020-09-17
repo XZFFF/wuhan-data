@@ -92,6 +92,7 @@
 			initAnalysisList() {
 				let token = uni.getStorageSync('token');
 				uni.request({
+					// url: 'https://www.baidu.com',
 					url: this.apiUrl + "getAnalysisList",
 					method: 'POST',
 					data: {
@@ -100,6 +101,7 @@
 					success: (res) => {
 						// 获取homepage的数据
 						let dataApi = res.data;
+						// let dataApi = analysisListApiJson;
 						// 检查json数据
 						checkApi.isApi(dataApi);
 						// 设置各部分数据

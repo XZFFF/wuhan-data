@@ -31,6 +31,8 @@
 	import analysisDemoApiJson from "@/common/api/anaDemo.json";
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
+	import _app from '@/common/app.js';
+	import analysisNewJson from "@/common/api/anaNewJson.json";
 
 	var _self;
 	export default {
@@ -112,8 +114,8 @@
 				};
 				console.log(JSON.stringify(dataPost));
 				uni.request({
-					// url: this.apiUrl + 'getAnalysisDetail',
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getAnalysisDetail',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
@@ -121,8 +123,8 @@
 					},
 					success: (res) => {
 						uni.removeStorageSync('echartArr');
-						// dataApi = res.data;
-						dataApi = analysisDetailApiJson;
+						dataApi = res.data;
+						// dataApi = analysisNewJson;
 						console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
@@ -145,7 +147,7 @@
 							// 计算classHeight及总Height
 							this.setHeight();
 							// 设置画布数据
-							this.setDrawCanvas();
+							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -168,20 +170,20 @@
 					"endTime": val.endTime
 				};
 				uni.request({
-					// url: this.apiUrl + 'getAnalysisDetailByTime',
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getAnalysisDetailByTime',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
 						console.log(JSON.stringify(res.data));
 						try {
 							uni.removeStorageSync('echartArr');
-							// dataApi = res.data;
-							dataApi = analysisConfirmApiJson;
+							dataApi = res.data;
+							// dataApi = analysisConfirmApiJson;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
-							this.setDrawCanvas();
+							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 						}
@@ -330,6 +332,13 @@
 					console.log('截屏绘制图片成功');
 					bitmap.save("_doc/a.jpg", {}, function(i) {
 						console.log('保存图片成功：' + JSON.stringify(i));
+						//拉起分享
+						// #ifdef APP-PLUS
+						_app.getShare(false, false, 2, '', '', '', i.target, false, false);
+						// #endif
+						// #ifndef APP-PLUS
+						_app.showToast('请在APP中进行分享');
+						// #endif
 						uni.saveImageToPhotosAlbum({
 							filePath: i.target,
 							success: function() {
@@ -341,6 +350,7 @@
 								});
 							}
 						});
+
 					}, function(e) {
 						console.log('保存图片失败：' + JSON.stringify(e));
 					});

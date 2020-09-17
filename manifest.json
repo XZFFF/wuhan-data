@@ -2,8 +2,8 @@
     "name" : "数说湖北",
     "appid" : "__UNI__8BAA13B",
     "description" : "",
-    "versionName" : "6.2.0",
-    "versionCode" : 620,
+    "versionName" : "7.0.0",
+    "versionCode" : 700,
     "transformPx" : false,
     "app-plus" : {
         "compatible" : {
@@ -63,7 +63,8 @@
                         "appid" : "wx281f5abab82b3bc7",
                         "UniversalLinks" : "https://www.tongfangpc.com/"
                     }
-                }
+                },
+                "ad" : {}
             },
             "icons" : {
                 "ios" : {

@@ -93,6 +93,7 @@
 				console.log("token" + token);
 				// 通过请求接口获取轮播图
 				uni.request({
+					// url: 'https://www.baidu.com',
 					url: this.apiUrl + 'initHome',
 					method: 'POST',
 					data: {
@@ -102,6 +103,7 @@
 						// 获取homepage的数据
 						console.log(JSON.stringify(res.data));
 						dataApi = res.data;
+						// dataApi = homeApiJson;
 					},
 					fail: (e) => {
 						//取出缓存数据并绑定到data
