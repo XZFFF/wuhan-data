@@ -42,27 +42,29 @@
 			 * 初始化echarts
 			 */
 			init() {
+				// console.log(this.option.series.type)
 				// 根据id初始化图表
 				this.chart = echarts.init(this.$el)
-				if (this.option.legend.formatter != null) {
-					this.option.legend.formatter = function(name) {
-						return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
-					};
-					this.option.tooltip.formatter = function(params) {
-						var tips = "";
-						if (params != null && params.length > 0) {
-							for (var i = 0; i < params.length; i++) {
-								// console.log(JSON.stringify(params));
-								var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
-									.substr(
-										-10, 10) : params[i].seriesName;
-								tips += name + ":" + params[i].value + "</br>";
-							}
-						}
-						return tips;
-					};
-				}
-				this.option.tooltip['confine'] = true;
+				// if (this.option.legend.formatter != null) {
+					
+				// 	this.option.legend.formatter = function(name) {
+				// 		return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
+				// 	};
+				// 	this.option.tooltip.formatter = function(params) {
+				// 		var tips = "";
+				// 		if (params != null && params.length > 0) {
+				// 			for (var i = 0; i < params.length; i++) {
+				// 				// console.log(JSON.stringify(params));
+				// 				var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
+				// 					.substr(
+				// 						-10, 10) : params[i].seriesName;
+				// 				tips += name + ":" + params[i].value + "</br>";
+				// 			}
+				// 		}
+				// 		return tips;
+				// 	};
+				// }
+				// this.option.tooltip['confine'] = true;
 				this.update(this.option)
 			},
 			/**
