@@ -52,8 +52,7 @@
                     contact: "",
 					token: ""
                 },
-				contact:"",
-				sendDateTxt:""
+				contact:""
             }
         },
 		onShow() {
