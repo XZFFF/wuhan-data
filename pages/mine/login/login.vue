@@ -30,7 +30,7 @@
 					<view style="font-size: 30upx;margin-top: 20upx;margin-left: 50upx;color: rgb(100,100,100);">
 						未注册手机验证后自动注册
 					</view>
-					<input type="button" class="login-button" style="line-height:80upx" value="登录" @tap="lands" />
+					<button class="login-button" style="line-height:80upx" @tap="lands" >登录</button>
 				</view>
 			</view>
 		</view>

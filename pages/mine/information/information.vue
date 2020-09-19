@@ -6,7 +6,7 @@
 				<text style="color: #868686; font-size: 32upx; ">账户信息</text>
 			</view>
 			<view class="uni-list">
-				<view class="uni-list-cell" hover-class="uni-list-cell-hover" @click="chooseImg()">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" @click="chooseImg">
 					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list" style="height: 130upx;display: flex;">
 						<view class="uni-media-list-body" style="justify-content: center">
 							<view class="uni-media-list-text" style="font-size: 30upx">我的头像</view>
@@ -42,7 +42,7 @@
 				<information-list title="所在地区" :content="user.city"></information-list>
 				<information-list title="个人描述" :content="user.description"></information-list>
 			</view>
-			<input type="button" class="exitButton" style="line-height:80upx" value="退出登录" @click="goDetailPage('exit')" />
+			<button class="exitButton" style="line-height:80upx" @click="goDetailPage('exit')">退出登录</button>
 		</view>
 	</view>
 </template>
@@ -102,17 +102,17 @@
 						"token": this.token,
 					},
 					success: (res) => {
-						try{
+						try {
 							//let dataApi = getUserApiJson;
 							let dataApi = res.data;
 							checkApi.isApi(dataApi);
 							this.user = dataApi.data;
-							if(!this.user.head){
+							if (!this.user.head) {
 								this.user.head = '../../../static/icon/mine/default.jpg';
 							}
 							let userStr = JSON.stringify(this.user);
 							uni.setStorageSync('user', userStr);
-						}catch(e){
+						} catch (e) {
 							console.log(e.errMsg);
 							this.getUserStorage();
 						}
@@ -152,12 +152,13 @@
 							},
 							name: 'file',
 							success: (uploadFileRes) => {
-								console.log("上传：" + tempFilePaths[0]);
-								console.log(uploadFileRes.data);
+								// TODO ->ok
+								// 在图片上传完成后需要更新缓存
+								this.user.head = '';
+								this.user.head = this.user.head.concat(chooseImageRes.tempFilePaths);
 							}
 						});
-						this.user.head = '';
-						this.user.head = this.user.head.concat(chooseImageRes.tempFilePaths);
+						
 					},
 				})
 			},
