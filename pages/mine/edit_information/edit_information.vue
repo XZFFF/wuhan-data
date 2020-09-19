@@ -26,7 +26,7 @@
 				<input class="input" :placeholder="user.description" v-model="user.description" maxlength="20" />
 			</view>
 		</view>
-		<input type="button" class="confirm-button" style="line-height:80upx" value="确认修改" @tap="confirmRevision" />
+		<button class="confirm-button" style="line-height:80upx" @tap="confirmRevision" >确认修改</button>
 		<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
 		 @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker>
 	</view>

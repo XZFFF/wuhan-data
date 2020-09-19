@@ -168,9 +168,7 @@
 								duration: 1000,
 							});
 							setTimeout(function() {
-								uni.navigateTo({
-									url: "../../tabbar/mine/mine",
-								})
+								uni.navigateBack()
 							}, 1000);
 
 						} catch (e) {

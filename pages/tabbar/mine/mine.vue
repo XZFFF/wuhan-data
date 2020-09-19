@@ -88,7 +88,7 @@
 		<view class="bottom-text">
 			<span style="display:inline-block; width:700upx;">
 				湖北省发展与改革委员会<br />
-				All rights reserved ©2019
+				All rights reserved ©{{fullyear}}
 			</span>
 		</view>
 	</view>
@@ -136,6 +136,7 @@
 				bottomData: mineConfig.bottomData,
 				browse_icon: mineConfig.browse_icon,
 				menu_list: mineConfig.menu_list,
+				fullyear:new Date().getFullYear(),// 当前的年份
 			};
 		},
 		onLoad() {},
