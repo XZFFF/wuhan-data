@@ -4,8 +4,8 @@
 			<text>问题和意见</text>
 		</view>
 		<view class="feedback-body">
-			<textarea style="line-height: 0px;" placeholder="请详细描述您的问题和意见" v-model="sendDate.text" class="feedback-textare" />
-		</view>
+			<textarea placeholder="请详细描述您的问题和意见" v-model="sendDate.text" class="feedback-textare" />
+			</view>
         <view class='feedback-title'>
             <text>图片(选填,提供问题截图,总大小10M以下)</text>
         </view>
@@ -52,7 +52,8 @@
                     contact: "",
 					token: ""
                 },
-				contact:""
+				contact:"",
+				sendDateTxt:""
             }
         },
 		onShow() {
