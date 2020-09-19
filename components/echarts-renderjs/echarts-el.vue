@@ -62,12 +62,15 @@
 						return tips;
 					};
 				}
-				delete this.option.tooltip.formatter;
-				delete this.option.tooltip.backgroundColor;
-				this.option.legend.height = "120"
-				this.option.tooltip.position = ["10%", "65%"];
-				this.option.legend['type'] = "scroll";
-				console.log(JSON.stringify(this.option))
+				// delete this.option.tooltip.formatter;
+				// delete this.option.tooltip.backgroundColor;
+				// this.option.legend.height = "120"
+				// this.option.tooltip.position = ["10%", "65%"];
+				// this.option.legend['type'] = "scroll";
+				// console.log(JSON.stringify(this.option))
+				if (this.type != null && this.type == 'radar') {
+
+				}
 				this.update(this.option)
 			},
 			/**
