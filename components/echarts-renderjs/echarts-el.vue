@@ -56,21 +56,13 @@
 								var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
 									.substr(
 										-10, 10) : params[i].seriesName;
-								tips += name + ":" + params[i].value + "\n";
+								tips += name + ":" + params[i].value + "</br>";
 							}
 						}
 						return tips;
 					};
 				}
-				// delete this.option.tooltip.formatter;
-				// delete this.option.tooltip.backgroundColor;
-				// this.option.legend.height = "120"
-				// this.option.tooltip.position = ["10%", "65%"];
-				// this.option.legend['type'] = "scroll";
-				// console.log(JSON.stringify(this.option))
-				if (this.type != null && this.type == 'radar') {
-
-				}
+				this.option.tooltip['confine'] = true;
 				this.update(this.option)
 			},
 			/**
