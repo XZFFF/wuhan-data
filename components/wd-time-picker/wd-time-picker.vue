@@ -28,7 +28,7 @@
 			</view>
 		</view>
 
-		<view class="ti-condition">
+		<view v-if="onlyEnd==0||onlyEnd=='0'" class="ti-condition">
 			<view class="ti-condition-name">
 				<text>起始时间:</text>
 			</view>
@@ -41,7 +41,7 @@
 
 		<view class="ti-condition">
 			<view class="ti-condition-name">
-				<text>结束时间:</text>
+				<text>{{endTimeName}}</text>
 			</view>
 			<view class="ti-condition-choose uni-list-cell-db">
 				<picker @change="bindEndPickerChange" :value="endIndex" :range="endArray">
@@ -62,12 +62,14 @@
 				type: Array,
 			},
 			hasArea: String,
+			onlyEnd: String,
 			areaCondition: {
 				type: Array,
 			}
 		},
 		data() {
 			return {
+				endTimeName: '结束时间:',
 				areaArray: [],
 				areaIndex: 0,
 				freqArray: [],
@@ -82,6 +84,13 @@
 			// 监听timeCodition数据
 			timeCondition(newValue, oldValue) {
 				this.setTimeCondition();
+			}
+		},
+		mounted() {
+			if (this.onlyEnd == 0 || this.onlyEnd == '0') {
+				this.endTimeName = '结束时间:';
+			} else {
+				this.endTimeName = '选择时间:';
 			}
 		},
 		onLoad() {
@@ -136,10 +145,14 @@
 				let startTime = this.startArray[this.startIndex];
 				let endTime = this.endArray[this.endIndex];
 				if (startTime > endTime) {
-					uni.showModal({
-						title: "提示",
-						content: "结束时间不能小于开始时间",
-					});
+					if (onlyEnd == 0 || onlyEnd == '0') {
+						uni.showModal({
+							title: "提示",
+							content: "结束时间不能小于开始时间",
+						});
+					} else {
+						console.log('单点时间')
+					}
 				}
 				this.$emit("confirm", {
 					area: area,
