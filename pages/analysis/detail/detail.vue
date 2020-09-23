@@ -1,5 +1,11 @@
 <template>
 	<view class="container" :style="{height:totalHeight + 'px'}">
+		<!-- <view style="position: absolute;top: 230px;z-index: 999;">时间选择器</view> -->
+		<!-- <view style="position: absolute;top: 730px;z-index: 999;">图1</view> -->
+		<!-- <view style="position: absolute;top: 1030px;z-index: 999;">表1</view> -->
+		<!-- <view style="position: absolute;top: 1530px;z-index: 999;">图2</view> -->
+		<!-- <view style="position: absolute;top: 1830px;z-index: 999;">表2</view> -->
+		<!-- <view style="position: absolute;top: 2130px;z-index: 999;">结束</view> -->
 		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition" :hasArea="indexId=='13'?'1':'0'" :areaCondition="areaCondition"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
@@ -74,7 +80,7 @@
 			this.initAnalysisDetail(this.indexId);
 			this.initNav();
 
-			uni.removeStorageSync('echartArr');
+			// uni.removeStorageSync('echartArr');
 		},
 		onNavigationBarButtonTap(e) {
 			switch (e.type) {
@@ -122,9 +128,9 @@
 						indexId: this.indexId,
 					},
 					success: (res) => {
-						uni.removeStorageSync('echartArr');
+						// uni.removeStorageSync('echartArr');
 						dataApi = res.data;
-						// dataApi = analysisNewJson;
+						// dataApi = analysisConfirmApiJson;
 						console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
@@ -177,7 +183,7 @@
 					success: (res) => {
 						console.log(JSON.stringify(res.data));
 						try {
-							uni.removeStorageSync('echartArr');
+							// uni.removeStorageSync('echartArr');
 							dataApi = res.data;
 							// dataApi = analysisConfirmApiJson;
 							checkApi.isApi(dataApi);
@@ -255,7 +261,7 @@
 			},
 			// 根据服务端传入的数据计算classInfo需要的高度及界面需要的总高度
 			setHeight() {
-				let timeConditionHeight = 250;
+				let timeConditionHeight = 230;
 				let classHeight = 0;
 				let relatedHeight = 0;
 				if (_self.indexDetail) {
@@ -266,6 +272,7 @@
 				}
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;
+				console.log(timeConditionHeight, classHeight, relatedHeight)
 			},
 			// 设置画布数据
 			setDrawCanvas() {
@@ -344,7 +351,7 @@
 							success: function() {
 								bitmap.clear(); //销毁Bitmap图片  
 								uni.showToast({
-									title: '保存图片成功',
+									title: '已保存到相册',
 									mask: false,
 									duration: 1500
 								});

@@ -100,9 +100,9 @@ module.exports = {
 				if (item.classType == 'table') {
 					let tableParam = item.tableBody[0].length;
 					if (tableParam < 6) {
-						h = (tableParam + 1) * 70;
+						h = (tableParam + 1) * 60;
 					} else {
-						h = 490;
+						h = 380;
 					}
 				} else if (item.classType == 'echarts') {
 					if (typeof item.classHeight === 'string') {
