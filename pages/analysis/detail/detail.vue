@@ -6,7 +6,8 @@
 		<!-- <view style="position: absolute;top: 1530px;z-index: 999;">图2</view> -->
 		<!-- <view style="position: absolute;top: 1830px;z-index: 999;">表2</view> -->
 		<!-- <view style="position: absolute;top: 2130px;z-index: 999;">结束</view> -->
-		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition" :hasArea="indexId=='13'?'1':'0'" :onlyEnd="indexId=='192'?'1':'0'" :areaCondition="areaCondition"></wd-time-picker>
+		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition" :hasArea="indexId=='13'?'1':'0'" :onlyEnd="indexId=='192'?'1':'0'"
+		 :areaCondition="areaCondition"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :classTitle="item.classTitle" :tableBody="item.tableBody"></wd-table>
@@ -137,6 +138,12 @@
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
+						uni.showToast({
+							title: "数据加载失败",
+							icon: "none",
+							duration: 500,
+						});
+						return false;
 					},
 					complete: () => {
 						// 检查json数据
@@ -156,6 +163,12 @@
 							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
+							uni.showToast({
+								title: "数据加载失败",
+								icon: "none",
+								duration: 500,
+							});
+							return false;
 						}
 						uni.hideLoading();
 					}
@@ -192,10 +205,22 @@
 							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
+							uni.showToast({
+								title: "数据加载失败",
+								icon: "none",
+								duration: 500,
+							});
+							return false;
 						}
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
+						uni.showToast({
+							title: "数据加载失败",
+							icon: "none",
+							duration: 500,
+						});
+						return false;
 					},
 					complete: () => {
 						uni.hideLoading();
