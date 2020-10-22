@@ -19,18 +19,18 @@
 						</view>
 					</view>
 					<view class="login-list">
-						<text class="title">验证码</text>
-						<view class="list" style="width: 40%;">
-							<input class="input" type="number" v-model="verCode" placeholder="请输入验证码" />
+						<text class="title">密 码：</text>
+						<view class="list">
+							<input class="input" type="password" v-model="password" placeholder="请输入密码" />
 						</view>
-						<button :class="['verification-code',smsText==='获取验证码' ? 'active1' : '']" style="line-height: 60upx;" @click="smsVerification">
-							{{smsText}}
-						</button>
 					</view>
-					<view style="font-size: 30upx;margin-top: 20upx;margin-left: 50upx;color: rgb(100,100,100);">
-						未注册手机验证后自动注册
+					<!-- <view style="font-size: 30upx;margin-top: 20upx;margin-left: 470upx;color: rgb(100,100,100);" @tap="resetPassword()">
+						<text style="color: #1A82D2;">忘记密码？</text>
+					</view> -->
+					<button class="login-button" style="line-height:80upx" @tap="lands">登录</button>
+					<view style="font-size: 30upx;margin-top: 20upx;margin-left: 250upx;color: rgb(100,100,100);" @tap="goRegistered()">
+						未注册请先<text style="color: #1A82D2;">注册</text>
 					</view>
-					<button class="login-button" style="line-height:80upx" @tap="lands" >登录</button>
 				</view>
 			</view>
 		</view>
@@ -51,12 +51,8 @@
 		},
 		data() {
 			return {
-				smsText: '获取验证码',
-				seconds: 0,
-				timer: null,
 				tel: "",
-				verCode: "",
-				codeButton: "获取验证码",
+				password: "",
 				countryTel: "+86",
 			}
 		},
@@ -67,7 +63,7 @@
 				this.countryTel = changeTel.tel;
 			}
 			let winHeight = uni.getSystemInfoSync().windowHeight;
-			uni.setStorageSync('winHeight',winHeight);
+			uni.setStorageSync('winHeight', winHeight);
 		},
 		// #ifdef APP-PLUS
 		onBackPress() {
@@ -83,6 +79,21 @@
 				let url = '../../mine/login/telIndex/telIndex';
 				uni.navigateTo({
 					url: url
+				});
+				return false;
+			},
+			goRegistered(e) {
+				console.log('跳转注册页面')
+				uni.navigateTo({
+					url: '../../mine/login/registered/registered',
+					fail: (err) => {
+						console.log("跳转失败;" + JSON.stringify(err));
+					}
+				});
+			},
+			resetPassword(e) {
+				uni.navigateTo({
+					url: '../../mine/login/resetpassword/resetpassword'
 				});
 				return false;
 			},
@@ -102,10 +113,10 @@
 					});
 					return;
 				}
-				if (this.verCode.length == 0) {
+				if (this.password.length == 0) {
 					uni.showToast({
 						icon: 'none',
-						title: '请输入验证码'
+						title: '请输入密码'
 					});
 					return;
 				} {
@@ -115,27 +126,43 @@
 						url: this.apiUrl + "loginaa",
 						data: {
 							"tel": this.tel,
-							"verCode": this.verCode
+							"password": this.password
 						},
 						success: (res) => {
 							let dataApi = res.data;
 							checkApi.isApi(dataApi);
 							try {
-								let tokenStr = dataApi.data.token;
-								let userStr = JSON.stringify(dataApi.data);
-								uni.setStorageSync('token', tokenStr);
-								uni.setStorageSync('user', userStr);
-								uni.showToast({
-									icon: 'none',
-									title: '登录成功',
-									duration: 1000
-								});
-								setTimeout(function() {
-									uni.switchTab({
-										url: '../../tabbar/mine/mine',
-									})
-								}, 1000);
-
+								let userData = dataApi.data;
+								// 验证账号密码的正确性
+								let reNum = this.verify(userData);
+								if (reNum == 0) {
+									let tokenStr = dataApi.data.token;
+									let userStr = JSON.stringify(dataApi.data);
+									uni.setStorageSync('token', tokenStr);
+									uni.setStorageSync('user', userStr);
+									uni.showToast({
+										icon: 'none',
+										title: '登录成功',
+										duration: 1000
+									});
+									setTimeout(function() {
+										uni.switchTab({
+											url: '../../tabbar/mine/mine',
+										})
+									}, 1000);
+								} else if (reNum == -1) {
+									uni.showToast({
+										icon: 'none',
+										title: '密码错误'
+									});
+									return;
+								} else {
+									uni.showToast({
+										icon: 'none',
+										title: '账号未注册'
+									});
+									return;
+								}
 							} catch (e) {
 								this.smsText = '获取验证码';
 								console.log(e.message);
@@ -146,88 +173,23 @@
 							}
 						},
 						fail: (e) => {
-							this.smsText = '获取验证码';
 							console.log(e.errMsg);
 						},
 					})
 				}
-
 			},
-			smsVerification(e) {
-				if (this.smsText != '获取验证码') {
-					return;
+			//登录验证
+			verify(userStr) {
+				if (userStr.tel === this.tel && userStr.password === this.password) {
+					// 手机号、密码正确，验证成功
+					return 0;
+				} else if (userStr.tel === this.tel && userStr.password !== this.password) {
+					// 密码不存在
+					return -1;
+				} else {
+					//手机号码不存在
+					return -2;
 				}
-				let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
-				if (this.tel.length != 11) {
-					uni.showToast({
-						icon: 'none',
-						title: '手机号格式错误'
-					});
-					return;
-				}
-				if (!myreg.test(this.tel)) {
-					uni.showToast({
-						icon: 'none',
-						title: '请输入有效的手机号'
-					});
-					return;
-				}
-				this.smsText = 'loading';
-				checkApi.checkNetwork();
-				uni.request({
-					url: this.apiUrl + 'getVercodeApp',
-					method: 'POST',
-					data: {
-						"tel": this.tel
-					},
-					success: (res) => {
-						let dataApi = res.data;
-						checkApi.isApi(dataApi);
-						try {
-							uni.showToast({
-								icon: 'none',
-								title: '验证码发送成功'
-							});
-							if (dataApi.errCode == 0) {
-								this.second = 12;
-								this.seconds = this.second
-								this.countDown()
-								this.timer = setInterval(() => {
-									this.seconds--
-									if (this.seconds < 1) {
-										this.smsText = '获取验证码'
-										clearInterval(this.timer)
-										return
-									}
-									this.countDown()
-								}, 1000);
-							}
-						} catch (e) {
-							console.log(e.message);
-							this.smsText = '获取验证码';
-						}
-					},
-					fail: (e) => {
-						this.smsText = '获取验证码';
-						console.log(e.errMsg);
-						uni.showToast({
-							icon: 'none',
-							title: e.errMsg
-						});
-					},
-				})
-			},
-			countDown() {
-				let seconds = this.seconds
-				let [second] = [1]
-				if (seconds > 1) {
-					second = Math.floor(seconds)
-				}
-				if (second < 10) {
-					second = '0' + second
-				}
-				second = '重新发送(' + second + 's)'
-				this.smsText = second
 			},
 		},
 	}
@@ -310,7 +272,7 @@
 		height: 80upx;
 		margin-left: auto;
 		margin-right: auto;
-		text-align:center;
+		text-align: center;
 		font-size: 35upx;
 		color: #FFFFFF;
 		background-color: rgb(26, 130, 210);
