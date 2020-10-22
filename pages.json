@@ -230,6 +230,20 @@
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "消息详情"
 			}
+		},
+		{
+			"path": "pages/mine/login/registered/registered",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
+			"path": "pages/mine/login/resetpassword/resetpassword",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "忘记密码"
+			}
 		}
 	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
