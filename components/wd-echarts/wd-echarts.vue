@@ -1,11 +1,20 @@
 <template>
-	<view class="canvas-view" :style="{height:classHeight + 'px'}">
+	<view class="canvas-view" :style="{height:classHeight+ 'px'}">
 		<view style="display: flex;justify-content: space-between;flex-direction: row;align-items: center;">
 			<view class="echart-nav" style="display: flex;justify-content: flex-start;flex-direction: row">
 				<image src="../../static/icon/echarts/trend-upward.png"></image>
 				<text>{{classTitle}}</text>
 			</view>
 			<!-- <text class="lg text-black cuIcon-down" style="margin-right: 20upx;" @tap="downEcharts()"></text> -->
+		</view>
+		<!-- 特定栏目的多legend多选框__(测试) -->
+		<view class="cu-form-group margin-top" style="display: none;">
+			<view class="title">选择指标</view>
+			<picker @change="PickerChange" :value="pickerIndex" :range="pickerArray">
+				<view class="picker">
+					{{pickerIndex>-1?pickerArray[pickerIndex]:'暂未选择'}}
+				</view>
+			</picker>
 		</view>
 		<!-- <uni-ec-canvas class="ec-canvas" :canvas-id="canvasId" :ec="ec" ref="echarts" ></uni-ec-canvas> -->
 		<!-- <mpvue-echarts :echarts="echarts" @onInit="onInit" :canvasId="canvasId" ref="echarts" /> -->
@@ -50,6 +59,10 @@
 		data() {
 			return {
 				echarts: echarts,
+				pickerIndex: -1,
+				pickerArray: ["发电量_亿千瓦小时", "发电量_亿千瓦小时去年同期", "原油_万吨", "原油_万吨去年同期", "汽油_万吨", "汽油_万吨去年同期", "水电_亿千瓦时", "水电_亿千瓦时去年同期",
+					"硫酸_万吨", "硫酸_万吨去年同期", "烧碱_万吨"
+				],
 			};
 		},
 		watch: {
@@ -88,8 +101,15 @@
 		onReady() {
 			// this.ec.option = this.echartOption
 			// console.log(JSON.stringify(this.echartOption))
+
+		},
+		onLoad() {
+
 		},
 		mounted() {
+			// console.log(JSON.stringify(this.echartOption["legend"]["data"]));
+			// this.picker = this.echartOption["legend"]["data"];
+			// this.picker = this.echartOption["legend"]["data"];
 			// setTimeout(() => {
 			// 	console.log('调用save函数');
 			// 	this.saveEcharts();
@@ -105,6 +125,10 @@
 			// }, 1000);
 		},
 		methods: {
+			PickerChange(e) {
+				this.pickerIndex = e.detail.value;
+				this.echartOption["legend"]["selected"][this.pickerArray[this.pickerIndex]] = true;
+			},
 			// 2.2.2
 			// onInit(canvas, width, height) {
 			// 	wdChart = echarts.init(canvas, null, {
@@ -286,6 +310,7 @@
 			echartsClick(params) {
 				console.log('点击数据', params)
 			},
+
 		}
 	}
 </script>

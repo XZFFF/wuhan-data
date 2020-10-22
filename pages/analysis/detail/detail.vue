@@ -6,7 +6,8 @@
 		<!-- <view style="position: absolute;top: 1530px;z-index: 999;">图2</view> -->
 		<!-- <view style="position: absolute;top: 1830px;z-index: 999;">表2</view> -->
 		<!-- <view style="position: absolute;top: 2130px;z-index: 999;">结束</view> -->
-		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition" :hasArea="indexId=='13'?'1':'0'" :onlyEnd="indexId=='192'?'1':'0'" :areaCondition="areaCondition"></wd-time-picker>
+		<wd-time-picker @confirm="onConfirm" :timeCondition="timeCondition" :hasArea="indexId=='13'?'1':'0'" :onlyEnd="indexId=='192'?'1':'0'"
+		 :areaCondition="areaCondition"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :classTitle="item.classTitle" :tableBody="item.tableBody"></wd-table>
@@ -39,6 +40,8 @@
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
 	import _app from '@/common/app.js';
 	import analysisNewJson from "@/common/api/anaNewJson.json";
+	import analysisIndex16Json from "@/common/api/analysis_index16.json";
+	import analysisIndex31Json from "@/common/api/analysis_index31.json";
 
 	var _self;
 	export default {
@@ -101,6 +104,9 @@
 					break;
 				case "share": //点击分享按钮
 					console.log("进入了page的分享监听");
+					// console.log(this.$ownerInstance);
+					// let ImgBase64 = uni.getStorageSync('imageBase64');
+					// console.log(ImgBase64);
 					this.capture()
 					// this.$refs.shareComp.shareFc();
 					break;
@@ -130,8 +136,8 @@
 					success: (res) => {
 						// uni.removeStorageSync('echartArr');
 						dataApi = res.data;
-						// dataApi = analysisConfirmApiJson;
-						console.log(JSON.stringify(dataApi));
+						// dataApi = analysisIndex31Json;
+						// console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
 					},
@@ -181,7 +187,7 @@
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
-						console.log(JSON.stringify(res.data));
+						// console.log(JSON.stringify(res.data));
 						try {
 							// uni.removeStorageSync('echartArr');
 							dataApi = res.data;
