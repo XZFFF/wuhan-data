@@ -46,7 +46,7 @@
 				// 根据id初始化图表
 				this.chart = echarts.init(this.$el)
 				// if (this.option.legend.formatter != null) {
-					
+
 				// 	this.option.legend.formatter = function(name) {
 				// 		return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
 				// 	};
@@ -103,6 +103,23 @@
 				if (this.chart) {
 					// 因App端，回调函数无法从renderjs外传递，故在此自定义设置相关回调函数
 					if (option) {
+						// 单位换算
+						for (let j in option.yAxis) {
+							if (option.yAxis[j]["axisLabel"]) {
+								option.yAxis[j]["axisLabel"] = {
+									"formatter": function(value) {
+										let s = parseInt(value)
+										if (s === NaN) {
+											return name
+										} else if (s >= 10000) {
+											return (s / 10000).toString() + '万'
+										} else {
+											return value
+										}
+									}
+								}
+							}
+						}
 						// tooltip
 						if (option.tooltip) {
 							// 判断是否设置tooltip的位置
@@ -128,6 +145,22 @@
 					}
 					// 设置新的option
 					this.chart.setOption(option, option.notMerge)
+					let thatchart = this.chart;
+					setTimeout(() => {
+						console.log("设置完option后采用延时的数据")
+						let ImgBase64 = thatchart.getDataURL();
+						// console.log(ImgBase64);
+						// uni.setStorageSync('imageBase64', ImgBase64);
+						// $.ajax({
+						// 	type: "POST",
+						// 	url: "http://localhost:8080/wuhan_data1/getAnalysisDetail",
+						// 	data: {token:ImgBase64, indexId:'000'},
+						// 	dataType: "json",
+						// 	success: function(data){
+						// 		console.log(data)
+						// 	}
+						// });
+					}, 3000)
 				}
 			},
 			/**
@@ -235,47 +268,42 @@
 			 * @param {Object} value 
 			 */
 			unitConversion(value) {
-				let newvalue = ['','','']
+				let newvalue = ['', '', '']
 				let fr = 1000
 				const ad = 1
 				let num = 3
 				const fm = 1
 				//求传入值的位数
-				while(value / fr >= 1){
+				while (value / fr >= 1) {
 					fr *= 10
 					num += 1
 				}
-				if(num <= 4){
+				if (num <= 4) {
 					newvalue[1] = '千'
 					newvalue[0] = parseInt(value / 1000) + ''
-				}
-				else if(num <= 8){
+				} else if (num <= 8) {
 					const u = parseInt(num - 4) / 3 > 1 ? '千万' : '万'
 					const fm = '万' === u ? 10000 : 10000000
 					newvalue[1] = u
 					newvalue[0] = (value / fm) + ''
-				}
-				else if(num <= 16){
+				} else if (num <= 16) {
 					let u = (num - 8) / 3 > 1 ? '千亿' : '亿'
 					u = (num - 8) / 4 > 1 ? '万亿' : u
 					u = (num - 8) / 7 > 1 ? '千万亿' : u
 					let fm = 1
-					if('亿' === u){
+					if ('亿' === u) {
 						fm = 100000000
-					}
-					else if('千亿' == u){
+					} else if ('千亿' == u) {
 						fm = 100000000000
-					}
-					else if('万亿' === u){
+					} else if ('万亿' === u) {
 						fm = 1000000000000
-					}
-					else if('千万亿' === u){
+					} else if ('千万亿' === u) {
 						fm = 1000000000000000
 					}
 					newvalue[1] = u
 					newvalue[0] = parseInt(value / fm) + ''
 				}
-				if(value < 1000){
+				if (value < 1000) {
 					newvalue[1] = ''
 					newvalue[0] = value + ''
 				}
