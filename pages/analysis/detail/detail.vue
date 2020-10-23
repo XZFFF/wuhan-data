@@ -45,7 +45,7 @@
 	import analysisDemoApiJson from "@/common/api/anaDemo.json";
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
-	import _app from '@/common/app.js';
+	import _app from '@/common/QS-Share/app.js';
 	import analysisNewJson from "@/common/api/anaNewJson.json";
 
 	var _self;
@@ -403,87 +403,79 @@
 			},
 			async genimg(data) {
 				if (data) {
-					try {
-						const d = await getSharePoster({
-							_this: this, //若在组件中使用 必传
-							posterCanvasId: "default_PosterCanvasId", //canvasId
-							delayTimeScale: 20, //延时系数
-							reserve: true,
-							background: {
-								height: 10,
-								width: 10
-							},
-							setCanvasWH: ({
-								bgObj
-							}) => {
-								this.imagesPoster = bgObj;
-							},
-							drawArray: ({
-								bgObj,
-								type,
-								bgScale,
-								setBgObj,
-								getBgObj
-							}) => {
-								let imglen = data.length
-								let retobj = []
-								if (imglen > 0) {
-									for (let i = 0; i < imglen; i++) {
-										let obj = {
-											type: 'image',
-											url: data[i],
-											dx: 0,
-											serialNum: 0,
-											infoCallBack(imageInfo) {
-												let width, height;
-												if (imageInfo.width > imageInfo.height) {
-													width = imageInfo.width > 700 ? 700 : imageInfo.width;
-													height = width / imageInfo.width * imageInfo.height;
-												} else {
-													height = imageInfo.height > 700 ? 700 : imageInfo.height;
-													width = height / imageInfo.height * imageInfo.width;
-												}
-												if (width < 500) {
-													width = 500;
-													height = width / imageInfo.width * imageInfo.height;
-												}
-												let addHeight = height * .1;
-												if (addHeight < 100) addHeight = 100;
-												if (addHeight > 150) addHeight = 150;
-												let preheight = getBgObj().height
-												setBgObj({
-													width,
-													height: preheight + height + addHeight
-												});
-												return {
-													dWidth: width,
-													dHeight: height,
-													dy: preheight + 1,
-												}
+					const d = await getSharePoster({
+						_this: this, //若在组件中使用 必传
+						posterCanvasId: "default_PosterCanvasId", //canvasId
+						delayTimeScale: 20, //延时系数
+						reserve: true,
+						background: {
+							height: 10,
+							width: 10
+						},
+						setCanvasWH: ({
+							bgObj
+						}) => {
+							this.imagesPoster = bgObj;
+						},
+						drawArray: ({
+							bgObj,
+							type,
+							bgScale,
+							setBgObj,
+							getBgObj
+						}) => {
+							let imglen = data.length
+							let retobj = []
+							if (imglen > 0) {
+								for (let i = 0; i < imglen; i++) {
+									let obj = {
+										type: 'image',
+										url: data[i],
+										dx: 0,
+										serialNum: 0,
+										infoCallBack(imageInfo) {
+											let width, height;
+											if (imageInfo.width > imageInfo.height) {
+												width = imageInfo.width > 700 ? 700 : imageInfo.width;
+												height = width / imageInfo.width * imageInfo.height;
+											} else {
+												height = imageInfo.height > 700 ? 700 : imageInfo.height;
+												width = height / imageInfo.height * imageInfo.width;
+											}
+											if (width < 500) {
+												width = 500;
+												height = width / imageInfo.width * imageInfo.height;
+											}
+											let addHeight = height * .1;
+											if (addHeight < 100) addHeight = 100;
+											if (addHeight > 150) addHeight = 150;
+											let preheight = getBgObj().height
+											setBgObj({
+												width,
+												height: preheight + height + addHeight
+											});
+											return {
+												dWidth: width,
+												dHeight: height,
+												dy: preheight + 1,
 											}
 										}
-										retobj.push(obj)
 									}
+									retobj.push(obj)
 								}
-								//可直接return数组，也可以return一个promise对象, 但最终resolve一个数组, 这样就可以方便实现后台可控绘制海报
-								return new Promise((rs, rj) => {
-									rs(retobj);
-								})
-							},
-
-						});
-						_app.log('海报生成成功, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
-						this.imagesPoster.finalPath = d.imagesPoster.tempFilePath;
-						// uni.setStorageSync("")
-					} catch (e) {
-						_app.hideLoading();
-
-						console.log("海报生成失败");
-						console.log(JSON.stringify(e));
-					}
+							}
+							//可直接return数组，也可以return一个promise对象, 但最终resolve一个数组, 这样就可以方便实现后台可控绘制海报
+							return new Promise((rs, rj) => {
+								rs(retobj);
+							})
+						},
+					});
+					let path = d.poster.tempFilePath
+					console.log(path)
 					// #ifdef APP-PLUS
-					_app.getShare(false, false, 2, '', '', '', this.imagesPoster.finalPath, false, false);
+					_app.getShare(false, false, 2, '', '', '', path, false, false);
 					// #endif
+					_app.log('海报生成成功------, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
 				}
 			}
 		}

@@ -1,6 +1,6 @@
-let log = console.log; // 如果在项目的APP.vue文件中的onlaunch中设置 console.log = ()=> {} 则在此也不会有打印信息
+const log = console.log; // 如果在项目的APP.vue文件中的onlaunch中设置 console.log = ()=> {} 则在此也不会有打印信息
 // log = ()=>{};	// 打开注释则该插件不会打印任何信息
-let _app = {
+const _app = {
 	//交互控制
 	log(t) {
 		log(t);
@@ -363,19 +363,19 @@ let _app = {
 		})
 	},
 	// #ifdef APP-PLUS
-	getShare(providerName, WXScene, shareType, title, summary, href, imageUrl, miniProgramObj, mediaUrl, scb, fcb) { //miniProgram: {path: '', type: 0, webUrl: ''}
+	getShare(providerName, WXScene, shareType, title, summary, href, imageURL, miniProgramObj, mediaUrl, scb, fcb) { //miniProgram: {path: '', type: 0, webUrl: ''}
 		let _this = this;
 		if (typeof(shareType) == 'number' && !isNaN(shareType) && shareType >= 0) {
-			_this.readyShare(providerName, WXScene, shareType, title, summary, href, imageUrl, miniProgramObj, mediaUrl, scb,
+			_this.readyShare(providerName, WXScene, shareType, title, summary, href, imageURL, miniProgramObj, mediaUrl, scb,
 				fcb);
 		} else {
 			_this.actionSheet(_this.shareTypeListSheetArray, function(index) {
 				_this.readyShare(providerName, WXScene, _this.shareTypeListSheetArray.array[index], title, summary, href,
-					imageUrl, miniProgramObj, mediaUrl, scb, fcb);
+					imageURL, miniProgramObj, mediaUrl, scb, fcb);
 			});
 		}
 	},
-	readyShare(providerName, WXScene, shareType, title, summary, href, imageUrl, miniProgramObj, mediaUrl, scb, fcb) {
+	readyShare(providerName, WXScene, shareType, title, summary, href, imageURL, miniProgramObj, mediaUrl, scb, fcb) {
 		let _this = this;
 		let shareObjData = {};
 		switch (shareType) {
@@ -383,7 +383,7 @@ let _app = {
 				shareObjData = {
 					href: href,
 					summary: summary,
-					imageUrl: imageUrl
+					imageUrl: imageURL
 				};
 				break;
 			case 1:
@@ -394,7 +394,7 @@ let _app = {
 				break;
 			case 2:
 				shareObjData = {
-					imageUrl: imageUrl
+					imageUrl: imageURL
 				};
 				break;
 			case 3:
@@ -421,7 +421,7 @@ let _app = {
 						id: miniProgramId,
 						type: miniProgramShareType
 					},
-					imageUrl: imageUrl
+					imageUrl: imageURL
 				};
 				providerName = 'weixin';
 				break;
