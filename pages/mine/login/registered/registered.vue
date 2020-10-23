@@ -1,5 +1,5 @@
 <template>
-	<view style="height: 100%;background-image: url(../../../../static/splash.png);background-size: cover;">           
+	<view style="height: 100%;background-image: url(../../../../static/splash.png);background-size: cover;">
 		<view style="padding-top: 200upx;">
 			<view class="registered-box">
 				<view style="padding-top: 60upx;">
@@ -16,7 +16,7 @@
 						</view>
 					</view>
 					<view class="login-list">
-						<text class="title">密  码</text>
+						<text class="title">密 码</text>
 						<view class="list">
 							<input class="input" type="password" v-model="password" placeholder="请输入密码" />
 						</view>
@@ -28,7 +28,7 @@
 						</view>
 					</view>
 					<view class="login-list">
-						<text class="title">姓  名</text>
+						<text class="title">姓 名</text>
 						<view class="list">
 							<input class="input" type="text" v-model="name" placeholder="请输入真实姓名" />
 						</view>
@@ -43,7 +43,7 @@
 <script>
 	import checkApi from '@/common/checkApi.js';
 	import loginApiJson from "@/common/api/login.json";
-	
+
 	export default {
 		props: {
 			second: {
@@ -56,7 +56,7 @@
 				token: "",
 				tel: "",
 				password: "",
-				repassword:"",
+				repassword: "",
 				countryTel: "+86",
 				name: "",
 			}
@@ -68,7 +68,7 @@
 				this.countryTel = changeTel.tel;
 			}
 			let winHeight = uni.getSystemInfoSync().windowHeight;
-			uni.setStorageSync('winHeight',winHeight);
+			uni.setStorageSync('winHeight', winHeight);
 		},
 		methods: {
 			goTelIndex(e) {
@@ -129,38 +129,36 @@
 						title: '姓名不能为空'
 					});
 					return;
-				}{
+				} {
 					console.log("11111111111111")
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
-						// url: this.apiUrl + "loginaa",
-						url: 'http://www.baidu.com',
+						url: this.apiUrl + "userRegister",
+						// url: 'http://www.baidu.com',
 						data: {
-							"token":this.token,
+							"token": this.token,
 							"tel": this.tel,
 							"password": this.password,
 							"name": encodeURI(this.name)
 						},
 						success: (res) => {
-							// let dataApi = res.data;
-							let dataApi = loginApiJson;
+							let dataApi = res.data;
+							// let dataApi = loginApiJson;
 							checkApi.isApi(dataApi);
 							try {
 								let userData = dataApi.data;
 								// 验证账号密码的正确性
 								let reNum = this.verify(userData);
-								if(reNum != -1){
-										uni.showToast({
+								if (reNum != -1) {
+									uni.showToast({
 										icon: 'none',
 										title: '该手机号已被注册',
 										duration: 1000
 									});
 									return;
-								}
-								else{
-									if(dataApi.errCode == 0)
-									{
+								} else {
+									if (dataApi.errCode == 0) {
 										setTimeout(function() {
 											uni.showToast({
 												title: '注册成功',
@@ -190,15 +188,14 @@
 			},
 			//登录验证
 			verify(userStr) {
-				if(userStr.tel === this.tel) {
+				if (userStr.tel === this.tel) {
 					// 手机号已被注册
 					return 0;
-				}
-				else{
+				} else {
 					//手机号码未注册
 					return -1;
 				}
-				
+
 			}
 		}
 	}
@@ -213,13 +210,13 @@
 		margin-right: auto;
 		border-radius: 10px;
 	}
-	
+
 	.login-list {
 		height: 60upx;
 		margin-top: 60upx;
 		margin-left: 50upx;
 	}
-	
+
 	.title {
 		float: left;
 		width: 150upx;
@@ -227,13 +224,13 @@
 		line-height: 60upx;
 		text-align: center;
 	}
-	
+
 	.list {
 		height: 60upx;
 		width: 70%;
 		float: left;
 	}
-	
+
 	.input {
 		background-color: rgb(247, 247, 247);
 		border-radius: 5px;
@@ -241,20 +238,20 @@
 		padding: 0 20upx;
 		height: 60upx;
 	}
-	
+
 	.login-button {
 		width: 90%;
 		height: 80upx;
 		margin-left: auto;
 		margin-right: auto;
-		text-align:center;
+		text-align: center;
 		font-size: 35upx;
 		color: #FFFFFF;
 		background-color: rgb(26, 130, 210);
 		border-radius: 5px;
 		margin-top: 90upx;
 	}
-	
+
 	.triangle {
 		width: 0;
 		height: 0;
@@ -264,5 +261,4 @@
 		border-style: solid;
 		border-color: rgb(68, 68, 68) transparent transparent;
 	}
-
 </style>

@@ -25,6 +25,13 @@
 				<information-list title="职务" :content="user.roleName"></information-list>
 			</view>
 			<view class="uni-list" style="margin-top: 20upx;">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" @click="goDetailPage('reset_password')">
+					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
+						<view class="uni-media-list-text" style="font-size: 30upx">修改密码</view>
+					</view>
+				</view>
+			</view>
+			<view class="uni-list" style="margin-top: 20upx;">
 				<view class="uni-list-cell" hover-class="uni-list-cell-hover" @click="goDetailPage('change_tel')">
 					<view class="uni-list-cell-navigate uni-navigate-right uni-media-list">
 						<view class="uni-media-list-text" style="font-size: 30upx">更换手机号</view>
@@ -158,7 +165,7 @@
 								this.user.head = this.user.head.concat(chooseImageRes.tempFilePaths);
 							}
 						});
-						
+
 					},
 				})
 			},
@@ -167,6 +174,9 @@
 				switch (func) {
 					case 'change_tel':
 						url = "../change_tel/change_tel";
+						break;
+					case 'reset_password':
+						url = "../resetpassword/resetpassword";
 						break;
 					case 'edit_information':
 						url = "../edit_information/edit_information";

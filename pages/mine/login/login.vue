@@ -124,17 +124,21 @@
 					uni.request({
 						method: 'POST',
 						url: this.apiUrl + "loginaa",
+						// url: 'http://www.baidu.com',
 						data: {
 							"tel": this.tel,
+							// "verCode": this.password,
 							"password": this.password
 						},
 						success: (res) => {
 							let dataApi = res.data;
+							// let dataApi = loginApiJson;
 							checkApi.isApi(dataApi);
 							try {
 								let userData = dataApi.data;
 								// 验证账号密码的正确性
-								let reNum = this.verify(userData);
+								// let reNum = this.verify(userData);
+								let reNum = dataApi.errcode
 								if (reNum == 0) {
 									let tokenStr = dataApi.data.token;
 									let userStr = JSON.stringify(dataApi.data);
@@ -180,6 +184,7 @@
 			},
 			//登录验证
 			verify(userStr) {
+				return 0;
 				if (userStr.tel === this.tel && userStr.password === this.password) {
 					// 手机号、密码正确，验证成功
 					return 0;

@@ -1,7 +1,7 @@
 <template>
 	<view style="height: 100%; ">
 		<view>
-			<image class="sure" src="../../../../static/icon/mine/sure.png"></image>
+			<image class="sure" src="../../../static/icon/mine/sure.png"></image>
 			<p style="text-align: center; font-size: 60upx;margin-top: 20upx; color: #1A82D2;">
 				数说武汉<br />
 				账户中心<br />
@@ -9,21 +9,21 @@
 		</view>
 		<view style="margin-top: 80upx;">
 			<view class="change-list">
-				<text class="title">手机号</text>
+				<text class="title">旧 密 码</text>
 				<view class="list">
-					<input class="input" type="number" maxlength="11" placeholder="请输入手机号" v-model="tel" />
+					<input class="input" type="password" placeholder="请输入旧密码" v-model="oldpassword" />
 				</view>
 			</view>
 			<view class="change-list">
 				<text class="title">新 密 码</text>
 				<view class="list">
-					<input class="input" type="password" placeholder="请输入新密码" v-model="password" />
+					<input class="input" type="password" placeholder="请输入新密码" v-model="newpassword" />
 				</view>
 			</view>
 			<view class="change-list">
-				<text class="title">真实姓名</text>
+				<text class="title">确认密码</text>
 				<view class="list">
-					<input class="input" type="number" maxlength="11" placeholder="请输入真实姓名" v-model="name" />
+					<input class="input" type="password" placeholder="请确认新密码" v-model="comfirmpassword" />
 				</view>
 			</view>
 			<button class="finish-button" @click="changeTel">
@@ -51,7 +51,9 @@
 				// seconds: 0,
 				// timer: null,
 				tel: '',
-				password: '',
+				oldpassword: '',
+				newpassword: '',
+				comfirmpassword: '',
 				name: '',
 				// verificationCode: '',
 			}
@@ -62,99 +64,95 @@
 				this.countryTel = changeTel.tel;
 			}
 			let winHeight = uni.getSystemInfoSync().windowHeight;
-			uni.setStorageSync('winHeight',winHeight);
+			uni.setStorageSync('winHeight', winHeight);
 		},
 		methods: {
 			changeTel(e) {
-				let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
 				let mypas = /(?!^\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\u4E00-\u9FA5].*$)^\S{6,20}$/
-				if (this.tel.length != 11) {
+				if (this.oldpassword.length == 0) {
 					uni.showToast({
 						icon: 'none',
-						title: '手机号码格式错误',
-						duration: 500
+						title: '请输入旧密码'
 					});
 					return;
 				}
-				if (!myreg.test(this.tel)) {
-					uni.showToast({
-						icon: 'none',
-						title: '请输入有效的手机号'
-					});
-					return;
-				}
-				if (this.password.length == 0) {
+				if (this.newpassword.length == 0) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入新密码'
 					});
 					return;
 				}
-				if (this.password.length < 10) {
+				if (this.comfirmpassword.length == 0) {
 					uni.showToast({
 						icon: 'none',
-						title: '密码过于简单，请重设'
+						title: '请确认新密码'
 					});
 					return;
 				}
-				if (!mypas.test(this.password)) {
+				if (this.newpassword.length < 10) {
+					uni.showToast({
+						icon: 'none',
+						title: '新密码过于简单，请重设'
+					});
+					return;
+				}
+				if (!mypas.test(this.newpassword)) {
 					uni.showToast({
 						icon: 'none',
 						title: '至少为字母、数字、符号两种组成,不包含空格和中文'
 					});
 					return;
 				}
-				if (this.name == "") {
+				if (this.newpassword != this.comfirmpassword) {
 					uni.showToast({
 						icon: 'none',
-						title: '姓名不能为空'
+						title: '新密码和确认密码不一致'
 					});
 					return;
-				}{
+				} {
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
-						// url: this.apiUrl + 'editUserApp',
-						url: 'http://www.baidu.com',
+						url: this.apiUrl + 'changePassword',
+						// url: 'http://www.baidu.com',
 						data: {
 							"token": this.token,
-							"tel": this.newtel,
-							"password": this.password,
-							"name": this.name
+							"password": this.password
 						},
 						success: (res) => {
-							// let dataApi = res.data;
-							let dataApi = loginApiJson;
+							let dataApi = res.data;
+							// let dataApi = loginApiJson;
 							checkApi.isApi(dataApi);
 							try {
-								
+
 								let userData = dataApi.data;
 								// 验证账号密码的正确性
-								let reNum = this.verify(userData);
+								// let reNum = this.verify(userData);
+								let reNum = dataApi.errCode;
 								console.log(reNum);
-								if(reNum === 0){
+								if (dataApi.errCode == 0) {
 									uni.showToast({
 										icon: 'none',
 										title: '密码重置成功',
 										duration: 1000
 									});
 									setTimeout(function() {
-										uni.switchTab({
-											url: '../../login/login',
+										uni.navigateTo({
+											url: '../../mine/information/information',
 										})
 									}, 1000);
-								}
-								else if(reNum === -1){
+									return;
+								} else if (reNum == -4) {
 									uni.showToast({
 										icon: 'none',
-										title: '真实姓名错误'
+										title: '手机号未注册'
 									});
 									return;
-								}
-								else{
+								} else {
 									uni.showToast({
 										icon: 'none',
-										title: '旧手机号未注册'
+										title: '数据异常'
 									});
 									return;
 								}
@@ -174,19 +172,17 @@
 			},
 			//登录验证
 			verify(userStr) {
-				if(userStr.tel === this.tel && userStr.name === this.name) {
+				if (userStr.tel === this.tel && userStr.name === this.name) {
 					// 手机号、真实姓名正确，验证成功
 					return 0;
-				}
-				else if(userStr.tel === this.tel && userStr.name !== this.name) {
+				} else if (userStr.tel === this.tel && userStr.name !== this.name) {
 					// 真实姓名不正确
 					return -1;
-				}
-				else{
+				} else {
 					//手机号码不存在
 					return -2;
 				}
-				
+
 			}
 		}
 	}
@@ -194,7 +190,7 @@
 
 <style>
 	.sure {
-		height: 350upx;
+		height: 400upx;
 		width: 350upx;
 		display: block;
 		margin-left: auto;
@@ -238,7 +234,7 @@
 		color: #FFFFFF;
 		background-color: rgb(26, 130, 210);
 		border-radius: 5px;
-		margin-top: 40upx;
+		margin-top: 80upx;
 	}
 
 	.active {

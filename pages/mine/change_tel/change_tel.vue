@@ -9,20 +9,17 @@
 		</view>
 		<view style="margin-top: 80upx;">
 			<view class="change-list">
-				<text class="title">手机号</text>
-				<view class="list">
-					<input class="input" type="number" maxlength="11" placeholder="请输入新手机号" v-model="tel" />
+				<text class="title">旧手机号</text>
+				<view class="init" v-if="user.tel">
+					{{user.tel}}
 				</view>
 			</view>
 			<view class="change-list">
-				<text class="title">验证码</text>
+				<text class="title">新手机号</text>
 				<view class="list">
-					<input class="input" type="number" placeholder="请输入验证码" v-model="verificationCode" />
+					<input class="input" type="number" maxlength="11" placeholder="请输入新手机号" v-model="newtel" />
 				</view>
 			</view>
-			<button :class="['sms-button',smsText==='获取验证码' ? 'active' : '']" style="font-size: 35upx;" @click="smsVerification">
-				{{smsText}}
-			</button>
 			<button class="finish-button" @click="changeTel">
 				提交
 			</button>
@@ -43,13 +40,20 @@
 		},
 		data() {
 			return {
-				token: '',
-				smsText: '获取验证码',
-				seconds: 0,
-				timer: null,
-				tel: '',
-				token: '',
-				verificationCode: '',
+				token: "",
+				user: {
+					"userId": "",
+					"tel": "",
+					"realName": "",
+					"gender": "",
+					"head": "",
+					"birthday": "",
+					"city": "",
+					"description": "",
+					"department": "",
+					"roleName": ""
+				}, // 用户信息
+				newtel: "",
 			}
 		},
 		onShow: function() {
@@ -69,8 +73,9 @@
 			}
 		},
 		methods: {
-			smsVerification(e) {
-				if (this.tel.length != 11) {
+			changeTel(e) {
+				let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
+				if (this.newtel.length != 11) {
 					uni.showToast({
 						icon: 'none',
 						title: '新手机号码格式错误',
@@ -78,6 +83,98 @@
 					});
 					return;
 				}
+				if (!myreg.test(this.newtel)) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入有效的新手机号'
+					});
+					return;
+				} {
+					checkApi.checkNetwork();
+					uni.request({
+						method: 'POST',
+						url: this.apiUrl + "changeTelApp",
+						// url: 'http://www.baidu.com',
+						data: {
+							"token": this.token,
+							"tel": this.newtel,
+						},
+						success: (res) => {
+							let dataApi = res.data;
+							// let dataApi = loginApiJson;
+							checkApi.isApi(dataApi);
+							try {
+
+								let userData = dataApi.data;
+								// 验证账号密码的正确性
+								let reNum = dataApi.errCode;
+								// let reNum = this.verify(userData)
+								console.log(reNum);
+								if (reNum == 0) {
+									let dataApi = confirmChangeApiJson;
+									checkApi.isApi(dataApi);
+									uni.showToast({
+										icon: 'none',
+										title: '手机号修改成功',
+										duration: 1000
+									});
+									setTimeout(function() {
+										uni.switchTab({
+											url: '../../mine/information/information',
+										})
+									}, 1000);
+									return;
+								} else if (reNum == -3) {
+									uni.showToast({
+										icon: 'none',
+										title: '密码错误'
+									});
+									return;
+								} else if (reNum == -2) {
+									uni.showToast({
+										icon: 'none',
+										title: '该手机号已经被注册'
+									});
+									return;
+								} else {
+									uni.showToast({
+										icon: 'none',
+										title: '旧手机号未注册'
+									});
+									return;
+								}
+							} catch (e) {
+								console.log(e.message);
+								uni.showToast({
+									icon: 'none',
+									title: e.message
+								});
+							}
+						},
+						fail: (e) => {
+							console.log(e.errMsg);
+						},
+					})
+				}
+			},
+			//登录验证
+			// verify(userStr) {
+			// 	console.log(userStr)
+			// 	console.log(userStr.tel)
+			// 	console.log(this.password)
+			// 	if (userStr.tel === this.oldtel && userStr.password === this.password) {
+			// 		// 手机号、密码正确，验证成功
+			// 		return 0;
+			// 	} else if (userStr.tel === this.oldtel && userStr.password !== this.password) {
+			// 		// 密码不存在
+			// 		return -1;
+			// 	} else {
+			// 		//手机号码不存在
+			// 		return -2;
+			// 	}
+
+			// }
+			/**
 				if (this.smsText === '获取验证码') {
 					this.smsText = 'loading';
 					let token = uni.getStorageSync('token');
@@ -187,14 +284,14 @@
 						});
 					},
 				})
-			}
+			}**/
 		}
 	}
 </script>
 
 <style>
 	.sure {
-		height: 350upx;
+		height: 400upx;
 		width: 350upx;
 		display: block;
 		margin-left: auto;
@@ -247,7 +344,7 @@
 
 	.title {
 		float: left;
-		width: 120upx;
+		width: 150upx;
 		font-size: 35upx;
 		line-height: 60upx;
 		text-align: center;

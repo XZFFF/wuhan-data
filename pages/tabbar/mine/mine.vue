@@ -21,7 +21,7 @@
 					<view v-if="user.userId" class="right-arrow"></view>
 				</view>
 			</view>
-			<view class="loginPrompt" v-if="!token" @click="goLogin(e)">
+			<view class="loginPrompt" v-if="!token" @click="goLogin()">
 				<image class="head" src="../../../static/icon/mine/head.png"></image>
 				<font style="margin-left: 20upx; line-height: 110upx;text-align: center;">
 					点击进行登录
@@ -233,8 +233,8 @@
 							console.log(e.errMsg);
 						}
 					},
-					fail: (e) => {
-						console.log(e.errMsg);
+					fail: (err) => {
+						console.log(err.errMsg);
 					},
 				});
 			},
