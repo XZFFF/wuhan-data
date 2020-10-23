@@ -367,14 +367,14 @@
 				// 需要判断时候有需要分享的内容，只有 item.classType === 'echarts'的数据需要分享出去，同时也只有这些需要是生成图片
 				// 走请求得到图片的base64
 				let requestData = this.indexDetail
-				let that=this
+				let that = this
 				await uni.request({
 					// url: "http://192.168.3.106:8080/generatorPic",
 					url: this.apiUrl + "generatorPic",
 					method: 'POST',
 					data: requestData,
 					success: (res) => {
-						if(res.data.data.length>0){
+						if (res.data.data.length > 0) {
 							try {
 								let imgdatas = res.data.data;
 								that.genimg(imgdatas)
@@ -401,8 +401,8 @@
 					}
 				});
 			},
-			async genimg(data){
-				if(data){
+			async genimg(data) {
+				if (data) {
 					try {
 						const d = await getSharePoster({
 							_this: this, //若在组件中使用 必传
@@ -435,7 +435,7 @@
 											dx: 0,
 											serialNum: 0,
 											infoCallBack(imageInfo) {
-												let width,height;
+												let width, height;
 												if (imageInfo.width > imageInfo.height) {
 													width = imageInfo.width > 700 ? 700 : imageInfo.width;
 													height = width / imageInfo.width * imageInfo.height;
@@ -470,20 +470,23 @@
 									rs(retobj);
 								})
 							},
-					
+
 						});
 						_app.log('海报生成成功, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
 						this.imagesPoster.finalPath = d.imagesPoster.tempFilePath;
 						// uni.setStorageSync("")
 					} catch (e) {
 						_app.hideLoading();
+
+						console.log("海报生成失败");
 						console.log(JSON.stringify(e));
 					}
 					// #ifdef APP-PLUS
 					_app.getShare(false, false, 2, '', '', '', this.imagesPoster.finalPath, false, false);
 					// #endif
 				}
-		},
+			}
+		}
 	}
 </script>
 
