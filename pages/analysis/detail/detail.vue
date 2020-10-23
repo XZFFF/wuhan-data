@@ -16,6 +16,10 @@
 			</block>
 		</view>
 		<wd-related-list :relatedData="relatedData"></wd-related-list>
+		<!-- 生成图片用的画布，分享前必须有该画布，否则不能分享 -->
+		<view class="hideCanvasView">
+			<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (imagesPoster.width||10) + 'px', height: (imagesPoster.height||10) + 'px'}"></canvas>
+		</view>
 		<!-- <wd-share-poster ref="shareComp"></wd-share-poster> -->
 		<!-- <button @click="addUserDidTakeScreenshotNotification()">监听系统截屏通知</button> -->
 		<!-- <button @click="getScreenshot()">截图</button> -->
@@ -29,6 +33,9 @@
 </template>
 
 <script>
+	import {
+		getSharePoster
+	} from '@/common/QS-Share/QS-SharePoster.js';
 	import wdTimePicker from '@/components/wd-time-picker/wd-time-picker.vue';
 	import wdEcharts from '@/components/wd-echarts/wd-echarts.vue';
 	import wdTable from '@/components/wd-table/wd-table.vue';
@@ -38,7 +45,7 @@
 	import analysisDemoApiJson from "@/common/api/anaDemo.json";
 	import analysisDetailApiJson from "@/common/api/analysisDetail.json";
 	import analysisConfirmApiJson from "@/common/api/analysisConfirm.json";
-	import _app from '@/common/app.js';
+	import _app from '@/common/QS-Share/app.js';
 	import analysisNewJson from "@/common/api/anaNewJson.json";
 	import analysisIndex16Json from "@/common/api/analysis_index16.json";
 	import analysisIndex31Json from "@/common/api/analysis_index31.json";
@@ -60,11 +67,14 @@
 				isFavorite: false,
 				timeCondition: [],
 				areaCondition: [],
-				indexDetail: [],
+				indexDetail: [], // 后端查询回来的classinfo数据，即所有的图表的数据
 				relatedData: [],
 				totalHeight: 1000,
 				classTotalHeight: 400,
-				imageSrc: ''
+				imageSrc: '',
+				// imageclassinfo: {}, // 传递到后端生成图片的calssinfo数据
+				imagesPoster: {}, // 画布的相关参数
+				imagesDataWithEcharts: {} // 分享的图片的相关参数
 			};
 		},
 		onLoad: function(e) {
@@ -103,12 +113,7 @@
 					this.initNav();
 					break;
 				case "share": //点击分享按钮
-					console.log("进入了page的分享监听");
-					// console.log(this.$ownerInstance);
-					// let ImgBase64 = uni.getStorageSync('imageBase64');
-					// console.log(ImgBase64);
 					this.capture()
-					// this.$refs.shareComp.shareFc();
 					break;
 				default:
 					console.log(e.type);
@@ -143,6 +148,12 @@
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
+						uni.showToast({
+							title: "数据加载失败",
+							icon: "none",
+							duration: 500,
+						});
+						return false;
 					},
 					complete: () => {
 						// 检查json数据
@@ -162,6 +173,12 @@
 							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
+							uni.showToast({
+								title: "数据加载失败",
+								icon: "none",
+								duration: 500,
+							});
+							return false;
 						}
 						uni.hideLoading();
 					}
@@ -198,10 +215,22 @@
 							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
+							uni.showToast({
+								title: "数据加载失败",
+								icon: "none",
+								duration: 500,
+							});
+							return false;
 						}
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
+						uni.showToast({
+							title: "数据加载失败",
+							icon: "none",
+							duration: 500,
+						});
+						return false;
 					},
 					complete: () => {
 						uni.hideLoading();
@@ -333,45 +362,123 @@
 					_this.imageSrc = imagePath;
 				});
 			},
-			capture() {
-				var pages = getCurrentPages();
-				var page = pages[pages.length - 1];
-				console.log("当前页" + pages.length - 1);
-				var bitmap = null;
-				var currentWebview = page.$getAppWebview();
-				bitmap = new plus.nativeObj.Bitmap('amway_img');
-				// 将webview内容绘制到Bitmap对象中  
-				currentWebview.draw(bitmap, function() {
-					console.log('截屏绘制图片成功');
-					bitmap.save("_doc/a.jpg", {}, function(i) {
-						console.log('保存图片成功：' + JSON.stringify(i));
-						//拉起分享
-						// #ifdef APP-PLUS
-						_app.getShare(false, false, 2, '', '', '', i.target, false, false);
-						// #endif
-						// #ifndef APP-PLUS
-						_app.showToast('请在APP中进行分享');
-						// #endif
-						uni.saveImageToPhotosAlbum({
-							filePath: i.target,
-							success: function() {
-								bitmap.clear(); //销毁Bitmap图片  
+			async capture() {
+				// 注，此方法应为同步方法
+				// todo 整体画布的分享
+				// 需要判断时候有需要分享的内容，只有 item.classType === 'echarts'的数据需要分享出去，同时也只有这些需要是生成图片
+				// 走请求得到图片的base64
+				let requestData = this.indexDetail
+				let that = this
+				await uni.request({
+					// url: "http://192.168.3.106:8080/generatorPic",
+					url: this.apiUrl + "generatorPic",
+					method: 'POST',
+					data: requestData,
+					success: (res) => {
+						if (res.data.data.length > 0) {
+							try {
+								let imgdatas = res.data.data;
+								that.genimg(imgdatas)
+							} catch (e) {
 								uni.showToast({
-									title: '已保存到相册',
-									mask: false,
-									duration: 1500
+									title: "文件生成失败",
+									icon: "none",
+									duration: 500,
 								});
+								return false;
 							}
+						}
+					},
+					fail: (e) => {
+						uni.showToast({
+							title: "数据加载失败",
+							icon: "none",
+							duration: 500,
 						});
-
-					}, function(e) {
-						console.log('保存图片失败：' + JSON.stringify(e));
-					});
-				}, function(e) {
-					console.log('截屏绘制图片失败：' + JSON.stringify(e));
+						return false;
+					},
+					complete: () => {
+						uni.hideLoading();
+					}
 				});
-				//currentWebview.append(amway_bit);    
 			},
+			async genimg(data) {
+				if (data) {
+					const d = await getSharePoster({
+						_this: this, //若在组件中使用 必传
+						posterCanvasId: "default_PosterCanvasId", //canvasId
+						delayTimeScale: 20, //延时系数
+						reserve: true,
+						background: {
+							height: 10,
+							width: 10
+						},
+						setCanvasWH: ({
+							bgObj
+						}) => {
+							this.imagesPoster = bgObj;
+						},
+						drawArray: ({
+							bgObj,
+							type,
+							bgScale,
+							setBgObj,
+							getBgObj
+						}) => {
+							let imglen = data.length
+							let retobj = []
+							if (imglen > 0) {
+								for (let i = 0; i < imglen; i++) {
+									let obj = {
+										type: 'image',
+										url: data[i],
+										dx: 0,
+										serialNum: 0,
+										infoCallBack(imageInfo) {
+											let width, height;
+											if (imageInfo.width > imageInfo.height) {
+												width = imageInfo.width > 700 ? 700 : imageInfo.width;
+												height = width / imageInfo.width * imageInfo.height;
+											} else {
+												height = imageInfo.height > 700 ? 700 : imageInfo.height;
+												width = height / imageInfo.height * imageInfo.width;
+											}
+											if (width < 500) {
+												width = 500;
+												height = width / imageInfo.width * imageInfo.height;
+											}
+											let addHeight = height * .1;
+											if (addHeight < 100) addHeight = 100;
+											if (addHeight > 150) addHeight = 150;
+											let preheight = getBgObj().height
+											setBgObj({
+												width,
+												height: preheight + height + addHeight
+											});
+											return {
+												dWidth: width,
+												dHeight: height,
+												dy: preheight + 1,
+											}
+										}
+									}
+									retobj.push(obj)
+								}
+							}
+							//可直接return数组，也可以return一个promise对象, 但最终resolve一个数组, 这样就可以方便实现后台可控绘制海报
+							return new Promise((rs, rj) => {
+								rs(retobj);
+							})
+						},
+					});
+					let path = d.poster.tempFilePath
+					console.log(path)
+					// #ifdef APP-PLUS
+					_app.getShare(false, false, 2, '', '', '', path, false, false);
+					// #endif
+					_app.log('海报生成成功------, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
+				}
+			}
 		}
 	}
 </script>
@@ -387,6 +494,17 @@
 	view {
 		/* 设置flex会导致classHeight无效，但不设置会导致classTitle错位 */
 		/* display: flex; */
+	}
+
+	.hideCanvasView {
+		position: relative;
+	}
+
+	.hideCanvas {
+		position: fixed;
+		top: -99999upx;
+		left: -99999upx;
+		z-index: -99999;
 	}
 
 	.container {
