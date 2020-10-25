@@ -7,7 +7,7 @@
 						账户登录
 					</view>
 					<view style="font-size: 35upx; margin-left: 50upx; margin-bottom: 80upx;">
-						请输入您的手机号码和验证码
+						请输入您的手机号码和密码
 					</view>
 					<view class="login-list">
 						<view class="title" @click="goTelIndex" style="display: flex;">{{countryTel}}
