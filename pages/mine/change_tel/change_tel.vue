@@ -57,8 +57,11 @@
 			}
 		},
 		onShow: function() {
+			this.getUserStorage();
 			if (checkApi.checkToken()) {
 				this.token = uni.getStorageSync('token');
+				console.log(this.token);
+				//this.user = uni.getStorageSync('user');
 			} else {
 				uni.showToast({
 					icon: 'none',
@@ -73,6 +76,18 @@
 			}
 		},
 		methods: {
+			getUserStorage() {
+				try {
+					let user = uni.getStorageSync('user');
+					if (user) {
+						console.log("读取用户信息缓存");
+						var userJson=JSON.parse(user);
+						this.user = userJson;
+					}
+				} catch (e) {
+					console.log(e.message);
+				}
+			},
 			changeTel(e) {
 				let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
 				if (this.newtel.length != 11) {
@@ -119,7 +134,7 @@
 										duration: 1000
 									});
 									setTimeout(function() {
-										uni.switchTab({
+										uni.navigateBack({
 											url: '../../mine/information/information',
 										})
 									}, 1000);

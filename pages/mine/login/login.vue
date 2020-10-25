@@ -154,7 +154,7 @@
 											url: '../../tabbar/mine/mine',
 										})
 									}, 1000);
-								} else if (reNum == -1) {
+								} else if (reNum == -2) {
 									uni.showToast({
 										icon: 'none',
 										title: '密码错误'
@@ -163,7 +163,7 @@
 								} else {
 									uni.showToast({
 										icon: 'none',
-										title: '账号未注册'
+										title: '请求错误'
 									});
 									return;
 								}

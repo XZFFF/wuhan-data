@@ -239,7 +239,7 @@
 			}
 		},
 		{
-			"path": "pages/mine/login/resetpassword/resetpassword",
+			"path": "pages/mine/resetpassword/resetpassword",
 			"style": {
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "忘记密码"
