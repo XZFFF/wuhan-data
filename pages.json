@@ -244,8 +244,17 @@
 				"navigationBarBackgroundColor": "#3A82CC",
 				"navigationBarTitleText": "忘记密码"
 			}
-		}
-	],
+		},
+	    {
+            "path" : "pages/webview/webview",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "服务协议",
+                "enablePullDownRefresh": true,
+				"navigationBarTextStyle": "black"
+            }
+        }
+    ],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
 	"globalStyle": {
 		"navigationStyle": "default",

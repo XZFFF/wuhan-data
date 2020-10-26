@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<lyg-popup @popupState="popupState" title="服务协议" protocolPath='../../webview/webview?can_share=false' policyPath='../../webview/webview?can_share=false'
+		 policyStorageKey="has_read_privacy"></lyg-popup>
 		<!-- 轮播图 -->
 		<view style="background-color: #FFFFFF; margin-bottom: 0upx; max-height: 480upx;">
 			<!-- 全屏宽轮播图 -->
@@ -47,14 +49,20 @@
 	// 引入公共样式
 	import uniIcon from '@/components/uni-icon/uni-icon.vue';
 	import wdTopicCard from '@/components/wd-topic-card/wd-topic-card.vue';
+	import lyg_popup from '@/components/lyg-popup/lyg-popup.vue';
 	import checkApi from '@/common/checkApi.js';
+	import {
+		mapMutations
+	} from 'vuex';
 	import homeApiJson from '@/common/api/home.json';
+
 
 
 	export default {
 		components: {
 			uniIcon,
-			wdTopicCard
+			wdTopicCard,
+			lyg_popup
 		},
 		data() {
 			return {
@@ -232,6 +240,22 @@
 						});
 					}
 				});
+			},
+			popupState(state) {
+				console.log(state);
+				// #ifdef APP-PLUS
+				console.log(uni.getSystemInfoSync().platform);
+				if (uni.getSystemInfoSync().platform == "android") {
+					plus.runtime.quit();
+				}
+				if (uni.getSystemInfoSync().platform == "ios") {
+					// const threadClass = plus.ios.importClass("NSThread");
+					// const mainThread = plus.ios.invoke(threadClass, "mainThread");
+					// plus.ios.invoke(mainThread, "exit");
+					//上面的不行就用下面的
+					plus.ios.import("UIApplication").sharedApplication().performSelector("exit")
+				}
+				// #endif
 			},
 		}
 	}
