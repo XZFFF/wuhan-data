@@ -245,15 +245,17 @@
 				console.log(state);
 				// #ifdef APP-PLUS
 				console.log(uni.getSystemInfoSync().platform);
-				if (uni.getSystemInfoSync().platform == "android") {
-					plus.runtime.quit();
-				}
-				if (uni.getSystemInfoSync().platform == "ios") {
-					// const threadClass = plus.ios.importClass("NSThread");
-					// const mainThread = plus.ios.invoke(threadClass, "mainThread");
-					// plus.ios.invoke(mainThread, "exit");
-					//上面的不行就用下面的
-					plus.ios.import("UIApplication").sharedApplication().performSelector("exit")
+				if (!state) {
+					if (uni.getSystemInfoSync().platform == "android") {
+						plus.runtime.quit();
+					}
+					if (uni.getSystemInfoSync().platform == "ios") {
+						// const threadClass = plus.ios.importClass("NSThread");
+						// const mainThread = plus.ios.invoke(threadClass, "mainThread");
+						// plus.ios.invoke(mainThread, "exit");
+						//上面的不行就用下面的
+						plus.ios.import("UIApplication").sharedApplication().performSelector("exit")
+					}
 				}
 				// #endif
 			},
