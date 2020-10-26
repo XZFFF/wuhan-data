@@ -136,7 +136,7 @@
 							}
 						},
 						fail: (e) => {
-						    console.log(e.errMsg);
+						    // console.log(e.errMsg);
 						    uni.showToast({
 						    	icon: 'none',
 						    	title: e.errMsg

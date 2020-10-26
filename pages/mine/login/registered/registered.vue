@@ -131,7 +131,7 @@
 					});
 					return;
 				} {
-					console.log("11111111111111")
+					
 					checkApi.checkNetwork();
 					uni.request({
 						method: 'POST',
@@ -141,7 +141,7 @@
 							"token": this.token,
 							"tel": this.tel,
 							"password": this.password,
-							"name": encodeURI(this.name)
+							"name": this.name
 						},
 						success: (res) => {
 							let dataApi = res.data;
@@ -150,22 +150,24 @@
 							try {
 								let userData = dataApi.data;
 								// 验证账号密码的正确性
-								let reNum = this.verify(userData);
-								if (reNum != -1) {
+								// let reNum = this.verify(userData);
+								let reNum = dataApi.errCode;
+								console.log(reNum)
+								if (reNum == -1) {
 									uni.showToast({
 										icon: 'none',
 										title: '数据库操作错误',
 										duration: 1000
 									});
 									return;
-								} else if (reNum != -2) {
+								} else if (reNum == -2) {
 									uni.showToast({
 										icon: 'none',
 										title: '请求参数异常',
 										duration: 1000
 									});
 									return;
-								} else if (reNum != -3) {
+								} else if (reNum == -3) {
 									uni.showToast({
 										icon: 'none',
 										title: '该手机号已经被注册',

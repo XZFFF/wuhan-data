@@ -95,7 +95,7 @@
 					});
 					return;
 				}
-				if (this.newpassword.length < 10) {
+				if (this.newpassword.length < 6) {
 					uni.showToast({
 						icon: 'none',
 						title: '新密码过于简单，请重设'

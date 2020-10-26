@@ -138,7 +138,8 @@
 								let userData = dataApi.data;
 								// 验证账号密码的正确性
 								// let reNum = this.verify(userData);
-								let reNum = dataApi.errcode
+								let reNum = dataApi.errCode
+								console.log(reNum)
 								if (reNum == 0) {
 									let tokenStr = dataApi.data.token;
 									let userStr = JSON.stringify(dataApi.data);

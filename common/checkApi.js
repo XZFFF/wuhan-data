@@ -1,6 +1,6 @@
 module.exports = {
 	error: '',
-	apiUrl: 'http://59.208.244.108:4708/wuhan-data-panel/',
+	apiUrl: 'http://192.168.124.32:8080/',
 	// 检查是否是合法api数据
 	isApi: function(apiData) {
 		try {
