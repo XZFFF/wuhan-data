@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<lyg-popup @popupState="popupState" title="服务协议" protocolPath='../../webview/webview?can_share=false' policyPath='../../webview/webview?can_share=false'
-		 policyStorageKey="has_read_privacy"></lyg-popup>
+		<lyg-popup @popupState="popupState" title="服务协议" protocolPath='../../webview/webview?can_share=false&url=/back/userTerms1.html'
+		 policyPath='../../webview/webview?can_share=false&url=/back/userTerms2.html' policyStorageKey="has_read_privacy"></lyg-popup>
 		<!-- 轮播图 -->
 		<view style="background-color: #FFFFFF; margin-bottom: 0upx; max-height: 480upx;">
 			<!-- 全屏宽轮播图 -->
