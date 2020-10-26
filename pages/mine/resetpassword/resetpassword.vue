@@ -1,7 +1,7 @@
 <template>
 	<view style="height: 100%; ">
 		<view>
-			<image class="sure" src="../../../../static/icon/mine/sure.png"></image>
+			<image class="sure" src="../../../static/icon/mine/sure.png"></image>
 			<p style="text-align: center; font-size: 60upx;margin-top: 20upx; color: #1A82D2;">
 				数说武汉<br />
 				账户中心<br />
@@ -145,7 +145,7 @@
 										duration: 1000
 									});
 									setTimeout(function() {
-										uni.navigateTo({
+										uni.navigateBack({
 											url: '../../mine/information/information',
 										})
 									}, 1000);

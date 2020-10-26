@@ -16,19 +16,20 @@
 						</view>
 					</view>
 					<view class="login-list">
-						<text class="title">密 码</text>
+						<text class="title">密  码 ：</text>
 						<view class="list">
 							<input class="input" type="password" v-model="password" placeholder="请输入密码" />
 						</view>
 					</view>
-					<view class="login-list">
+					<view style="font-size: 28upx;margin-left: 200upx;color: rgb(100,100,100);">密码至少为字母、数字、符号两种组成</view>
+					<view class="confirm-list">
 						<text class="title">确认密码</text>
 						<view class="list">
 							<input class="input" type="password" v-model="repassword" placeholder="请再次输入密码" />
 						</view>
 					</view>
 					<view class="login-list">
-						<text class="title">姓 名</text>
+						<text class="title">姓  名 ：</text>
 						<view class="list">
 							<input class="input" type="text" v-model="name" placeholder="请输入真实姓名" />
 						</view>
@@ -102,7 +103,7 @@
 					});
 					return;
 				}
-				if (this.password.length < 10) {
+				if (this.password.length < 6) {
 					uni.showToast({
 						icon: 'none',
 						title: '密码过于简单，请重设'
@@ -203,7 +204,7 @@
 
 <style>
 	.registered-box {
-		height: 850upx;
+		height: 870upx;
 		width: 90%;
 		background-color: #FFFFFF;
 		margin-left: auto;
@@ -213,7 +214,13 @@
 
 	.login-list {
 		height: 60upx;
-		margin-top: 60upx;
+		margin-top: 70upx;
+		margin-left: 50upx;
+	}
+	
+	.confirm-list {
+		height: 60upx;
+		margin-top: 40upx;
 		margin-left: 50upx;
 	}
 
@@ -249,7 +256,7 @@
 		color: #FFFFFF;
 		background-color: rgb(26, 130, 210);
 		border-radius: 5px;
-		margin-top: 90upx;
+		margin-top: 70upx;
 	}
 
 	.triangle {
