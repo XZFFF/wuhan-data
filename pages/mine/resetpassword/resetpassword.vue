@@ -141,7 +141,7 @@
 								if (dataApi.errCode == 0) {
 									uni.showToast({
 										icon: 'none',
-										title: '密码重置成功',
+										title: '密码修改成功',
 										duration: 1000
 									});
 									setTimeout(function() {
@@ -149,6 +149,24 @@
 											url: '../../mine/information/information',
 										})
 									}, 1000);
+									return;
+								} else if (reNum == -1) {
+									uni.showToast({
+										icon: 'none',
+										title: '数据库操作错误'
+									});
+									return;
+								} else if (reNum == -2) {
+									uni.showToast({
+										icon: 'none',
+										title: '请求参数异常'
+									});
+									return;
+								} else if (reNum == -3) {
+									uni.showToast({
+										icon: 'none',
+										title: 'token令牌错误'
+									});
 									return;
 								} else if (reNum == -4) {
 									uni.showToast({

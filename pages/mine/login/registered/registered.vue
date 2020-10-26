@@ -154,24 +154,44 @@
 								if (reNum != -1) {
 									uni.showToast({
 										icon: 'none',
-										title: '该手机号已被注册',
+										title: '数据库操作错误',
 										duration: 1000
 									});
 									return;
-								} else {
-									if (dataApi.errCode == 0) {
+								} else if (reNum != -2) {
+									uni.showToast({
+										icon: 'none',
+										title: '请求参数异常',
+										duration: 1000
+									});
+									return;
+								} else if (reNum != -3) {
+									uni.showToast({
+										icon: 'none',
+										title: '该手机号已经被注册',
+										duration: 1000
+									});
+									return;
+								} else if (dataApi.errCode == 0) {
 										setTimeout(function() {
 											uni.showToast({
 												title: '注册成功',
 												icon: 'none',
 											});
 										}, 300);
-									}
 									let url = '../../login/login';
 									uni.navigateTo({
 										url: url
 									});
 									return false;
+								}
+								else {
+									uni.showToast({
+										icon: 'none',
+										title: '数据错误',
+										duration: 1000
+									});
+									return;
 								}
 							} catch (e) {
 								console.log(e.message);

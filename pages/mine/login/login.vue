@@ -146,7 +146,7 @@
 									uni.setStorageSync('user', userStr);
 									uni.showToast({
 										icon: 'none',
-										title: '登录成功',
+										title: '用户登录成功',
 										duration: 1000
 									});
 									setTimeout(function() {
@@ -154,16 +154,34 @@
 											url: '../../tabbar/mine/mine',
 										})
 									}, 1000);
+								} else if (reNum == -1) {
+									uni.showToast({
+										icon: 'none',
+										title: '数据库获取异常'
+									});
+									return;
 								} else if (reNum == -2) {
 									uni.showToast({
 										icon: 'none',
-										title: '密码错误'
+										title: '手机号或着密码不正确'
+									});
+									return;
+								}else if (reNum == -3) {
+									uni.showToast({
+										icon: 'none',
+										title: '请求参数获取异常'
+									});
+									return;
+								} else if (reNum == -4) {
+									uni.showToast({
+										icon: 'none',
+										title: '用户信息有误，请联系管理员'
 									});
 									return;
 								} else {
 									uni.showToast({
 										icon: 'none',
-										title: '请求错误'
+										title: '数据错误'
 									});
 									return;
 								}
