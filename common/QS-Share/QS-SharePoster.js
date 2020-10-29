@@ -1318,7 +1318,7 @@ module.exports = {
 	setImage,
 	drawText,
 	drawImage,
-	drawQrCode,
+	// drawQrCode,
 	drawFillRect,
 	drawStrokeRect,
 	drawRoundStrokeRect,
