@@ -16,10 +16,7 @@
 				</view>
 			</picker>
 		</view>
-		<!-- <uni-ec-canvas class="ec-canvas" :canvas-id="canvasId" :ec="ec" ref="echarts" ></uni-ec-canvas> -->
-		<!-- <mpvue-echarts :echarts="echarts" @onInit="onInit" :canvasId="canvasId" ref="echarts" /> -->
 		<echarts-el :option="echartOption" class="ec-canvas" ref="echarts"></echarts-el>
-		<!-- <echarts-renderjs :option="echartOption" style="height: 300px;" @click="echartsClick"></echarts-renderjs> -->
 	</view>
 </template>
 
@@ -65,244 +62,19 @@
 				],
 			};
 		},
-		watch: {
-			// echartOption(newOption, oldOption) {
-			// 	if (this.echartOption.legend.formatter != null) {
-			// 		this.echartOption.legend.formatter = function(name) {
-			// 			return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
-			// 		};
-			// 		this.echartOption.tooltip.formatter = function(params) {
-			// 			var tips = "";
-			// 			if (params != null && params.length > 0) {
-			// 				for (var i = 0; i < params.length; i++) {
-			// 					// console.log(JSON.stringify(params));
-			// 					var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
-			// 						.substr(
-			// 							-10, 10) : params[i].seriesName;
-			// 					tips += name + ":" + params[i].value + "\n";
-			// 				}
-			// 			}
-			// 			return tips;
-			// 		};
-			// 	}
-
-			// 	// this.ec.option = this.echartOption
-
-			// 	console.log('更新option');
-			// 	// wdChart = this.$refs.echarts.chart;
-			// 	// wdChart.setOption(this.echartOption);
-
-			// 	// setTimeout(() => {
-			// 	// 	console.log('调用save函数');
-			// 	// 	this.saveEcharts();
-			// 	// }, 2000);
-			// }
-		},
+		watch: {},
 		onReady() {
-			// this.ec.option = this.echartOption
-			// console.log(JSON.stringify(this.echartOption))
 
 		},
 		onLoad() {
 
 		},
-		mounted() {
-			// console.log(JSON.stringify(this.echartOption["legend"]["data"]));
-			// this.picker = this.echartOption["legend"]["data"];
-			// this.picker = this.echartOption["legend"]["data"];
-			// setTimeout(() => {
-			// 	console.log('调用save函数');
-			// 	this.saveEcharts();
-			// }, 2000);
-			// let that = this;
-			// var count = 0;
-			// var inervalId = setInterval(function() {
-			// 	count++;
-			// 	if (count >= 7) clearInterval(inervalId);
-			// 	// 其它操作
-			// 	that.saveEcharts();
-			// 	// console.log("count:" + count);
-			// }, 1000);
-		},
+		mounted() {},
 		methods: {
 			PickerChange(e) {
 				this.pickerIndex = e.detail.value;
 				this.echartOption["legend"]["selected"][this.pickerArray[this.pickerIndex]] = true;
 			},
-			// 2.2.2
-			// onInit(canvas, width, height) {
-			// 	wdChart = echarts.init(canvas, null, {
-			// 		width: width,
-			// 		height: height
-			// 	})
-			// 	canvas.setChart(wdChart)
-			// 	wdChart.setOption(this.echartOption)
-			// 	return wdChart
-			// },
-
-			// onInit(e) {
-			// 	if (this.echartOption.hasOwnProperty('legend') &&
-			// 		this.echartOption.hasOwnProperty('tooltip')) {
-			// 		this.echartOption.legend.formatter = function(name) {
-			// 			return name.length > 15 ? name.substr(0, 5) + "..." + name.substr(-10, 10) : name;
-			// 		};
-			// 		this.echartOption.tooltip.formatter = function(params) {
-			// 			var tips = "";
-			// 			if (params != null && params.length > 0) {
-			// 				for (var i = 0; i < params.length; i++) {
-			// 					// console.log(JSON.stringify(params));
-			// 					var name = params[i].seriesName.length > 15 ? params[i].seriesName.substr(0, 5) + "..." + params[i].seriesName
-			// 						.substr(
-			// 							-10, 10) : params[i].seriesName;
-			// 					tips += name + ":" + params[i].value + "\n";
-			// 				}
-			// 			}
-			// 			return tips;
-			// 		};
-			// 	}
-			// 	// console.log(JSON.stringify(this.echartOption.legend.formatter));
-			// 	let {
-			// 		width,
-			// 		height
-			// 	} = e;
-			// 	let canvas = document.getElementById('echarts').canvas
-			// 	// let canvas = this.$refs.echarts.canvas;
-			// 	echarts.setCanvasCreator(() => canvas);
-			// 	wdChart = echarts.init(canvas, null, {
-			// 		width: width,
-			// 		height: height
-			// 	});
-			// 	canvas.setChart(wdChart);
-			// 	wdChart.setOption(this.echartOption);
-			// 	this.$refs.echarts.setChart(wdChart);
-			// },
-
-
-			// onInit(e) {
-			// 	let {
-			// 		width,
-			// 		height
-			// 	} = e;
-			// 	// let canvas = document.getElementById('echarts').canvas
-			// 	let canvas = this.$refs.echarts.canvas;
-			// 	echarts.setCanvasCreator(() => canvas);
-			// 	wdChart = echarts.init(canvas, null, {
-			// 		width: width,
-			// 		height: height
-			// 	});
-			// 	canvas.setChart(wdChart);
-			// 	wdChart.setOption(this.echartOption);
-			// 	this.$refs.echarts.setChart(wdChart);
-			// },
-
-			// downEcharts() {
-			// 	let canvas = document.getElementById('echarts').canvas
-			// 	// let canvas = this.$refs['chart'].canvas;
-			// 	console.log(canvas)
-			// 	echarts.setCanvasCreator(() => canvas);
-			// 	console.log(echarts)
-			// 	this.$refs['echarts'].canvasToTempFilePath({
-			// 		success: function(res) {
-			// 			console.log(JSON.stringify(res))
-			// 		},
-			// 		fail: function(e) {
-			// 			console.log(JSON.stringify(e));
-			// 			uni.showToast({
-			// 				icon: 'none',
-			// 				title: "图表正在加载，请稍后再试"
-			// 			});
-			// 			return false;
-			// 		}
-			// 	});
-
-			// let canvas = this.$refs.echarts.canvas;
-			// console.log(canvas)
-			// echarts.setCanvasCreator(() => canvas);
-			// console.log(echarts)
-			// this.$refs.echarts.canvasToTempFilePath({
-			// 	success: function(res) {
-			// 		uni.saveFile({
-			// 			tempFilePath: res.tempFilePath,
-			// 			success(res) {
-			// 				let url = res.savedFilePath;
-			// 				uni.saveImageToPhotosAlbum({
-			// 					filePath: url,
-			// 					success(res) {
-			// 						uni.showToast({
-			// 							title: '保存成功'
-			// 						});
-			// 					}
-			// 				})
-			// 			},
-			// 		})
-			// 	},
-			// 	fail: function(e) {
-			// 		console.log(JSON.stringify(e));
-			// 		uni.showToast({
-			// 			icon: 'none',
-			// 			title: "图表正在加载，请稍后再试"
-			// 		});
-			// 		return false;
-			// 	}
-			// });
-			// },
-
-			// saveEcharts() {
-			// 	// console.log('进入saveEcharts()');
-			// 	let that = this;
-			// 	let canvas = this.$refs.echarts.canvas;
-			// 	echarts.setCanvasCreator(() => canvas);
-			// 	this.$refs.echarts.canvasToTempFilePath({
-			// 		success: function(res) {
-			// 			// console.log("success");
-			// 			that.setEchart(res.tempFilePath);
-			// 		},
-			// 		fail: function(e) {
-			// 			console.log(JSON.stringify(e));
-			// 			uni.showToast({
-			// 				icon: 'none',
-			// 				title: "图表正在加载，请稍后再试"
-			// 			});
-			// 			return false;
-			// 		}
-			// 	});
-
-			// },
-
-			// setEchart(echartUrl) {
-			// 	let that = this;
-			// 	var echartArr = uni.getStorageSync('echartArr');
-			// 	var newEchartArr = [];
-			// 	var flag = 0;
-			// 	if (echartUrl) {
-			// 		var echartObj = {
-			// 			echartID: that.canvasId,
-			// 			echartUrl: echartUrl,
-			// 			echartTitle: that.classTitle,
-			// 			echartHeight: that.classHeight
-			// 		};
-			// 		if (!echartArr) {
-			// 			newEchartArr.push(echartObj);
-			// 			// console.log("newEchartArr:" + JSON.stringify(newEchartArr));
-			// 		} else {
-			// 			for (var i = 0; i < echartArr.length; i++) {
-			// 				// console.log("echartObj:"+JSON.stringify(echartObj));
-			// 				// console.log("echartArr:"+JSON.stringify(echartArr));
-			// 				if (echartObj.echartID === echartArr[i].echartID) {
-			// 					flag = 1;
-			// 					echartArr[i] = echartObj;
-			// 					// console.log("echartArr111:"+JSON.stringify(echartArr));
-			// 				}
-			// 			}
-			// 			if (flag === 0) {
-			// 				echartArr.push(echartObj);
-			// 			}
-			// 			newEchartArr = echartArr;
-			// 			// console.log("newEchartArr:" + JSON.stringify(newEchartArr));
-			// 		}
-			// 		uni.setStorageSync('echartArr', newEchartArr);
-			// 	}
-			// },
 			/**
 			 * 点击事件
 			 * @param {Object} params

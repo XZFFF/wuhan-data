@@ -20,15 +20,6 @@
 		<view class="hideCanvasView">
 			<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (imagesPoster.width||10) + 'px', height: (imagesPoster.height||10) + 'px'}"></canvas>
 		</view>
-		<!-- <wd-share-poster ref="shareComp"></wd-share-poster> -->
-		<!-- <button @click="addUserDidTakeScreenshotNotification()">监听系统截屏通知</button> -->
-		<!-- <button @click="getScreenshot()">截图</button> -->
-		<!-- <image :src="imageSrc"></image>
-		<view class="code-btn">
-			<view class="line-btn">
-				<view class="btn" @tap="capture()">点击保存至手机相册</view>
-			</view>
-		</view> -->
 	</view>
 </template>
 
@@ -92,8 +83,6 @@
 			this.showStorage(this.indexId);
 			this.initAnalysisDetail(this.indexId);
 			this.initNav();
-
-			// uni.removeStorageSync('echartArr');
 		},
 		onNavigationBarButtonTap(e) {
 			switch (e.type) {
@@ -169,8 +158,6 @@
 							this.relatedData = dataApi.data.relatedData;
 							// 计算classHeight及总Height
 							this.setHeight();
-							// 设置画布数据
-							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 							uni.showToast({
@@ -206,13 +193,11 @@
 					success: (res) => {
 						// console.log(JSON.stringify(res.data));
 						try {
-							// uni.removeStorageSync('echartArr');
 							dataApi = res.data;
 							// dataApi = analysisConfirmApiJson;
 							checkApi.isApi(dataApi);
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
-							// this.setDrawCanvas();
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
 							uni.showToast({
@@ -308,59 +293,6 @@
 				_self.classTotalHeight = classHeight;
 				_self.totalHeight = timeConditionHeight + classHeight + relatedHeight;
 				console.log(timeConditionHeight, classHeight, relatedHeight)
-			},
-			// 设置画布数据
-			setDrawCanvas() {
-				try {
-					var drawCanvas = _self.indexDetail;
-					var drawArr = [];
-					var canvasTitle = [];
-					var canvasHeight = [];
-					for (var i of drawCanvas) {
-						if (i.classType === "echarts") {
-							drawArr.push("echart" + i.id);
-							canvasTitle.push(i.classTitle);
-							canvasHeight.push(i.classHeight);
-						}
-					}
-					uni.setStorageSync('drawTitle', _self.indexName);
-					uni.setStorageSync('drawArr', drawArr);
-					uni.setStorageSync('canvasTitle', canvasTitle);
-					uni.setStorageSync('canvasHeight', canvasHeight);
-				} catch (e) {
-					uni.showToast({
-						title: e.message
-					});
-				}
-			},
-			addUserDidTakeScreenshotNotification() {
-				const KJScreenshot = uni.requireNativePlugin('KJ-Screenshot');
-				KJScreenshot.addUserDidTakeScreenshotNotification(result => {
-					console.log(result);
-				});
-			},
-			getScreenshot() {
-				var _this = this;
-				var dic = {
-					"saveImagePath": plus.io.convertLocalFileSystemURL("_doc/KJ-Screenshot/"), //保存截屏图片的路径，必须传_doc下的本地绝对路径
-					"saveImageName": "Screenshot.png" //保存截屏图片的名字，最好保存格式为png
-				};
-				console.log(JSON.stringify(dic));
-				uni.showToast({
-					title: JSON.stringify(dic)
-				});
-				const KJScreenshot = uni.requireNativePlugin('KJ-Screenshot');
-				KJScreenshot.getScreenshot(dic, result => {
-					//返回数据示例：{"error":"","code":1,"imagePath":"file:///var/mobile/Containers/Data/Application/C6BB19D8-44DB-4975-A88D-D5CFDB3F7731/Documents/Pandora/apps/F1B7B032C4B46A61CCC3A4DFCD579446/doc/KJ-Screenshot/Screenshot.png"}
-					//返回的数据说明：code等于0为失败，code等于1为成功，imagePath为截屏图片的路径
-					var imagePath = result["imagePath"]
-					console.log(JSON.stringify(result));
-					uni.showToast({
-						title: JSON.stringify(dic)
-					});
-					var imagePath = result["imagePath"];
-					_this.imageSrc = imagePath;
-				});
 			},
 			async capture() {
 				console.log('进到了方法')
