@@ -145,22 +145,6 @@
 					}
 					// 设置新的option
 					this.chart.setOption(option, option.notMerge)
-					let thatchart = this.chart;
-					setTimeout(() => {
-						console.log("设置完option后采用延时的数据")
-						let ImgBase64 = thatchart.getDataURL();
-						// console.log(ImgBase64);
-						// uni.setStorageSync('imageBase64', ImgBase64);
-						// $.ajax({
-						// 	type: "POST",
-						// 	url: "http://localhost:8080/wuhan_data1/getAnalysisDetail",
-						// 	data: {token:ImgBase64, indexId:'000'},
-						// 	dataType: "json",
-						// 	success: function(data){
-						// 		console.log(data)
-						// 	}
-						// });
-					}, 3000)
 				}
 			},
 			/**
