@@ -363,44 +363,60 @@
 				});
 			},
 			async capture() {
+				console.log('进到了方法')
 				// 注，此方法应为同步方法
 				// todo 整体画布的分享
 				// 需要判断时候有需要分享的内容，只有 item.classType === 'echarts'的数据需要分享出去，同时也只有这些需要是生成图片
 				// 走请求得到图片的base64
 				let requestData = this.indexDetail
 				let that = this
-				await uni.request({
-					// url: "http://192.168.3.106:8080/generatorPic",
-					url: this.apiUrl + "generatorPic",
-					method: 'POST',
-					data: requestData,
-					success: (res) => {
-						if (res.data.data.length > 0) {
-							try {
-								let imgdatas = res.data.data;
-								that.genimg(imgdatas)
-							} catch (e) {
+				if (requestData) {
+					await uni.request({
+						// url: "http://192.168.3.106:8080/generatorPic",
+						url: this.apiUrl + "generatorPic",
+						method: 'POST',
+						data: requestData,
+						success: (res) => {
+							if (res.data.data.length > 0) {
+								try {
+									let imgdatas = res.data.data;
+									that.genimg(imgdatas)
+								} catch (e) {
+									uni.showToast({
+										title: "图片加载失败",
+										icon: "none",
+										duration: 500,
+									});
+									return false;
+								}
+							} else {
 								uni.showToast({
-									title: "文件生成失败",
+									title: "图片加载失败",
 									icon: "none",
 									duration: 500,
 								});
 								return false;
 							}
+						},
+						fail: (e) => {
+							uni.showToast({
+								title: "数据加载失败",
+								icon: "none",
+								duration: 500,
+							});
+							return false;
+						},
+						complete: () => {
+							uni.hideLoading();
 						}
-					},
-					fail: (e) => {
-						uni.showToast({
-							title: "数据加载失败",
-							icon: "none",
-							duration: 500,
-						});
-						return false;
-					},
-					complete: () => {
-						uni.hideLoading();
-					}
-				});
+					});
+				} else {
+					uni.showToast({
+						title: "请等待数据加载完成",
+						icon: "none",
+						duration: 500,
+					});
+				}
 			},
 			async genimg(data) {
 				if (data) {
