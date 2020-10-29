@@ -493,6 +493,19 @@
 					_app.getShare(false, false, 2, '', '', '', path, false, false);
 					// #endif
 					_app.log('海报生成成功------, 时间:' + new Date() + '， 临时路径: ' + d.poster.tempFilePath)
+					uni.saveFile({
+						tempFilePath: path,
+						success(res) {
+							uni.saveImageToPhotosAlbum({
+								filePath: path,
+								success(res) {
+									uni.showToast({
+										title: '保存成功'
+									});
+								}
+							})
+						},
+					})
 				}
 			}
 		}
