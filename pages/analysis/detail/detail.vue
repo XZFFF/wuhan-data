@@ -130,7 +130,7 @@
 					success: (res) => {
 						// uni.removeStorageSync('echartArr');
 						// dataApi = res.data;
-						dataApi = analysisIndex16Json;
+						dataApi = analysisIndex31Json;
 						// console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);

@@ -87,8 +87,24 @@
 		onReady() {
 
 		},
-		onLoad() {},
-		mounted() {},
+		onLoad() {
+
+		},
+		mounted() {
+			console.log('mounted');
+			setTimeout(function() {
+
+			}, 3000);
+			if (this.pickerIndex == -1) {
+				let moni = {
+					'detail': {
+						'value': 0
+					}
+				};
+				this.PickerChange(moni);
+				console.log('模拟点击');
+			}
+		},
 		methods: {
 			PickerChange(e) {
 				console.log(JSON.stringify(e));
