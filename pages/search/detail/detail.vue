@@ -2,7 +2,7 @@
 	<view class="container" :style="{height:totalHeight + 'px'}">
 		<view style="margin: 10upx 20upx;">{{path}}</view>
 		<wd-area-picker v-if="isArea=='1' || isArea==1" @confirm="onConfirm" :timeCondition="timeCondition"></wd-area-picker>
-		<wd-time-picker v-else @confirm="onConfirm" :timeCondition="timeCondition"></wd-time-picker>
+		<wd-time-picker v-else @confirm="onConfirm" :timeCondition="timeCondition" :onlyEnd="'0'"></wd-time-picker>
 		<view class="class-block" :style="{height:classTotalHeight + 'px'}">
 			<block v-for="(item, index) in indexDetail" :key="index">
 				<wd-table v-if="item.classType === 'table'" :classTitle="item.classTitle" :tableBody="item.tableBody"></wd-table>

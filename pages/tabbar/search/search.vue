@@ -83,6 +83,8 @@
 				for (var i = 0; i < result.length; i++) {
 					if (result[i].name.length > 6) {
 						result[i].nameSub = result[i].name.substring(0, 4) + '..';
+					} else {
+						result[i].nameSub = result[i].name;
 					}
 				}
 				return result;

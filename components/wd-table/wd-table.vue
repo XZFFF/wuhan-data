@@ -57,7 +57,7 @@
 				for (let i = 0; i < tableBodyTran.length; i++) {
 					for (let j = 0; j < tableBodyTran[i].length; j++) {
 						if (tableBodyTran[i][j] == "null" || tableBodyTran[i][j] == "" ||
-							tableBodyTran[i][j] == null) {
+							tableBodyTran[i][j] == null || tableBodyTran[i][j] == "NaN") {
 							tableBodyTran[i][j] = '-';
 						}
 					}

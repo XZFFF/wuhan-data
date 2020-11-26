@@ -127,6 +127,8 @@
 				this.freqIndex = e.target.value;
 				this.startArray = this.timeCondition[this.freqIndex].startArray;
 				this.endArray = this.timeCondition[this.freqIndex].endArray;
+				this.endIndex = this.endArray.length - 1;
+				this.startIndex = this.startArray.length - 7;
 			},
 			bindStartPickerChange: function(e) {
 				this.startIndex = e.target.value
