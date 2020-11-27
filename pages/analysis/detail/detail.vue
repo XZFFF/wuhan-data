@@ -133,17 +133,25 @@
 						// uni.removeStorageSync('echartArr');
 						dataApi = res.data;
 						// dataApi = analysisIndex62Json;
-						// console.log(JSON.stringify(dataApi));
+						console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
-						uni.showToast({
-							title: "数据加载失败",
-							icon: "none",
-							duration: 500,
-						});
+						if (e.errMsg == 'request:fail timeout' || e.errMsg == 'request:fail abort statusCode:-1') {
+							uni.showToast({
+								title: "数据加载超时",
+								icon: "none",
+								duration: 500,
+							});
+						} else {
+							uni.showToast({
+								title: "数据加载失败",
+								icon: "none",
+								duration: 500,
+							});
+						}
 						return false;
 					},
 					complete: () => {
@@ -212,11 +220,19 @@
 					},
 					fail: (e) => {
 						console.log("获取失败;" + JSON.stringify(e));
-						uni.showToast({
-							title: "数据加载失败",
-							icon: "none",
-							duration: 500,
-						});
+						if (e.errMsg == 'request:fail timeout' || e.errMsg == 'request:fail abort statusCode:-1') {
+							uni.showToast({
+								title: "数据加载超时",
+								icon: "none",
+								duration: 500,
+							});
+						} else {
+							uni.showToast({
+								title: "数据加载失败",
+								icon: "none",
+								duration: 500,
+							});
+						}
 						return false;
 					},
 					complete: () => {
