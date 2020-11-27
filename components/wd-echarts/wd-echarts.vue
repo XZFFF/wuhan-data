@@ -17,6 +17,7 @@
 			</picker>
 		</view>
 		<echarts-el :option="echartOption" class="ec-canvas" ref="echarts"></echarts-el>
+		<!-- <echarts-renderjs :option="echartOption" class="ec-canvas" ref="echarts"></echarts-renderjs> -->
 	</view>
 </template>
 
@@ -93,7 +94,6 @@
 		mounted() {
 			console.log('mounted');
 			setTimeout(function() {
-
 			}, 3000);
 			if (this.pickerIndex == -1) {
 				let moni = {

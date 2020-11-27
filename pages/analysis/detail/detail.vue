@@ -40,6 +40,7 @@
 	import analysisNewJson from "@/common/api/anaNewJson.json";
 	import analysisIndex16Json from "@/common/api/analysis_index16.json";
 	import analysisIndex31Json from "@/common/api/analysis_index31.json";
+	import analysisIndex00Json from "@/common/api/analysis_index00.json";
 
 	var _self;
 	export default {
@@ -120,8 +121,8 @@
 				};
 				console.log(JSON.stringify(dataPost));
 				uni.request({
-					// url: this.apiUrl + 'getAnalysisDetail',
-					url: 'http://www.baidu.com',
+					url: this.apiUrl + 'getAnalysisDetail',
+					// url: 'http://www.baidu.com',
 					method: 'POST',
 					data: {
 						token: token,
@@ -129,8 +130,8 @@
 					},
 					success: (res) => {
 						// uni.removeStorageSync('echartArr');
-						// dataApi = res.data;
-						dataApi = analysisIndex31Json;
+						dataApi = res.data;
+						// dataApi = analysisIndex31Json;
 						// console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
