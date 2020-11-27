@@ -93,23 +93,8 @@
 				if (this.chart) {
 					// 因App端，回调函数无法从renderjs外传递，故在此自定义设置相关回调函数
 					if (option) {
-						// 单位换算
-						for (let j in option.yAxis) {
-							if (option.yAxis[j]["axisLabel"]) {
-								option.yAxis[j]["axisLabel"] = {
-									"formatter": function(value) {
-										let s = parseInt(value)
-										if (s === NaN) {
-											return name
-										} else if (s >= 10000) {
-											return (s / 10000).toString() + '万'
-										} else {
-											return value
-										}
-									}
-								}
-							}
-						}
+						// TODO 单位换算无法使用！
+
 
 						// tooltip
 						if (option.tooltip) {

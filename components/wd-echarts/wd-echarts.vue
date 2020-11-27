@@ -93,17 +93,40 @@
 		},
 		mounted() {
 			console.log('mounted');
-			setTimeout(function() {
-			}, 3000);
-			if (this.pickerIndex == -1) {
-				let moni = {
-					'detail': {
-						'value': 0
-					}
-				};
-				this.PickerChange(moni);
-				console.log('模拟点击');
+			setTimeout(function() {}, 3000);
+			if (this.canvasId == 'echart58') {
+				if (this.pickerIndex == -1) {
+					let moni = {
+						'detail': {
+							'value': 0
+						}
+					};
+					this.PickerChange(moni);
+					console.log('模拟点击');
+				}
 			}
+			//这里改不了单位格式
+			// if (this.echartOption.yAxis) {
+			// 	console.log(JSON.stringify(this.echartOption.yAxis));
+			// 	for (let j in this.echartOption.yAxis) {
+			// 		if (this.echartOption.yAxis[j]["axisLabel"]) {
+			// 			this.echartOption.yAxis[j]["axisLabel"] = {
+			// 				"formatter": function(value) {
+			// 					let s = parseInt(value)
+			// 					if (s === NaN) {
+			// 						return name
+			// 					} else if (s >= 10000) {
+			// 						return (s / 10000).toString() + '万'
+			// 					} else {
+			// 						return value
+			// 					}
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// 	console.log(JSON.stringify(this.echartOption.yAxis));
+			// 	console.log('---------------->');
+			// }
 		},
 		methods: {
 			PickerChange(e) {

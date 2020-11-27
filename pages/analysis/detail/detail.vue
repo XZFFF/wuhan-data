@@ -41,6 +41,7 @@
 	import analysisIndex16Json from "@/common/api/analysis_index16.json";
 	import analysisIndex31Json from "@/common/api/analysis_index31.json";
 	import analysisIndex00Json from "@/common/api/analysis_index00.json";
+	import analysisIndex62Json from "@/common/api/analysis_index62.json";
 
 	var _self;
 	export default {
@@ -131,7 +132,7 @@
 					success: (res) => {
 						// uni.removeStorageSync('echartArr');
 						dataApi = res.data;
-						// dataApi = analysisIndex31Json;
+						// dataApi = analysisIndex62Json;
 						// console.log(JSON.stringify(dataApi));
 						let analysis_detail_key = 'analysis_detail' + this.indexId;
 						uni.setStorageSync(analysis_detail_key, dataApi);
