@@ -2,8 +2,8 @@
     "name" : "数说湖北",
     "appid" : "__UNI__8BAA13B",
     "description" : "",
-    "versionName" : "8.0.0",
-    "versionCode" : 800,
+    "versionName" : "8.1.0",
+    "versionCode" : 810,
     "transformPx" : false,
     "app-plus" : {
         "compatible" : {
@@ -68,7 +68,7 @@
             },
             "icons" : {
                 "ios" : {
-                    "appstore" : "static/logo/icon_roundbg.png",
+                    "appstore" : "unpackage/res/icons/1024x1024.png",
                     "ipad" : {
                         "app" : "unpackage/res/icons/76x76.png",
                         "app@2x" : "unpackage/res/icons/152x152.png",

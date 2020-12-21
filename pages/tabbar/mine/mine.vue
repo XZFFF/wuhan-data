@@ -136,7 +136,7 @@
 				bottomData: mineConfig.bottomData,
 				browse_icon: mineConfig.browse_icon,
 				menu_list: mineConfig.menu_list,
-				fullyear:new Date().getFullYear(),// 当前的年份
+				fullyear: new Date().getFullYear(), // 当前的年份
 			};
 		},
 		onLoad() {},
@@ -258,12 +258,36 @@
 				}
 			},
 			goDetailPage(e) {
+				console.log(JSON.stringify(e));
 				if (!this.token) {
 					uni.showToast({
 						icon: 'none',
 						title: "您还没有登录，请先登录",
 						duration: 500,
 					});
+				} else if (e.url == 'news') {
+					console.log('打开消息');
+					if (!uni.getStorageSync('lock')) {
+						uni.showModal({
+							title: '您尚未设置手势密码,是否现在设置?',
+							success(res) {
+								console.log(JSON.stringify(res));
+								if (res.confirm == true) {
+									console.log('跳转！')
+									uni.navigateTo({
+										url: '../../mine/lock/lock',
+										success(res) {
+											console.log(JSON.stringify(res));
+										},
+										fail(e) {
+											console.log(JSON.stringify(e));
+										}
+									})
+								}
+							}
+						});
+					}
+
 				} else {
 					let path = e.url ? e.url : e;
 					let url = ~path.indexOf('platform') ? path : '../../mine/' + path + '/' + path;
