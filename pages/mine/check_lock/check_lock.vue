@@ -18,29 +18,20 @@
 			return {
 				title: "手势图案",
 				password: [],
-				text: '请设定手势'
+				text: '请输入手势密码'
 			}
 		},
 		methods: {
 			onEnd(data) {
-				if (this.password.length) {
-					if (this.password.join('') === data.join('')) {
-						this.text = '手势设定完成'
-						console.log(JSON.stringify(this.password));
-						uni.setStorageSync('lock', this.password.join(''));
-						uni.switchTab({
-							url: '../../tabbar/mine/mine',
-						});
-
-						// this.password = []
-					} else {
-						this.text = '两次手势设定不一致'
-						this.password = []
-					}
+				if (uni.getStorageSync('lock') === data.join('')) {
+					this.text = '手势密码正确'
+					uni.redirectTo({
+						url: '../news/news'
+					})
 				} else {
-					this.text = '请确认手势设定'
-					this.password = data
+					this.text = '手势密码错误，请重试'
 				}
+
 			}
 		}
 	}

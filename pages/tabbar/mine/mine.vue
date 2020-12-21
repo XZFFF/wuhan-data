@@ -286,6 +286,16 @@
 								}
 							}
 						});
+					} else {
+						uni.navigateTo({
+							url: '../../mine/check_lock/check_lock',
+							success(res) {
+								console.log(JSON.stringify(res));
+							},
+							fail(e) {
+								console.log(JSON.stringify(e));
+							}
+						})
 					}
 
 				} else {

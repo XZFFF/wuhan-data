@@ -252,13 +252,22 @@
 				"enablePullDownRefresh": true,
 				"navigationBarTextStyle": "black"
 			}
-		}, {
+		},
+		{
 			"path": "pages/mine/lock/lock",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "手势密码",
 				"enablePullDownRefresh": false
 			}
-
+		},
+		{
+			"path": "pages/mine/check_lock/check_lock",
+			"style": {
+				"navigationBarBackgroundColor": "#3A82CC",
+				"navigationBarTitleText": "手势密码解锁",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	// 设置应用的状态栏、导航条、标题、窗口背景色
