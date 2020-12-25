@@ -147,13 +147,14 @@
 				let startTime = this.startArray[this.startIndex];
 				let endTime = this.endArray[this.endIndex];
 				if (startTime > endTime) {
-					if (onlyEnd == 0 || onlyEnd == '0') {
+					if (this.onlyEnd == 0 || this.onlyEnd == '0') {
 						uni.showModal({
 							title: "提示",
 							content: "结束时间不能小于开始时间",
 						});
 					} else {
-						console.log('单点时间')
+						console.log('单点时间');
+						startTime = endTime;
 					}
 				}
 				this.$emit("confirm", {
