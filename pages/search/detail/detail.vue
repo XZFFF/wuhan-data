@@ -196,8 +196,25 @@
 							_self.indexDetail = dataApi.data.classInfo;
 							this.setHeight();
 							// this.setDrawCanvas();
+							// console.log(JSON.stringify(dataApi));
+							let len_pr = dataApi.data.classInfo[0].echartOption["xAxis"][0]["data"].length;
+							console.log(len_pr);
+							if(len_pr >= 8) {
+								uni.showModal({
+								    title: '时间区间过大',
+								    content: '时间区间过大，最多展示8组数据',
+								    success: function (res) {
+								        if (res.confirm) {
+								            console.log('用户点击确定');
+								        } else if (res.cancel) {
+								            console.log('用户点击取消');
+								        }
+								    }
+								});
+							}
 						} catch (e) {
 							console.log("发生异常;" + JSON.stringify(e));
+							let len_pr = dataApi.data.classInfo[0].echartOption["xAxis"][0]["data"].length;
 						}
 					},
 					fail: (e) => {
